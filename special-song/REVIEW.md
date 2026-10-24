@@ -16,6 +16,7 @@
 - `check`: 0 errors.
 - Looked at frames: t=4, 8, 14, 19, 24.5, 27.3, 56.4 (a line arriving), 128.5, 152, 287.5, plus a full-resolution crop of a lyric.
 - MR is -11.4 LUFS with a true peak of +1.2 dBTP, so the source itself clips. It is set to 0.78 (-2.2 dB) in the mix.
+- Rendered file: 1920×1080, 30 fps, 318.3 s. Green samples read (0,254,0). The MR head cross-correlates at exactly 27.5 s and the bed is silent from 27.0 s. The mix is -14.9 LUFS with a true peak of -1.5 dBTP and no clipping. Splits: `01_prelude.mp4` (27.5 s) and `02_mr_green_lyrics.mp4` (starts on green).
 - Not checked: nobody has listened to the music bed.
 
 ## Reading time (shorter prelude)
