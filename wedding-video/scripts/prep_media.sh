@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Normalise raw media into render-friendly copies under assets/media/.
-#   videos: autorotate, long edge 1920, 30 fps CFR, H.264, GOP 10 (fast seeking), no audio
+#   videos: autorotate, long edge 1920, 30 fps CFR, H.264, GOP 10 (fast seeking), no audio,
+#           iPhone HDR (HLG / BT.2020) tone-mapped and Display-P3 converted to SDR Rec.709
 #   photos: long edge 2560 (wedding) / original size capped at 2560 (date), JPEG q2
 # Usage: scripts/prep_media.sh videos|photos|all
 # Per-file manual rotation fixes live in ROTATE below (clockwise degrees, applied after autorotate).
@@ -30,8 +31,17 @@ prep_videos() {
       270) vf="$vf,transpose=2" ;;
     esac
     vf="$vf,scale='if(gt(iw,ih),min(1920,iw),-2)':'if(gt(iw,ih),-2,min(1920,ih))':flags=lanczos,setsar=1"
-    ffmpeg -nostdin -v error -y -i "$src" -vf "$vf" -an -c:v libx264 -preset medium -crf 17 \
-      -pix_fmt yuv420p -g 10 -keyint_min 10 -sc_threshold 0 -movflags +faststart "$out"
+    trc=$(ffprobe -v error -select_streams v:0 -show_entries stream=color_transfer -of csv=p=0 "$src")
+    pri=$(ffprobe -v error -select_streams v:0 -show_entries stream=color_primaries -of csv=p=0 "$src")
+    if [ "$trc" = "arib-std-b67" ] || [ "$trc" = "smpte2084" ]; then
+      vf="$vf,zscale=tin=$trc:pin=bt2020:min=bt2020nc:t=linear:npl=203,format=gbrpf32le,zscale=p=bt709"
+      vf="$vf,tonemap=tonemap=mobius:desat=0:param=0.3,zscale=t=bt709:m=bt709:r=tv"
+    elif [ "$pri" = "smpte432" ]; then
+      vf="$vf,zscale=pin=smpte432:p=bt709:tin=bt709:t=bt709:m=bt709:r=tv"
+    fi
+    ffmpeg -nostdin -v error -y -i "$src" -vf "$vf,format=yuv420p" -an -c:v libx264 -preset medium -crf 17 \
+      -pix_fmt yuv420p -g 10 -keyint_min 10 -sc_threshold 0 -color_primaries bt709 -color_trc bt709 \
+      -colorspace bt709 -movflags +faststart "$out"
     echo "$out <- $f ($(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "$out"))"
   done
 }
