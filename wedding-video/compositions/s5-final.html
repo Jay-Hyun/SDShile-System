@@ -102,7 +102,8 @@
           img.alt = "";
           K.el("div", "s5-pin", p);
           at.set(p, { opacity: 0 }, 0);
-          at.add(p, { opacity: [0, 1], y: [-10, 0], duration: 420, ease: E.expo }, t);
+          at.add(p, { opacity: [0, 1], duration: 140, ease: E.quart }, t);
+          at.add(p, { y: [-10, 0], duration: 420, ease: E.expo }, t);
           return p;
         };
         pin("d15", T(24), { left: "300px", top: "250px", width: "520px", height: "386px" }, -3.5);
@@ -125,8 +126,9 @@
         const { cam } = D.shot(C, T(31), T(38));
         D.take("s5-E26", cam);
         D.scrim(cam, "bottom", { tone: "light", a: 0.45, reach: 26 });
-        D.line(C, cam, [31, 32, 33], { y: 930, size: 56, color: "ink", end: T(34) - 60, out: 260 });
-        D.line(C, cam, [34, 35, 36, 37], { y: 930, size: 56, color: "ink", lead: 140 });
+        // right of the bride's train: the groom's feet stay clear
+        D.line(C, cam, [31, 32, 33], { align: "right", x: 1836, y: 930, size: 54, color: "ink", end: T(34) - 60, out: 260 });
+        D.line(C, cam, [34, 35, 36, 37], { align: "right", x: 1836, y: 930, size: 54, color: "ink", lead: 140 });
       }
 
       // I. back to the big frame on their wall: the two of them, the day of the photos

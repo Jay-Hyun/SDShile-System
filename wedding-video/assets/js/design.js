@@ -59,7 +59,7 @@
   const px = (v) => (typeof v === "number" ? v + "px" : v);
   // unlit / lit / lit-love colours per background tone (the line must read before it is sung)
   const TONE = {
-    ink: { dim: "#7a7068", lit: "#232024", love: "#c24f5c" },
+    ink: { dim: "#665d56", lit: "#232024", love: "#c24f5c" },
     cream: { dim: "#b9b1a6", lit: "#fbf6ec", love: "#f49a9a" },
   };
   const tone = (c) => TONE[c] || TONE.cream;
