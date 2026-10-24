@@ -39,18 +39,21 @@
       const top23 = (1080 - R23.H * k23) / 2;
       const hw = ((q23[1][0] - q23[0][0] + q23[2][0] - q23[3][0]) / 2) * k23;
       const hh = ((q23[3][1] - q23[0][1] + q23[2][1] - q23[1][1]) / 2) * k23;
-      const fill23 = Math.max(1920 / hw, 1080 / hh) * 1.03; // the photograph fills the screen
+      const fill23 = (1080 / hh) * 1.02; // the photograph fills the screen height; a sliver of mat shows at the sides
 
       // A. 사랑할 is cut out of the paper; through it, their photograph. On the beat after 같아요 the letters
       //    spread until the paper is gone (2:14), and the camera keeps pulling back until the photograph hangs on their wall.
       {
         const { cam } = D.shot(C, 0, Q(4));
-        const k = D.keyed(C, cam, "E23", [{ src: K.photo("w06"), pos: "50% 35%", grade: WARM }], 0, Q(4), { origin: `${hx}px ${hy}px`, manual: true });
+        const k = D.keyed(C, cam, "E23", [{ src: K.photo("w06"), pos: "50% 13%", grade: WARM }], 0, Q(4), { origin: `${hx}px ${hy}px`, manual: true });
         // geometry: python scripts/knock_points.py "사랑할" assets/fonts/NotoSerifKR-VF.ttf 800 560 - 1085,450
         const geo = { x: 148.5, baseline: 748.5, deep: [939, 361] };
         const { wrap, glyphs } = K.knock(cam, "사랑할", geo, { fill: "#F7F2E8", size: 560, weight: 800, z: 20 });
-        const rest = K.txt(wrap, "것 같아요", "v5-serif c-ink", { left: 0, right: 0, top: 860, fontSize: 60, textAlign: "center" });
+        // 것 같아요: ink on the paper, then cream once the photograph shows under it
+        const rest = K.txt(cam, "것 같아요", "v5-serif c-ink", { left: 0, right: 0, top: 860, fontSize: 60, textAlign: "center", zIndex: 30 });
+        const restC = K.txt(cam, "것 같아요", "v5-serif c-cream", { left: 0, right: 0, top: 860, fontSize: 60, textAlign: "center", zIndex: 30 });
         at.set(rest, { opacity: 0 }, 0);
+        at.set(restC, { opacity: 0 }, 0);
         at.add(rest, { opacity: [0, 1], filter: ["blur(8px)", "blur(0px)"], duration: 420, ease: E.expo }, T(1) - 120);
         at.add(wrap, { scale: [1.06, 1], duration: 900, ease: E.expo }, 0);
         // the strokes thicken from beat 230 to beat 231: the paper burns away from the letters outward
@@ -65,7 +68,9 @@
         at.add(k.box, { scale: [fill23, fill23 * 1.035], duration: b2, ease: "linear" }, 0);
         at.add(k.box, { x: [cx, 0], y: [cy, 0], scale: [fill23 * 1.035, 1.0], duration: Q(4) + 700 - b2, ease: E.settle }, b2);
         gtl.fromTo(glyphs, { attr: { "stroke-width": 0 } }, { attr: { "stroke-width": 1400 }, duration: (b1 - b0) / 1000, ease: "sine.inOut", immediateRender: false }, b0 / 1000);
-        at.add(rest, { opacity: [1, 0], duration: 260, ease: E.quart }, b0 + 60);
+        at.add(rest, { opacity: [1, 0], duration: 200, ease: "linear" }, b0 + 120);
+        at.add(restC, { opacity: [0, 1], duration: 200, ease: "linear" }, b0 + 120);
+        at.add(restC, { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 300, ease: E.in3 }, T(3) - 380);
         at.add(wrap, { opacity: [1, 0], duration: 140, ease: "linear" }, b1 - 140);
         K.leak(at, cam, b1 - 120, 2200, { peak: 0.3, from: "right", z: 25, tone: "warm" });
         const sc = D.scrim(cam, "bottom", { a: 0.42, reach: 30, z: 21 });
