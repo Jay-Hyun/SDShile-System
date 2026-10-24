@@ -335,6 +335,40 @@
       return el;
     },
 
+    /** Script lettering written by a pen from t (window.CALLI, scripts/calligraphy.py): the <text> is masked by its
+     *  own skeleton strokes, each revealed at the pen's pace; once written, the unmasked lettering settles in. */
+    write(ctx, parent, t, { y = 300, w = 1180, color = "#F4E6C8", glow = "rgba(255,214,150,.38)", z = 31, id = "pen" } = {}) {
+      const CA = window.CALLI;
+      const [VW, VH] = CA.vb;
+      const h = (w * VH) / VW;
+      const box = K.el("div", "", parent);
+      box.style.cssText = `position:absolute;left:${960 - w / 2}px;top:${y}px;width:${w}px;height:${h}px;z-index:${z};filter:drop-shadow(0 0 12px ${glow})`;
+      const NS = "http://www.w3.org/2000/svg";
+      const txt = `x="${CA.x}" y="${CA.y}" text-anchor="middle" font-family="${CA.font}" font-size="${CA.size}" word-spacing="${CA.ws}" fill="${color}"`;
+      box.innerHTML = `<svg xmlns="${NS}" viewBox="0 0 ${VW} ${VH}" width="${w}" height="${h}" style="overflow:visible">
+        <defs><filter id="${ctx.id}-${id}-soft"><feGaussianBlur stdDeviation="1"/></filter>
+        <mask id="${ctx.id}-${id}" maskUnits="userSpaceOnUse" x="0" y="0" width="${VW}" height="${VH}">
+        <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" filter="url(#${ctx.id}-${id}-soft)"></g></mask></defs>
+        <text ${txt} mask="url(#${ctx.id}-${id})">${CA.text}</text><text ${txt} opacity="0">${CA.text}</text></svg>`;
+      const g = box.querySelector("g");
+      const [, full] = box.querySelectorAll("text");
+      const at = ctx.at;
+      CA.strokes.forEach((s) => {
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", s.d);
+        p.setAttribute("stroke-width", s.w);
+        p.setAttribute("pathLength", "1");
+        p.style.strokeDasharray = "1 1";
+        g.appendChild(p);
+        at.set(p, { opacity: 0, strokeDashoffset: 1 }, 0);
+        at.set(p, { opacity: 1 }, t + s.t);
+        at.add(p, { strokeDashoffset: [1, 0], duration: s.dur, ease: "linear" }, t + s.t);
+      });
+      at.set(full, { opacity: 0 }, 0);
+      at.add(full, { opacity: [0, 1], duration: 600, ease: E.inout }, t + CA.total + 80);
+      return box;
+    },
+
     /** Soft exit: opacity to 0 with a little blur. */
     out(ctx, els, t, dur = 300) {
       ctx.at.add(els, { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: dur, ease: E.in3 }, Math.max(0, t));

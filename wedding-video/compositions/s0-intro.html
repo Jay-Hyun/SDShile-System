@@ -56,7 +56,8 @@
         at.add(h, { letterSpacing: ["0.3em", "0.03em"], duration: 1900, ease: E.expo }, T(9));
       }
 
-      // E. back to back against the same wall, eyes closed; the title is split by the wall (his half, her half)
+      // E. back to back against the same wall, eyes closed; the title is split by the wall (his half, her half),
+      // each name with who they are: he runs purchasing, she listens for a living
       {
         const { cam } = D.shot(C, Q(10), END, { soft: 720 });
         D.take("s0-E02", cam);
@@ -72,10 +73,12 @@
         const tR = T(15);
         D.hero(C, cam, "반대가", tL, { x: 118, y: 92, size: 88, font: "serifB", color: "ink", enter: 1400, blur: 16 });
         D.rule(C, cam, { x: 122, y: 214, w: 168, t: tL + 420, dur: 1400 });
-        D.hero(C, cam, "박준익", tL + 800, { x: 122, y: 230, size: 28, font: "serifL", color: "ink", enter: 1100, blur: 8, spacing: "0.34em" });
+        D.hero(C, cam, "박준익", tL + 800, { x: 122, y: 228, size: 30, font: "serifL", color: "ink", enter: 1100, blur: 8, spacing: "0.34em" });
+        D.hero(C, cam, "구매과 과장", tL + 1300, { x: 123, y: 274, size: 28, font: "serifL", color: "ink", enter: 1000, blur: 6, spacing: "0.14em" });
         D.hero(C, cam, "끌리는 이유", tR, { align: "right", x: 1802, y: 92, size: 88, font: "serifB", color: "ink", enter: 1400, blur: 16 });
         D.rule(C, cam, { x: 1802 - 168, y: 214, w: 168, t: tR + 420, dur: 1400, origin: "right" });
-        D.hero(C, cam, "김명지", tR + 800, { align: "right", x: 1792, y: 230, size: 28, font: "serifL", color: "ink", enter: 1100, blur: 8, spacing: "0.34em" });
+        D.hero(C, cam, "김명지", tR + 800, { align: "right", x: 1792, y: 228, size: 30, font: "serifL", color: "ink", enter: 1100, blur: 8, spacing: "0.34em" });
+        D.hero(C, cam, "심리상담사", tR + 1300, { align: "right", x: 1794, y: 274, size: 28, font: "serifL", color: "ink", enter: 1000, blur: 6, spacing: "0.14em" });
       }
 
       // over everything: the light comes up from black, a warm leak drifts across the first bars, a soft warm grade

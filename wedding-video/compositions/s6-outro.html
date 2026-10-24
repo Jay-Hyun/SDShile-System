@@ -27,10 +27,11 @@
         const { cam } = D.shot(C, tWide, END);
         D.take("s6-E30", cam);
         const t0 = tWide + 500;
-        D.hero(C, cam, "박준익  &  김명지", t0, { align: "center", y: 180, size: 76, font: "serif", color: "cream", enter: 1600, blur: 16 });
-        D.rule(C, cam, { x: 960 - 150, y: 304, w: 300, t: t0 + 800, dur: 1400, origin: "center", color: "#C9A86E" });
-        D.hero(C, cam, "2026. 11. 07  SAT", t0 + 1300, { align: "center", y: 326, size: 38, font: "serifL", color: "brass", enter: 1300, blur: 10, spacing: "0.16em" });
-        D.hero(C, cam, "저희, 결혼합니다", t0 + 2100, { align: "center", y: 396, size: 46, font: "serif", color: "cream", enter: 1300, blur: 10, spacing: "0.12em" });
+        D.hero(C, cam, "박준익  &  김명지", t0, { align: "center", y: 100, size: 76, font: "serif", color: "cream", enter: 1600, blur: 16 });
+        D.rule(C, cam, { x: 960 - 150, y: 224, w: 300, t: t0 + 800, dur: 1400, origin: "center", color: "#C9A86E" });
+        D.hero(C, cam, "2026. 11. 07  SAT", t0 + 1300, { align: "center", y: 246, size: 38, font: "serifL", color: "brass", enter: 1300, blur: 10, spacing: "0.16em" });
+        // and then, by hand: Happy Wedding Day
+        D.write(C, cam, t0 + 1700, { y: 268, w: 1260 });
         D.fade(C, cam, END - 1700, 1650, { color: "#0c0b0a", dir: "out", z: 80, ease: "inout" });
       }
 

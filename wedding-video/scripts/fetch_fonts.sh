@@ -5,6 +5,7 @@ cd "$(dirname "$0")/../assets" && mkdir -p fonts && cd fonts
 G=https://raw.githubusercontent.com/google/fonts/main/ofl
 curl -sfL -o NotoSerifKR-VF.ttf "$G/notoserifkr/NotoSerifKR%5Bwght%5D.ttf"
 curl -sfL -o CormorantGaramond-Italic.ttf "$G/cormorantgaramond/CormorantGaramond-Italic%5Bwght%5D.ttf"
+curl -sfL -o GreatVibes-Regular.ttf "$G/greatvibes/GreatVibes-Regular.ttf"   # the card's "Happy Wedding Day"
 curl -sfL -o OFL-google-fonts.txt "$G/jua/OFL.txt"
 for w in Bold Black ExtraBold; do
   curl -sfL -o "Pretendard-$w.woff2" "https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/woff2/Pretendard-$w.woff2"

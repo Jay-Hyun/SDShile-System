@@ -1,534 +1,534 @@
 {
-  "out": "assets/media/gen5",
-  "style": "Premium miniature stop-motion set photography in the manner of a Laika or Wes Anderson miniature set shot for a high-end commercial: handcrafted matte clay, wool felt, painted wood and small brushed-brass details; tactile real-world miniature textures; macro lens with shallow depth of field (about f/4); subtle film grain. Refined, calm, elegant and adult; never childish, never cartoonish, no glossy plastic, no neon.",
-  "light": "Soft studio key light from the upper left, warm bounce fill, gentle soft shadows; the lighting direction is identical across the whole series.",
-  "palette": "warm cream #F1ECE2 walls and floors, cobalt blue #2B3BCF for his things, soft coral #F08C8C for her things, lilac #B8B2EA accents, ink #232024 details, brushed brass #B08D57 hardware.",
-  "characters": "The people are premium 3D animated characters with adult proportions (about 7 heads tall), a fashion-editorial look like a high-end Apple or IKEA motion commercial, matte clay-like skin with subtle subsurface scattering, natural-sized eyes (never oversized), real fabric materials, calm and graceful body language.",
-  "groom": "the groom: a Korean man about 30, short neat black hair with a soft side part, black rectangular glasses, slim build, calm friendly smile",
-  "bride": "the bride: a Korean woman about 30, chin-length black bob with see-through bangs, small pearl earrings, gentle smile",
-  "outfits": {
-    "daily": {
-      "groom": "a cobalt-navy fine-knit sweater over a white collared shirt, light warm grey trousers, brown leather loafers",
-      "bride": "a soft coral knit cardigan over a cream blouse, a flowing cream midi skirt, ballet flats"
-    },
-    "wedding": {
-      "groom": "a black tuxedo with satin lapels and a black bow tie",
-      "bride": "a white off-shoulder lace wedding gown, hair tucked with a small pearl pin"
-    },
-    "casual": {
-      "groom": "a light blue cardigan over a white t-shirt, cream trousers, white sneakers",
-      "bride": "a white summer dress and a short sheer veil"
-    }
+ "out": "assets/media/gen5",
+ "style": "Premium miniature stop-motion set photography in the manner of a Laika or Wes Anderson miniature set shot for a high-end commercial: handcrafted matte clay, wool felt, painted wood and small brushed-brass details; tactile real-world miniature textures; macro lens with shallow depth of field (about f/4); subtle film grain. Refined, calm, elegant and adult; never childish, never cartoonish, no glossy plastic, no neon.",
+ "light": "Soft studio key light from the upper left, warm bounce fill, gentle soft shadows; the lighting direction is identical across the whole series.",
+ "palette": "warm cream #F1ECE2 walls and floors, cobalt blue #2B3BCF for his things, soft coral #F08C8C for her things, lilac #B8B2EA accents, ink #232024 details, brushed brass #B08D57 hardware.",
+ "characters": "The people are premium 3D animated characters with adult proportions (about 7 heads tall), a fashion-editorial look like a high-end Apple or IKEA motion commercial, matte clay-like skin with subtle subsurface scattering, natural-sized eyes (never oversized), real fabric materials, calm and graceful body language.",
+ "groom": "the groom: a Korean man about 30, short neat black hair with a soft side part, black rectangular glasses, slim build, calm friendly smile",
+ "bride": "the bride: a Korean woman about 30, chin-length black bob with see-through bangs, small pearl earrings, gentle smile",
+ "outfits": {
+  "daily": {
+   "groom": "a cobalt-navy fine-knit sweater over a white collared shirt, light warm grey trousers, brown leather loafers",
+   "bride": "a soft coral knit cardigan over a cream blouse, a flowing cream midi skirt, ballet flats"
   },
-  "photos": {
-    "groom": [
-      "assets/media/cutout/w08.png",
-      "assets/media/cutout/w10.png"
-    ],
-    "bride": [
-      "assets/media/cutout/w16.png",
-      "assets/media/cutout/w17.png"
-    ]
+  "wedding": {
+   "groom": "a black tuxedo with satin lapels and a black bow tie",
+   "bride": "a white off-shoulder lace wedding gown, hair tucked with a small pearl pin"
   },
-  "sheets": {
-    "groom": "CS1",
-    "bride": "CS2"
-  },
-  "avoid": "text, letters, numbers, logos, watermark, chibi proportions, big cartoon eyes, plastic sheen, neon, clutter, extra people",
-  "items": [
-    {
-      "id": "CS1",
-      "phase": 0,
-      "size": "1536x1024",
-      "sheet": "groom",
-      "outfit": "daily",
-      "prompt": "Character turnaround sheet of the groom: the same character three times side by side on one sheet (front view, three-quarter view, side view), full body head to toe, neutral relaxed standing pose. Plain flat light warm grey studio background (#E6E2DA), soft even studio light, evenly spaced at the same scale, no labels."
-    },
-    {
-      "id": "CS2",
-      "phase": 0,
-      "size": "1536x1024",
-      "sheet": "bride",
-      "outfit": "daily",
-      "prompt": "Character turnaround sheet of the bride: the same character three times side by side on one sheet (front view, three-quarter view, side view), full body head to toe, neutral relaxed standing pose. Plain flat light warm grey studio background (#E6E2DA), soft even studio light, evenly spaced at the same scale, no labels."
-    },
-    {
-      "id": "E01",
-      "phase": 1,
-      "size": "1536x1024",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Cross-section of a two-room miniature dollhouse standing on a large cream studio tabletop: we see the front edge of the table, the outer walls and the pitched roof line, so it clearly reads as a miniature set on a table. The left room is his: a tidy study with a cobalt-blue painted wall, a straight-lined walnut desk, a neat shelf of books and a brass desk lamp; the groom sits at the desk writing. The right room is hers: a soft coral wall, curved furniture, many plants in ceramic pots and a hanging vine; the bride waters a plant. A single cream partition wall separates the two rooms. Camera straight-on and slightly elevated, the whole house centered with breathing room; the upper third is calm empty studio backdrop for typography. Daytime."
-    },
-    {
-      "id": "P01",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "Macro still life on the cream tabletop: a cobalt ceramic cup of black coffee on the left and a coral ceramic cup of milk on the right, side by side with a small gap, shallow depth of field, calm empty upper third for typography."
-    },
-    {
-      "id": "P02",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "Macro still life on the cream tabletop: on the left a perfectly straight brushed-brass ruler lying flat, on the right a curling green vine with small leaves growing from a tiny coral pot; balanced mirror-like composition, shallow depth of field, calm empty upper third for typography."
-    },
-    {
-      "id": "P03",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "Macro still life on the cream tabletop: a crisp cobalt clay cube on the left and a soft coral clay sphere on the right, side by side, shallow depth of field, calm empty upper third for typography."
-    },
-    {
-      "id": "P04",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "Macro still life on the cream tabletop: a small matte ceramic sun in warm coral on the left and a matte ceramic crescent moon in cobalt on the right, each standing on a little brass stand, shallow depth of field, calm empty upper third for typography."
-    },
-    {
-      "id": "E02",
-      "phase": 1,
-      "size": "1536x1024",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Close shot of the cream partition wall inside the miniature dollhouse, seen in cross-section: the groom leans his back against the wall in his cobalt room on the left, the bride leans her back against the same wall in her coral room on the right. They cannot see each other; both smile softly with eyes half closed. Medium shot from the waist up, the wall exactly in the center, calm empty upper third for typography. Late afternoon light."
-    },
-    {
-      "id": "E10a",
-      "phase": 1,
-      "size": "1536x1024",
-      "cast": [
-        "groom"
-      ],
-      "outfit": "daily",
-      "prompt": "His room in the miniature dollhouse (cobalt wall, tidy walnut desk, shelves, brass desk lamp), daytime. The groom stands by his desk and raises one open hand toward the camera as if gently saying 'wait a second', pushing his glasses up with the other hand. Medium-wide shot; he stands in the right half; the left half and the upper third are calm empty cobalt wall for typography."
-    },
-    {
-      "id": "E11a",
-      "phase": 1,
-      "size": "1536x1024",
-      "cast": [
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Her room in the miniature dollhouse (soft coral wall, curved furniture, plants), daytime. A gallery wall of small picture frames with simple abstract paintings, all hanging charmingly crooked; the bride stands on tiptoe adjusting one frame and, amused, tilts it even more. Medium-wide shot; she is in the right third; the left third is calm wall for typography."
-    },
-    {
-      "id": "E13",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "Close shot of a neat walnut shelf in his cobalt room: a perfectly aligned row of seven identical cobalt ceramic mugs, all handles facing right, and one coral mug in the middle turned the other way. Shallow depth of field, calm empty upper third for typography. No people."
-    },
-    {
-      "id": "E14",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "Miniature street at dusk: the facade of a small apartment building with a grid of warm-lit windows. In every window a small simple dark silhouette figure is turned toward the same direction: toward one coral-lit window on the right where a woman's silhouette sits reading a book, unbothered. Straight-on view, calm empty dusk sky in the upper third for typography."
-    },
-    {
-      "id": "P07",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "Macro still life on a walnut desk: two vintage horseshoe magnets lying apart with a clear gap, poles facing each other: the left one cobalt enamel with brushed-brass tips, the right one coral enamel with brushed-brass tips. Shallow depth of field, calm empty upper third for typography."
-    },
-    {
-      "id": "E27",
-      "phase": 1,
-      "size": "1536x1024",
-      "cast": [
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Seen from his cobalt room through an open doorway: the cobalt-painted door frame fills the left and right foreground edges, softly out of focus. In the middle ground, in her sunlit atelier corner, the bride stands full body head to toe beside a cream dress form draped with a brushed-brass tape measure, holding the end of the tape and looking at it thoughtfully; a small sewing table and rolls of coral fabric; her soft coral room glows behind her. She stands slightly right of center; calm wall area on the upper left for typography."
-    },
-    {
-      "id": "E03",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "The miniature dollhouse at night with its roof lifted off and floating slightly above it, revealing two warmly lamp-lit rooms from above; above the house a deep periwinkle night sky with soft stars and two brighter stars close together. Camera looks slightly upward; a large calm sky area for typography. No people visible."
-    },
-    {
-      "id": "E04",
-      "phase": 1,
-      "size": "1536x1024",
-      "green": "picture area inside the frame's mat",
-      "prompt": "His cobalt room wall at dusk, close shot: one wooden picture frame with a wide cream mat hangs on the wall and fills most of the frame, a small brass picture light above it casting a soft glow; a sliver of cobalt wall around it. No people."
-    },
-    {
-      "id": "E05",
-      "phase": 1,
-      "size": "1536x1024",
-      "green": "picture area of the small frame on the sill",
-      "prompt": "His cobalt room at night: a window with rain streaming down the glass and blurred city lights beyond; on the window sill stands a small wooden picture frame facing the camera; a brass lamp glows warmly. Calm upper third for typography. No people."
-    },
-    {
-      "id": "E06",
-      "phase": 1,
-      "size": "1536x1024",
-      "green": "TV screen",
-      "prompt": "Miniature kitchen in the dollhouse at night: a round cream table with a small cake with two lit candles and a bouquet of lilac and white flowers; on the wall above, a slim wall-mounted TV facing the camera. Warm cozy light. No people."
-    },
-    {
-      "id": "E07",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "Macro of his walnut desk at night under the brass lamp: a miniature model railway track splits into two paths: on the left a straight smooth cream track through tidy little trees, on the right a winding track over rocks and puddles with a tiny rickety bridge; a small cobalt locomotive waits at the fork. Shallow depth of field, elegant, calm empty upper area."
-    },
-    {
-      "id": "E16",
-      "phase": 1,
-      "size": "1536x1024",
-      "cast": [
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Exterior of the dollhouse at night seen from the street: one tall coral-lit window glows warmly, and behind its sheer curtain the bride's soft silhouette stands looking out. Everything else is deep blue night. The window sits center-left; calm dark area on the right for typography."
-    },
-    {
-      "id": "P08",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "Macro on a cream table at night under a warm lamp: two large jigsaw puzzle pieces, one cobalt and one coral, that clearly do not fit together, slightly apart and tilted. Shallow depth of field, calm empty upper third."
-    },
-    {
-      "id": "E08",
-      "phase": 1,
-      "size": "1536x1024",
-      "green": "phone screen",
-      "prompt": "His bedside at night: a walnut nightstand with a brass lamp, a glass of water and a smartphone standing upright in a small stand with the screen facing the camera; the edge of the bed with cobalt linen. Shallow depth of field; the phone is in the right half; calm empty left third for typography. No people."
-    },
-    {
-      "id": "P10",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "On his walnut nightstand at night: a sculptural heart-shaped lamp made of brushed brass and frosted glass, glowing softly warm from inside; dark cobalt room behind; shallow depth of field; centered with calm space above."
-    },
-    {
-      "id": "E09a",
-      "phase": 1,
-      "size": "1536x1024",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Front cross-section of the miniature dollhouse at night, both rooms lamp-lit: the groom in his cobalt room on the left and the bride in her coral room on the right, each standing close to the cream partition wall between them with one hand resting on it, facing the wall. Medium-wide, the wall centered, calm upper third for typography."
-    },
-    {
-      "id": "E20",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "One bright merged room in the dollhouse in the morning (the partition wall is gone; the left half keeps his cobalt accents, the right half her coral accents, blended with lilac): in the middle two different chairs face each other, a plump black velvet armchair on the left and a simple white wooden chair on the right, with soft beams of morning light from a tall window. Wide, calm, solemn; the upper third empty. No people."
-    },
-    {
-      "id": "E21",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "Exterior of the finished miniature dollhouse at golden hour, standing on the cream tabletop: a charming two-story house with a small balcony on the upper floor, two tall windows, climbing coral roses; warm golden light. The house sits in the lower half; soft warm sky in the upper half for typography. No people."
-    },
-    {
-      "id": "E22",
-      "phase": 1,
-      "size": "1536x1024",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "casual",
-      "prompt": "A miniature garden at golden hour: lush round pastel trees and a small lilac-painted bench on the lawn. The groom kneels on one knee offering a bouquet of pink roses to the bride, who sits on the bench and smiles with her hands at her cheeks. Side view, full bodies, centered in the lower half; the upper third is soft trees and sky for typography."
-    },
-    {
-      "id": "E24",
-      "phase": 1,
-      "size": "1536x1024",
-      "green": "picture area of the frame on the desk",
-      "prompt": "Her coral room in golden afternoon light: a small writing desk by the window with a cream picture frame standing on it facing the camera; a vase of tulips beside it. Shallow depth of field, calm upper third. No people."
-    },
-    {
-      "id": "E25",
-      "phase": 1,
-      "size": "1536x1024",
-      "prompt": "A cork pinboard on her coral wall in warm light, mostly empty with a few brass pins, a sprig of dried flowers and a coral ribbon in one corner; straight-on, the board fills most of the frame with a thin wooden border. No people, no photos on it."
-    },
-    {
-      "id": "E26",
-      "phase": 1,
-      "size": "1536x1024",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "wedding",
-      "prompt": "A miniature wedding aisle at golden hour: cream chairs on both sides decorated with lilac and white flowers, petals on a cream runner, a floral arch at the end with the soft sun behind it. The groom and the bride walk hand in hand down the aisle toward the arch, seen from behind. Camera low at the start of the aisle, symmetrical; the arch and sky in the upper third."
-    },
-    {
-      "id": "E28",
-      "phase": 1,
-      "size": "1536x1024",
-      "green": "picture area of the frame on the mantel",
-      "prompt": "A cozy mantel shelf in the dollhouse at night with candles and a small cream picture frame standing in the middle facing the camera; warm candlelight. No people. Calm upper third."
-    },
-    {
-      "id": "E01n",
-      "phase": 2,
-      "size": "1536x1024",
-      "edit_of": "E01",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Change only: it is now night: warm lamps glow inside both rooms and the studio backdrop is deep blue night. Keep both characters exactly where they are, and keep the house, framing and everything else unchanged."
-    },
-    {
-      "id": "E10c",
-      "phase": 2,
-      "size": "1536x1024",
-      "set_ref": "E10a",
-      "cast": [
-        "groom"
-      ],
-      "outfit": "daily",
-      "prompt": "In his room (the same room as the set reference): close-up of the groom's face and shoulders, eyes wide and eyebrows raised in pleasant surprise, glasses slightly askew, looking off to the right. Shallow depth of field; he is in the left half; the right half is soft blurred room for typography."
-    },
-    {
-      "id": "E10m",
-      "phase": 2,
-      "size": "1024x1536",
-      "set_ref": "E10a",
-      "cast": [
-        "groom"
-      ],
-      "outfit": "daily",
-      "prompt": "In his room (the same room as the set reference): the groom at his desk holding a squared cobalt ceramic mug with both hands and sipping, orderly and neat. Medium shot, portrait framing."
-    },
-    {
-      "id": "E10n",
-      "phase": 2,
-      "size": "1536x1024",
-      "set_ref": "E10a",
-      "cast": [
-        "groom"
-      ],
-      "outfit": "daily",
-      "prompt": "His room at night (the same room as the set reference, now deep blue with only the brass desk lamp on): the groom stands at the window looking out thoughtfully, one hand in his pocket, a quiet night city beyond. Medium-wide; he is in the right half; the left half is dark calm wall for typography."
-    },
-    {
-      "id": "E15",
-      "phase": 2,
-      "size": "1536x1024",
-      "set_ref": "E10a",
-      "cast": [
-        "groom"
-      ],
-      "outfit": "daily",
-      "prompt": "In his room (the same room as the set reference) at dusk: the groom peeks through a gap in cobalt window blinds with two fingers, curious, looking out toward her house. Medium shot from slightly behind his shoulder; he is on the right; calm area on the left for typography."
-    },
-    {
-      "id": "E17",
-      "phase": 2,
-      "size": "1536x1024",
-      "set_ref": "E01",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Inside his cobalt room (the left room of the set reference): a small round window has been cut into the cream partition wall; the groom bends slightly to look through it, smiling; through the window we glimpse the bride in her coral room reading. Medium shot; he is on the left; the upper right is calm for typography."
-    },
-    {
-      "id": "E18",
-      "phase": 2,
-      "size": "1536x1024",
-      "set_ref": "E01",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Dusk: two small dollhouse facades face each other across a narrow gap; the groom leans on the sill of his cobalt-framed window on the left, the bride leans on the sill of her coral-framed window on the right; they look at each other and smile. Symmetrical medium-wide in the lower half; calm dusk sky in the upper third for typography."
-    },
-    {
-      "id": "E11b",
-      "phase": 2,
-      "size": "1536x1024",
-      "set_ref": "E11a",
-      "cast": [
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "In her room (the same room as the set reference): the bride sits in a curved coral rocking chair reading a book, legs tucked, completely at ease and not minding anyone. Medium-wide; she is in the right half; the left half is calm for typography."
-    },
-    {
-      "id": "E11c",
-      "phase": 2,
-      "size": "1536x1024",
-      "set_ref": "E11a",
-      "cast": [
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "In her room (the same room as the set reference): close shot of the bride from behind at three-quarter, turning her head over her shoulder with a small knowing smile toward the camera. Shallow depth of field; she is on the right; the left side is calm for typography."
-    },
-    {
-      "id": "E11m",
-      "phase": 2,
-      "size": "1024x1536",
-      "set_ref": "E11a",
-      "cast": [
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "In her room (the same room as the set reference): the bride curled up on her sofa holding a round coral ceramic cup with both hands, cozy and relaxed. Medium shot, portrait framing."
-    },
-    {
-      "id": "E11g",
-      "phase": 2,
-      "size": "1536x1024",
-      "set_ref": "E11a",
-      "green": "mirror glass",
-      "prompt": "In her room (the same room as the set reference): a large oval mirror with a thin brass frame hangs on the coral wall above a small dresser with plants. Straight-on medium shot, the mirror centered. No people."
-    },
-    {
-      "id": "P07c",
-      "phase": 2,
-      "size": "1536x1024",
-      "edit_of": "P07",
-      "prompt": "Change only: the two magnets have snapped together pole to pole in the middle and are touching. Keep the desk, light, framing and everything else unchanged."
-    },
-    {
-      "id": "E02g",
-      "phase": 2,
-      "size": "1536x1024",
-      "edit_of": "E02",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Change only: a thin vertical crack in the partition wall glows with warm golden light seeping through it, and a soft beam spills across both rooms. Keep both characters, their poses, the framing and everything else unchanged."
-    },
-    {
-      "id": "E02h",
-      "phase": 2,
-      "size": "1536x1024",
-      "edit_of": "E02",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Change only: the groom and the bride have turned to face the wall and each rests an open palm on it at the same height, as if feeling each other through it. Keep the set, framing and lighting unchanged."
-    },
-    {
-      "id": "E02r",
-      "phase": 2,
-      "size": "1536x1024",
-      "edit_of": "E02",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Change only: a small gap has opened in the partition wall, warm light pours through it, and their hands reach through toward each other with fingertips almost touching; both face the wall. Keep the set, framing and lighting unchanged."
-    },
-    {
-      "id": "E03b",
-      "phase": 2,
-      "size": "1536x1024",
-      "set_ref": "E03",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "The same night sky above the dollhouse as the set reference: the groom and the bride sit back to back on the roof ridge under the stars, legs stretched out, smiling quietly: different, but leaning on each other. Medium-wide; they are in the lower half; a big calm sky above."
-    },
-    {
-      "id": "E09b",
-      "phase": 2,
-      "size": "1536x1024",
-      "edit_of": "E09a",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "daily",
-      "prompt": "Change only: remove the cream partition wall completely, so the two rooms become one continuous room and the back wall and floor continue seamlessly where the partition stood. Keep both characters exactly in their poses and positions: their raised palms now face each other with a small gap of empty air between them. Keep the camera, set and lighting unchanged."
-    },
-    {
-      "id": "E20b",
-      "phase": 2,
-      "size": "1536x1024",
-      "edit_of": "E20",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "wedding",
-      "prompt": "Change only: the groom now sits in the black velvet armchair on the left and the bride sits on the white wooden chair on the right, facing each other with soft smiles. Keep the room, the chairs, the light and the framing unchanged."
-    },
-    {
-      "id": "E21b",
-      "phase": 2,
-      "size": "1536x1024",
-      "edit_of": "E21",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "wedding",
-      "prompt": "Change only: the groom and the bride stand together on the small upper-floor balcony, his arm around her, looking out at the sunset. Keep the house, framing and light unchanged."
-    },
-    {
-      "id": "E23",
-      "phase": 1,
-      "size": "1536x1024",
-      "green": "picture area inside the frame's mat",
-      "prompt": "The merged room in warm golden-hour light: one large wooden picture frame with a cream mat hangs on a soft lilac-cream wall and fills most of the view; a brass picture light above it, a corner of a window with sheer curtains and a small vase of white and lilac flowers on a ledge at the lower right. Straight-on, the frame slightly left of center. No people."
-    },
-    {
-      "id": "E29",
-      "phase": 1,
-      "size": "1536x1024",
-      "green": "picture area of every frame",
-      "prompt": "A long cream hallway wall inside the dollhouse in warm golden-hour light, seen at a gentle angle from the left: five wooden picture frames of different sizes hang in a loose row along the wall, the right-most frame clearly the largest; slim brass picture lights above them, a narrow runner on the wooden floor. Shallow depth of field toward the far end. No people."
-    },
-    {
-      "id": "E01x",
-      "phase": 3,
-      "size": "1536x1024",
-      "edit_of": "E01n",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "wedding",
-      "prompt": "Change only: the cream partition wall between the two rooms is gone, so the house is one open room (the cobalt and coral halves now meet in the middle); the groom in a black tuxedo and the bride in a white lace gown stand together in the middle of the open room, holding hands and smiling at each other. Keep the house, the camera framing, the night backdrop and the warm lamp light unchanged."
-    },
-    {
-      "id": "E30",
-      "phase": 4,
-      "size": "1536x1024",
-      "edit_of": "E01x",
-      "cast": [
-        "groom",
-        "bride"
-      ],
-      "outfit": "wedding",
-      "prompt": "Change only the camera distance: pull the camera far back so the same open dollhouse becomes small, centered in the lower third of the frame, standing on a dark wooden tabletop; the upper two thirds of the frame are a calm, deep blue night backdrop with soft scattered stars and a few out-of-focus warm lights near the horizon. Keep the house, the open room without the partition wall, the groom in the black tuxedo and the bride in the white lace gown holding hands in the middle, and the warm lamp light exactly the same."
-    },
-    {
-      "id": "E03L",
-      "phase": 4,
-      "size": "1536x1024",
-      "edit_of": "E03",
-      "prompt": "Change only the lifted roof: lower it so it hovers just a little above the tops of the walls, with only a small gap through which the two lamp-lit rooms are still clearly visible; make the underside of the roof plain dark natural wood with no orange glow and no glowing strip; add a soft contact shadow from the roof onto the walls below. Keep the night sky, the two close bright stars, the landscape, the house, the camera angle and the framing unchanged. No people."
-    }
+  "casual": {
+   "groom": "a light blue cardigan over a white t-shirt, cream trousers, white sneakers",
+   "bride": "a white summer dress and a short sheer veil"
+  }
+ },
+ "photos": {
+  "groom": [
+   "assets/media/cutout/w08.png",
+   "assets/media/cutout/w10.png"
+  ],
+  "bride": [
+   "assets/media/cutout/w16.png",
+   "assets/media/cutout/w17.png"
   ]
+ },
+ "sheets": {
+  "groom": "CS1",
+  "bride": "CS2"
+ },
+ "avoid": "text, letters, numbers, logos, watermark, chibi proportions, big cartoon eyes, plastic sheen, neon, clutter, extra people",
+ "items": [
+  {
+   "id": "CS1",
+   "phase": 0,
+   "size": "1536x1024",
+   "sheet": "groom",
+   "outfit": "daily",
+   "prompt": "Character turnaround sheet of the groom: the same character three times side by side on one sheet (front view, three-quarter view, side view), full body head to toe, neutral relaxed standing pose. Plain flat light warm grey studio background (#E6E2DA), soft even studio light, evenly spaced at the same scale, no labels."
+  },
+  {
+   "id": "CS2",
+   "phase": 0,
+   "size": "1536x1024",
+   "sheet": "bride",
+   "outfit": "daily",
+   "prompt": "Character turnaround sheet of the bride: the same character three times side by side on one sheet (front view, three-quarter view, side view), full body head to toe, neutral relaxed standing pose. Plain flat light warm grey studio background (#E6E2DA), soft even studio light, evenly spaced at the same scale, no labels."
+  },
+  {
+   "id": "E01",
+   "phase": 1,
+   "size": "1536x1024",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Cross-section of a two-room miniature dollhouse standing on a large cream studio tabletop: we see the front edge of the table, the outer walls and the pitched roof line, so it clearly reads as a miniature set on a table. The left room is his, the home study of a meticulous purchasing manager who keeps everything in order: a cobalt-blue painted wall, a straight-lined walnut desk with a squared stack of documents in a wire tray, a calculator, a desk planner and pens lined up in a holder; shelves of identical cobalt binders with tidy coloured index tabs, storage boxes in a perfect grid, and a small wall board with sticky notes aligned in neat rows; a brass desk lamp; the groom sits at the desk writing. The right room is hers, the warm room of a psychological counselor: a soft coral wall, two comfortable armchairs facing each other across a small round side table with a box of tissues, a teapot with two cups and an open notebook, a shelf of books, many plants in ceramic pots and a hanging vine, a warm floor lamp; the bride waters a plant. A single cream partition wall separates the two rooms. Both characters have natural adult proportions; her head is slightly smaller than his. Camera straight-on and slightly elevated, the whole house centered with breathing room; the upper third is calm empty studio backdrop for typography. Daytime."
+  },
+  {
+   "id": "P01",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "Macro still life on the cream tabletop: a cobalt ceramic cup of black coffee on the left and a coral ceramic cup of milk on the right, side by side with a small gap, shallow depth of field, calm empty upper third for typography."
+  },
+  {
+   "id": "P02",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "Macro still life on the cream tabletop: on the left a perfectly straight brushed-brass ruler lying flat, on the right a curling green vine with small leaves growing from a tiny coral pot; balanced mirror-like composition, shallow depth of field, calm empty upper third for typography."
+  },
+  {
+   "id": "P03",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "Macro still life on the cream tabletop: a crisp cobalt clay cube on the left and a soft coral clay sphere on the right, side by side, shallow depth of field, calm empty upper third for typography."
+  },
+  {
+   "id": "P04",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "Macro still life on the cream tabletop: a small matte ceramic sun in warm coral on the left and a matte ceramic crescent moon in cobalt on the right, each standing on a little brass stand, shallow depth of field, calm empty upper third for typography."
+  },
+  {
+   "id": "E02",
+   "phase": 1,
+   "size": "1536x1024",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Close shot of the cream partition wall inside the miniature dollhouse, seen in cross-section: the groom leans his back against the wall in his cobalt room on the left, the bride leans her back against the same wall in her coral room on the right. They cannot see each other; both smile softly with eyes half closed. Medium shot from the waist up, the wall exactly in the center, calm empty upper third for typography. Late afternoon light."
+  },
+  {
+   "id": "E10a",
+   "phase": 1,
+   "size": "1536x1024",
+   "cast": [
+    "groom"
+   ],
+   "outfit": "daily",
+   "prompt": "His room in the miniature dollhouse (cobalt wall, tidy walnut desk, shelves, brass desk lamp), daytime. The groom stands by his desk and raises one open hand toward the camera as if gently saying 'wait a second', pushing his glasses up with the other hand. Medium-wide shot; he stands in the right half; the left half and the upper third are calm empty cobalt wall for typography."
+  },
+  {
+   "id": "E11a",
+   "phase": 1,
+   "size": "1536x1024",
+   "cast": [
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Her room in the miniature dollhouse (soft coral wall, curved furniture, plants), daytime. A gallery wall of small picture frames with simple abstract paintings, all hanging charmingly crooked; the bride stands on tiptoe adjusting one frame and, amused, tilts it even more. Medium-wide shot; she is in the right third; the left third is calm wall for typography."
+  },
+  {
+   "id": "E13",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "Close shot of a neat walnut shelf in his cobalt room: a perfectly aligned row of seven identical cobalt ceramic mugs, all handles facing right, and one coral mug in the middle turned the other way. Shallow depth of field, calm empty upper third for typography. No people."
+  },
+  {
+   "id": "E14",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "Miniature street at dusk: the facade of a small apartment building with a grid of warm-lit windows. In every window a small simple dark silhouette figure is turned toward the same direction: toward one coral-lit window on the right where a woman's silhouette sits reading a book, unbothered. Straight-on view, calm empty dusk sky in the upper third for typography."
+  },
+  {
+   "id": "P07",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "Macro still life on a walnut desk: two vintage horseshoe magnets lying apart with a clear gap, poles facing each other: the left one cobalt enamel with brushed-brass tips, the right one coral enamel with brushed-brass tips. Shallow depth of field, calm empty upper third for typography."
+  },
+  {
+   "id": "E27",
+   "phase": 1,
+   "size": "1536x1024",
+   "cast": [
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Seen from his cobalt room through an open doorway: the cobalt-painted door frame fills the left and right foreground edges, softly out of focus. In the middle ground, in her warm sunlit counseling room, the bride stands full body, head to toe, smiling gently, holding a notebook to her chest beside two soft armchairs that face each other across a small round table with a box of tissues and a teapot with two cups; shelves of books, plants, a warm floor lamp and a calm painting on the soft coral wall. Natural adult proportions. She stands slightly right of center; calm wall area on the upper left for typography."
+  },
+  {
+   "id": "E03",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "The couple's miniature house at night, whole and natural, seen from a little below on a gentle hillside above a moonlit lake: a charming two-story stone cottage with a slate roof sitting properly on its walls (nothing lifted, floating or cut away), two chimneys, lilac wisteria and climbing roses on the walls, small lanterns by the door; on the upper floor two windows glow warmly side by side, the left one with cobalt-blue curtains (his room) and the right one with soft coral curtains (her room); cypress trees and distant village lights reflected in the lake. Above, a deep periwinkle night sky with soft stars and two brighter stars close together. The house sits in the lower half, slightly right of center; the upper left is calm sky for typography. No people."
+  },
+  {
+   "id": "E04",
+   "phase": 1,
+   "size": "1536x1024",
+   "green": "picture area inside the frame's mat",
+   "prompt": "His cobalt room wall at dusk, close shot: one wooden picture frame with a wide cream mat hangs on the wall and fills most of the frame, a small brass picture light above it casting a soft glow; a sliver of cobalt wall around it. No people."
+  },
+  {
+   "id": "E05",
+   "phase": 1,
+   "size": "1536x1024",
+   "green": "picture area inside the large frame on the sill",
+   "prompt": "His cobalt room at night, close shot at the window: rain streams down the glass with blurred city lights beyond; on the window sill in the foreground stands a large upright wooden picture frame (portrait, about 9:16) facing the camera, filling about 75 percent of the frame height, just right of center; a brass lamp glows warmly at the left edge. A calm strip at the top for typography. No people."
+  },
+  {
+   "id": "E06",
+   "phase": 1,
+   "size": "1536x1024",
+   "green": "TV screen",
+   "prompt": "Miniature kitchen in the dollhouse at night, closer: a wall-mounted TV (16:9) facing the camera fills about 62 percent of the frame width, centered in the upper two thirds; below it, along the bottom edge, a round cream table with a small cake with two lit candles and a bouquet of lilac and white flowers; warm cozy light; a sliver of kitchen shelves and a dark window at the sides. No people."
+  },
+  {
+   "id": "E07",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "Macro of his walnut desk at night under the brass lamp: a miniature model railway track splits into two paths: on the left a straight smooth cream track through tidy little trees, on the right a winding track over rocks and puddles with a tiny rickety bridge; a small cobalt locomotive waits at the fork. Shallow depth of field, elegant, calm empty upper area."
+  },
+  {
+   "id": "E16",
+   "phase": 1,
+   "size": "1536x1024",
+   "cast": [
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Exterior of the dollhouse at night seen from the street: one tall coral-lit window glows warmly, and behind its sheer curtain the bride's soft silhouette stands looking out. Everything else is deep blue night. The window sits center-left; calm dark area on the right for typography."
+  },
+  {
+   "id": "P08",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "Macro on a cream table at night under a warm lamp: two large jigsaw puzzle pieces, one cobalt and one coral, that clearly do not fit together, slightly apart and tilted. Shallow depth of field, calm empty upper third."
+  },
+  {
+   "id": "E08",
+   "phase": 1,
+   "size": "1536x1024",
+   "green": "phone screen",
+   "prompt": "His bedside at night, macro close-up: a smartphone standing upright in a small walnut stand on the nightstand, its screen facing the camera and filling about 72 percent of the frame height, slightly right of center; a brass lamp glow and a glass of water softly out of focus on the left; the edge of cobalt bed linen. Calm area in the left third for typography. No people."
+  },
+  {
+   "id": "P10",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "On his walnut nightstand at night: a sculptural heart-shaped lamp made of brushed brass and frosted glass, glowing softly warm from inside; dark cobalt room behind; shallow depth of field; centered with calm space above."
+  },
+  {
+   "id": "E09a",
+   "phase": 1,
+   "size": "1536x1024",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Front cross-section of the miniature dollhouse at night, both rooms lamp-lit: the groom in his cobalt room on the left and the bride in her coral room on the right, each standing close to the cream partition wall between them with one hand resting on it, facing the wall. Medium-wide, the wall centered, calm upper third for typography."
+  },
+  {
+   "id": "E20",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "One bright merged room in the dollhouse in the morning (the partition wall is gone; the left half keeps his cobalt accents, the right half her coral accents, blended with lilac): in the middle two different chairs face each other, a plump black velvet armchair on the left and a simple white wooden chair on the right, with soft beams of morning light from a tall window. Wide, calm, solemn; the upper third empty. No people."
+  },
+  {
+   "id": "E21",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "Exterior of the finished miniature dollhouse at golden hour, standing on the cream tabletop: a charming two-story house with a small balcony on the upper floor, two tall windows, climbing coral roses; warm golden light. The house sits in the lower half; soft warm sky in the upper half for typography. No people."
+  },
+  {
+   "id": "E22",
+   "phase": 1,
+   "size": "1536x1024",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "casual",
+   "prompt": "A miniature garden at golden hour: lush round pastel trees and a small lilac-painted bench on the lawn. The groom kneels on one knee offering a bouquet of pink roses to the bride, who sits on the bench and smiles with her hands at her cheeks. Side view, full bodies, centered in the lower half; the upper third is soft trees and sky for typography."
+  },
+  {
+   "id": "E24",
+   "phase": 1,
+   "size": "1536x1024",
+   "green": "picture area inside the frame",
+   "prompt": "Her coral room in golden afternoon light, close shot: a cream wooden picture frame (portrait, 3:4) standing on a small writing desk by the window, facing the camera and filling about 72 percent of the frame height, centered; a vase of coral tulips beside it, softly out of focus. A calm strip at the top for typography. No people."
+  },
+  {
+   "id": "E25",
+   "phase": 1,
+   "size": "1536x1024",
+   "prompt": "A cork pinboard on her coral wall in warm light, mostly empty with a few brass pins, a sprig of dried flowers and a coral ribbon in one corner; straight-on, the board fills most of the frame with a thin wooden border. No people, no photos on it."
+  },
+  {
+   "id": "E26",
+   "phase": 1,
+   "size": "1536x1024",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "wedding",
+   "prompt": "A miniature wedding aisle at golden hour: cream chairs on both sides decorated with lilac and white flowers, petals on a cream runner, a floral arch at the end with the soft sun behind it. The groom and the bride walk hand in hand down the aisle toward the arch, seen from behind. Camera low at the start of the aisle, symmetrical; the arch and sky in the upper third."
+  },
+  {
+   "id": "E28",
+   "phase": 1,
+   "size": "1536x1024",
+   "green": "picture area of the frame on the mantel",
+   "prompt": "A cozy mantel shelf in the dollhouse at night with candles and a small cream picture frame standing in the middle facing the camera; warm candlelight. No people. Calm upper third."
+  },
+  {
+   "id": "E01n",
+   "phase": 2,
+   "size": "1536x1024",
+   "edit_of": "E01",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Change only: it is now night: warm lamps glow inside both rooms and the studio backdrop is deep blue night. Keep both characters exactly where they are, and keep the house, framing and everything else unchanged."
+  },
+  {
+   "id": "E10c",
+   "phase": 2,
+   "size": "1536x1024",
+   "set_ref": "E10a",
+   "cast": [
+    "groom"
+   ],
+   "outfit": "daily",
+   "prompt": "In his room (the same room as the set reference): close-up of the groom's face and shoulders, eyes wide and eyebrows raised in pleasant surprise, glasses slightly askew, looking off to the right. Shallow depth of field; he is in the left half; the right half is soft blurred room for typography."
+  },
+  {
+   "id": "E10m",
+   "phase": 2,
+   "size": "1024x1536",
+   "set_ref": "E10a",
+   "cast": [
+    "groom"
+   ],
+   "outfit": "daily",
+   "prompt": "In his room (the same room as the set reference): the groom at his desk holding a squared cobalt ceramic mug with both hands and sipping, orderly and neat. Medium shot, portrait framing."
+  },
+  {
+   "id": "E10n",
+   "phase": 2,
+   "size": "1536x1024",
+   "set_ref": "E10a",
+   "cast": [
+    "groom"
+   ],
+   "outfit": "daily",
+   "prompt": "His room at night (the same room as the set reference, now deep blue with only the brass desk lamp on): the groom stands at the window looking out thoughtfully, one hand in his pocket, a quiet night city beyond. Medium-wide; he is in the right half; the left half is dark calm wall for typography."
+  },
+  {
+   "id": "E15",
+   "phase": 2,
+   "size": "1536x1024",
+   "set_ref": "E10a",
+   "cast": [
+    "groom"
+   ],
+   "outfit": "daily",
+   "prompt": "In his room (the same room as the set reference) at dusk: the groom peeks through a gap in cobalt window blinds with two fingers, curious, looking out toward her house. Medium shot from slightly behind his shoulder; he is on the right; calm area on the left for typography."
+  },
+  {
+   "id": "E17",
+   "phase": 2,
+   "size": "1536x1024",
+   "set_ref": "E01",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Inside his cobalt room (the left room of the set reference): at his tidy desk (a squared stack of documents, a calculator, a planner, pens lined up) the groom bends slightly to look through a small round window cut into the cream partition wall, smiling; through the window we glimpse the bride in her counseling room, sitting in an armchair with a notebook on her lap, a box of tissues on the side table. Natural adult proportions. Medium shot; he is on the left; the upper right is calm for typography."
+  },
+  {
+   "id": "E18",
+   "phase": 2,
+   "size": "1536x1024",
+   "set_ref": "E01",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Dusk: two small dollhouse facades face each other across a narrow gap; the groom leans on the sill of his cobalt-framed window on the left, the bride leans on the sill of her coral-framed window on the right; they look at each other and smile. Symmetrical medium-wide in the lower half; calm dusk sky in the upper third for typography."
+  },
+  {
+   "id": "E11b",
+   "phase": 2,
+   "size": "1536x1024",
+   "set_ref": "E11a",
+   "cast": [
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "In her room (the same room as the set reference): the bride sits in a curved coral rocking chair reading a book, legs tucked, completely at ease and not minding anyone. Medium-wide; she is in the right half; the left half is calm for typography."
+  },
+  {
+   "id": "E11c",
+   "phase": 2,
+   "size": "1536x1024",
+   "set_ref": "E11a",
+   "cast": [
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "In her room (the same room as the set reference): close shot of the bride from behind at three-quarter, turning her head over her shoulder with a small knowing smile toward the camera. Shallow depth of field; she is on the right; the left side is calm for typography."
+  },
+  {
+   "id": "E11m",
+   "phase": 2,
+   "size": "1024x1536",
+   "set_ref": "E11a",
+   "cast": [
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "In her room (the same room as the set reference): the bride curled up on her sofa holding a round coral ceramic cup with both hands, cozy and relaxed. Medium shot, portrait framing."
+  },
+  {
+   "id": "E11g",
+   "phase": 2,
+   "size": "1536x1024",
+   "set_ref": "E11a",
+   "green": "mirror glass",
+   "prompt": "In her room (the same room as the set reference): a large oval mirror with a thin brass frame hangs on the coral wall above a small dresser with plants. Straight-on medium shot, the mirror centered. No people."
+  },
+  {
+   "id": "P07c",
+   "phase": 2,
+   "size": "1536x1024",
+   "edit_of": "P07",
+   "prompt": "Change only: the two magnets have snapped together pole to pole in the middle and are touching. Keep the desk, light, framing and everything else unchanged."
+  },
+  {
+   "id": "E02g",
+   "phase": 2,
+   "size": "1536x1024",
+   "edit_of": "E02",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Change only: a thin vertical crack in the partition wall glows with warm golden light seeping through it, and a soft beam spills across both rooms. Keep both characters, their poses, the framing and everything else unchanged."
+  },
+  {
+   "id": "E02h",
+   "phase": 2,
+   "size": "1536x1024",
+   "edit_of": "E02",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Change only: the groom and the bride have turned to face the wall and each rests an open palm on it at the same height, as if feeling each other through it. Keep the set, framing and lighting unchanged."
+  },
+  {
+   "id": "E02r",
+   "phase": 2,
+   "size": "1536x1024",
+   "edit_of": "E02",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Change only: a small gap has opened in the partition wall, warm light pours through it, and their hands reach through toward each other with fingertips almost touching; both face the wall. Keep the set, framing and lighting unchanged."
+  },
+  {
+   "id": "E03b",
+   "phase": 2,
+   "size": "1536x1024",
+   "set_ref": "E03",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "The same cottage and night sky as the set reference, closer: the groom and the bride sit back to back on the ridge of the slate roof under the stars, legs stretched out along the slope, smiling quietly: different, but leaning on each other; the two warm windows glow below them. The roof sits properly on the house; nothing is cut away. Natural adult proportions; her head is slightly smaller than his. Medium-wide; they are in the lower half; a big calm sky above for typography."
+  },
+  {
+   "id": "E09b",
+   "phase": 2,
+   "size": "1536x1024",
+   "edit_of": "E09a",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "daily",
+   "prompt": "Change only: remove the cream partition wall completely, so the two rooms become one continuous room and the back wall and floor continue seamlessly where the partition stood. Keep both characters exactly in their poses and positions: their raised palms now face each other with a small gap of empty air between them. Keep the camera, set and lighting unchanged."
+  },
+  {
+   "id": "E20b",
+   "phase": 2,
+   "size": "1536x1024",
+   "edit_of": "E20",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "wedding",
+   "prompt": "Change only: the groom now sits in the black velvet armchair on the left and the bride sits on the white wooden chair on the right, facing each other with soft smiles. Keep the room, the chairs, the light and the framing unchanged."
+  },
+  {
+   "id": "E21b",
+   "phase": 2,
+   "size": "1536x1024",
+   "edit_of": "E21",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "wedding",
+   "prompt": "Change only: the groom and the bride stand together on the small upper-floor balcony, his arm around her, looking out at the sunset. Keep the house, framing and light unchanged."
+  },
+  {
+   "id": "E23",
+   "phase": 1,
+   "size": "1536x1024",
+   "green": "picture area inside the frame's mat",
+   "prompt": "The merged room in warm golden-hour light: one large wooden picture frame with a cream mat hangs on a soft lilac-cream wall and fills most of the view; a brass picture light above it, a corner of a window with sheer curtains and a small vase of white and lilac flowers on a ledge at the lower right. Straight-on, the frame slightly left of center. No people."
+  },
+  {
+   "id": "E29",
+   "phase": 1,
+   "size": "1536x1024",
+   "green": "picture area of every frame",
+   "prompt": "A cream hallway wall inside the dollhouse in warm golden-hour light, seen at a gentle angle from close to the wall: three large wooden picture frames hang in a row along it, receding slightly into depth: a landscape frame on the left, then a portrait frame, and the largest portrait frame on the right; each fills most of the frame height; slim brass picture lights above them; a narrow runner on the wooden floor along the bottom. Shallow depth of field. No people."
+  },
+  {
+   "id": "E01x",
+   "phase": 3,
+   "size": "1536x1024",
+   "edit_of": "E01n",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "wedding",
+   "prompt": "Change only: the cream partition wall between the two rooms is gone, so the house is one open room (the cobalt and coral halves now meet in the middle); the groom in a black tuxedo and the bride in a white lace gown stand together in the middle of the open room, holding hands and smiling at each other. Keep the house, the camera framing, the night backdrop and the warm lamp light unchanged."
+  },
+  {
+   "id": "E30",
+   "phase": 4,
+   "size": "1536x1024",
+   "edit_of": "E01x",
+   "cast": [
+    "groom",
+    "bride"
+   ],
+   "outfit": "wedding",
+   "prompt": "Change only the camera distance: pull the camera far back so the same open dollhouse becomes small, centered in the lower third of the frame, standing on a dark wooden tabletop; the upper two thirds of the frame are a calm, deep blue night backdrop with soft scattered stars and a few out-of-focus warm lights near the horizon. Keep the house, the open room without the partition wall, the groom in the black tuxedo and the bride in the white lace gown holding hands in the middle, and the warm lamp light exactly the same."
+  },
+  {
+   "id": "E03L",
+   "phase": 4,
+   "size": "1536x1024",
+   "edit_of": "E03",
+   "prompt": "Change only the lifted roof: lower it so it hovers just a little above the tops of the walls, with only a small gap through which the two lamp-lit rooms are still clearly visible; make the underside of the roof plain dark natural wood with no orange glow and no glowing strip; add a soft contact shadow from the roof onto the walls below. Keep the night sky, the two close bright stars, the landscape, the house, the camera angle and the framing unchanged. No people."
+  }
+ ]
 }
