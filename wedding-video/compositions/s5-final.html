@@ -49,12 +49,31 @@
         // geometry: python scripts/knock_points.py "사랑할" assets/fonts/NotoSerifKR-VF.ttf 800 560 - 1085,450
         const geo = { x: 148.5, baseline: 748.5, deep: [939, 361] };
         const { wrap, glyphs } = K.knock(cam, "사랑할", geo, { fill: "#F7F2E8", size: 560, weight: 800, z: 20 });
-        // 것 같아요: ink on the paper, then cream once the photograph shows under it
-        const rest = K.txt(cam, "것 같아요", "v5-serif c-ink", { left: 0, right: 0, top: 860, fontSize: 60, textAlign: "center", zIndex: 30 });
-        const restC = K.txt(cam, "것 같아요", "v5-serif c-cream", { left: 0, right: 0, top: 860, fontSize: 60, textAlign: "center", zIndex: 30 });
-        at.set(rest, { opacity: 0 }, 0);
-        at.set(restC, { opacity: 0 }, 0);
-        at.add(rest, { opacity: [0, 1], filter: ["blur(8px)", "blur(0px)"], duration: 420, ease: E.expo }, T(1) - 120);
+        // 것 같아요 is printed on the same paper (masked like it), so it burns away with the paper, never over a face
+        const NS = "http://www.w3.org/2000/svg";
+        const svg = wrap.querySelector("svg");
+        const printed = document.createElementNS(NS, "text");
+        printed.setAttribute("x", "960");
+        printed.setAttribute("y", "884");
+        printed.setAttribute("text-anchor", "middle");
+        printed.setAttribute("font-family", "Noto Serif KR");
+        printed.setAttribute("font-weight", "600");
+        printed.setAttribute("font-size", "60");
+        printed.setAttribute("mask", svg.querySelector("rect[mask]").getAttribute("mask"));
+        const word = (t) => {
+          const s = document.createElementNS(NS, "tspan");
+          s.textContent = t;
+          s.style.fill = "#665d56";
+          printed.appendChild(s);
+          return s;
+        };
+        const wGeot = word("것 ");
+        const wGata = word("같아요");
+        svg.appendChild(printed);
+        at.set(printed, { opacity: 0 }, 0);
+        at.add(printed, { opacity: [0, 1], duration: 380, ease: E.quart }, T(1) - 160);
+        gtl.fromTo(wGeot, { fill: "#665d56" }, { fill: "#232024", duration: 0.17, ease: "power2.out", immediateRender: false }, T(1) / 1000);
+        gtl.fromTo(wGata, { fill: "#665d56" }, { fill: "#232024", duration: 0.17, ease: "power2.out", immediateRender: false }, T(2) / 1000);
         at.add(wrap, { scale: [1.06, 1], duration: 900, ease: E.expo }, 0);
         // the strokes thicken from beat 230 to beat 231: the paper burns away from the letters outward
         const b0 = B(nb(T(1) - 40));
@@ -68,15 +87,10 @@
         at.add(k.box, { scale: [fill23, fill23 * 1.035], duration: b2, ease: "linear" }, 0);
         at.add(k.box, { x: [cx, 0], y: [cy, 0], scale: [fill23 * 1.035, 1.0], duration: Q(4) + 700 - b2, ease: E.settle }, b2);
         gtl.fromTo(glyphs, { attr: { "stroke-width": 0 } }, { attr: { "stroke-width": 1400 }, duration: (b1 - b0) / 1000, ease: "sine.inOut", immediateRender: false }, b0 / 1000);
-        at.add(rest, { opacity: [1, 0], duration: 200, ease: "linear" }, b0 + 120);
-        at.add(restC, { opacity: [0, 1], duration: 200, ease: "linear" }, b0 + 120);
-        at.add(restC, { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 300, ease: E.in3 }, T(3) - 380);
         at.add(wrap, { opacity: [1, 0], duration: 140, ease: "linear" }, b1 - 140);
         K.leak(at, cam, b1 - 120, 2200, { peak: 0.3, from: "right", z: 25, tone: "warm" });
-        const sc = D.scrim(cam, "bottom", { a: 0.42, reach: 30, z: 21 });
-        at.set(sc, { opacity: 0 }, 0);
-        at.add(sc, { opacity: [0, 1], duration: 500, ease: E.quart }, b1 - 200);
-        D.line(C, cam, [3], { y: 930, size: 60, color: "cream", lead: 120 });
+        // 우린: top right, on the plain studio backdrop above her head (and on the wall once we pull back)
+        D.line(C, cam, [3], { align: "right", x: 1790, y: 96, size: 60, color: "ink", lead: 120 });
       }
 
       // B. the finished house at golden hour; the two of them on the balcony
