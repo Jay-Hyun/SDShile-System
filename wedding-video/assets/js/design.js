@@ -53,6 +53,7 @@
   .pat-check { background-color:${PAL.orange}; background-image: conic-gradient(rgba(255,255,255,.16) 25%, transparent 0 50%, rgba(255,255,255,.16) 0 75%, transparent 0); background-size: 120px 120px; }
   .pat-grid { background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 96px 96px; }
   .fill { position:absolute; inset:0; overflow:hidden; }
+  .shot { isolation: isolate; }
   .fill > img.plate, .fill > video { position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; }
   .k-sans { font-family: "Pretendard"; font-weight: 500; letter-spacing: -0.01em; }
   .k-sansB { font-family: "Pretendard"; font-weight: 800; letter-spacing: -0.03em; }

@@ -210,7 +210,7 @@
       {
         const s = shot(T(24), T(28), "bg-paper");
         const hits = [T(24), T(25), T(26)];
-        [["d15", 300, 260, 440, 330, -5], ["d18", 795, 230, 330, 700, 2], ["d16", 1220, 380, 440, 330, 4]].forEach(([k, x, y, w, h, rot], j) => {
+        [["d15", 300, 260, 440, 330, -5], ["d18", 810, 200, 300, 640, 2], ["d16", 1220, 380, 440, 330, 4]].forEach(([k, x, y, w, h, rot], j) => {
           const p = K.el("div", "print", s);
           p.style.cssText += `left:${x}px;top:${y}px;width:${w}px;height:${h}px`;
           K.img(p, K.photo(k), { position: "static", width: "100%", height: "100%" });
@@ -252,9 +252,9 @@
         at.add(pair, { scale: [1.2, 0.62], y: [60, -150], duration: T(38) - T(31), ease: E.inout }, T(31));
         K.letterbox(at, s, T(31) - 200, { dur: 900 });
         K.leak(at, s, T(34) - 400, 3600, { peak: 0.45, from: "right", tone: "rose", z: 30 });
-        const a = line(s, [31, 32, 33], "k-serif c-white glow", { left: 0, right: 0, top: 790, fontSize: 92, textAlign: "center" });
+        const a = line(s, [31, 32, 33], "k-serif c-cream", { left: 0, right: 0, top: 970, fontSize: 54, textAlign: "center", zIndex: 50 });
         out(a, T(34) - 340);
-        line(s, [34, 35, 36, 37], "k-serif c-white glow", { left: 0, right: 0, top: 790, fontSize: 92, textAlign: "center" });
+        line(s, [34, 35, 36, 37], "k-serif c-cream", { left: 0, right: 0, top: 970, fontSize: 54, textAlign: "center", zIndex: 50 });
       }
 
       // ---- I. 사랑할 것 같아요 — the last one: the word stands behind the real two of them, slowed, and holds

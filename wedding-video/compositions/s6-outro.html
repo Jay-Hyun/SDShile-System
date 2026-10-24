@@ -85,10 +85,13 @@
         at.add(d, { draw: ["0 0", "0 1"], duration: 1200, ease: E.expo }, tLink + (i >> 1) * 90);
         at.add(d, { draw: ["0 1", "1 1"], duration: 900, ease: E.inout }, tLink + 1500 + (i >> 1) * 90);
       });
-      const vow = txt("서로 다른 두 사람이, 하나의 이름으로", "Bl ink", { left: 0, right: 0, top: 900, fontSize: 52, textAlign: "center" });
+      // two short lines in the lower-left corner, clear of the rings
+      const vow = txt("서로 다른 두 사람이,", "Bl ink", { left: 140, top: 860, fontSize: 50 });
+      const vow2 = txt("하나의 이름으로", "Bl ink", { left: 140, top: 935, fontSize: 50 });
+      soft(vow2, tLink + 900);
       soft(vow, tLink + 500);
       at.set("#s6-rings", { opacity: 1 }, 0);
-      out(["#s6-rings", vow], 4300, 500);
+      out(["#s6-rings", vow, vow2], 4300, 500);
 
       // ---- the photo booth strip (4.3 - 8.6 s)
       at.set("#s6-boothshot", { opacity: 0 }, 0);

@@ -52,8 +52,9 @@
         caret.style.verticalAlign = "-0.08em";
         at.set(syl, { opacity: 0 }, 0);
         syl.forEach((sp, k) => at.set(sp, { opacity: 1 }, t + k * Q * 0.5));
+        const tEnd = t + syl.length * Q * 0.5;
         at.set(caret, { opacity: 0 }, 0);
-        at.set(caret, { opacity: 1 }, t);
+        for (let k = 0; k < 6; k++) at.set(caret, { opacity: k % 2 ? 0 : 1 }, tEnd + k * K.BEAT / 2);
         return el;
       }
       function bar(s, { x, y, w, h, t, dur = K.BEAT, from = "left" }) {
@@ -81,7 +82,7 @@
         at.set(yo, { opacity: 0 }, 0);
         at.set(yo, { opacity: 1 }, T(0));
         at.add(yo, { x: [-80, 0], duration: 260, ease: E.expo }, T(0));
-        at.add(yo, { opacity: [1, 0.12], duration: 400, ease: E.inout }, T(2));
+        at.add(yo, { opacity: [1, 0.28], duration: 400, ease: E.inout }, T(2));
         const him = K.el("div", "", s);
         him.style.cssText = "position:absolute;left:1180px;top:120px;width:600px;height:960px";
         D.gen(him, "c07", { left: 0, bottom: 0, height: 900 });
@@ -119,7 +120,7 @@
         s.style.background = P.eblue;
         const mk = (side) => {
           const h = K.el("div", "", s);
-          h.style.cssText = `position:absolute;left:360px;top:250px;width:1200px;height:800px;clip-path:inset(0 ${side ? 0 : 50}% 0 ${side ? 50 : 0}%)`;
+          h.style.cssText = `position:absolute;left:360px;top:380px;width:1200px;height:800px;clip-path:inset(0 ${side ? 0 : 50}% 0 ${side ? 50 : 0}%)`;
           D.gen(h, "p12", { left: 0, top: 0, width: 1200 });
           return h;
         };
@@ -139,12 +140,13 @@
         const s = shot(T(19), T(28), "bg-black");
         const win = K.el("div", "win", s);
         win.style.cssText += "left:760px;top:90px;width:400px;height:900px";
-        D.gen(win, "c08", { left: -124, bottom: -40, height: 980 });
+        const herW = D.gen(win, "c08", { left: -51, bottom: -20, height: 760 });
         at.set(win, { scaleY: 0 }, 0);
         at.add(win, { scaleY: [0, 1], duration: 420, ease: E.expo }, T(19) - 60);
         // tall -> square -> wide on each phrase
         at.add(win, { left: [760, 560], top: [90, 140], width: [400, 800], height: [900, 800], duration: 700, ease: E.inout }, T(21) - 80);
-        at.add(win, { left: [560, 160], top: [140, 240], width: [800, 1600], height: [800, 700], duration: 700, ease: E.inout }, T(25) - 80);
+        at.add(herW, { x: [0, 200], duration: 700, ease: E.inout }, T(21) - 80);
+        at.add(win, { scale: [1, 1.04], duration: 500, ease: E.expo }, T(25) - 80);
         const a = txt(s, "나와 다르니까", "k-sansB c-white", { left: 130, top: 120, fontSize: 84 });
         rise(a, T(19), { from: 24, dur: 300 });
         at.add(a, { opacity: [1, 0], duration: 160, ease: "linear" }, T(21) - 120);
@@ -153,7 +155,7 @@
         rise(b, T(21), { from: 24, dur: 300 });
         K.slam(at, c, T(24), T(25));
         at.add([b, c], { opacity: [1, 0], duration: 160, ease: "linear" }, T(25) - 120);
-        const d = txt(s, "처음 본 거니까", "k-sansK c-white", { left: 0, right: 0, top: 70, fontSize: 120, textAlign: "center" });
+        const d = txt(s, "처음 본 거니까", "k-sansK c-white", { left: 1400, top: 420, fontSize: 96 });
         K.slam(at, d, T(25), T(28));
       }
 
@@ -213,13 +215,13 @@
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("viewBox", "0 0 1920 1080");
         svg.style.cssText = "position:absolute;inset:0;overflow:visible";
-        svg.innerHTML = `<path d="M 0 840 L 520 840 L 580 760 L 640 940 L 700 700 L 760 900 L 800 840 L 1120 840 L 1180 760 L 1240 940 L 1300 700 L 1360 900 L 1400 840 L 1920 840" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>`;
+        svg.innerHTML = `<path d="M 0 780 L 520 780 L 570 730 L 620 840 L 680 690 L 740 820 L 780 780 L 1140 780 L 1190 730 L 1240 840 L 1300 690 L 1360 820 L 1400 780 L 1920 780" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>`;
         s.appendChild(svg);
         const dr = K.A.svg.createDrawable(svg.querySelector("path"));
         at.set(dr, { draw: "0 0" }, 0);
         at.add(dr, { draw: ["0 0", "0 1"], duration: T(51) - T(46), ease: "linear" }, T(46));
         type16(s, "빠지나봐 나 조금씩 너에게", "k-sansB c-white", { left: 130, top: 80, fontSize: 80 }, T(42));
-        const b = txt(s, "내 가슴 뛰는 걸 봐봐", "k-sansK c-white", { left: 0, right: 0, top: 900, fontSize: 96, textAlign: "center" });
+        const b = txt(s, "내 가슴 뛰는 걸 봐봐", "k-sansK c-white", { left: 0, right: 0, top: 890, fontSize: 92, textAlign: "center" });
         rise(b, T(46), { from: 30, dur: 300 });
       }
 
@@ -243,15 +245,15 @@
         const side = K.el("div", "fill bg-lilac", s);
         side.style.zIndex = 21;
         K.window(at, side, tOpen + 600, null);
-        const pair = D.gen(side, "c05", { left: 580, bottom: -30, width: 760 });
+        const pair = D.gen(side, "c05", { left: 660, bottom: -20, width: 600 });
         at.add(pair, { scale: [1.08, 1], duration: 1600, ease: E.expo }, tOpen + 600);
-        const opened = txt(side, W[56].t, "k-serifB c-peri", { left: 0, right: 0, top: 90, fontSize: 170, textAlign: "center" });
+        const opened = txt(side, W[56].t, "k-serifB c-peri", { left: 0, right: 0, top: 70, fontSize: 150, textAlign: "center" });
         at.set(opened, { opacity: 0 }, 0);
         at.add(opened, { opacity: [0, 1], letterSpacing: ["0.6em", "0.02em"], duration: 900, ease: E.expo }, tOpen + 600);
         at.add(opened, { opacity: [1, 0], duration: 200, ease: "linear" }, T(57) + 200);
-        const lines = [[[57, 58], 120], [[59, 60, 61], 120], [[62, 63], 150], [[64, 65, 66], 150]];
+        const lines = [[[57, 58], 104], [[59, 60, 61], 104], [[62, 63], 128], [[64, 65, 66], 128]];
         lines.forEach(([ids, size], k) => {
-          const row = txt(side, ids.map((i) => W[i].t).join(" "), (k === 3 ? "k-serifB" : "k-sansB") + " c-peri", { left: 0, right: 0, top: 110, fontSize: size, textAlign: "center" });
+          const row = txt(side, ids.map((i) => W[i].t).join(" "), (k === 3 ? "k-serifB" : "k-sansB") + " c-peri", { left: 0, right: 0, top: 90, fontSize: size, textAlign: "center" });
           at.set(row, { opacity: 0 }, 0);
           at.add(row, { opacity: [0, 1], y: [24, 0], duration: 300, ease: E.expo }, T(ids[0]));
           const nxt = lines[k + 1];

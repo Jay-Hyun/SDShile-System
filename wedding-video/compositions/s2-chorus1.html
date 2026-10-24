@@ -215,7 +215,7 @@
         const s = shot(T(24), T(27), "bg-peri");
         const sky = vplate(s, "s2-ge07");
         at.add(sky, { y: [0, -60], scale: [1.08, 1.12], duration: T(27) - T(24) + 400, ease: "linear" }, T(24));
-        const pair = D.gen(s, "c09", { left: 680, bottom: 30, width: 560 });
+        const pair = D.gen(s, "c09", { left: 720, bottom: -10, width: 480 });
         at.set(pair, { opacity: 0 }, 0);
         at.add(pair, { opacity: [0, 1], y: [160, 0], duration: 900, ease: E.expo }, T(24));
         at.add(pair, { y: [0, -20], duration: 1400, ease: E.inout }, T(25));

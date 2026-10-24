@@ -336,7 +336,8 @@
         at.set(ring.wrap, { opacity: 0, scale: 0.6 }, 0);
         at.add(ring.wrap, { opacity: [0, 1], scale: [0.6, 1], duration: 600, ease: E.expo }, T(49) - 80);
         at.add(ring.wrap, { rotate: [0, 120], duration: T(55) - T(49) + 400, ease: "linear" }, T(49) - 80);
-        stack(s, [[49], [50, 51]], "k-sans c-cream", { x: 740, y: 400, size: 68 });
+        const first = stack(s, [[49], [50, 51]], "k-sans c-cream", { x: 740, y: 400, size: 68 });
+        at.set(Object.values(first), { opacity: 0 }, T(52) - 20);
         const inv = K.el("div", "", s);
         inv.style.cssText = `position:absolute;inset:0;background:${P.cream};z-index:30`;
         K.flash(at, inv, T(52), 2);

@@ -113,12 +113,12 @@
       // the two halves pass each other: left slides right, right slides left, both dip 6 % mid-pass
       at.add("#s0-hL", { x: [0, 960], scale: [1, 0.94, 1], duration: 1100, ease: E.inout }, tSwap);
       at.add("#s0-hR", { x: [0, -960], scale: [1, 0.94, 1], duration: 1100, ease: E.inout }, tSwap);
-      const bandae = txt("반대", "A ink", { left: 0, right: 0, top: 300, fontSize: 330, textAlign: "center" });
+      const bandae = txt("반대", "A ink", { left: 0, right: 0, top: 540, fontSize: 280, textAlign: "center" });
       bandae.style.color = "#ece7dc";
       bandae.style.webkitTextStroke = "3px #232024";
       bandae.style.zIndex = 4;
       reveal(bandae, tSwap + 380, { dur: 700, rise: 0, blur: 16 });
-      const jiman = txt("지만요", "B ink", { left: 0, right: 0, top: 690, fontSize: 110, textAlign: "center" });
+      const jiman = txt("지만요", "B ink", { left: 0, right: 0, top: 870, fontSize: 100, textAlign: "center" });
       jiman.style.zIndex = 4;
       reveal(jiman, tSwap + 700, { rise: 8 });
 
