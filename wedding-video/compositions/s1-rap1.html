@@ -1,0 +1,410 @@
+<template>
+  <style>
+    @font-face { font-family: "Pretendard"; font-weight: 600; src: url("assets/fonts/Pretendard-Bold.woff2"); }
+    @font-face { font-family: "Pretendard"; font-weight: 900; src: url("assets/fonts/Pretendard-Black.woff2"); }
+    @font-face { font-family: "Noto Serif KR"; font-weight: 200 900; src: url("assets/fonts/NotoSerifKR-VF.ttf"); }
+    @font-face { font-family: "Cormorant"; font-style: italic; src: url("assets/fonts/CormorantGaramond-Italic.ttf"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; background: #161514; }
+    .kt { line-height: 1; will-change: transform, opacity; }
+    .kt .syl, .kt .ime { display: inline-block; position: relative; }
+    .ime-s { position: absolute; left: 0; top: 0; }
+    .ime-final { position: relative; }
+    .A { font-family: "Pretendard"; font-weight: 900; letter-spacing: -0.035em; }
+    .B { font-family: "Noto Serif KR"; font-weight: 600; }
+    .P { font-family: "Pretendard"; font-weight: 600; letter-spacing: -0.01em; }
+    .H { font-family: "Noto Serif KR"; font-weight: 300; }
+    .E { font-family: "Cormorant"; font-style: italic; }
+    .cream { color: #f2ede4; }
+    .ink { color: #161514; }
+    .cob { color: #161514; }
+    .pnk { color: #a65e66; }
+    .outline { color: transparent; -webkit-text-stroke: 1.5px #f2ede4; }
+    .paper { background: radial-gradient(ellipse 80% 90% at 50% 40%, #f7f3ec 0%, #efe9df 70%, #e6dfd3 100%); }
+    .studio { background: radial-gradient(ellipse 70% 80% at 50% 38%, #e0ddd7 0%, #c9c5be 62%, #b7b2aa 100%); }
+    .slot-block { position: absolute; left: 2%; right: 2%; top: 8%; bottom: 4%; transform-origin: 0 50%; }
+    .kt .syl { position: relative; }
+    .frame { position: absolute; overflow: hidden; background: #ddd; }
+    .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .card { position: absolute; overflow: hidden; border-radius: 2px; box-shadow: 0 14px 34px rgba(22, 21, 20, 0.22); }
+    .card img { width: 100%; height: 100%; object-fit: cover; }
+    .vidmask { position: absolute; overflow: hidden; }
+    .vidmask video { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; }
+    .rule { position: absolute; height: 1.5px; background: #161514; transform-origin: 0 50%; }
+    .strobe { position: absolute; inset: 0; }
+  </style>
+
+  <div id="root" data-composition-id="s1" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
+    <div id="s1-stage" style="position:absolute;inset:0"></div>
+    <!-- footage used inside shots (silent, timed in this scene's clock) -->
+    <div id="s1-vE" class="vidmask" style="left:660px;top:120px;width:600px;height:840px;opacity:0">
+      <video id="s1-v01" class="clip" data-start="8.6" data-duration="2.6" data-media-start="6.0" data-track-index="2" src="assets/media/video/v01.mp4" muted playsinline></video>
+    </div>
+    <div id="s1-vN" class="vidmask" style="inset:0;opacity:0">
+      <video id="s1-v00" class="clip" data-start="29.6" data-duration="3.3" data-media-start="3.0" data-track-index="2" src="assets/media/video/v00.mp4" muted playsinline></video>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const S = K.scene("s1");
+      const at = K.timeline();
+      const gtl = gsap.timeline({ paused: true });
+      const W = K.flat(S, 60);
+      const END = S.dur * 1000;
+      const T = (i) => (W[i] ? W[i].ms : END - 120); // 어 (the pickup) belongs to the chorus scene
+      const E = K.ease;
+      const stage = document.getElementById("s1-stage");
+      const cut = (k) => `assets/media/cutout/${k}.png`;
+      const shot = (t0, t1, opts) => K.shot(stage, at, t0, t1, opts);
+      const txt = K.txt;
+      const syl = K.syllables;
+      const GREY = "radial-gradient(ellipse 70% 80% at 50% 38%, #e0ddd7 0%, #c9c5be 62%, #b7b2aa 100%)";
+      const INK = "#161514";
+
+      // rap grammar, kept clean: sans words cut in on the beat (120 ms expo slam, no bounce),
+      // serif words for her side and for feeling (blur-in), one hero move per shot
+      const slam = (el, t, until, o) => K.slam(at, el, t, until, Object.assign({ from: 1.1, creep: 1.02, blur: 6 }, o || {}));
+      function soft(el, t, { dur = 480, rise = 14, blur = 10 } = {}) {
+        at.set(el, { opacity: 0 }, 0);
+        at.add(el, { opacity: [0, 1], y: [rise, 0], filter: [`blur(${blur}px)`, "blur(0px)"], duration: dur, ease: E.expo }, t);
+      }
+      function rise(el, t, { from = 120, dur = 420 } = {}) {
+        at.set(el, { opacity: 0 }, 0);
+        at.add(el, { opacity: [0, 1], y: [from, 0], duration: dur, ease: E.expo }, t);
+      }
+
+      // ---------- A: 잠깐 · 어쩌면 — he stops you, pushing up his glasses
+      {
+        const s = shot(0, T(2), { bg: GREY });
+        const g = K.img(s, cut("w10"), { right: 40, bottom: -50, height: 1050 });
+        at.set(g, { x: 160, opacity: 0 }, 0);
+        at.add(g, { x: [160, 0], opacity: [0, 1], duration: 520, ease: E.expo }, T(0) + 60);
+        const w0 = txt(s, "잠깐", "A ink", { left: 130, top: 200, fontSize: 400 });
+        slam(w0, T(0), T(2));
+        const w1 = txt(s, "어쩌면", "B ink", { left: 150, top: 720, fontSize: 120 });
+        soft(w1, T(1));
+      }
+
+      // ---------- B: 하는 짓들마다 / 뭔가 그렇게 / 삐딱하지 — the frame itself tilts
+      {
+        const s = shot(T(2), T(7), { cls: "paper" });
+        const tilt = K.el("div", "", s);
+        tilt.style.cssText = "position:absolute;inset:0;transform-origin:30% 60%";
+        const a = txt(tilt, "하는", "A ink", { left: 130, top: 90, fontSize: 180 });
+        const b = txt(tilt, "짓들마다", "A ink", { left: 130, top: 300, fontSize: 240 });
+        const c = txt(tilt, "뭔가", "A ink", { left: 130, top: 600, fontSize: 140 });
+        const d = txt(tilt, "그렇게", "A ink", { left: 480, top: 600, fontSize: 140 });
+        [[a, 2], [b, 3], [c, 4], [d, 5]].forEach(([el, i]) => K.slots(at, syl(el), T(i), { stagger: 60, color: "#d9d2c6" }));
+        const e = txt(tilt, "삐딱하지", "B pnk", { left: 880, top: 740, fontSize: 210 });
+        e.style.transformOrigin = "0% 100%";
+        at.set(e, { opacity: 0 }, 0);
+        at.add(e, { opacity: [0, 1], rotate: [0, -9], filter: ["blur(8px)", "blur(0px)"], duration: 560, ease: E.expo }, T(6));
+        at.add(tilt, { rotate: [0, -4], duration: 700, ease: E.inout }, T(6) + 60);
+      }
+
+      // ---------- C: 대체 왤까 — an echo of the question in hairline outlines (black)
+      {
+        const s = shot(T(7), T(9), { bg: INK });
+        for (let r = -2; r <= 2; r++) {
+          const el = txt(s, "대체 왤까", "A " + (r === 0 ? "cream" : "outline"), { left: 0, right: 0, top: 440 + r * 190, fontSize: 190, textAlign: "center" });
+          const t = T(7) + Math.abs(r) * 72;
+          at.set(el, { opacity: 0 }, 0);
+          at.add(el, { opacity: [0, r === 0 ? 1 : 0.6], y: [r * -40, 0], duration: 360, ease: E.expo }, t);
+          if (r) at.add(el, { x: [0, (r % 2 ? 1 : -1) * 48], duration: 520, ease: E.inout }, T(8));
+        }
+      }
+
+      // ---------- D: 남들이 하는대로 하지 — everyone's photos step in line; theirs steps out of it
+      {
+        const s = shot(T(9), T(12), { cls: "paper" });
+        const lane = K.el("div", "", s);
+        lane.style.cssText = "position:absolute;left:0;top:560px;width:1920px;height:400px";
+        const keys = ["d01", "d12", "d32", "d38", "d52", "d72", "d65", "d74"];
+        const frames = keys.map((k, i) => {
+          const f = K.el("div", "frame", lane);
+          f.style.cssText += `left:${-180 + i * 300}px;top:40px;width:260px;height:300px;filter:grayscale(1) contrast(.9);opacity:.55`;
+          K.img(f, K.photo(k), {});
+          return f;
+        });
+        const odd = K.el("div", "frame", lane);
+        odd.style.cssText += "left:1260px;top:0px;width:300px;height:360px;box-shadow:0 18px 40px rgba(22,21,20,.3)";
+        K.img(odd, K.photo("d02"), {});
+        const beat0 = S.beatAt(T(9));
+        for (let b = 0; b < 6; b++) {
+          const t = S.beat(beat0 + b);
+          if (t > T(12)) break;
+          at.add(frames, { x: [b * 150, (b + 1) * 150], duration: 160, ease: E.expo }, t);
+        }
+        at.add(odd, { y: [0, -70], rotate: [0, 7], duration: 900, ease: E.inout }, T(9) + 300);
+        const a = txt(s, "남들이", "A ink", { left: 120, top: 120, fontSize: 200 });
+        const b = txt(s, "하는대로", "A ink", { left: 780, top: 120, fontSize: 200 });
+        const c = txt(s, "하지", "B pnk", { left: 1540, top: 160, fontSize: 160 });
+        slam(a, T(9), T(12));
+        slam(b, T(10), T(12));
+        soft(c, T(11));
+      }
+
+      // ---------- E: 대체 왜 자꾸 저럴까 — his rock pose, framed like a print
+      {
+        const s = shot(T(12), T(16), { bg: GREY });
+        const vm = document.getElementById("s1-vE");
+        s.appendChild(vm);
+        vm.style.boxShadow = "0 24px 50px rgba(22,21,20,.3)";
+        at.set(vm, { opacity: 0 }, 0);
+        at.add(vm, { opacity: [0, 1], y: [40, 0], duration: 600, ease: E.expo }, T(12));
+        const a = txt(s, "대체", "A ink", { left: 110, top: 170, fontSize: 190 });
+        const b = txt(s, "왜", "A ink", { left: 150, top: 430, fontSize: 300 });
+        const c = txt(s, "자꾸", "B ink", { left: 1330, top: 190, fontSize: 180 });
+        const d = txt(s, "저럴까", "B ink", { left: 1330, top: 640, fontSize: 180 });
+        slam(a, T(12), T(16));
+        slam(b, T(13), T(16));
+        soft(c, T(14));
+        soft(d, T(15));
+      }
+
+      // ---------- F: 사람들이 모두 쳐다보는데 — one selfie looks at you, then nine do
+      {
+        const s = shot(T(16), T(19), { bg: INK });
+        const sel = ["d48", "d46", "d00", "d10", "d63", "d05", "d56", "d09", "d67"];
+        const cards = sel.map((k, i) => {
+          const c = K.el("div", "card", s);
+          const col = i % 3, row = Math.floor(i / 3);
+          c.style.cssText += `left:${90 + col * 590}px;top:${40 + row * 340}px;width:560px;height:320px`;
+          K.img(c, K.photo(k), { left: 0, top: 0, width: "100%", height: "100%" }).style.objectFit = "cover";
+          return c;
+        });
+        const hero = cards[4];
+        at.set(cards, { opacity: 0 }, 0);
+        at.set(hero, { opacity: 1, scale: 3.4 }, T(16));
+        at.add(hero, { scale: [3.4, 3.25], duration: Math.max(1, T(18) - T(16)), ease: "linear" }, T(16));
+        at.add(hero, { scale: [3.25, 1], duration: 380, ease: E.inout }, T(18));
+        cards.forEach((c, i) => {
+          if (i === 4) return;
+          const t = T(18) + 200 + i * 40;
+          at.add(c, { opacity: [0, 1], scale: [0.92, 1], duration: 420, ease: E.expo }, t);
+        });
+        const a = txt(s, "사람들이", "A cream", { left: 100, top: 80, fontSize: 190 });
+        const b = txt(s, "모두", "A cream", { left: 1280, top: 80, fontSize: 190 });
+        a.style.textShadow = b.style.textShadow = "0 4px 30px rgba(22,21,20,.55)";
+        slam(a, T(16), T(18));
+        slam(b, T(17), T(18));
+        at.add([a, b], { opacity: [1, 0], duration: 120, ease: "linear" }, T(18) - 60);
+        const c = txt(s, "쳐다보는데", "A cream", { left: 0, right: 0, top: 420, fontSize: 230, textAlign: "center" });
+        c.style.textShadow = "0 6px 40px rgba(22,21,20,.8)";
+        slam(c, T(18) + 260, T(19));
+      }
+
+      // ---------- G: 불편하지도 않나 / 신경이 쓰일텐데 — hairline rules draw under the words
+      {
+        const s = shot(T(19), T(23), { cls: "paper" });
+        const r1 = K.el("div", "rule", s); r1.style.cssText += "left:120px;top:400px;width:1680px";
+        const r2 = K.el("div", "rule", s); r2.style.cssText += "left:120px;top:760px;width:1680px";
+        at.add(r1, { scaleX: [0, 1], duration: 700, ease: E.inout }, T(19));
+        at.add(r2, { scaleX: [0, 1], duration: 700, ease: E.inout }, T(21));
+        const a = txt(s, "불편하지도", "A ink", { left: 120, top: 200, fontSize: 180 });
+        const b = txt(s, "않나", "B pnk", { left: 1220, top: 200, fontSize: 180 });
+        const c = txt(s, "신경이", "A ink", { left: 120, top: 520, fontSize: 210 });
+        const d = txt(s, "쓰일텐데", "A ink", { left: 740, top: 520, fontSize: 210 });
+        K.slots(at, syl(a), T(19), { stagger: 50, color: "#d9d2c6" });
+        soft(b, T(20));
+        slam(c, T(21), T(23));
+        slam(d, T(22), T(23));
+      }
+
+      // ---------- H: 보든 말든 괜찮나 — she just smiles; the words stand behind her
+      {
+        const s = shot(T(23), T(26), { cls: "paper" });
+        const a = txt(s, "보든", "B pnk", { left: 90, top: 140, fontSize: 340 });
+        const b = txt(s, "말든", "B pnk", { left: 1120, top: 140, fontSize: 340 });
+        soft(a, T(23), { dur: 520, rise: 24 });
+        soft(b, T(24), { dur: 520, rise: 24 });
+        const g = K.img(s, cut("w22"), { left: 570, bottom: -60, height: 1080 });
+        rise(g, T(23) + 40, { from: 80, dur: 700 });
+        const c = txt(s, "괜찮나", "A ink", { left: 1380, top: 830, fontSize: 120 });
+        slam(c, T(25), T(26));
+      }
+
+      // ---------- I: 아님 일부러 / 시선을 끌려 — the two words pull together like magnets
+      {
+        const s = shot(T(26), T(30), { bg: GREY });
+        const g = K.img(s, cut("w24"), { left: 1060, bottom: -60, height: 1060 });
+        at.set(g, { opacity: 0 }, 0);
+        at.add(g, { opacity: [0, 1], x: [120, 0], duration: 600, ease: E.expo }, T(26) + 60);
+        const a = txt(s, "아님", "B ink", { left: 120, top: 120, fontSize: 110 });
+        const b = txt(s, "일부러", "A ink", { left: 120, top: 260, fontSize: 220 });
+        soft(a, T(26));
+        slam(b, T(27), T(30));
+        const c = txt(s, "시선을", "A ink", { left: 40, top: 620, fontSize: 190 });
+        const d = txt(s, "끌려", "B pnk", { left: 960, top: 620, fontSize: 190 });
+        at.set([c, d], { opacity: 0 }, 0);
+        at.set(c, { opacity: 1 }, T(28));
+        at.set(d, { opacity: 1 }, T(28) + 60);
+        K.attract(at, c, d, T(28) + 60, Math.max(200, T(29) - T(28) - 60), 140, { settle: 420 });
+      }
+
+      // ---------- J: 그러면서 속으로는 / 은근히 즐겨 — they jump
+      {
+        const s = shot(T(30), T(34), { cls: "paper" });
+        const a = txt(s, "그러면서", "A ink", { left: 110, top: 110, fontSize: 160 });
+        const b = txt(s, "속으로는", "A ink", { left: 110, top: 300, fontSize: 160 });
+        K.slots(at, syl(a), T(30), { stagger: 50, color: "#d9d2c6" });
+        K.slots(at, syl(b), T(31), { stagger: 50, color: "#d9d2c6" });
+        const c = txt(s, "은근히", "B pnk", { left: 110, top: 560, fontSize: 210 });
+        soft(c, T(32));
+        const g = K.img(s, cut("w31"), { right: 30, bottom: -40, height: 960 });
+        at.set(g, { opacity: 0 }, 0);
+        at.set(g, { opacity: 1 }, T(33) - 160);
+        at.add(g, { y: [260, -30, 0], duration: 700, ease: E.spring(0.7, 1.5) }, T(33) - 160);
+        const d = txt(s, "즐겨", "B pnk", { left: 760, top: 650, fontSize: 300 });
+        soft(d, T(33), { dur: 600, rise: 30 });
+      }
+
+      // ---------- K: 이렇게 나와 다른 사람이 있었는지 — the diptych returns for a moment
+      {
+        const s = shot(T(34), T(39), { bg: "radial-gradient(ellipse 90% 80% at 40% 40%, #cfcbc4, #b3aea6)" });
+        const right = K.el("div", "", s);
+        right.style.cssText = "position:absolute;left:960px;top:0;width:960px;height:1080px;background:radial-gradient(ellipse 90% 80% at 60% 40%, #ebe7e0, #d3cec6)";
+        at.add(right, { x: [960, 0], duration: 360, ease: E.expo }, T(34));
+        const a = txt(s, "이렇게", "B ink", { left: 0, right: 0, top: 120, fontSize: 100, textAlign: "center" });
+        soft(a, T(34));
+        const b = txt(s, "나와", "A ink", { left: 0, right: 1000, top: 300, fontSize: 300, textAlign: "right" });
+        const c = txt(s, "다른", "B ink", { left: 1000, top: 300, fontSize: 300 });
+        slam(b, T(35), T(39));
+        soft(c, T(36), { dur: 520 });
+        const d = txt(s, "사람이", "A ink", { left: 0, right: 1000, top: 700, fontSize: 160, textAlign: "right" });
+        const e = txt(s, "있었는지", "B ink", { left: 1000, top: 700, fontSize: 160 });
+        slam(d, T(37), T(39));
+        soft(e, T(38));
+      }
+
+      // ---------- L: 어쩜 머리부터 다리 끝까지 — the camera tilts from his head to his shoes
+      {
+        const s = shot(T(39), T(43), { bg: GREY });
+        const rig = K.el("div", "", s);
+        rig.style.cssText = "position:absolute;left:980px;top:0;width:800px;height:1080px";
+        const g = K.img(rig, cut("w09"), { top: 0, height: 3000 });
+        g.style.left = "50%";
+        g.style.marginLeft = "-560px";
+        at.add(g, { y: [-60, -1960], duration: Math.max(400, T(42) - T(40) + 300), ease: E.inout }, T(40));
+        const a = txt(s, "어쩜", "B ink", { left: 140, top: 110, fontSize: 130 });
+        soft(a, T(39));
+        const b = txt(s, "머리부터", "A ink", { left: 140, top: 300, fontSize: 190 });
+        slam(b, T(40), T(43));
+        const c = txt(s, "다리", "A ink", { left: 140, top: 560, fontSize: 190 });
+        const d = txt(s, "끝까지", "A ink", { left: 140, top: 790, fontSize: 190 });
+        slam(c, T(41), T(43));
+        slam(d, T(42), T(43));
+      }
+
+      // ---------- M: 다른 사람이 있을까 / 정말이지 처음 봤어 — 처음 opens out of its own letter
+      {
+        const s = shot(T(43), T(49), { bg: INK });
+        const a = txt(s, "다른", "A cream", { left: 120, top: 110, fontSize: 180 });
+        const b = txt(s, "사람이", "A cream", { left: 590, top: 110, fontSize: 180 });
+        const c = txt(s, "있을까", "B cream", { left: 1230, top: 110, fontSize: 180 });
+        slam(a, T(43), T(46));
+        slam(b, T(44), T(46));
+        soft(c, T(45));
+        const d = txt(s, "정말이지", "B cream", { left: 120, top: 380, fontSize: 100 });
+        soft(d, T(46));
+        at.add([a, b, c, d], { opacity: [1, 0], duration: 100, ease: "linear" }, T(47) - 100);
+        const e = txt(s, "처음", "A cream", { left: 0, right: 0, top: 250, fontSize: 540, textAlign: "center" });
+        at.set(e, { opacity: 0 }, 0);
+        at.set(e, { opacity: 1 }, T(47));
+        K.zoomOut(at, e, T(47), { from: 12, dur: 260, origin: "62% 62%" });
+        const f = txt(s, "봤어", "B pnk", { left: 1420, top: 840, fontSize: 150 });
+        soft(f, T(48));
+      }
+
+      // ---------- N: 그래서 보게 됐지 / 놀랐어 / 정말 신기했어 — an iris opens onto the boardwalk clip
+      {
+        const s = shot(T(49), T(55), { cls: "paper" });
+        const a = txt(s, "그래서", "A ink", { left: 120, top: 180, fontSize: 190 });
+        const b = txt(s, "보게", "A ink", { left: 760, top: 180, fontSize: 190 });
+        const c = txt(s, "됐지", "A ink", { left: 1240, top: 180, fontSize: 190 });
+        slam(a, T(49), T(52));
+        slam(b, T(50), T(52));
+        slam(c, T(51), T(52));
+        // 놀랐어: one inverted frame pair, then the word punches in
+        const inv = K.el("div", "strobe", s);
+        inv.style.background = INK;
+        at.set(inv, { opacity: 0 }, 0);
+        at.set(inv, { opacity: 1 }, T(52));
+        at.set([a, b, c], { opacity: 0 }, T(52));
+        const d = txt(s, "놀랐어", "A cream", { left: 0, right: 0, top: 340, fontSize: 380, textAlign: "center" });
+        at.set(d, { opacity: 0 }, 0);
+        at.set(d, { opacity: 1 }, T(52));
+        at.add(d, { scale: [1.25, 1], duration: 240, ease: E.expo }, T(52));
+        at.set([d, inv], { opacity: 0 }, T(53) - 10);
+        const vm = document.getElementById("s1-vN");
+        s.appendChild(vm);
+        at.set(vm, { opacity: 0 }, 0);
+        at.set(vm, { opacity: 1 }, T(53) - 10);
+        K.iris(at, vm, T(53) - 10, 560, { x: "50%", y: "55%" });
+        const e = txt(s, "정말", "B cream", { left: 140, top: 680, fontSize: 170 });
+        const f = txt(s, "신기했어", "B cream", { left: 560, top: 680, fontSize: 210 });
+        e.style.textShadow = f.style.textShadow = "0 4px 30px rgba(22,21,20,.5)";
+        soft(e, T(53));
+        soft(f, T(54));
+      }
+
+      // ---------- O: 나와 다른 게 그걸 바라보는 게 좋았어 — they face each other across the frame
+      {
+        const s = shot(T(55), T(62), { bg: GREY });
+        const g = K.img(s, cut("w08"), { left: -80, bottom: -60, height: 1040 });
+        const bb = K.img(s, cut("w16"), { right: -80, bottom: -60, height: 1040 });
+        at.set([g, bb], { opacity: 0 }, 0);
+        at.add(g, { x: [-200, 0], opacity: [0, 1], duration: 700, ease: E.expo }, T(55));
+        at.add(bb, { x: [200, 0], opacity: [0, 1], duration: 700, ease: E.expo }, T(56));
+        const a = txt(s, "나와", "A ink", { left: 0, right: 0, top: 120, fontSize: 160, textAlign: "center" });
+        const b = txt(s, "다른 게", "B ink", { left: 0, right: 0, top: 310, fontSize: 160, textAlign: "center" });
+        slam(a, T(55), T(58));
+        soft(b, T(56));
+        at.add([a, b], { opacity: [1, 0], filter: ["blur(0px)", "blur(8px)"], duration: 180, ease: E.in3 }, T(58) - 140);
+        const c = txt(s, "그걸", "B ink", { left: 0, right: 0, top: 150, fontSize: 110, textAlign: "center" });
+        const d = txt(s, "바라보는 게", "A ink", { left: 0, right: 0, top: 300, fontSize: 170, textAlign: "center" });
+        soft(c, T(58));
+        slam(d, T(59), T(62));
+        const e = txt(s, "좋았어", "B pnk", { left: 0, right: 0, top: 560, fontSize: 250, textAlign: "center" });
+        soft(e, T(61), { dur: 700, rise: 20 });
+        at.add(g, { x: [0, 90], duration: 900, ease: E.inout }, T(61));
+        at.add(bb, { x: [0, -90], duration: 900, ease: E.inout }, T(61));
+      }
+
+      // ---------- P: 너도 날 바라보면서 그런지 / 왜 날 바라보지 / 어 — their photo, nose to nose
+      {
+        const s = shot(T(62), END, { bg: INK });
+        const fr = K.el("div", "frame", s);
+        fr.style.cssText += "left:1060px;top:90px;width:680px;height:900px;box-shadow:0 30px 60px rgba(0,0,0,.45)";
+        const ph = K.img(fr, K.photo("w06"), {});
+        at.add(ph, { scale: [1.0, 1.08], duration: END - T(62), ease: "linear" }, T(62));
+        at.set(fr, { opacity: 0 }, 0);
+        at.add(fr, { opacity: [0, 1], duration: 600, ease: E.inout }, T(62) - 100);
+        const a = txt(s, "너도", "A cream", { left: 120, top: 130, fontSize: 150 });
+        const b = txt(s, "날", "A cream", { left: 460, top: 130, fontSize: 150 });
+        const c = txt(s, "바라보면서", "A cream", { left: 120, top: 310, fontSize: 150 });
+        const d = txt(s, "그런지", "B cream", { left: 120, top: 490, fontSize: 130 });
+        slam(a, T(62), T(66));
+        slam(b, T(63), T(66));
+        slam(c, T(64), T(66));
+        soft(d, T(65));
+        at.add([a, b, c, d], { opacity: [1, 0], filter: ["blur(0px)", "blur(8px)"], duration: 160, ease: E.in3 }, T(66) - 140);
+        const e = txt(s, "왜 날", "A cream", { left: 120, top: 330, fontSize: 200 });
+        const f = txt(s, "바라보지", "B pnk", { left: 120, top: 560, fontSize: 200 });
+        slam(e, T(66), END);
+        soft(f, T(68));
+        const g = txt(s, "어", "B cream", { left: 120, top: 820, fontSize: 130 });
+        soft(g, T(69), { dur: 300 });
+        // pickup into the chorus: the frame lifts to ivory over the last 8th
+        const lift = K.el("div", "strobe", s);
+        lift.style.background = "#f2ede4";
+        at.set(lift, { opacity: 0 }, 0);
+        at.add(lift, { opacity: [0, 1], duration: 260, ease: E.in3 }, END - 260);
+      }
+
+      K.bridge(gtl, at, S.dur);
+      window.__timelines["s1"] = gtl;
+    })();
+  </script>
+</template>

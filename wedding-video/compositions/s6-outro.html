@@ -1,0 +1,122 @@
+<template>
+  <style>
+    @font-face { font-family: "Pretendard"; font-weight: 600; src: url("assets/fonts/Pretendard-Bold.woff2"); }
+    @font-face { font-family: "Noto Serif KR"; font-weight: 200 900; src: url("assets/fonts/NotoSerifKR-VF.ttf"); }
+    @font-face { font-family: "Cormorant"; font-style: italic; src: url("assets/fonts/CormorantGaramond-Italic.ttf"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; background: #c9c5be; }
+    .studio { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 80% at 50% 38%, #e0ddd7 0%, #c9c5be 62%, #b7b2aa 100%); }
+    .paper { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 90% at 50% 40%, #f7f3ec 0%, #efe9df 70%, #e6dfd3 100%); }
+    .kt { line-height: 1.15; will-change: transform, opacity, filter; }
+    .B { font-family: "Noto Serif KR"; font-weight: 600; }
+    .Bl { font-family: "Noto Serif KR"; font-weight: 300; }
+    .E { font-family: "Cormorant"; font-style: italic; }
+    .M { font-family: "Pretendard"; font-weight: 600; letter-spacing: 0.34em; }
+    .ink { color: #161514; }
+    .rose { color: #a65e66; }
+    .gold { color: #9a7a45; }
+    #s6-b4, #s6-b4-still { position: absolute; left: 0; top: -40px; width: 1920px; height: 1080px; }
+    #s6-ringpush { position: absolute; inset: 0; transform-origin: 50% 45%; }
+    #s6-booth { position: absolute; left: 700px; top: 70px; width: 520px; height: 780px; overflow: hidden; background: #fff; padding: 14px; box-shadow: 0 30px 60px rgba(22, 21, 20, 0.28); }
+    #s6-booth video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    #s6-black { position: absolute; inset: 0; background: #0c0b0a; }
+  </style>
+
+  <div id="root" data-composition-id="s6" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
+    <div id="s6-rings" style="position:absolute;inset:0">
+      <div class="studio"></div>
+      <div id="s6-ringpush">
+        <img id="s6-b4-still" src="assets/media/blender/b4_last.png" alt="" />
+        <video id="s6-b4" class="clip" data-start="0" data-duration="4.62" data-track-index="2" src="assets/media/blender/b4.webm" muted playsinline></video>
+      </div>
+      <svg id="s6-field" viewBox="0 0 1920 1080" style="position:absolute;inset:0" data-layout-ignore></svg>
+    </div>
+    <div id="s6-boothshot" style="position:absolute;inset:0">
+      <div class="paper"></div>
+      <div id="s6-booth"><video id="s6-v05" class="clip" data-start="4.0" data-duration="4.8" data-media-start="2.0" data-track-index="2" src="assets/media/video/v05.mp4" muted playsinline></video></div>
+    </div>
+    <div id="s6-card" style="position:absolute;inset:0"><div class="paper"></div></div>
+    <div id="s6-type"></div>
+    <div id="s6-black"></div>
+  </div>
+
+  <script>
+    (function () {
+      const S = K.scene("s6");
+      const at = K.timeline();
+      const gtl = gsap.timeline({ paused: true });
+      const END = S.dur * 1000;
+      const E = K.ease;
+      const C = FILM.couple;
+      const type = document.getElementById("s6-type");
+      const txt = (t, c, css) => K.txt(type, t, c, css);
+      function soft(el, t, { dur = 900, rise = 14, blur = 12 } = {}) {
+        at.set(el, { opacity: 0 }, 0);
+        at.add(el, { opacity: [0, 1], y: [rise, 0], filter: [`blur(${blur}px)`, "blur(0px)"], duration: dur, ease: E.expo }, t);
+      }
+      function out(els, t, dur = 500) {
+        at.add(els, { opacity: [1, 0], filter: ["blur(0px)", "blur(8px)"], duration: dur, ease: E.inout }, t);
+      }
+
+      // ---- rings (0 - 4.6 s): they meet on beat 4, hairline field lines answer the intro
+      const tLink = 2308;
+      at.set("#s6-b4-still", { opacity: 0 }, 0);
+      at.set("#s6-b4-still", { opacity: 1 }, 4620 - 34);
+      at.add("#s6-ringpush", { scale: [1, 1.05], duration: 4800, ease: "linear" }, 0);
+      const NS = "http://www.w3.org/2000/svg";
+      const svg = document.getElementById("s6-field");
+      const paths = [];
+      for (let i = 0; i < 3; i++) {
+        const half = 520 + i * 60, up = 260 + i * 70;
+        [`M ${960 - half} 470 C ${960 - half - 120} ${470 - up}, ${960 + half + 120} ${470 - up}, ${960 + half} 470`,
+         `M ${960 - half} 520 C ${960 - half - 120} ${520 + up * 0.7}, ${960 + half + 120} ${520 + up * 0.7}, ${960 + half} 520`].forEach((d) => {
+          const p = document.createElementNS(NS, "path");
+          p.setAttribute("d", d);
+          p.setAttribute("fill", "none");
+          p.setAttribute("stroke", "#b08d57");
+          p.setAttribute("stroke-width", "1.4");
+          svg.appendChild(p);
+          paths.push(p);
+        });
+      }
+      const dr = K.A.svg.createDrawable(paths);
+      at.set(dr, { draw: "0 0" }, 0);
+      dr.forEach((d, i) => {
+        at.add(d, { draw: ["0 0", "0 1"], duration: 1200, ease: E.expo }, tLink + (i >> 1) * 90);
+        at.add(d, { draw: ["0 1", "1 1"], duration: 900, ease: E.inout }, tLink + 1500 + (i >> 1) * 90);
+      });
+      const vow = txt("서로 다른 두 사람이, 하나의 이름으로", "Bl ink", { left: 0, right: 0, top: 900, fontSize: 52, textAlign: "center" });
+      soft(vow, tLink + 500);
+      at.set("#s6-rings", { opacity: 1 }, 0);
+      out(["#s6-rings", vow], 4300, 500);
+
+      // ---- the photo booth strip (4.3 - 8.6 s)
+      at.set("#s6-boothshot", { opacity: 0 }, 0);
+      at.add("#s6-boothshot", { opacity: [0, 1], duration: 500, ease: E.inout }, 4300);
+      at.add("#s6-booth", { y: [40, 0], rotate: [-3, -1.5], duration: 1600, ease: E.expo }, 4300);
+      const we = txt("We're getting married", "E ink", { left: 0, right: 0, top: 900, fontSize: 64, textAlign: "center" });
+      soft(we, 5200);
+      out(["#s6-boothshot", we], 8400, 500);
+
+      // ---- names, date, thanks (8.4 s - end), then black
+      at.set("#s6-card", { opacity: 0 }, 0);
+      at.add("#s6-card", { opacity: [0, 1], duration: 500, ease: E.inout }, 8400);
+      const title = txt("반대가 끌리는 이유", "M ink", { left: 0, right: 0, top: 226, fontSize: 30, textAlign: "center" });
+      const names = txt(`${C.groom}  ·  ${C.bride}`, "B ink", { left: 0, right: 0, top: 330, fontSize: 120, textAlign: "center" });
+      const date = txt([C.date, C.time, C.venue].filter(Boolean).join("  ·  "), "M ink", { left: 0, right: 0, top: 540, fontSize: 30, textAlign: "center" });
+      const marry = txt("저희, 결혼합니다", "B rose", { left: 0, right: 0, top: 640, fontSize: 76, textAlign: "center" });
+      const thanks = txt("함께해 주셔서 감사합니다", "Bl ink", { left: 0, right: 0, top: 800, fontSize: 40, textAlign: "center" });
+      soft(title, 8700, { dur: 1000 });
+      soft(names, 8900, { dur: 1200, rise: 20 });
+      at.add(names, { letterSpacing: ["0.18em", "0.02em"], duration: 1600, ease: E.expo }, 8900);
+      soft(date, 9600);
+      soft(marry, 10100, { dur: 1100 });
+      soft(thanks, 10800);
+      at.set("#s6-black", { opacity: 0 }, 0);
+      at.add("#s6-black", { opacity: [0, 1], duration: 1100, ease: E.inout }, END - 1100);
+
+      K.bridge(gtl, at, S.dur);
+      window.__timelines["s6"] = gtl;
+    })();
+  </script>
+</template>

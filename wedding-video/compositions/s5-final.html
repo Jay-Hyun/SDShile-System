@@ -1,0 +1,217 @@
+<template>
+  <style>
+    @font-face { font-family: "Pretendard"; font-weight: 900; src: url("assets/fonts/Pretendard-Black.woff2"); }
+    @font-face { font-family: "Noto Serif KR"; font-weight: 200 900; src: url("assets/fonts/NotoSerifKR-VF.ttf"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; background: #161514; }
+    .kt { line-height: 1.12; will-change: transform, opacity, filter; }
+    .A { font-family: "Pretendard"; font-weight: 900; letter-spacing: -0.035em; }
+    .B { font-family: "Noto Serif KR"; font-weight: 500; }
+    .Bb { font-family: "Noto Serif KR"; font-weight: 700; letter-spacing: -0.015em; }
+    .ink { color: #161514; }
+    .rose { color: #a65e66; }
+    .on-photo { color: #f7f3ec; text-shadow: 0 2px 28px rgba(10, 9, 8, 0.55), 0 1px 3px rgba(10, 9, 8, 0.35); }
+    .paper { background: radial-gradient(ellipse 80% 90% at 50% 40%, #f7f3ec 0%, #efe9df 70%, #e6dfd3 100%); }
+    .studio { background: radial-gradient(ellipse 70% 80% at 50% 38%, #e0ddd7 0%, #c9c5be 62%, #b7b2aa 100%); }
+    .bleed { position: absolute; inset: 0; overflow: hidden; }
+    .bleed img, .bleed video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+    .panel { position: absolute; top: 0; width: 640px; height: 1080px; overflow: hidden; }
+    .panel img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+    .shade { position: absolute; left: 0; right: 0; bottom: 0; height: 560px; background: linear-gradient(to top, rgba(12, 11, 10, 0.66), rgba(12, 11, 10, 0)); }
+    .print { position: absolute; overflow: hidden; background: #fff; padding: 12px; box-shadow: 0 24px 50px rgba(22, 21, 20, 0.28); }
+    .print img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    /* memory tunnel */
+    #s5-cam { position: absolute; inset: 0; perspective: 1100px; perspective-origin: 50% 50%; }
+    #s5-world { position: absolute; left: 960px; top: 540px; transform-style: preserve-3d; }
+    .mem { position: absolute; overflow: hidden; background: #fff; padding: 8px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45); backface-visibility: hidden; }
+    .mem img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  </style>
+
+  <div id="root" data-composition-id="s5" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
+    <div id="s5-stage" style="position:absolute;inset:0"></div>
+    <div id="s5-v4" class="bleed" style="opacity:0"><video id="s5-v04" class="clip" data-start="17.5" data-duration="4.4" data-playback-rate="0.55" data-track-index="2" src="assets/media/video/v04.mp4" muted playsinline></video></div>
+    <div id="s5-v6" class="bleed" style="opacity:0"><video id="s5-v08" class="clip" data-start="25.0" data-duration="5.1" data-playback-rate="0.9" data-track-index="2" src="assets/media/video/v08.mp4" muted playsinline></video></div>
+  </div>
+
+  <script>
+    (function () {
+      const S = K.scene("s5");
+      const at = K.timeline();
+      const gtl = gsap.timeline({ paused: true });
+      const W = K.flat(S, 80);
+      const END = S.dur * 1000;
+      const T = (i) => (W[i] ? W[i].ms : END);
+      const E = K.ease;
+      const stage = document.getElementById("s5-stage");
+      const cut = (k) => `assets/media/cutout/${k}.png`;
+      const XF = 500;
+
+      function shot(t0, t1, cls) {
+        const el = K.el("div", "shot " + (cls || ""), stage);
+        el.style.cssText = "position:absolute;inset:0;overflow:hidden";
+        at.set(el, { opacity: 0 }, 0);
+        at.add(el, { opacity: [0, 1], duration: XF, ease: E.inout }, Math.max(0, t0 - XF / 2));
+        at.set(el, { opacity: 0 }, t1 + XF / 2);
+        return el;
+      }
+      function soft(el, t, { dur = 700, rise = 16, blur = 12 } = {}) {
+        at.set(el, { opacity: 0 }, 0);
+        at.add(el, { opacity: [0, 1], y: [rise, 0], filter: [`blur(${blur}px)`, "blur(0px)"], duration: dur, ease: E.expo }, t);
+      }
+      function out(els, t, dur = 360) {
+        at.add(els, { opacity: [1, 0], filter: ["blur(0px)", "blur(10px)"], duration: dur, ease: E.in3 }, t);
+      }
+      function photo(parent, key, pos = "50% 30%") {
+        const b = K.el("div", "bleed", parent);
+        K.img(b, K.photo(key), {}).style.objectPosition = pos;
+        return b;
+      }
+      function line(parent, idx, cls, css, align = "center") {
+        const row = K.el("div", "kt " + cls, parent);
+        row.style.cssText += `position:absolute;left:0;right:0;text-align:${align};white-space:nowrap`;
+        for (const [k, v] of Object.entries(css)) row.style[k] = typeof v === "number" ? v + "px" : v;
+        return idx.map((i, k) => {
+          const sp = K.el("span", "", row, W[i].t);
+          sp.style.display = "inline-block";
+          if (k < idx.length - 1) K.el("span", "", row, " ");
+          soft(sp, T(i));
+          return sp;
+        });
+      }
+
+      // ---- 1. 사랑할 것 같아요 / 우린 서로 너무 다르지만요 — the night by the bridge, three frames
+      {
+        const s = shot(0, T(7));
+        const keys = ["w41", "w43", "w44"];
+        const reveals = [0, 2, 3];
+        keys.forEach((k, j) => {
+          const p = K.el("div", "panel", s);
+          p.style.left = j * 640 + "px";
+          const im = K.img(p, K.photo(k), {});
+          im.style.objectPosition = "50% 35%";
+          at.set(p, { opacity: 0 }, 0);
+          at.add(p, { opacity: [0, 1], y: [50, 0], duration: 900, ease: E.expo }, Math.max(0, T(reveals[j]) - 150));
+          at.add(im, { scale: [1.08, 1.0], duration: T(7) + XF, ease: "linear" }, 0);
+        });
+        K.el("div", "shade", s);
+        const a = line(s, [0, 1, 2], "Bb on-photo", { top: 720, fontSize: 110 });
+        out(a, T(3) - 340);
+        line(s, [3, 4, 5, 6], "B on-photo", { top: 760, fontSize: 96 });
+      }
+
+      // ---- 2. 사랑은 참 신비로운 거죠 — she lifts the bouquet, they laugh
+      {
+        const s = shot(T(7), T(11));
+        const p = photo(s, "w19", "50% 26%");
+        at.add(p, { scale: [1.0, 1.07], duration: T(11) - T(7) + XF, ease: "linear" }, T(7) - XF / 2);
+        K.el("div", "shade", s);
+        line(s, [7, 8, 9, 10], "B on-photo", { top: 800, fontSize: 104 });
+      }
+
+      // ---- 3. 살아 가면서 한 번 올까 말까 한 그런 사랑인데 — the camera flies through their memories
+      {
+        const s = shot(T(11), T(20));
+        s.style.background = "radial-gradient(ellipse 70% 70% at 50% 50%, #2a2724, #121110)";
+        const cam = K.el("div", "", s);
+        cam.id = "s5-cam";
+        const world = K.el("div", "", cam);
+        world.id = "s5-world";
+        const keys = ["d00", "w28", "d10", "w01", "d46", "w37", "d18", "w20", "d04", "w34", "d63", "w02", "d48", "w27", "d05", "w14", "d56", "w42", "d09", "w32", "d73", "w04", "d67", "w38", "d44", "w25", "d40", "w39"];
+        const rng = K.rng(11);
+        const depth = 9000;
+        const t0 = T(11) - XF / 2, t1 = T(20) + XF / 2;
+        const speed = (depth + 600) / (t1 - t0); // px per ms, constant: the point is the journey
+        keys.forEach((k, j) => {
+          const card = K.el("div", "mem", world);
+          const land = /^d/.test(k);
+          const w = land ? 420 : 300, h = land ? 300 : 410;
+          const side = j % 2 ? 1 : -1;
+          const x = side * (430 + rng() * 520) - w / 2;
+          const y = (rng() - 0.5) * 760 - h / 2;
+          const z = -500 - (j / keys.length) * depth;
+          card.style.cssText += `width:${w}px;height:${h}px;transform:translate3d(${x}px,${y}px,${z}px) rotateY(${-side * (8 + rng() * 10)}deg) rotateZ(${(rng() - 0.5) * 8}deg)`;
+          K.img(card, K.photo(k), { position: "static", width: "100%", height: "100%" });
+          // fog: a card appears out of the dark at 3800 px away and fades as it passes the lens
+          const tIn = t0 + Math.max(0, (-3800 - z) / speed);
+          const tOut = t0 + (-z - 250) / speed;
+          at.set(card, { opacity: 0 }, 0);
+          at.add(card, { opacity: [0, 1], duration: 900, ease: "linear" }, tIn);
+          at.add(card, { opacity: [1, 0], duration: 260, ease: "linear" }, Math.max(tIn + 900, tOut));
+        });
+        at.add(world, { translateZ: [0, depth + 600], duration: t1 - t0, ease: "linear" }, t0);
+        const halo = K.el("div", "", s);
+        halo.style.cssText = "position:absolute;left:460px;top:330px;width:1000px;height:420px;background:radial-gradient(ellipse at center, rgba(18,17,16,.75), rgba(18,17,16,0) 70%)";
+        const p1 = line(s, [11, 12], "B on-photo", { top: 470, fontSize: 96 });
+        out(p1, T(13) - 340);
+        const p2 = line(s, [13, 14, 15, 16, 17], "B on-photo", { top: 470, fontSize: 96 });
+        out(p2, T(18) - 340);
+        line(s, [18, 19], "Bb on-photo", { top: 450, fontSize: 130 });
+      }
+
+      // ---- 4. 다가 온 것 같아요 — flowers, a slowed selfie
+      {
+        const s = shot(T(20), T(24));
+        const v = document.getElementById("s5-v4");
+        s.appendChild(v);
+        v.style.opacity = 1;
+        v.querySelector("video").style.objectPosition = "50% 30%";
+        K.el("div", "shade", s);
+        line(s, [20, 21, 22, 23], "B on-photo", { top: 800, fontSize: 100 });
+      }
+
+      // ---- 5. 꿈 꾸던 모습은 아니지만요 — the photo-booth strips
+      {
+        const s = shot(T(24), T(28), "paper");
+        [["d15", 300, 260, 440, 330, -5], ["d18", 795, 230, 330, 700, 2], ["d16", 1220, 380, 440, 330, 4]].forEach(([k, x, y, w, h, rot], j) => {
+          const p = K.el("div", "print", s);
+          p.style.cssText += `left:${x}px;top:${y}px;width:${w}px;height:${h}px`;
+          K.img(p, K.photo(k), { position: "static", width: "100%", height: "100%" });
+          at.set(p, { opacity: 0 }, 0);
+          at.add(p, { opacity: [0, 1], y: [80, 0], rotate: [rot * 2.5, rot], duration: 800, ease: E.expo }, T(24) + j * 240);
+        });
+        line(s, [24, 25, 26, 27], "B ink", { top: 90, fontSize: 96 });
+      }
+
+      // ---- 6. 서로를 웃게 만들죠 — heart hands, laughing
+      {
+        const s = shot(T(28), T(31));
+        const v = document.getElementById("s5-v6");
+        s.appendChild(v);
+        v.style.opacity = 1;
+        K.el("div", "shade", s);
+        line(s, [28, 29, 30], "B on-photo", { top: 800, fontSize: 100 });
+      }
+
+      // ---- 7. 니 곁에 있으면 / 자꾸만 행복하단 생각이 들죠 — walking on, hand in hand
+      {
+        const s = shot(T(31), T(38));
+        const keys = [["w35", "50% 40%"], ["w38", "50% 45%"], ["w45", "50% 50%"]];
+        const span = (T(38) - T(31)) / keys.length;
+        keys.forEach(([k, pos], j) => {
+          const p = photo(s, k, pos);
+          const a0 = T(31) + j * span;
+          at.set(p, { opacity: j ? 0 : 1 }, 0);
+          if (j) at.add(p, { opacity: [0, 1], duration: 800, ease: E.inout }, a0 - 400);
+          at.add(p, { scale: [1.0, 1.06], duration: span + 800, ease: "linear" }, a0 - 400);
+        });
+        K.el("div", "shade", s);
+        const a = line(s, [31, 32, 33], "B on-photo", { top: 800, fontSize: 100 });
+        out(a, T(34) - 340);
+        line(s, [34, 35, 36, 37], "B on-photo", { top: 800, fontSize: 100 });
+      }
+
+      // ---- 8. 사랑할 것 같아요 — the studio again, and a long breath into the ending
+      {
+        const s = shot(T(38), END + 600, "studio");
+        const g = K.img(s, cut("w04"), { left: 560, bottom: -90, height: 900 });
+        at.set(g, { opacity: 0 }, 0);
+        at.add(g, { opacity: [0, 1], filter: ["blur(10px)", "blur(0px)"], duration: 900, ease: E.expo }, T(38) - 200);
+        line(s, [38, 39, 40], "Bb ink", { top: 70, fontSize: 150 });
+        at.add(s, { scale: [1.0, 1.03], duration: END - T(38) + 300, ease: "linear" }, T(38) - 250);
+      }
+
+      K.bridge(gtl, at, S.dur);
+      window.__timelines["s5"] = gtl;
+    })();
+  </script>
+</template>

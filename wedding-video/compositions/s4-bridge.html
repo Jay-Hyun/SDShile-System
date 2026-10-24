@@ -1,0 +1,112 @@
+<template>
+  <style>
+    @font-face { font-family: "Pretendard"; font-weight: 900; src: url("assets/fonts/Pretendard-Black.woff2"); }
+    @font-face { font-family: "Noto Serif KR"; font-weight: 200 900; src: url("assets/fonts/NotoSerifKR-VF.ttf"); }
+
+    #root { position: absolute; inset: 0; overflow: hidden; background: #c9c5be; }
+    .kt { line-height: 1.06; will-change: transform, opacity, filter; }
+    .A { font-family: "Pretendard"; font-weight: 900; letter-spacing: -0.035em; }
+    .B { font-family: "Noto Serif KR"; font-weight: 600; }
+    .ink { color: #161514; }
+    .rose { color: #a65e66; }
+    .half { position: absolute; top: 250px; width: 960px; height: 830px; overflow: hidden; }
+    #s4-band { position: absolute; left: 0; top: 0; width: 1920px; height: 250px; background: #f2ede4; }
+    .half img, .whole img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+    .whole { position: absolute; inset: 0; overflow: hidden; }
+    #s4-gutter { position: absolute; left: 957px; top: 250px; width: 6px; height: 830px; background: #f2ede4; }
+    .scrim { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 30%, rgba(242, 237, 228, 0.55), rgba(242, 237, 228, 0)); }
+  </style>
+
+  <div id="root" data-composition-id="s4" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
+    <div id="s4-whole" class="whole"><img id="s4-together" src="assets/media/photo/wedding/3-50_오후260717_박준익님_웨딩_스튜디오16034.jpg" alt="" style="object-position:50% 24%" /></div>
+    <div id="s4-band"></div>
+    <div id="s4-hL" class="half" style="left:0"><img id="s4-him" src="assets/media/photo/wedding/3-49_오후260717_박준익님_웨딩_스튜디오16023.jpg" alt="" style="object-position:50% 30%" /></div>
+    <div id="s4-hR" class="half" style="left:960px"><img id="s4-her" src="assets/media/photo/wedding/3-57_오후260717_박준익님_웨딩_스튜디오16056.jpg" alt="" style="object-position:50% 22%" /></div>
+    <div id="s4-gutter"></div>
+    <div id="s4-type"></div>
+  </div>
+
+  <script>
+    (function () {
+      const S = K.scene("s4");
+      const at = K.timeline();
+      const gtl = gsap.timeline({ paused: true });
+      const W = K.flat(S, 80);
+      const END = S.dur * 1000;
+      const T = (i) => (W[i] ? W[i].ms : END);
+      const E = K.ease;
+      const type = document.getElementById("s4-type");
+      const txt = (t, c, css) => K.txt(type, t, c, css);
+      // him alone in the chair · her alone in the spread dress · then the two of them on the same set
+
+      function reveal(el, t, { dur = 560, rise = 16, blur = 10 } = {}) {
+        at.set(el, { opacity: 0 }, 0);
+        at.add(el, { opacity: [0, 1], y: [rise, 0], filter: [`blur(${blur}px)`, "blur(0px)"], duration: dur, ease: E.expo }, t);
+      }
+      function leave(els, t, dur = 260) {
+        at.add(els, { opacity: [1, 0], filter: ["blur(0px)", "blur(8px)"], duration: dur, ease: E.in3 }, t);
+      }
+
+      // the halves breathe in opposite directions while they are apart
+      at.add("#s4-him", { scale: [1.12, 1.04], duration: T(10), ease: "linear" }, 0);
+      at.add("#s4-her", { scale: [1.04, 1.12], duration: T(10), ease: "linear" }, 0);
+
+      // line 1 — one row in the ivory band: sans words for him, serif for her
+      const scrim = K.el("div", "scrim", type);
+      scrim.style.opacity = 0;
+      function row(idx, classes, top, size) {
+        const r = K.txt(type, "", "", { left: 0, right: 0, top, fontSize: size, textAlign: "center" });
+        return idx.map((i, k) => {
+          const sp = K.el("span", "kt " + classes[k], r, W[i].t);
+          sp.style.display = "inline-block";
+          if (k < idx.length - 1) K.el("span", "", r, " ");
+          reveal(sp, T(i), { rise: 10 });
+          return sp;
+        });
+      }
+      const r1 = row([0, 1, 2, 3, 4], ["A ink", "B ink", "A ink", "B ink", "A ink"], 64, 108);
+      leave(r1, T(5) - 280);
+      const r2 = row([5, 6, 7, 8], ["A ink", "B ink", "A ink", "B ink"], 64, 108);
+      const tSwap = T(9);
+      leave(r2, tSwap + 160, 320);
+      // on 반대 the halves trade places
+      at.add("#s4-hL", { x: [0, 960], scale: [1, 0.94, 1], duration: 1100, ease: E.inout }, tSwap);
+      at.add("#s4-hR", { x: [0, -960], scale: [1, 0.94, 1], duration: 1100, ease: E.inout }, tSwap);
+      const bandae = txt("반대지만요", "A ink", { left: 0, right: 0, top: 50, fontSize: 130, textAlign: "center" });
+      reveal(bandae, tSwap + 420, { dur: 700, rise: 0, blur: 16 });
+      const jiman = { style: {} };
+
+      // 함께 — the two halves close on each other and dissolve into one photo of the two of them
+      const tTo = T(10);
+      leave(bandae, tTo - 500, 360);
+      at.add("#s4-band", { opacity: [1, 0], duration: 600, ease: E.inout }, tTo - 200);
+      at.add("#s4-hL", { x: [960, 480], duration: 700, ease: E.in3 }, tTo - 700);
+      at.add("#s4-hR", { x: [-960, -480], duration: 700, ease: E.in3 }, tTo - 700);
+      at.add(["#s4-hL", "#s4-hR", "#s4-gutter"], { opacity: [1, 0], duration: 420, ease: E.inout }, tTo - 120);
+      at.add(scrim, { opacity: [1, 0.7], duration: 420, ease: E.inout }, tTo - 120);
+      at.set("#s4-whole", { opacity: 0 }, 0);
+      at.add("#s4-whole", { opacity: [0, 1], duration: 600, ease: E.inout }, tTo - 200);
+      at.add("#s4-together", { scale: [1.08, 1.0], duration: END - tTo + 200, ease: E.quart }, tTo - 200);
+
+      const l3 = K.txt(type, "", "B ink", { left: 120, top: 130, fontSize: 88 });
+      [10, 11, 12, 13].forEach((i, k) => {
+        const sp = K.el("span", "", l3, W[i].t);
+        sp.style.display = "inline-block";
+        if (k < 3) K.el("span", "", l3, " ");
+        reveal(sp, T(i), { dur: 700 });
+      });
+      leave(l3, T(14) - 320, 320);
+      const love = K.txt(type, "", "B rose", { left: 120, top: 120, fontSize: 120 });
+      [14, 15, 16].forEach((i, k) => {
+        const sp = K.el("span", "", love, W[i].t);
+        sp.style.display = "inline-block";
+        if (k < 2) K.el("span", "", love, " ");
+        reveal(sp, T(i), { dur: 800, rise: 12 });
+      });
+      leave(love, END - 260, 260);
+
+      K.bridge(gtl, at, S.dur);
+      window.__timelines["s4"] = gtl;
+    })();
+  </script>
+</template>

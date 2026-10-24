@@ -1,0 +1,4 @@
+{
+  "_note": "Manual word starts (source seconds) where whisper drifts. Line 0 copies the bridge's identical phrasing (line 27) shifted to the intro's first onset.",
+  "0": {"두": 0.72, "사람": 0.864, "이렇게": 1.441, "서로": 2.01, "다르지만요": 2.59}
+}
