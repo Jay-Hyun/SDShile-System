@@ -25,7 +25,7 @@ MODEL = "/opt/models/da2s.onnx"
 FPS = 30
 
 ap = argparse.ArgumentParser()
-ap.add_argument("key", help="photos.json key, or gen:<id> for a generated plate (assets/media/gen/<id>.png)")
+ap.add_argument("key", help="photos.json key, gen:<id> (assets/media/gen/<id>.png), or a path to any .png")
 ap.add_argument("name")
 ap.add_argument("--size", default="1920x1080")
 ap.add_argument("--dur", type=float, default=4.0)
@@ -41,7 +41,12 @@ a = ap.parse_args()
 W, H = map(int, a.size.split("x"))
 fx, fy = map(float, a.focus.split(","))
 photos = json.load(open("data/photos.json"))
-src_path = f"assets/media/gen/{a.key[4:]}.png" if a.key.startswith("gen:") else photos[a.key]
+if a.key.endswith(".png"):
+    src_path = a.key  # any image path (v5 plates: assets/media/gen5/<id>.png)
+elif a.key.startswith("gen:"):
+    src_path = f"assets/media/gen/{a.key[4:]}.png"
+else:
+    src_path = photos[a.key]
 src = np.asarray(Image.open(src_path).convert("RGB")).astype(np.float32) / 255.0
 ih, iw = src.shape[:2]
 

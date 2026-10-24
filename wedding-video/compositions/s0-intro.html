@@ -1,199 +1,66 @@
 <template>
   <style>
-    @font-face { font-family: "Pretendard"; font-weight: 600; src: url("assets/fonts/Pretendard-Bold.woff2"); }
-    @font-face { font-family: "Pretendard"; font-weight: 900; src: url("assets/fonts/Pretendard-Black.woff2"); }
-    @font-face { font-family: "Noto Serif KR"; font-weight: 200 900; src: url("assets/fonts/NotoSerifKR-VF.ttf"); }
-    @font-face { font-family: "Cormorant"; font-style: italic; src: url("assets/fonts/CormorantGaramond-Italic.ttf"); }
-
-    #root { position: absolute; inset: 0; overflow: hidden; background: #ece7dc; }
-    .studio { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 90% at 50% 45%, #f6f2ea 0%, #ece7dc 70%, #e2dccf 100%); }
-    .kt { line-height: 1.05; will-change: transform, opacity, filter; }
-    .kt .syl { display: inline-block; }
-    .A { font-family: "Pretendard"; font-weight: 900; letter-spacing: -0.035em; }
-    .B { font-family: "Noto Serif KR"; font-weight: 600; letter-spacing: -0.01em; }
-    .E { font-family: "Cormorant"; font-style: italic; }
-    .M { font-family: "Pretendard"; font-weight: 600; letter-spacing: 0.32em; font-size: 22px; }
-    .ink { color: #161514; }
-    .ivory { color: #f2ede4; }
-    .cob { color: #4554f1; }
-    .crm { color: #ece7dc; }
-    .rose { color: #a65e66; }
-
-    /* diptych: left = him (deeper grey), right = her (lighter) */
-    .half { position: absolute; top: 0; width: 960px; height: 1080px; overflow: hidden; }
-    #s0-hL { left: 0; background-color: #4554f1; }
-    #s0-hR { left: 960px; background: #ece7dc; }
-    .half img { position: absolute; bottom: -30px; height: 900px; }
-    #s0-gutter { position: absolute; left: 957px; top: 0; width: 6px; height: 1080px; background: #f2ede4; }
-    #s0-b1, #s0-b1-still { position: absolute; left: 0; top: -70px; width: 1920px; height: 1080px; }
-    #s0-b1-push { position: absolute; inset: 0; transform-origin: 50% 42%; }
-    #s0-field { position: absolute; inset: 0; }
+    [data-composition-id="s0"] { position: absolute; inset: 0; overflow: hidden; background: #0c0b0a; }
   </style>
 
   <div id="root" data-composition-id="s0" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
-    <div id="s0-studio" class="studio"></div>
-    <div id="s0-b1-push">
-      <img id="s0-b1-still" src="assets/media/blender/b1_last.png" alt="" />
-      <video id="s0-b1" class="clip" data-start="8.46" data-duration="2.86" data-track-index="2" src="assets/media/blender/b1.webm" muted playsinline></video>
+    <div id="s0-stage" style="position:absolute;inset:0"></div>
+    <div id="s0-media" style="display:none">
+      <video id="s0-E01" class="clip" data-start="0" data-duration="4.45" data-track-index="2" src="assets/media/living/v5_E01.mp4" muted playsinline></video>
+      <video id="s0-P01" class="clip" data-start="4.36" data-duration="1.65" data-track-index="2" src="assets/media/living/v5_P01.mp4" muted playsinline></video>
+      <video id="s0-P03" class="clip" data-start="5.9" data-duration="1.38" data-track-index="2" src="assets/media/living/v5_P03.mp4" muted playsinline></video>
+      <video id="s0-P04" class="clip" data-start="7.18" data-duration="3.65" data-track-index="2" src="assets/media/living/v5_P04.mp4" muted playsinline></video>
+      <video id="s0-E02" class="clip" data-start="10.72" data-duration="6.68" data-track-index="2" src="assets/media/living/v5_E02.mp4" muted playsinline></video>
     </div>
-    <svg id="s0-field" viewBox="0 0 1920 1080" data-layout-ignore></svg>
-    <div id="s0-halves">
-      <div id="s0-hL" class="half pat-oval"><img id="s0-g" src="assets/media/gen/cut/c01.png" alt="" style="left:60px" /></div>
-      <div id="s0-hR" class="half"><img id="s0-b" src="assets/media/gen/cut/c02.png" alt="" style="right:60px" /></div>
-      <div id="s0-gutter"></div>
-    </div>
-    <div id="s0-type"></div>
   </div>
 
   <script>
     (function () {
-      const S = K.scene("s0");
-      const at = K.timeline();
-      const gtl = gsap.timeline({ paused: true });
-      const W = K.flat(S, 80);
-      const T = (i) => W[i].ms;
-      const type = document.getElementById("s0-type");
-      const txt = (text, cls, css) => K.txt(type, text, cls, css);
-      const E = K.ease;
-
-      // soft arrival: blur 10 -> 0, rise 18 px, 520 ms, long tail
-      function reveal(el, t, { dur = 520, rise = 18, blur = 10 } = {}) {
-        at.set(el, { opacity: 0 }, 0);
-        at.add(el, { opacity: [0, 1], y: [rise, 0], filter: [`blur(${blur}px)`, "blur(0px)"], duration: dur, ease: E.expo }, t);
-      }
-      function leave(els, t, dur = 260) {
-        at.add(els, { opacity: [1, 0], filter: ["blur(0px)", "blur(8px)"], duration: dur, ease: E.in3 }, t);
-      }
+      // s0 intro (day) — the two rooms on the table, three opposite still lifes, the two of them leaning on one wall.
       // words: 0 두 1 사람 2 이렇게 3 서로 4 다르지만요 | 5 모든 6 게 7 완전히 8 정말 9 반대지만요 | 10 함께 11 있을 12 때면 13 왠지 14 참 15 좋은 16 걸요
+      const C = D.scene("s0");
+      const { at, T, END } = C;
 
-      // ---- the two portraits: each drifts the opposite way the whole time (him up, her down)
-      at.add("#s0-g", { y: [30, -20], duration: 9000, ease: "linear" }, 0);
-      at.add("#s0-b", { y: [-20, 30], duration: 9000, ease: "linear" }, 0);
-      at.set(["#s0-g", "#s0-b"], { opacity: 0 }, 0);
-      at.add("#s0-g", { opacity: [0, 1], filter: ["blur(12px)", "blur(0px)"], duration: 900, ease: E.expo }, T(0) - 200);
-      at.add("#s0-b", { opacity: [0, 1], filter: ["blur(12px)", "blur(0px)"], duration: 900, ease: E.expo }, T(1) - 200);
-
-      // ---- line 1: sans on his side, serif on hers, meeting at the seam
-      // his half is cobalt with cream gothic, hers is cream with cobalt myeongjo: the colours are each other's opposite
-      const du = txt("두", "A crm", { right: 1920 - 930, top: 120, fontSize: 230 });
-      const saram = txt("사람", "B cob", { left: 990, top: 120, fontSize: 230 });
-      const ireo = txt("이렇게", "A crm", { right: 1920 - 930, top: 400, fontSize: 96 });
-      const seoro = txt("서로", "B cob", { left: 990, top: 400, fontSize: 96 });
-      const dareu = txt("다르지", "A crm", { right: 1920 - 930, top: 560, fontSize: 150 });
-      const manyo = txt("만요", "B cob", { left: 990, top: 560, fontSize: 150 });
-      reveal(du, T(0));
-      reveal(saram, T(1));
-      reveal(ireo, T(2), { rise: 10 });
-      reveal(seoro, T(3), { rise: 10 });
-      reveal(dareu, T(4));
-      reveal(manyo, T(4) + 320);
-      leave([du, saram, ireo, seoro, dareu, manyo], T(5) - 280);
-
-      // ---- line 2: 모든 게 완전히 정말 / 반대 — on 반대 the two halves trade places
-      const modeun = txt("모든", "A crm", { right: 1920 - 930, top: 80, fontSize: 150 });
-      const ge = txt("게", "B cob", { left: 990, top: 80, fontSize: 150 });
-      const wan = txt("완전히", "A crm", { right: 1920 - 930, top: 260, fontSize: 96 });
-      const jm = txt("정말", "B cob", { left: 990, top: 260, fontSize: 96 });
-      // on every word a pair of opposites lands across the seam: one half each
-      const pairs = ["p11", "p12", "p06", "p01"];
-      const props = pairs.map((id, k) => {
-        const im = K.img(document.getElementById("s0-halves"), `assets/media/gen/cut/${id}.png`, { left: 460, top: 440, width: 1000, zIndex: 3 });
-        K.window(at, im, T(5 + k), k < 3 ? T(6 + k) : T(9));
-        at.add(im, { scale: [1.25, 1], y: [40, 0], duration: 420, ease: E.expo }, T(5 + k));
-        return im;
-      });
-      at.add(["#s0-g", "#s0-b"], { opacity: [1, 0.18], duration: 300, ease: E.inout }, T(5) - 200);
-      at.add(["#s0-g", "#s0-b"], { opacity: [0.18, 1], duration: 400, ease: E.inout }, T(9));
-      reveal(modeun, T(5));
-      reveal(ge, T(6));
-      reveal(wan, T(7), { rise: 10 });
-      reveal(jm, T(8), { rise: 10 });
-      const tSwap = T(9);
-      leave([modeun, ge, wan, jm], tSwap + 160, 320);
-      // the two halves pass each other: left slides right, right slides left, both dip 6 % mid-pass
-      at.add("#s0-hL", { x: [0, 960], scale: [1, 0.94, 1], duration: 1100, ease: E.inout }, tSwap);
-      at.add("#s0-hR", { x: [0, -960], scale: [1, 0.94, 1], duration: 1100, ease: E.inout }, tSwap);
-      const bandae = txt("반대", "A ink", { left: 0, right: 0, top: 540, fontSize: 280, textAlign: "center" });
-      bandae.style.color = "#ece7dc";
-      bandae.style.webkitTextStroke = "3px #232024";
-      bandae.style.zIndex = 4;
-      reveal(bandae, tSwap + 380, { dur: 700, rise: 0, blur: 16 });
-      const jiman = txt("지만요", "B ink", { left: 0, right: 0, top: 870, fontSize: 100, textAlign: "center" });
-      jiman.style.zIndex = 4;
-      reveal(jiman, tSwap + 700, { rise: 8 });
-
-      // ---- the diptych opens like a curtain onto the studio sweep; the 3D pair drifts in
-      const tOpen = S.ms(8.46) - 300;
-      leave([bandae, jiman], tOpen - 100, 300);
-      at.add("#s0-hL", { x: [960, 1920], duration: 900, ease: E.inout }, tOpen);
-      at.add("#s0-hR", { x: [-960, -1920], duration: 900, ease: E.inout }, tOpen);
-      at.add("#s0-gutter", { opacity: [1, 0], duration: 300, ease: "linear" }, tOpen);
-      at.set("#s0-b1-still", { opacity: 0 }, 0);
-      at.set("#s0-b1-still", { opacity: 1 }, S.ms(8.46 + 2.86) - 34);
-      at.add("#s0-b1-push", { scale: [1, 1.05], duration: S.dur * 1000 - S.ms(8.46), ease: "linear" }, S.ms(8.46));
-
-      // contact on 함께: hairline gold field lines draw from the N end round to the S end, then fade
-      const tHit = S.ms(8.46 + 2.308);
-      const svg = document.getElementById("s0-field");
-      const NS = "http://www.w3.org/2000/svg";
-      const paths = [];
-      for (let i = 0; i < 4; i++) {
-        const half = 700 + i * 40, up = 300 + i * 80, dn = 200 + i * 50;
-        [`M ${960 - half} 400 C ${960 - half - 160} ${400 - up}, ${960 + half + 160} ${400 - up}, ${960 + half} 400`,
-         `M ${960 - half} 470 C ${960 - half - 160} ${470 + dn}, ${960 + half + 160} ${470 + dn}, ${960 + half} 470`].forEach((d) => {
-          const p = document.createElementNS(NS, "path");
-          p.setAttribute("d", d);
-          p.setAttribute("fill", "none");
-          p.setAttribute("stroke", "#b08d57");
-          p.setAttribute("stroke-width", "1.6");
-          svg.appendChild(p);
-          paths.push(p);
-        });
+      // A. the dollhouse cross-section on a studio table: his room left, hers right, one wall between
+      {
+        const { cam } = D.shot(C, 0, T(5));
+        D.take("s0-E01", cam);
+        D.line(C, cam, [0, 1, 2, 3, 4], { y: 966, size: 48, color: "ink", lead: 420 });
+        D.fade(C, cam, 0, 1100, { color: "#0c0b0a", dir: "in", z: 50 });
       }
-      const dr = K.A.svg.createDrawable(paths);
-      at.set(dr, { draw: "0 0" }, 0);
-      dr.forEach((d, i) => {
-        at.add(d, { draw: ["0 0", "0 1"], duration: 1100, ease: E.expo }, tHit + (i >> 1) * 90);
-        at.add(d, { draw: ["0 1", "1 1"], duration: 900, ease: E.inout }, tHit + 1700 + (i >> 1) * 90);
-      });
 
-      // ---- 함께 있을 때면 왠지 — serif caption under the pair, word by word
-      const capX = [560, 790, 980, 1170];
-      const cap = [10, 11, 12, 13].map((i, k) => txt(W[i].t, "B ink", { left: capX[k], top: 820, fontSize: 70 }));
-      cap.forEach((el, k) => reveal(el, T(10 + k), { rise: 8, blur: 8 }));
-      leave(cap, T(14) - 300);
+      // B-D. opposites, cut on the words: coffee | milk, cube | sphere, sun | moon
+      {
+        const b = D.shot(C, T(5), T(7));
+        D.take("s0-P01", b.cam);
+        const c = D.shot(C, T(7), T(9));
+        D.take("s0-P03", c.cam);
+        const ov = D.layer(C, T(5), T(9));
+        D.line(C, ov, [5, 6, 7, 8], { y: 132, size: 64, color: "ink", lead: 80, enter: 380 });
+        const d = D.shot(C, T(9), T(10));
+        D.take("s0-P04", d.cam);
+        D.hero(C, d.cam, "반대지만요", T(9), { align: "center", y: 112, size: 132, font: "serifB", color: "ink", enter: 900, blur: 14, creep: 0.02 });
+      }
 
-      // ---- title and 참 좋은 걸요
-      const title = txt("반대가 끌리는 이유", "B ink", { left: 0, right: 0, top: 96, fontSize: 52, textAlign: "center" });
-      title.style.letterSpacing = "0.42em";
-      const en = txt("The reason why opposites attract", "E ink", { left: 0, right: 0, top: 168, fontSize: 38, textAlign: "center" });
-      at.set([title, en], { opacity: 0 }, 0);
-      at.add(title, { opacity: [0, 1], letterSpacing: ["0.8em", "0.42em"], filter: ["blur(8px)", "blur(0px)"], duration: 1400, ease: E.expo }, S.ms(8.46 + 3.0));
-      at.add(en, { opacity: [0, 0.8], duration: 1200, ease: E.inout }, S.ms(8.46 + 3.5));
-      const loveX = [650, 790, 1060];
-      const love = [14, 15, 16].map((i, k) => txt(W[i].t, "B rose", { left: loveX[k], top: 800, fontSize: 96 }));
-      love.forEach((el, k) => reveal(el, T(14 + k), { dur: 700, rise: 12 }));
-      // 참 좋은 걸요: the title steps back and the two of them walk in holding hands
-      const pair = K.img(document.getElementById("root"), "assets/media/gen/cut/c05.png", { left: 1330, top: 380, width: 500, zIndex: 2 });
-      at.set(pair, { opacity: 0 }, 0);
-      at.add(pair, { opacity: [0, 1], y: [80, 0], duration: 1000, ease: E.expo }, T(14) - 200);
-      at.add("#s0-b1-push", { opacity: [1, 0.0], duration: 700, ease: E.inout }, T(14) - 300);
-      at.add("#s0-field", { opacity: [1, 0], duration: 500, ease: E.inout }, T(14) - 300);
-      const names = txt(`${FILM.couple.groom}   &   ${FILM.couple.bride}`, "M ink", { left: 0, right: 0, top: 962, textAlign: "center" });
-      K.write(at, names, T(16), 900);
+      // E. back to back against the same wall; the title is split by it (his half, her half)
+      {
+        const { cam } = D.shot(C, T(10), END);
+        D.take("s0-E02", cam);
+        D.scrim(cam, "bottom", { a: 0.5, reach: 34 });
+        D.line(C, cam, [10, 11, 12, 13], { y: 914, size: 54, color: "cream", end: T(14) - 40, out: 260 });
+        D.line(C, cam, [14, 15, 16], { y: 914, size: 54, color: "cream", love: [15, 16], lead: 160 });
 
-      // warm light drifts across while the title settles, a rose one on 참 좋은 걸요
-      K.leak(at, document.getElementById("root"), S.ms(8.46 + 2.6), 3600, { peak: 0.5, from: "left", z: 30 });
-      K.leak(at, document.getElementById("root"), T(14) - 300, S.dur * 1000 - T(14) + 300, { peak: 0.55, from: "right", tone: "rose", z: 30 });
+        const tL = T(14);
+        const tR = T(15);
+        D.hero(C, cam, "반대가", tL, { x: 118, y: 92, size: 88, font: "serifB", color: "ink", enter: 1000, blur: 14 });
+        D.rule(C, cam, { x: 122, y: 214, w: 168, t: tL + 380, dur: 1100 });
+        D.hero(C, cam, "박준익", tL + 700, { x: 122, y: 230, size: 26, font: "serifL", color: "ink", enter: 900, blur: 8, spacing: "0.34em" });
+        D.hero(C, cam, "끌리는 이유", tR, { align: "right", x: 1802, y: 92, size: 88, font: "serifB", color: "ink", enter: 1000, blur: 14 });
+        D.rule(C, cam, { x: 1802 - 168, y: 214, w: 168, t: tR + 380, dur: 1100, origin: "right" });
+        D.hero(C, cam, "김명지", tR + 700, { align: "right", x: 1792, y: 230, size: 26, font: "serifL", color: "ink", enter: 900, blur: 8, spacing: "0.34em" });
+      }
 
-      // ---- out: dip cut into the rap (the frame darkens 40 % for 3 frames before the cut)
-      const dip = K.el("div", "", document.getElementById("root"));
-      dip.style.cssText = "position:absolute;inset:0;background:#161514";
-      at.set(dip, { opacity: 0 }, 0);
-      at.set(dip, { opacity: 0.4 }, S.dur * 1000 - 100);
-
-      K.bridge(gtl, at, S.dur);
-      window.__timelines["s0"] = gtl;
+      D.finish(C);
     })();
   </script>
 </template>

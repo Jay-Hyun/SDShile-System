@@ -1,240 +1,305 @@
-/* Design kit for the reference-driven pass (v4): the graphic vocabulary of the four reference films.
+/* Design kit v5: "두 개의 방, 하나의 집" — one premium miniature world, one motion language.
  *
- * Actor        cobalt / cream / orange, tone-on-tone oval pattern, scalloped halftone badge, starburst,
- *              checker, icon ring around a black disc, left-aligned neutral-gothic stacks, echo stacks.
- * Love Lee     pastel gradients (periwinkle, lilac, mint, pink), SNS post cards with a soft glow,
- *              circle windows, speech bubbles and pills, phone frames.
- * GODS         black + electric blue, condensed italic Latin, bars that scale from an edge.
- * How It's Done  giant word behind a cutout figure (subject sandwich), outline <-> fill.
- *
- * Illustrated assets come from GPT image generation (scripts/gen_images.py): assets/media/gen/<id>.png,
- * cut-outs in assets/media/gen/cut/<id>.png. Everything here is plain DOM/SVG/CSS, seek-safe.
+ * Plates     GPT-generated miniature sets (scripts/gen_v5.py -> assets/media/gen5/<id>.png). Most become
+ *            depth-parallax camera moves (assets/media/living5/<id>.mp4); plates with a chroma-green frame,
+ *            mirror or screen are keyed (scripts/key_green.py) and the real footage sits inside the hole.
+ * Type       the whole line is set first, dim; each word lights at its sung onset (opacity only).
+ *            SING = Noto Serif KR, RAP = Pretendard (row stack, the active row bright, older rows recede),
+ *            meta = Cormorant italic. Heroes enter with blur + opacity, never scale or bounce.
+ * Camera     slow dolly/truck in the clips, hard cuts on the beat, no shakes, no flashes, no springs.
+ * Everything is seek-safe: one paused anime timeline per scene, bridged from GSAP (K.bridge).
  */
 (function () {
   const PAL = {
-    cobalt: "#4554f1",
-    cobaltDeep: "#3442d6",
-    cream: "#ece7dc",
-    paper: "#f3efe6",
+    cream: "#F1ECE2",
+    paper: "#F7F2E8",
+    cobalt: "#2B3BCF",
+    coral: "#F08C8C",
+    coralD: "#C24F5C",
+    lilac: "#B8B2EA",
     ink: "#232024",
-    orange: "#eca039",
-    peri: "#6a6ae0",
-    lilac: "#bdbcf0",
-    mint: "#96e6b7",
-    pink: "#e07ab4",
-    coral: "#f0899a",
-    eblue: "#1a1ae6",
-    black: "#0b0b0d",
+    brass: "#B08D57",
+    brassL: "#D2B27A",
+    night: "#0E1022",
   };
 
-  const svgURI = (s) => `url("data:image/svg+xml;utf8,${encodeURIComponent(s)}")`;
-
   const css = `
-  .v4 { --cobalt:${PAL.cobalt}; --cream:${PAL.cream}; --ink:${PAL.ink}; --orange:${PAL.orange}; }
-  .bg-cobalt { background-color:${PAL.cobalt}; }
-  .bg-cream { background-color:${PAL.cream}; }
-  .bg-paper { background: radial-gradient(ellipse 80% 90% at 50% 45%, #f6f2ea 0%, ${PAL.cream} 70%, #e2dccf 100%); }
-  .bg-orange { background-color:${PAL.orange}; }
-  .bg-black { background-color:${PAL.black}; }
-  .bg-peri { background: linear-gradient(160deg, #5f5fd8 0%, #8f8ee8 45%, #c9c3f2 80%, #ead8f1 100%); }
-  .bg-lilac { background: linear-gradient(180deg, #e9e6fb 0%, #d7d3f7 55%, #f3e3f2 100%); }
-  .bg-mint { background: radial-gradient(ellipse 70% 80% at 50% 50%, #c4f3d6 0%, ${PAL.mint} 70%, #7fd9a6 100%); }
-  .bg-white { background: radial-gradient(ellipse 80% 80% at 50% 45%, #ffffff 0%, #f1f0f6 100%); }
-  .bg-dusk { background: linear-gradient(180deg, #2b2a7a 0%, #6a5fc8 55%, #e3a9c9 100%); }
-  .pat-oval { background-image: ${svgURI(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120"><g fill="#ffffff" fill-opacity="0.075">` +
-      `<ellipse cx="40" cy="30" rx="30" ry="12" transform="rotate(-28 40 30)"/>` +
-      `<ellipse cx="120" cy="90" rx="30" ry="12" transform="rotate(-28 120 90)"/></g></svg>`,
-  )}; background-size: 160px 120px; }
-  .pat-thumb { background-image: ${svgURI(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150"><g fill="#ffffff" fill-opacity="0.09">` +
-      `<circle cx="38" cy="38" r="22"/><circle cx="113" cy="113" r="22"/></g></svg>`,
-  )}; background-size: 150px 150px; }
-  .pat-check { background-color:${PAL.orange}; background-image: conic-gradient(rgba(255,255,255,.16) 25%, transparent 0 50%, rgba(255,255,255,.16) 0 75%, transparent 0); background-size: 120px 120px; }
-  .pat-grid { background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 96px 96px; }
-  .fill { position:absolute; inset:0; overflow:hidden; }
-  .shot { isolation: isolate; }
-  .fill > img.plate, .fill > video { position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; }
-  .k-sans { font-family: "Pretendard"; font-weight: 500; letter-spacing: -0.01em; }
-  .k-sansB { font-family: "Pretendard"; font-weight: 800; letter-spacing: -0.03em; }
-  .k-sansK { font-family: "Pretendard"; font-weight: 900; letter-spacing: -0.04em; }
-  .k-serif { font-family: "Noto Serif KR"; font-weight: 500; letter-spacing: -0.01em; }
-  .k-serifB { font-family: "Noto Serif KR"; font-weight: 700; letter-spacing: -0.02em; }
-  .k-cond { font-family: "Anton"; letter-spacing: 0.005em; text-transform: uppercase; }
-  .k-script { font-family: "Mrs Saint Delafield"; }
-  .k-meta { font-family: "Pretendard"; font-weight: 600; font-size: 15px; letter-spacing: 0.22em; text-transform: uppercase; }
-  .c-cream { color:${PAL.cream}; } .c-ink { color:${PAL.ink}; } .c-cobalt { color:${PAL.cobalt}; }
-  .c-orange { color:${PAL.orange}; } .c-white { color:#fff; } .c-pink { color:${PAL.pink}; } .c-eblue { color:${PAL.eblue}; }
-  .c-peri { color:${PAL.peri}; } .c-coral { color:${PAL.coral}; }
-  .glow { text-shadow: 0 0 40px rgba(255,255,255,.55); }
-  .outline { color: transparent; -webkit-text-stroke: 2px currentColor; }
-  .card { position:absolute; background:#fff; border-radius:26px; box-shadow: 0 30px 80px rgba(80,70,200,.28), 0 0 0 1px rgba(0,0,0,.04); overflow:hidden; }
-  .card .media { position:absolute; left:18px; right:18px; top:72px; bottom:110px; border-radius:16px; overflow:hidden; background:#eceaf6; }
-  .card .media img, .card .media video { position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; }
-  .phone { position:absolute; background:#f6f3ec; border-radius:64px; box-shadow: 0 40px 90px rgba(0,0,0,.35), inset 0 0 0 3px rgba(0,0,0,.08); }
-  .phone .screen { position:absolute; left:16px; right:16px; top:16px; bottom:16px; border-radius:50px; overflow:hidden; background:#000; }
-  .phone .screen img, .phone .screen video { position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; }
-  .pill { position:absolute; border-radius:999px; padding: 0 1.1em; display:flex; align-items:center; justify-content:center; white-space:nowrap; }
-  .meta-row { position:absolute; left:56px; right:56px; display:flex; justify-content:space-between; }
-  .kt { line-height: 1.12; will-change: transform, opacity, filter; }
-  .kt .syl, .kt .ime { display: inline-block; position: relative; }
-  .ime-s { position: absolute; left: 0; top: 0; }
-  .ime-final { position: relative; }
-  .slot-glyph { position: relative; }
-  .slot-block { position: absolute; left: 2%; right: 2%; top: 8%; bottom: 4%; transform-origin: 0 50%; }
+  .v5-shot { position:absolute; inset:0; overflow:hidden; isolation:isolate; background:#0c0b0a; }
+  .v5-cam { position:absolute; inset:0; transform-origin:50% 50%; }
+  .v5-cover { position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; display:block; }
+  .v5-win { position:absolute; overflow:hidden; background:#1b1917; }
+  .v5-glass { position:absolute; inset:0; pointer-events:none;
+    background: linear-gradient(128deg, rgba(255,250,240,.16) 0%, rgba(255,250,240,.05) 26%, rgba(255,250,240,0) 46%),
+                radial-gradient(ellipse 120% 120% at 50% 50%, rgba(0,0,0,0) 62%, rgba(10,8,6,.34) 100%); }
+  .v5-line { position:absolute; white-space:nowrap; }
+  .v5-row { display:block; }
+  .v5-w { display:inline-block; }
+  .v5-serif { font-family:"Noto Serif KR"; font-weight:600; letter-spacing:-0.01em; line-height:1.34; }
+  .v5-serifL { font-family:"Noto Serif KR"; font-weight:500; letter-spacing:0; line-height:1.34; }
+  .v5-serifB { font-family:"Noto Serif KR"; font-weight:700; letter-spacing:-0.02em; line-height:1.2; }
+  .v5-sans { font-family:"Pretendard"; font-weight:700; letter-spacing:-0.02em; line-height:1.28; }
+  .v5-sansB { font-family:"Pretendard"; font-weight:800; letter-spacing:-0.035em; line-height:1.1; }
+  .v5-sansK { font-family:"Pretendard"; font-weight:900; letter-spacing:-0.045em; line-height:1.0; }
+  .v5-meta { font-family:"Cormorant"; font-style:italic; letter-spacing:0.04em; }
+  .c-ink { color:${PAL.ink}; text-shadow: 0 1px 10px rgba(250,246,238,.42); }
+  .c-cream { color:#F8F3EA; text-shadow: 0 2px 8px rgba(18,14,22,.46), 0 0 2px rgba(18,14,22,.30); }
+  .c-coral { color:${PAL.coral}; text-shadow: 0 2px 8px rgba(18,14,22,.46), 0 0 2px rgba(18,14,22,.30); }
+  .c-brass { color:${PAL.brassL}; text-shadow: 0 2px 8px rgba(18,14,22,.40); }
+  .c-ink .love { color:${PAL.coralD}; }
+  .c-cream .love { color:${PAL.coral}; }
+  .v5-rule { position:absolute; height:2px; background:${PAL.brass}; transform-origin:0 50%; }
+  .v5-scrim { position:absolute; pointer-events:none; }
   `;
   const st = document.createElement("style");
   st.textContent = css;
   document.head.appendChild(st);
 
-  const NS = "http://www.w3.org/2000/svg";
-  const el = (tag, cls, parent, text) => K.el(tag, cls, parent, text);
-  const place = (e, o) => {
-    for (const [k, v] of Object.entries(o)) e.style[k] = typeof v === "number" && !/opacity|zIndex/.test(k) ? v + "px" : v;
-    return e;
-  };
+  const E = K.ease;
+  const px = (v) => (typeof v === "number" ? v + "px" : v);
 
   const D = {
     PAL,
 
-    /** A full-frame background layer. cls: "bg-cobalt pat-oval" etc. */
-    bg(parent, cls) {
-      return el("div", "fill " + cls, parent);
+    /** Scene context: the paused timelines, flat word list W, word time T(i), and the stage element. */
+    scene(id, { lead = 60 } = {}) {
+      const S = K.scene(id);
+      const at = K.timeline();
+      const gtl = gsap.timeline({ paused: true });
+      const W = K.flat(S, lead);
+      const END = Math.round(S.dur * 1000);
+      const T = (i) => (W[i] ? W[i].ms : END);
+      const stage = document.getElementById(id + "-stage");
+      return { id, S, at, gtl, W, T, END, stage };
     },
 
-    /** GPT-generated image: cut-out (alpha) if `cut`, else the full plate. */
-    gen(parent, id, css = {}, { cut = true } = {}) {
-      const im = K.img(parent, `assets/media/gen/${cut ? "cut/" : ""}${id}.png`, css);
-      if (!cut) im.classList.add("plate");
-      return im;
+    finish(ctx) {
+      K.bridge(ctx.gtl, ctx.at, ctx.S.dur);
+      window.__timelines[ctx.id] = ctx.gtl;
     },
 
-    /** Actor's scalloped halftone badge (the cursor that rides ahead of typing). */
-    badge(parent, { size = 120, color = "#e88fb6", dot = "#c4588f", n = 14 } = {}) {
-      // returned as a div wrapper: transforms animate reliably on HTML boxes, not on an outer <svg>
-      const box = el("div", "", parent);
-      box.style.cssText = `position:absolute;width:${size}px;height:${size}px`;
-      const s = document.createElementNS(NS, "svg");
-      s.setAttribute("viewBox", "-60 -60 120 120");
-      s.style.cssText = `position:absolute;left:0;top:0;width:${size}px;height:${size}px;overflow:visible`;
-      let d = "";
-      for (let i = 0; i < n; i++) {
-        const a0 = (i / n) * Math.PI * 2, a1 = ((i + 1) / n) * Math.PI * 2, am = (a0 + a1) / 2;
-        const p = (a, r) => `${(Math.cos(a) * r).toFixed(2)} ${(Math.sin(a) * r).toFixed(2)}`;
-        d += (i ? " L " : "M ") + p(a0, 46) + ` Q ${p(am, 60)} ${p(a1, 46)}`;
-      }
-      const id = "dots" + (D._n = (D._n || 0) + 1);
-      s.innerHTML =
-        `<defs><pattern id="${id}" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="1.6" fill="${dot}"/></pattern></defs>` +
-        `<path d="${d} Z" fill="${color}"/><path d="${d} Z" fill="url(#${id})" opacity=".55"/>`;
-      box.appendChild(s);
-      return box;
+    /** Beat time (scene-local ms) nearest to ms. */
+    onBeat(ctx, ms) {
+      const n = Math.round((ms / 1000 + ctx.S.start - K.FILM.firstBeat) / K.FILM.beatPeriod);
+      return ctx.S.beat(n);
     },
 
-    /** Starburst behind a word (Actor's orange burst). */
-    burst(parent, { rays = 16, color = "#f6c27a", inner = 0.55, size = 2400, x = 960, y = 540 } = {}) {
-      const box = el("div", "", parent);
-      box.style.cssText = `position:absolute;left:${x - size / 2}px;top:${y - size / 2}px;width:${size}px;height:${size}px`;
-      const s = document.createElementNS(NS, "svg");
-      s.setAttribute("viewBox", "-100 -100 200 200");
-      s.style.cssText = `position:absolute;left:0;top:0;width:${size}px;height:${size}px;overflow:visible`;
-      let d = "";
-      for (let i = 0; i < rays * 2; i++) {
-        const a = (i / (rays * 2)) * Math.PI * 2;
-        const r = i % 2 ? 100 * inner : 100;
-        d += (i ? "L" : "M") + (Math.cos(a) * r).toFixed(2) + " " + (Math.sin(a) * r).toFixed(2);
-      }
-      s.innerHTML = `<path d="${d}Z" fill="${color}"/>`;
-      box.appendChild(s);
-      return box;
+    /** A full-frame shot visible over [t0, t1): `shot` owns visibility, `cam` the camera move. */
+    shot(ctx, t0, t1, { bg = null } = {}) {
+      const shot = K.el("div", "v5-shot", ctx.stage);
+      if (bg) shot.style.background = bg;
+      K.window(ctx.at, shot, Math.max(0, t0), t1);
+      const cam = K.el("div", "v5-cam", shot);
+      return { shot, cam, t0, t1 };
     },
 
-    /** Items placed evenly on a circle (returns wrapper to rotate and the item elements). */
-    ring(parent, n, make, { cx = 960, cy = 540, r = 380, spin = true } = {}) {
-      const w = el("div", "", parent);
-      w.style.cssText = `position:absolute;left:${cx}px;top:${cy}px;width:0;height:0`;
-      const items = [];
-      for (let i = 0; i < n; i++) {
-        const a = (i / n) * Math.PI * 2 - Math.PI / 2;
-        const holder = el("div", "", w);
-        holder.style.cssText = `position:absolute;left:${Math.cos(a) * r}px;top:${Math.sin(a) * r}px;transform:rotate(${spin ? (a * 180) / Math.PI + 90 : 0}deg)`;
-        const it = make(holder, i);
-        items.push(holder);
-      }
-      return { wrap: w, items };
+    /** A transparent overlay over [t0, t1) that sits above the shots (lyrics that run across cuts). */
+    layer(ctx, t0, t1, { z = 40 } = {}) {
+      const l = K.el("div", "", ctx.stage);
+      l.style.cssText = `position:absolute;inset:0;pointer-events:none;z-index:${z}`;
+      K.window(ctx.at, l, Math.max(0, t0), t1);
+      return l;
     },
 
-    /** Echo stack: the same line repeated, outlined copies around one filled copy (Actor TIME OVER). */
-    echo(parent, text, { n = 5, gap = 70, cls = "k-cond", size = 80, color = "#fff", x = 0, y = 540, center = true } = {}) {
-      const box = el("div", "", parent);
-      box.style.cssText = `position:absolute;left:${x}px;${center ? "right:0" : ""};top:${y - (n * gap) / 2}px;text-align:${center ? "center" : "left"}`;
-      const rows = [];
-      for (let i = 0; i < n; i++) {
-        const r = el("div", "kt " + cls, box, text);
-        r.style.cssText += `position:absolute;left:0;right:0;top:${i * gap}px;font-size:${size}px;line-height:1;color:${color};white-space:nowrap`;
-        if (i !== Math.floor(n / 2)) {
-          r.style.color = "transparent";
-          r.style.webkitTextStroke = `1.5px ${color}`;
-          r.style.opacity = 0.75;
+    /** Move a declared <video> (a depth-parallax plate or real footage) into parent as a cover layer. */
+    take(id, parent, { pos = null, grade = null } = {}) {
+      const v = document.getElementById(id);
+      v.classList.add("v5-cover");
+      if (pos) v.style.objectPosition = pos;
+      if (grade) v.style.filter = grade;
+      parent.appendChild(v);
+      return v;
+    },
+
+    /** Camera move on any layer: from/to = {x, y, s, r}. */
+    move(ctx, el, t0, t1, { from = {}, to = {}, ease = "linear", origin = null } = {}) {
+      const f = { x: 0, y: 0, s: 1, r: 0, ...from };
+      const g = { x: 0, y: 0, s: 1, r: 0, ...to };
+      if (origin) el.style.transformOrigin = origin;
+      ctx.at.set(el, { x: f.x, y: f.y, scale: f.s, rotate: f.r }, 0);
+      ctx.at.add(el, { x: [f.x, g.x], y: [f.y, g.y], scale: [f.s, g.s], rotate: [f.r, g.r], duration: Math.max(1, t1 - t0), ease: E[ease] || ease }, t0);
+      return el;
+    },
+
+    /** A still plate (cover) with a slow camera move. */
+    still(ctx, parent, src, t0, t1, opts = {}) {
+      const img = K.el("img", "v5-cover", parent);
+      img.src = src;
+      img.alt = "";
+      if (opts.pos) img.style.objectPosition = opts.pos;
+      D.move(ctx, img, t0, t1, opts);
+      return img;
+    },
+
+    /** Green-key composite. The keyed plate (with transparent holes) sits on top; under each hole a window
+     *  holds media: { video: id } | { src } | { build(win) }. `window.GREEN[id]` = {W, H, holes:[{x,y,w,h}]}.
+     *  The plate is fitted to 1920 wide (centred vertically); move it with opts.from/to like D.move. */
+    keyed(ctx, parent, id, media, t0, t1, opts = {}) {
+      const R = window.GREEN[id];
+      const k = 1920 / R.W;
+      const H = R.H * k;
+      const box = K.el("div", "", parent);
+      box.style.cssText = `position:absolute;left:0;top:${(1080 - H) / 2 + (opts.dy || 0)}px;width:1920px;height:${H}px;transform-origin:50% 50%`;
+      const wins = R.holes.map((h, j) => {
+        const m = media[j];
+        if (!m) return null;
+        const pad = 6;
+        const win = K.el("div", "v5-win", box);
+        win.style.left = (h.x - pad) * k + "px";
+        win.style.top = (h.y - pad) * k + "px";
+        win.style.width = (h.w + 2 * pad) * k + "px";
+        win.style.height = (h.h + 2 * pad) * k + "px";
+        const grade = m.grade || "saturate(.9) contrast(.95) brightness(.94) sepia(.1)";
+        if (m.video) D.take(m.video, win, { pos: m.pos, grade });
+        else if (m.src) {
+          const img = K.el("img", "v5-cover", win);
+          img.src = m.src;
+          img.alt = "";
+          if (m.pos) img.style.objectPosition = m.pos;
+          img.style.filter = grade;
         }
-        rows.push(r);
+        if (m.build) m.build(win, grade);
+        K.el("div", "v5-glass", win);
+        return win;
+      });
+      const plate = K.el("img", "", box);
+      plate.src = `assets/media/gen5/${id}_keyed.png`;
+      plate.alt = "";
+      plate.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%";
+      D.move(ctx, box, t0, t1, opts);
+      return { box, wins, k };
+    },
+
+    /** Lyric line(s), karaoke style: the line is set first (dim), each word lights at its onset.
+     *  idx = [i, ...] or [[row1...], [row2...]]. align: left | center | right (x is the anchor). */
+    line(ctx, parent, idx, o = {}) {
+      const { x = 960, y = 140, align = "center", size = 64, font = "serif", color = "ink", love = [], dim = 0.28, lead = 300, enter = 560, end = null, out = 300, gap = 1.34, z = 30 } = o;
+      const rows = Array.isArray(idx[0]) ? idx : [idx];
+      const box = K.el("div", `v5-line v5-${font} c-${color}`, parent);
+      box.style.fontSize = size + "px";
+      box.style.top = px(y);
+      box.style.zIndex = z;
+      box.style.lineHeight = String(gap);
+      if (align === "center") {
+        box.style.left = "0px";
+        box.style.right = "0px";
+        box.style.textAlign = "center";
+      } else if (align === "left") {
+        box.style.left = px(x);
+      } else {
+        box.style.right = px(1920 - x);
+        box.style.textAlign = "right";
       }
-      return { box, rows, hero: rows[Math.floor(n / 2)] };
+      const words = [];
+      rows.forEach((r) => {
+        const row = K.el("div", "v5-row", box);
+        r.forEach((i, k) => {
+          const sp = K.el("span", "v5-w" + (love.includes(i) ? " love" : ""), row, o.text && o.text[i] != null ? o.text[i] : ctx.W[i].t);
+          if (k < r.length - 1) row.appendChild(document.createTextNode(" "));
+          words.push({ sp, i });
+        });
+      });
+      const at = ctx.at;
+      const tIn = Math.max(0, ctx.T(rows[0][0]) - lead);
+      at.set(box, { opacity: 0 }, 0);
+      at.add(box, { opacity: [0, 1], filter: ["blur(8px)", "blur(0px)"], duration: enter, ease: E.expo }, tIn);
+      words.forEach(({ sp, i }) => {
+        at.set(sp, { opacity: dim }, 0);
+        at.add(sp, { opacity: [dim, 1], duration: 170, ease: E.quart }, Math.max(tIn + 1, ctx.T(i)));
+      });
+      if (end != null) D.out(ctx, box, end - out, out);
+      return box;
     },
 
-    /** SNS post card (Love Lee): header, media slot, action icons, caption lines. Returns { card, media }. */
-    card(parent, { x, y, w = 520, h = 680, handle = "", likes = "" } = {}) {
-      const c = el("div", "card", parent);
-      place(c, { left: x, top: y, width: w, height: h });
-      const av = el("div", "", c);
-      av.style.cssText = "position:absolute;left:22px;top:20px;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8f8ee8,#e07ab4)";
-      const hd = el("div", "k-sans", c, handle);
-      hd.style.cssText = "position:absolute;left:70px;top:26px;font-size:20px;color:#2a2833";
-      const dots = el("div", "", c, "•••");
-      dots.style.cssText = "position:absolute;right:24px;top:22px;font-size:18px;color:#9a97b0;letter-spacing:2px";
-      const media = el("div", "media", c);
-      const icons = document.createElementNS(NS, "svg");
-      icons.setAttribute("viewBox", "0 0 160 32");
-      icons.style.cssText = `position:absolute;left:22px;bottom:62px;width:150px;height:30px`;
-      icons.innerHTML =
-        `<path d="M16 28 C 2 18, 2 6, 10 5 C 13 4.5, 15 6, 16 8 C 17 6, 19 4.5, 22 5 C 30 6, 30 18, 16 28 Z" fill="#e8577f"/>` +
-        `<path d="M58 6 h 22 a 6 6 0 0 1 6 6 v 9 a 6 6 0 0 1 -6 6 h -14 l -8 6 v -6 a 6 6 0 0 1 -6 -6 v -9 a 6 6 0 0 1 6 -6 z" fill="none" stroke="#2a2833" stroke-width="2.6"/>` +
-        `<path d="M110 16 L 136 5 L 128 30 L 122 19 Z" fill="none" stroke="#2a2833" stroke-width="2.6" stroke-linejoin="round"/>`;
-      c.appendChild(icons);
-      const cap = el("div", "k-sans", c, likes);
-      cap.style.cssText = "position:absolute;left:24px;bottom:26px;font-size:19px;color:#2a2833";
-      return { card: c, media };
+    /** Rap stack: rows enter at their first word, words light at onset, the active row is bright and
+     *  older rows recede. rows = [[i...], ...]. */
+    rap(ctx, parent, rows, o = {}) {
+      const { x = 120, y = 300, size = 64, color = "cream", font = "sans", love = [], dim = 0.3, recede = 0.38, gap = 1.3, end = null, out = 260, lead = 160, z = 30, align = "left", rot = 0 } = o;
+      const at = ctx.at;
+      const box = K.el("div", `v5-line v5-${font} c-${color}`, parent);
+      const anchor = align === "right" ? `right:${1920 - x}px;text-align:right` : `left:${x}px`;
+      box.style.cssText += `;${anchor};top:${y}px;font-size:${size}px;line-height:${gap};z-index:${z}` + (rot ? `;transform:rotate(${rot}deg);transform-origin:0 0` : "");
+      const rowEls = rows.map((r) => {
+        const row = K.el("div", "v5-row", box);
+        r.forEach((i, k) => {
+          const sp = K.el("span", "v5-w" + (love.includes(i) ? " love" : ""), row, ctx.W[i].t);
+          if (k < r.length - 1) row.appendChild(document.createTextNode(" "));
+          at.set(sp, { opacity: dim }, 0);
+          at.add(sp, { opacity: [dim, 1], duration: 120, ease: E.quart }, Math.max(1, ctx.T(i)));
+        });
+        return row;
+      });
+      rowEls.forEach((row, k) => {
+        const t = Math.max(0, ctx.T(rows[k][0]) - lead);
+        at.set(row, { opacity: 0 }, 0);
+        at.add(row, { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 380, ease: E.expo }, t);
+        if (k + 1 < rows.length) {
+          const tn = Math.max(t + 400, ctx.T(rows[k + 1][0]) - lead);
+          at.add(row, { opacity: [1, recede], duration: 260, ease: E.quart }, tn);
+        }
+      });
+      if (end != null) D.out(ctx, box, end - out, out);
+      return box;
     },
 
-    /** A phone (cream frame) whose screen is a slot. Returns { phone, screen }. */
-    phone(parent, { x, y, h = 900 } = {}) {
-      const w = Math.round(h * 0.49);
-      const p = el("div", "phone", parent);
-      place(p, { left: x, top: y, width: w, height: h });
-      const screen = el("div", "screen", p);
-      const notch = el("div", "", p);
-      notch.style.cssText = `position:absolute;left:${w / 2 - 60}px;top:34px;width:120px;height:32px;border-radius:20px;background:#0b0b0d`;
-      return { phone: p, screen };
+    /** A hero word: blur + opacity in, optional slow creep; never scale-pops. */
+    hero(ctx, parent, text, t, o = {}) {
+      const { x = 120, y = 200, size = 160, font = "sansK", color = "cream", align = "left", end = null, enter = 520, blur = 12, creep = 0, out = 300, z = 31, spacing = null } = o;
+      const css = { top: y, fontSize: size, zIndex: z };
+      if (align === "center") Object.assign(css, { left: 0, right: 0, textAlign: "center" });
+      else if (align === "left") css.left = x;
+      else Object.assign(css, { right: 1920 - x, textAlign: "right" });
+      const el = K.txt(parent, text, `v5-hero v5-${font} c-${color}`, css);
+      if (spacing) el.style.letterSpacing = spacing;
+      const at = ctx.at;
+      at.set(el, { opacity: 0 }, 0);
+      at.add(el, { opacity: [0, 1], filter: [`blur(${blur}px)`, "blur(0px)"], duration: enter, ease: E.expo }, Math.max(0, t));
+      if (creep) at.add(el, { scale: [1, 1 + creep], duration: Math.max(1, (end || ctx.END) - t), ease: "linear" }, Math.max(0, t));
+      if (end != null) D.out(ctx, el, end - out, out);
+      return el;
     },
 
-    /** Speech bubble (rounded) with a small tail; text inside. */
-    bubble(parent, text, { x, y, cls = "k-sansB", size = 54, bg = "#fff", color = "#5b54d6", tail = "left", pad = 0.9 } = {}) {
-      const b = el("div", "pill kt " + cls, parent, text);
-      place(b, { left: x, top: y, fontSize: size, height: size * 2, background: bg, color, padding: `0 ${pad}em` });
-      b.style.boxShadow = "0 18px 40px rgba(60,40,160,.22)";
-      const t = el("div", "", b);
-      t.style.cssText = `position:absolute;${tail}:${size * 0.7}px;bottom:-${size * 0.35}px;width:${size * 0.7}px;height:${size * 0.7}px;background:${bg};transform:rotate(45deg);border-radius:4px;z-index:-1`;
-      return b;
+    /** Soft exit: opacity to 0 with a little blur. */
+    out(ctx, els, t, dur = 300) {
+      ctx.at.add(els, { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: dur, ease: E.in3 }, Math.max(0, t));
     },
 
-    /** Small editorial meta text in the corners (Actor/GODS frame furniture). */
-    meta(parent, left, right, { y = 1000, color = "rgba(255,255,255,.7)" } = {}) {
-      const r = el("div", "meta-row k-meta", parent);
-      r.style.top = y + "px";
-      r.style.color = color;
-      el("span", "", r, left);
-      el("span", "", r, right);
+    /** Brushed-brass rule that draws from its origin. */
+    rule(ctx, parent, { x, y, w, t, dur = 1000, color = null, origin = "left", z = 30, end = null } = {}) {
+      const r = K.el("div", "v5-rule", parent);
+      r.style.cssText += `;left:${x}px;top:${y}px;width:${w}px;z-index:${z};transform-origin:${origin === "center" ? "50% 50%" : origin === "right" ? "100% 50%" : "0 50%"}`;
+      if (color) r.style.background = color;
+      ctx.at.set(r, { scaleX: 0 }, 0);
+      ctx.at.add(r, { scaleX: [0, 1], duration: dur, ease: E.expo }, t);
+      if (end != null) D.out(ctx, r, end - 300, 300);
       return r;
+    },
+
+    /** Legibility scrim along an edge: zone top | bottom | left | right; tone dark | light. */
+    scrim(parent, zone, { tone = "dark", a = 0.42, reach = 46, z = 20 } = {}) {
+      const s = K.el("div", "v5-scrim", parent);
+      const c = tone === "dark" ? "16,13,20" : "246,241,232";
+      const dir = { top: "180deg", bottom: "0deg", left: "90deg", right: "270deg" }[zone];
+      s.style.cssText += `;inset:0;z-index:${z};background:linear-gradient(${dir}, rgba(${c},${a}) 0%, rgba(${c},${a * 0.55}) ${reach * 0.45}%, rgba(${c},0) ${reach}%)`;
+      return s;
+    },
+
+    /** Full-frame colour layer that fades in (dir "in": colour -> clear) or out (clear -> colour). */
+    fade(ctx, parent, t, dur, { color = "#000", dir = "in", z = 60, ease = null } = {}) {
+      const f = K.el("div", "", parent);
+      f.style.cssText = `position:absolute;inset:0;background:${color};pointer-events:none;z-index:${z}`;
+      const a = dir === "in" ? [1, 0] : [0, 1];
+      ctx.at.set(f, { opacity: a[0] }, 0);
+      ctx.at.add(f, { opacity: a, duration: dur, ease: E[ease] || (dir === "in" ? E.quart : E.in3) }, t);
+      return f;
+    },
+
+    /** Warm light bloom: a soft radial glow that swells to full (the bridge -> final chorus wind-up). */
+    bloom(ctx, parent, t0, t1, { color = "255,246,226", x = "50%", y = "48%", z = 58 } = {}) {
+      const b = K.el("div", "", parent);
+      b.style.cssText = `position:absolute;inset:-10%;pointer-events:none;z-index:${z};background:radial-gradient(ellipse 60% 60% at ${x} ${y}, rgba(${color},1) 0%, rgba(${color},.85) 40%, rgba(${color},.6) 100%)`;
+      ctx.at.set(b, { opacity: 0 }, 0);
+      ctx.at.add(b, { opacity: [0, 1], duration: t1 - t0, ease: E.in3 }, t0);
+      return b;
     },
   };
 

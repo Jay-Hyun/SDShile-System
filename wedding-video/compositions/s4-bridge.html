@@ -1,118 +1,65 @@
 <template>
   <style>
-    #root { position: absolute; inset: 0; overflow: hidden; background: #0c0b0a; }
-    .shot { position: absolute; inset: 0; overflow: hidden; }
-    .room { position: absolute; left: 0; top: 0; width: 1920px; height: 1280px; }
-    .room img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+    [data-composition-id="s4"] { position: absolute; inset: 0; overflow: hidden; background: #0c0b0a; }
   </style>
 
   <div id="root" data-composition-id="s4" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
     <div id="s4-stage" style="position:absolute;inset:0"></div>
+    <div id="s4-media" style="display:none">
+      <video id="s4-E20" class="clip" data-start="0" data-duration="4.05" data-track-index="2" src="assets/media/living/v5_E20.mp4" muted playsinline></video>
+      <video id="s4-E20b" class="clip" data-start="9.22" data-duration="7.68" data-track-index="2" src="assets/media/living/v5_E20b.mp4" muted playsinline></video>
+    </div>
   </div>
 
   <script>
     (function () {
-      const S = K.scene("s4");
-      const at = K.timeline();
-      const gtl = gsap.timeline({ paused: true });
-      const W = K.flat(S, 80);
-      const END = S.dur * 1000;
-      const T = (i) => (W[i] ? W[i].ms : END);
-      const E = K.ease;
-      const P = D.PAL;
-      const root = document.getElementById("root");
-      const stage = document.getElementById("s4-stage");
+      // s4 bridge (morning) — one room now, two different chairs; the film goes widescreen and the lyric is a subtitle.
       // words: 0 두 1 사람 2 이렇게 3 서로 4 다르지만요 | 5 모든 6 게 7 완전히 8 정말 9 반대지만요 | 10 함께 11 있을 12 때면 13 왠지 | 14 참 15 좋은 16 걸요
+      const C = D.scene("s4");
+      const { at, T, END } = C;
+      const E = K.ease;
+      const PLATE = "assets/media/gen5/E20.png";
 
-      // ---- grammar (GODS, quiet): one white clay room lit like a gallery, a slow camera, serif words,
-      //      the film goes widescreen and the lyric runs as a subtitle in the bar
-      function soft(el, t, { dur = 800, rise = 14, blur = 12 } = {}) {
-        at.set(el, { opacity: 0 }, 0);
-        at.add(el, { opacity: [0, 1], y: [rise, 0], filter: [`blur(${blur}px)`, "blur(0px)"], duration: dur, ease: E.expo }, t);
+      // the empty room, two chairs facing each other
+      {
+        const { cam } = D.shot(C, 0, T(5));
+        D.take("s4-E20", cam);
       }
-      function out(els, t, dur = 300) {
-        at.add(els, { opacity: [1, 0], filter: ["blur(0px)", "blur(8px)"], duration: dur, ease: E.in3 }, t);
+      // 모든 게 / 완전히: the black armchair, the white chair (closer, cut on the words)
+      {
+        const a = D.shot(C, T(5), T(7));
+        D.still(C, a.cam, PLATE, T(5), T(7), { origin: "634px 694px", from: { x: 285, y: -150, s: 1.45 }, to: { x: 255, y: -150, s: 1.47 } });
+        const b = D.shot(C, T(7), T(8));
+        D.still(C, b.cam, PLATE, T(7), T(8), { origin: "1382px 687px", from: { x: -242, y: -150, s: 1.45 }, to: { x: -222, y: -150, s: 1.47 } });
       }
-      function subtitle(idx) {
-        const row = K.txt(root, "", "k-serif c-cream", { left: 0, right: 0, top: 978, fontSize: 48, textAlign: "center", zIndex: 70 });
-        return idx.map((i, k) => {
-          const sp = K.el("span", "", row, W[i].t);
-          sp.style.display = "inline-block";
-          if (k < idx.length - 1) K.el("span", "", row, " ");
-          soft(sp, T(i), { dur: 600, rise: 8 });
-          return sp;
-        });
+      // 정말 반대지만요: the whole room again, holding still
+      {
+        const { cam } = D.shot(C, T(8), T(10));
+        D.still(C, cam, PLATE, T(8), T(10), { from: { s: 1.0 }, to: { s: 1.035 } });
       }
-      const bars = K.letterbox(at, root, 0, { h: 125, dur: 10 });
-      bars.forEach((b) => (b.style.zIndex = 65));
-      at.add(bars[0], { translateY: [0, -125], duration: 520, ease: E.in3 }, END - 520);
-      at.add(bars[1], { translateY: [0, 125], duration: 520, ease: E.in3 }, END - 520);
+      // 함께: the same room, the same framing — now they sit in the two chairs, facing each other
+      {
+        const { cam } = D.shot(C, T(10), END);
+        D.take("s4-E20b", cam);
+      }
 
-      // ---- the room: one plate, the camera moves inside it (crop windows = shots)
-      const room = K.el("div", "room", stage);
-      D.gen(room, "e06", {}, { cut: false });
-      room.style.transformOrigin = "0 0";
-      // wide, slow push to the two chairs
-      at.set(room, { x: 0, y: -100, scale: 1 }, 0);
-      at.add(room, { x: [0, -96], y: [-100, -150], scale: [1, 1.1], duration: T(5), ease: "linear" }, 0);
-      const l1 = subtitle([0, 1, 2, 3, 4]);
-      out(l1, T(5) - 260);
-      const big1 = K.txt(stage, "두 사람", "k-serifB c-ink", { left: 0, right: 0, top: 170, fontSize: 120, textAlign: "center" });
-      soft(big1, T(0), { dur: 1200 });
-      out(big1, T(3) - 200, 400);
+      // widescreen bars and the subtitle inside the lower bar
+      {
+        const ov = D.layer(C, 0, END, { z: 60 });
+        const bars = K.letterbox(at, ov, 0, { h: 138, dur: 700 });
+        bars.forEach((b) => (b.style.background = "#0c0b0a"));
+        const sub = { y: 984, size: 38, color: "cream", font: "serifL", dim: 0.34, lead: 220, enter: 480, z: 70 };
+        D.line(C, ov, [0, 1, 2, 3, 4], { ...sub, end: T(5) - 40, out: 240 });
+        D.line(C, ov, [5, 6, 7, 8, 9], { ...sub, lead: 80, end: T(10) - 40, out: 240 });
+        D.line(C, ov, [10, 11, 12, 13], { ...sub, lead: 80, end: T(14) - 40, out: 240 });
+        D.line(C, ov, [14, 15, 16], { ...sub, lead: 80, love: [15, 16] });
+        // the light swells from the window and the whole frame turns to paper (it becomes the next scene's first frame)
+        K.leak(at, ov, T(14) - 200, END - T(14) + 200, { peak: 0.55, from: "left", z: 75 });
+        D.bloom(C, ov, T(14) + 400, END - 200, { color: "247,242,232", x: "40%", y: "45%", z: 80 });
+        D.fade(C, ov, END - 700, 680, { color: "#F7F2E8", dir: "out", z: 85, ease: "inout" });
+      }
 
-      // ---- 모든 게 완전히 정말: four hard cuts, black chair, white chair, black, white (closer each time)
-      // chair centres in room px (e06): black armchair ~(576, 781), white chair ~(1373, 768); x = 960 - s*px
-      const crops = [
-        { x: -134, y: -944, s: 1.9 },
-        { x: -1649, y: -919, s: 1.9 },
-        { x: -653, y: -1647, s: 2.8 },
-        { x: -2884, y: -1610, s: 2.8 },
-      ];
-      const hits = [T(5), T(6), T(7), T(8)];
-      crops.forEach((c, j) => {
-        at.set(room, { x: c.x, y: c.y, scale: c.s }, hits[j]);
-        at.add(room, { x: [c.x, c.x - 30], duration: (hits[j + 1] || T(9)) - hits[j], ease: "linear" }, hits[j]);
-        K.flashFrame(at, stage, hits[j], { color: "#fff", dur: 120, peak: 0.5 });
-      });
-      const l2 = subtitle([5, 6, 7, 8]);
-      out(l2, T(9) - 120, 200);
-
-      // ---- 반대지만요: back out to the whole room; the word drops into the space between the chairs
-      at.set(room, { x: -96, y: -150, scale: 1.1 }, T(9));
-      at.add(room, { x: [-96, -40], y: [-150, -120], scale: [1.1, 1.04], duration: T(10) - T(9), ease: E.quart }, T(9));
-      const bandae = K.txt(stage, "반대지만요", "k-sansK c-ink", { left: 0, right: 0, top: 320, fontSize: 210, textAlign: "center" });
-      at.set(bandae, { opacity: 0 }, 0);
-      at.add(bandae, { opacity: [0, 1], letterSpacing: ["0.5em", "-0.02em"], filter: ["blur(16px)", "blur(0px)"], duration: 1200, ease: E.expo }, T(9));
-      out(bandae, T(10) - 360, 300);
-
-      // ---- 함께 있을 때면 왠지: the two of them dance in the middle of the room; the word stands behind them
-      const tTo = T(10);
-      const ham = K.txt(stage, "함께", "k-serifB c-ink", { left: 0, right: 0, top: 110, fontSize: 340, textAlign: "center" });
-      K.syllables(ham).forEach((s, k) => soft(s, tTo + k * 160, { dur: 1300, rise: 50, blur: 20 }));
-      ham.style.opacity = 0.92;
-      const dance = D.gen(stage, "c11", { left: 560, top: 380, width: 800 });
-      at.set(dance, { opacity: 0 }, 0);
-      at.add(dance, { opacity: [0, 1], y: [60, 0], duration: 1400, ease: E.expo }, tTo - 100);
-      at.add(dance, { scale: [1, 1.05], duration: END - tTo, ease: "linear" }, tTo);
-      const l3 = subtitle([10, 11, 12, 13]);
-      out(l3, T(14) - 300);
-      out(ham, T(14) - 400, 700);
-
-      // ---- 참 좋은 걸요: rose words above them, light leaks in and the whole frame climbs to white for the drop
-      const love = K.txt(stage, "", "k-serifB c-coral", { left: 0, right: 0, top: 180, fontSize: 170, textAlign: "center" });
-      [14, 15, 16].forEach((i, k) => {
-        const sp = K.el("span", "", love, W[i].t);
-        sp.style.display = "inline-block";
-        if (k < 2) K.el("span", "", love, " ");
-        soft(sp, T(i), { dur: 900, rise: 24, blur: 16 });
-      });
-      K.leak(at, stage, T(14) - 200, END - T(14) + 200, { peak: 0.7, from: "left", z: 55 });
-      at.add(stage, { scale: [1, 1.1], duration: END - T(15), ease: E.in3 }, T(15));
-      K.whiteout(at, root, END - 900, END, { z: 66 });
-
-      K.bridge(gtl, at, S.dur);
-      window.__timelines["s4"] = gtl;
+      D.finish(C);
     })();
   </script>
 </template>
