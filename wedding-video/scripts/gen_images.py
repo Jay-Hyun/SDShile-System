@@ -33,8 +33,8 @@ def brief(it):
             who.append(M[w])
             refs.append(M["refs"][w])
         who.append(M["figurine"])
-    bg = ("Isolate the subject on a perfectly flat, plain light warm grey background (#e8e5df), no floor line, "
-          "no props around it, soft contact shadow only directly under it.") if it["alpha"] else "Full-bleed scene, no border."
+    bg = ("Isolate the subject: transparent background (PNG with alpha) if your tool supports it, otherwise a perfectly "
+          "flat plain light warm grey background (#e8e5df) with no floor line and no other props.") if it["alpha"] else "Full-bleed scene, no border."
     likeness = ("The attached photos are the real couple: keep their hairstyles, glasses, face shapes and overall "
                 "look recognisable, translated into the clay figurine style (do not make it photorealistic).") if refs else ""
     text = f"""Use your image generation tool to create exactly ONE image, then save it as a PNG file at this exact path

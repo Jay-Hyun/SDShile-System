@@ -5,8 +5,8 @@
     @font-face { font-family: "Noto Serif KR"; font-weight: 200 900; src: url("assets/fonts/NotoSerifKR-VF.ttf"); }
     @font-face { font-family: "Cormorant"; font-style: italic; src: url("assets/fonts/CormorantGaramond-Italic.ttf"); }
 
-    #root { position: absolute; inset: 0; overflow: hidden; background: #f2ede4; }
-    .studio { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 80% at 50% 38%, #e0ddd7 0%, #c9c5be 62%, #b7b2aa 100%); }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #ece7dc; }
+    .studio { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 90% at 50% 45%, #f6f2ea 0%, #ece7dc 70%, #e2dccf 100%); }
     .kt { line-height: 1.05; will-change: transform, opacity, filter; }
     .kt .syl { display: inline-block; }
     .A { font-family: "Pretendard"; font-weight: 900; letter-spacing: -0.035em; }
@@ -15,13 +15,15 @@
     .M { font-family: "Pretendard"; font-weight: 600; letter-spacing: 0.32em; font-size: 22px; }
     .ink { color: #161514; }
     .ivory { color: #f2ede4; }
+    .cob { color: #4554f1; }
+    .crm { color: #ece7dc; }
     .rose { color: #a65e66; }
 
     /* diptych: left = him (deeper grey), right = her (lighter) */
     .half { position: absolute; top: 0; width: 960px; height: 1080px; overflow: hidden; }
-    #s0-hL { left: 0; background: radial-gradient(ellipse 90% 80% at 40% 40%, #cfcbc4, #b3aea6); }
-    #s0-hR { left: 960px; background: radial-gradient(ellipse 90% 80% at 60% 40%, #ebe7e0, #d3cec6); }
-    .half img { position: absolute; bottom: -40px; height: 1010px; }
+    #s0-hL { left: 0; background-color: #4554f1; }
+    #s0-hR { left: 960px; background: #ece7dc; }
+    .half img { position: absolute; bottom: -30px; height: 900px; }
     #s0-gutter { position: absolute; left: 957px; top: 0; width: 6px; height: 1080px; background: #f2ede4; }
     #s0-b1, #s0-b1-still { position: absolute; left: 0; top: -70px; width: 1920px; height: 1080px; }
     #s0-b1-push { position: absolute; inset: 0; transform-origin: 50% 42%; }
@@ -36,8 +38,8 @@
     </div>
     <svg id="s0-field" viewBox="0 0 1920 1080" data-layout-ignore></svg>
     <div id="s0-halves">
-      <div id="s0-hL" class="half"><img id="s0-g" src="assets/media/cutout/w08.png" alt="" style="left:40px" /></div>
-      <div id="s0-hR" class="half"><img id="s0-b" src="assets/media/cutout/w16.png" alt="" style="right:20px" /></div>
+      <div id="s0-hL" class="half pat-oval"><img id="s0-g" src="assets/media/gen/cut/c01.png" alt="" style="left:60px" /></div>
+      <div id="s0-hR" class="half"><img id="s0-b" src="assets/media/gen/cut/c02.png" alt="" style="right:60px" /></div>
       <div id="s0-gutter"></div>
     </div>
     <div id="s0-type"></div>
@@ -72,12 +74,13 @@
       at.add("#s0-b", { opacity: [0, 1], filter: ["blur(12px)", "blur(0px)"], duration: 900, ease: E.expo }, T(1) - 200);
 
       // ---- line 1: sans on his side, serif on hers, meeting at the seam
-      const du = txt("두", "A ink", { right: 1920 - 930, top: 120, fontSize: 230 });
-      const saram = txt("사람", "B ink", { left: 990, top: 120, fontSize: 230 });
-      const ireo = txt("이렇게", "A ink", { right: 1920 - 930, top: 400, fontSize: 96 });
-      const seoro = txt("서로", "B ink", { left: 990, top: 400, fontSize: 96 });
-      const dareu = txt("다르지", "A ink", { right: 1920 - 930, top: 560, fontSize: 150 });
-      const manyo = txt("만요", "B ink", { left: 990, top: 560, fontSize: 150 });
+      // his half is cobalt with cream gothic, hers is cream with cobalt myeongjo: the colours are each other's opposite
+      const du = txt("두", "A crm", { right: 1920 - 930, top: 120, fontSize: 230 });
+      const saram = txt("사람", "B cob", { left: 990, top: 120, fontSize: 230 });
+      const ireo = txt("이렇게", "A crm", { right: 1920 - 930, top: 400, fontSize: 96 });
+      const seoro = txt("서로", "B cob", { left: 990, top: 400, fontSize: 96 });
+      const dareu = txt("다르지", "A crm", { right: 1920 - 930, top: 560, fontSize: 150 });
+      const manyo = txt("만요", "B cob", { left: 990, top: 560, fontSize: 150 });
       reveal(du, T(0));
       reveal(saram, T(1));
       reveal(ireo, T(2), { rise: 10 });
@@ -87,10 +90,20 @@
       leave([du, saram, ireo, seoro, dareu, manyo], T(5) - 280);
 
       // ---- line 2: 모든 게 완전히 정말 / 반대 — on 반대 the two halves trade places
-      const modeun = txt("모든", "A ink", { right: 1920 - 930, top: 140, fontSize: 170 });
-      const ge = txt("게", "B ink", { left: 990, top: 140, fontSize: 170 });
-      const wan = txt("완전히", "A ink", { right: 1920 - 930, top: 400, fontSize: 110 });
-      const jm = txt("정말", "B ink", { left: 990, top: 400, fontSize: 110 });
+      const modeun = txt("모든", "A crm", { right: 1920 - 930, top: 80, fontSize: 150 });
+      const ge = txt("게", "B cob", { left: 990, top: 80, fontSize: 150 });
+      const wan = txt("완전히", "A crm", { right: 1920 - 930, top: 260, fontSize: 96 });
+      const jm = txt("정말", "B cob", { left: 990, top: 260, fontSize: 96 });
+      // on every word a pair of opposites lands across the seam: one half each
+      const pairs = ["p11", "p12", "p06", "p01"];
+      const props = pairs.map((id, k) => {
+        const im = K.img(document.getElementById("s0-halves"), `assets/media/gen/cut/${id}.png`, { left: 460, top: 440, width: 1000, zIndex: 3 });
+        K.window(at, im, T(5 + k), k < 3 ? T(6 + k) : T(9));
+        at.add(im, { scale: [1.25, 1], y: [40, 0], duration: 420, ease: E.expo }, T(5 + k));
+        return im;
+      });
+      at.add(["#s0-g", "#s0-b"], { opacity: [1, 0.18], duration: 300, ease: E.inout }, T(5) - 200);
+      at.add(["#s0-g", "#s0-b"], { opacity: [0.18, 1], duration: 400, ease: E.inout }, T(9));
       reveal(modeun, T(5));
       reveal(ge, T(6));
       reveal(wan, T(7), { rise: 10 });
@@ -101,8 +114,12 @@
       at.add("#s0-hL", { x: [0, 960], scale: [1, 0.94, 1], duration: 1100, ease: E.inout }, tSwap);
       at.add("#s0-hR", { x: [0, -960], scale: [1, 0.94, 1], duration: 1100, ease: E.inout }, tSwap);
       const bandae = txt("반대", "A ink", { left: 0, right: 0, top: 300, fontSize: 330, textAlign: "center" });
+      bandae.style.color = "#ece7dc";
+      bandae.style.webkitTextStroke = "3px #232024";
+      bandae.style.zIndex = 4;
       reveal(bandae, tSwap + 380, { dur: 700, rise: 0, blur: 16 });
       const jiman = txt("지만요", "B ink", { left: 0, right: 0, top: 690, fontSize: 110, textAlign: "center" });
+      jiman.style.zIndex = 4;
       reveal(jiman, tSwap + 700, { rise: 8 });
 
       // ---- the diptych opens like a curtain onto the studio sweep; the 3D pair drifts in
@@ -156,6 +173,12 @@
       const loveX = [650, 790, 1060];
       const love = [14, 15, 16].map((i, k) => txt(W[i].t, "B rose", { left: loveX[k], top: 800, fontSize: 96 }));
       love.forEach((el, k) => reveal(el, T(14 + k), { dur: 700, rise: 12 }));
+      // 참 좋은 걸요: the title steps back and the two of them walk in holding hands
+      const pair = K.img(document.getElementById("root"), "assets/media/gen/cut/c05.png", { left: 660, top: 330, width: 600, zIndex: 2 });
+      at.set(pair, { opacity: 0 }, 0);
+      at.add(pair, { opacity: [0, 1], y: [80, 0], duration: 1000, ease: E.expo }, T(14) - 200);
+      at.add("#s0-b1-push", { opacity: [1, 0.0], duration: 700, ease: E.inout }, T(14) - 300);
+      at.add("#s0-field", { opacity: [1, 0], duration: 500, ease: E.inout }, T(14) - 300);
       const names = txt(`${FILM.couple.groom}   &   ${FILM.couple.bride}`, "M ink", { left: 0, right: 0, top: 962, textAlign: "center" });
       K.write(at, names, T(16), 900);
 

@@ -4,8 +4,8 @@
     @font-face { font-family: "Noto Serif KR"; font-weight: 200 900; src: url("assets/fonts/NotoSerifKR-VF.ttf"); }
     @font-face { font-family: "Cormorant"; font-style: italic; src: url("assets/fonts/CormorantGaramond-Italic.ttf"); }
 
-    #root { position: absolute; inset: 0; overflow: hidden; background: #c9c5be; }
-    .studio { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 80% at 50% 38%, #e0ddd7 0%, #c9c5be 62%, #b7b2aa 100%); }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #ece7dc; }
+    .studio { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 90% at 50% 45%, #f6f2ea 0%, #ece7dc 70%, #e2dccf 100%); }
     .paper { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 90% at 50% 40%, #f7f3ec 0%, #efe9df 70%, #e6dfd3 100%); }
     .kt { line-height: 1.15; will-change: transform, opacity, filter; }
     .B { font-family: "Noto Serif KR"; font-weight: 600; }
@@ -103,7 +103,7 @@
       at.set("#s6-card", { opacity: 0 }, 0);
       at.add("#s6-card", { opacity: [0, 1], duration: 500, ease: E.inout }, 8400);
       const title = txt("반대가 끌리는 이유", "M ink", { left: 0, right: 0, top: 226, fontSize: 30, textAlign: "center" });
-      const names = txt(`${C.groom}  ·  ${C.bride}`, "B ink", { left: 0, right: 0, top: 330, fontSize: 120, textAlign: "center" });
+      const names = txt(`${C.groom}  &  ${C.bride}`, "B ink", { left: 0, right: 0, top: 300, fontSize: 112, textAlign: "center" });
       const date = txt([C.date, C.time, C.venue].filter(Boolean).join("  ·  "), "M ink", { left: 0, right: 0, top: 540, fontSize: 30, textAlign: "center" });
       const marry = txt("저희, 결혼합니다", "B rose", { left: 0, right: 0, top: 640, fontSize: 76, textAlign: "center" });
       const thanks = txt("함께해 주셔서 감사합니다", "Bl ink", { left: 0, right: 0, top: 800, fontSize: 40, textAlign: "center" });
@@ -113,6 +113,10 @@
       soft(date, 9600);
       soft(marry, 10100, { dur: 1100 });
       soft(thanks, 10800);
+      // the two of them, small, at the foot of the card
+      const pair = K.img(document.getElementById("s6-card"), "assets/media/gen/cut/c05.png", { left: 1520, top: 640, width: 300 });
+      at.set(pair, { opacity: 0 }, 0);
+      at.add(pair, { opacity: [0, 1], y: [40, 0], duration: 900, ease: E.expo }, 9400);
       K.leak(at, document.getElementById("s6-card"), 8600, 3800, { peak: 0.35, from: "left", z: 5 });
       at.set("#s6-black", { opacity: 0 }, 0);
       at.add("#s6-black", { opacity: [0, 1], duration: 1100, ease: E.inout }, END - 1100);

@@ -1,36 +1,13 @@
 <template>
   <style>
-    @font-face { font-family: "Pretendard"; font-weight: 900; src: url("assets/fonts/Pretendard-Black.woff2"); }
-    @font-face { font-family: "Noto Serif KR"; font-weight: 200 900; src: url("assets/fonts/NotoSerifKR-VF.ttf"); }
-
     #root { position: absolute; inset: 0; overflow: hidden; background: #0c0b0a; }
-    .kt { line-height: 1.06; will-change: transform, opacity, filter; }
-    .kt .syl { display: inline-block; }
-    .A { font-family: "Pretendard"; font-weight: 900; letter-spacing: -0.035em; }
-    .B { font-family: "Noto Serif KR"; font-weight: 500; }
-    .Bl { font-family: "Noto Serif KR"; font-weight: 400; letter-spacing: 0.02em; }
-    .Bb { font-family: "Noto Serif KR"; font-weight: 700; letter-spacing: -0.015em; }
-    .ink { color: #161514; }
-    .ivory { color: #f2ede4; }
-    .rose { color: #a65e66; }
-    .half { position: absolute; top: 125px; width: 960px; height: 830px; overflow: hidden; background: #c9c5be; }
-    .half img, .half video, .fill img, .fill video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
-    .fill { position: absolute; inset: 0; overflow: hidden; }
-    .opp { position: absolute; inset: 0; }
+    .shot { position: absolute; inset: 0; overflow: hidden; }
+    .room { position: absolute; left: 0; top: 0; width: 1920px; height: 1280px; }
+    .room img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
   </style>
 
   <div id="root" data-composition-id="s4" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
-    <div id="s4-whole" class="fill">
-      <div id="s4-cam" class="fill">
-        <div id="s4-w-bg" class="fill"><video id="s4-w-bg-v" class="clip" data-start="8.6" data-duration="8.3" data-track-index="2" src="assets/media/living/br_w12L_bg.mp4" muted playsinline></video></div>
-        <div id="s4-type-back" class="fill"></div>
-        <div id="s4-w-fg" class="fill"><video id="s4-w-fg-v" class="clip" data-start="8.6" data-duration="8.3" data-track-index="3" src="assets/media/living/br_w12L_fg.webm" muted playsinline></video></div>
-      </div>
-    </div>
-    <div id="s4-hL" class="half" style="left:0"><video id="s4-hL-v" class="clip" data-start="0" data-duration="10.0" data-track-index="2" src="assets/media/living/br_w11.mp4" muted playsinline></video></div>
-    <div id="s4-hR" class="half" style="left:960px"><video id="s4-hR-v" class="clip" data-start="0" data-duration="10.0" data-track-index="3" src="assets/media/living/br_w13.mp4" muted playsinline></video></div>
-    <div id="s4-gutter" style="position:absolute;left:958px;top:125px;width:4px;height:830px;background:#0c0b0a"></div>
-    <div id="s4-type"></div>
+    <div id="s4-stage" style="position:absolute;inset:0"></div>
   </div>
 
   <script>
@@ -42,96 +19,96 @@
       const END = S.dur * 1000;
       const T = (i) => (W[i] ? W[i].ms : END);
       const E = K.ease;
+      const P = D.PAL;
       const root = document.getElementById("root");
-      const type = document.getElementById("s4-type");
-      const hL = document.getElementById("s4-hL"), hR = document.getElementById("s4-hR");
+      const stage = document.getElementById("s4-stage");
       // words: 0 두 1 사람 2 이렇게 3 서로 4 다르지만요 | 5 모든 6 게 7 완전히 8 정말 9 반대지만요 | 10 함께 11 있을 12 때면 13 왠지 | 14 참 15 좋은 16 걸요
 
-      function soft(el, t, { dur = 640, rise = 10, blur = 10 } = {}) {
+      // ---- grammar (GODS, quiet): one white clay room lit like a gallery, a slow camera, serif words,
+      //      the film goes widescreen and the lyric runs as a subtitle in the bar
+      function soft(el, t, { dur = 800, rise = 14, blur = 12 } = {}) {
         at.set(el, { opacity: 0 }, 0);
         at.add(el, { opacity: [0, 1], y: [rise, 0], filter: [`blur(${blur}px)`, "blur(0px)"], duration: dur, ease: E.expo }, t);
       }
       function out(els, t, dur = 300) {
         at.add(els, { opacity: [1, 0], filter: ["blur(0px)", "blur(8px)"], duration: dur, ease: E.in3 }, t);
       }
-      // the lyric as a film subtitle, set in the lower letterbox bar, word by word
-      function subtitle(idx, top = 978) {
-        const row = K.txt(type, "", "Bl ivory", { left: 0, right: 0, top, fontSize: 50, textAlign: "center", zIndex: 70 });
+      function subtitle(idx) {
+        const row = K.txt(root, "", "k-serif c-cream", { left: 0, right: 0, top: 978, fontSize: 48, textAlign: "center", zIndex: 70 });
         return idx.map((i, k) => {
           const sp = K.el("span", "", row, W[i].t);
           sp.style.display = "inline-block";
           if (k < idx.length - 1) K.el("span", "", row, " ");
-          soft(sp, T(i));
+          soft(sp, T(i), { dur: 600, rise: 8 });
           return sp;
         });
       }
-
-      // the whole bridge is widescreen; the bars open again exactly as the last chorus drops
       const bars = K.letterbox(at, root, 0, { h: 125, dur: 10 });
       bars.forEach((b) => (b.style.zIndex = 65));
       at.add(bars[0], { translateY: [0, -125], duration: 520, ease: E.in3 }, END - 520);
       at.add(bars[1], { translateY: [0, 125], duration: 520, ease: E.in3 }, END - 520);
 
-      // ---- 두 사람 이렇게 서로 다르지만요 — him alone, her alone, drifting opposite ways
-      at.set([hL, hR], { opacity: 0 }, 0);
-      at.add(hL, { opacity: [0, 1], duration: 700, ease: E.inout }, 0);
-      at.add(hR, { opacity: [0, 1], duration: 700, ease: E.inout }, T(1) - 200);
+      // ---- the room: one plate, the camera moves inside it (crop windows = shots)
+      const room = K.el("div", "room", stage);
+      D.gen(room, "e06", {}, { cut: false });
+      room.style.transformOrigin = "0 0";
+      // wide, slow push to the two chairs
+      at.set(room, { x: 0, y: -100, scale: 1 }, 0);
+      at.add(room, { x: [0, -96], y: [-100, -150], scale: [1, 1.1], duration: T(5), ease: "linear" }, 0);
       const l1 = subtitle([0, 1, 2, 3, 4]);
-      out(l1, T(5) - 280);
+      out(l1, T(5) - 260);
+      const big1 = K.txt(stage, "두 사람", "k-serifB c-ink", { left: 0, right: 0, top: 170, fontSize: 120, textAlign: "center" });
+      soft(big1, T(0), { dur: 1200 });
+      out(big1, T(3) - 200, 400);
 
-      // ---- 모든 게 완전히 정말 — on every word the two halves cut to another pair of opposites from their own days:
-      //      black and white, night and day, studio and park, suits and summer clothes
-      const pairs = [["w24", "w27", "50% 30%", "50% 35%"], ["w43", "w36", "50% 45%", "50% 45%"], ["w05", "w33", "50% 22%", "50% 55%"], ["w03", "w39", "50% 22%", "50% 50%"]];
+      // ---- 모든 게 완전히 정말: four hard cuts, black chair, white chair, black, white (closer each time)
+      const crops = [
+        { x: -520, y: -420, s: 1.9 },
+        { x: -1500, y: -420, s: 1.9 },
+        { x: -900, y: -800, s: 2.6 },
+        { x: -2300, y: -800, s: 2.6 },
+      ];
       const hits = [T(5), T(6), T(7), T(8)];
+      crops.forEach((c, j) => {
+        at.set(room, { x: c.x, y: c.y, scale: c.s }, hits[j]);
+        at.add(room, { x: [c.x, c.x - 30], duration: (hits[j + 1] || T(9)) - hits[j], ease: "linear" }, hits[j]);
+        K.flashFrame(at, stage, hits[j], { color: "#fff", dur: 120, peak: 0.5 });
+      });
       const l2 = subtitle([5, 6, 7, 8]);
       out(l2, T(9) - 120, 200);
-      pairs.forEach(([a, b, pa, pb], j) => {
-        [[hL, a, pa], [hR, b, pb]].forEach(([half, key, pos], side) => {
-          const o = K.el("div", "opp", half);
-          const im = K.img(o, K.photo(key), {});
-          im.style.objectPosition = pos;
-          K.window(at, o, hits[j], j < 3 ? hits[j + 1] : T(9));
-          at.add(im, { scale: [1.14, 1.02], duration: 900, ease: E.expo }, hits[j]);
-        });
-        K.flashFrame(at, type, hits[j], { dur: 140, peak: 0.45, z: 60 });
-      });
 
-      // ---- 반대지만요 — back to the two of them, and they trade places
-      const tSwap = T(9);
-      at.add(hL, { x: [0, 960], scale: [1, 0.92, 1], duration: 1100, ease: E.inout }, tSwap);
-      at.add(hR, { x: [0, -960], scale: [1, 0.92, 1], duration: 1100, ease: E.inout }, tSwap);
-      const bandae = K.txt(type, "반대지만요", "A ivory", { left: 0, right: 0, top: 400, fontSize: 200, textAlign: "center" });
-      bandae.style.textShadow = "0 6px 50px rgba(10,9,8,.5)";
-      soft(bandae, tSwap + 300, { dur: 800, rise: 0, blur: 18 });
-      K.track(at, bandae, tSwap + 300, 1400, "0.4em", "-0.02em");
+      // ---- 반대지만요: back out to the whole room; the word drops into the space between the chairs
+      at.set(room, { x: -96, y: -150, scale: 1.1 }, T(9));
+      at.add(room, { x: [-96, -40], y: [-150, -120], scale: [1.1, 1.04], duration: T(10) - T(9), ease: E.quart }, T(9));
+      const bandae = K.txt(stage, "반대지만요", "k-sansK c-ink", { left: 0, right: 0, top: 320, fontSize: 210, textAlign: "center" });
+      at.set(bandae, { opacity: 0 }, 0);
+      at.add(bandae, { opacity: [0, 1], letterSpacing: ["0.5em", "-0.02em"], filter: ["blur(16px)", "blur(0px)"], duration: 1200, ease: E.expo }, T(9));
+      out(bandae, T(10) - 360, 300);
 
-      // ---- 함께 — the halves close on each other and become one picture; the word stands behind them
+      // ---- 함께 있을 때면 왠지: the two of them dance in the middle of the room; the word stands behind them
       const tTo = T(10);
-      out(bandae, tTo - 520, 360);
-      at.add(hL, { x: [960, 480], duration: 700, ease: E.in3 }, tTo - 700);
-      at.add(hR, { x: [-960, -480], duration: 700, ease: E.in3 }, tTo - 700);
-      at.add([hL, hR, "#s4-gutter"], { opacity: [1, 0], duration: 420, ease: E.inout }, tTo - 120);
-      at.set("#s4-whole", { opacity: 0 }, 0);
-      at.add("#s4-whole", { opacity: [0, 1], duration: 600, ease: E.inout }, tTo - 200);
-      at.add("#s4-cam", { scale: [1.06, 1.0], duration: 1400, ease: E.expo }, tTo - 200);
-      const back = document.getElementById("s4-type-back");
-      const ham = K.txt(back, "함께", "Bb ink", { left: 0, right: 0, top: 70, fontSize: 420, textAlign: "center" });
+      const ham = K.txt(stage, "함께", "k-serifB c-ink", { left: 0, right: 0, top: 170, fontSize: 380, textAlign: "center" });
       K.syllables(ham).forEach((s, k) => soft(s, tTo + k * 160, { dur: 1300, rise: 50, blur: 20 }));
+      ham.style.opacity = 0.92;
+      const dance = D.gen(stage, "c11", { left: 520, top: 300, width: 880 });
+      at.set(dance, { opacity: 0 }, 0);
+      at.add(dance, { opacity: [0, 1], y: [60, 0], duration: 1400, ease: E.expo }, tTo - 100);
+      at.add(dance, { scale: [1, 1.05], duration: END - tTo, ease: "linear" }, tTo);
       const l3 = subtitle([10, 11, 12, 13]);
       out(l3, T(14) - 300);
-      at.add(ham, { opacity: [1, 0.0], filter: ["blur(0px)", "blur(14px)"], duration: 900, ease: E.inout }, T(14) - 400);
+      out(ham, T(14) - 400, 700);
 
-      // ---- 참 좋은 걸요 — and then the light builds until the last chorus breaks
-      const love = K.txt(back, "", "Bb rose", { left: 0, right: 0, top: 110, fontSize: 200, textAlign: "center" });
+      // ---- 참 좋은 걸요: rose words above them, light leaks in and the whole frame climbs to white for the drop
+      const love = K.txt(stage, "", "k-serifB c-coral", { left: 0, right: 0, top: 180, fontSize: 170, textAlign: "center" });
       [14, 15, 16].forEach((i, k) => {
         const sp = K.el("span", "", love, W[i].t);
         sp.style.display = "inline-block";
         if (k < 2) K.el("span", "", love, " ");
-        soft(sp, T(i), { dur: 900, rise: 30, blur: 16 });
+        soft(sp, T(i), { dur: 900, rise: 24, blur: 16 });
       });
-      K.leak(at, type, T(14) - 200, END - T(14) + 200, { peak: 0.75, from: "left", z: 55 });
-      at.add("#s4-cam", { scale: [1.0, 1.12], duration: END - T(15), ease: E.in3 }, T(15));
-      K.whiteout(at, type, END - 900, END, { z: 66 });
+      K.leak(at, stage, T(14) - 200, END - T(14) + 200, { peak: 0.7, from: "left", z: 55 });
+      at.add(stage, { scale: [1, 1.1], duration: END - T(15), ease: E.in3 }, T(15));
+      K.whiteout(at, root, END - 900, END, { z: 66 });
 
       K.bridge(gtl, at, S.dur);
       window.__timelines["s4"] = gtl;
