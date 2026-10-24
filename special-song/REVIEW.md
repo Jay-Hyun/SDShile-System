@@ -12,6 +12,8 @@
 - `check`: 0 errors.
 - Looked at frames: t=5, 13/14, 22, 30/32, 38.5, 41.8, 72, 293.4 (lyrics), 322.8.
 - Measured: MR is -11.4 LUFS with a true peak of +1.2 dBTP, so the source itself clips. It is set to 0.78 (-2.2 dB) in the mix. The bed is -16.7 LUFS before gain and plays at 0.6.
+- Rendered file (`renders/special-song_full.mp4`): 1920×1080, 30 fps, 332.8 s, H.264 + AAC stereo 48 kHz. Green samples read (0,254,0). The MR head cross-correlates at exactly 42.0 s, the bed is silent from 41.5 s, the mix is -15.2 LUFS with a true peak of -1.8 dBTP and no clipping. A zoomed lyric edge goes green → dark outline → white, with no soft fringe.
+- Split files: `01_prelude.mp4` (0–42 s) and `02_mr_green_lyrics.mp4` (42 s–end, starts on green).
 - Not checked: nobody has listened to the music bed. Its loudness, lack of drums (percussive ratio 0.007) and key were measured, but whether it sounds good was not.
 
 ## Weakest shot
