@@ -1,5 +1,10 @@
 # REVIEW — 특송 「옷자락에서 전해지는 사랑」
 
+## Revision 3 (requested by the person)
+- The title card is now two lines, 「옷자락에서 / 전해지는 사랑」, at 120 px.
+- A bottom dark gradient now runs behind the lyrics (MR 26.8–276.1 s, with 1.5 s fades), drawn into the green as the person chose. The fully transparent alpha version was offered and declined.
+- Measured, not seen on a real keyer: OBS's chroma-key math (v2 shader: similarity, smoothness 80, spill 100) was simulated on a rendered frame over a stand-in picture. At similarity 400 (the default) the bottom darkens from y≈760 and is solid below y≈880, with a faint green line at its top edge. At 450 it reads as a translucent tint. At 350 the band becomes larger and solid. The end colour (19,5,19) leans magenta so the solid part keys to a neutral dark instead of dark green (the first try, plain black, left a dark-green band). A little green at the band's edge cannot be avoided with a chroma key, and only an alpha video removes it fully.
+
 ## Revision 2 (requested by the person)
 - Lyric spelling restored to the person's text: 「오래전 부터」, 「그 분이라면」, 「하신사랑」.
 - Lyric style redone. Gowun Batang Bold at 90 px in ivory, a 2 px hard outline plus an angular 3/4 px shadow (still no blur, so it keys cleanly), and the song's own words 「사랑」/「옷자락」 in gold, one per line (6 lines). Characters rise one after another (0.035 s apart), and each line lifts out as it leaves. The old thick karaoke-style outline is gone.
