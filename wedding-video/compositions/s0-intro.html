@@ -39,7 +39,7 @@
         D.line(C, ov, [5, 6, 7, 8], { y: 132, size: 64, color: "ink", lead: 80, enter: 380 });
         const d = D.shot(C, T(9), T(10));
         D.take("s0-P04", d.cam);
-        D.hero(C, d.cam, "반대지만요", T(9), { align: "center", y: 112, size: 132, font: "serifB", color: "ink", enter: 900, blur: 14, creep: 0.02 });
+        D.hero(C, d.cam, "반대지만요", T(9), { align: "center", y: 46, size: 112, font: "serifB", color: "ink", enter: 900, blur: 14, creep: 0.015 });
       }
 
       // E. back to back against the same wall; the title is split by it (his half, her half)
@@ -54,10 +54,10 @@
         const tR = T(15);
         D.hero(C, cam, "반대가", tL, { x: 118, y: 92, size: 88, font: "serifB", color: "ink", enter: 1000, blur: 14 });
         D.rule(C, cam, { x: 122, y: 214, w: 168, t: tL + 380, dur: 1100 });
-        D.hero(C, cam, "박준익", tL + 700, { x: 122, y: 230, size: 26, font: "serifL", color: "ink", enter: 900, blur: 8, spacing: "0.34em" });
+        D.hero(C, cam, "박준익", tL + 700, { x: 122, y: 230, size: 28, font: "serifL", color: "ink", enter: 900, blur: 8, spacing: "0.34em" });
         D.hero(C, cam, "끌리는 이유", tR, { align: "right", x: 1802, y: 92, size: 88, font: "serifB", color: "ink", enter: 1000, blur: 14 });
         D.rule(C, cam, { x: 1802 - 168, y: 214, w: 168, t: tR + 380, dur: 1100, origin: "right" });
-        D.hero(C, cam, "김명지", tR + 700, { align: "right", x: 1792, y: 230, size: 26, font: "serifL", color: "ink", enter: 900, blur: 8, spacing: "0.34em" });
+        D.hero(C, cam, "김명지", tR + 700, { align: "right", x: 1792, y: 230, size: 28, font: "serifL", color: "ink", enter: 900, blur: 8, spacing: "0.34em" });
       }
 
       D.finish(C);

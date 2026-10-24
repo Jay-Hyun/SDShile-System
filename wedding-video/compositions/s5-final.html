@@ -13,7 +13,6 @@
       <video id="s5-E21b" class="clip" data-start="3.48" data-duration="3.28" data-track-index="2" src="assets/media/living/v5_E21b.mp4" muted playsinline></video>
       <video id="s5-E22" class="clip" data-start="6.66" data-duration="3.98" data-track-index="2" src="assets/media/living/v5_E22.mp4" muted playsinline></video>
       <video id="s5-flow" class="clip" data-start="17.7" data-duration="2.59" data-playback-rate="0.9" data-track-index="3" src="assets/media/video/v04.mp4" muted playsinline></video>
-      <video id="s5-heart" class="clip" data-start="25.2" data-duration="4.72" data-playback-rate="0.95" data-track-index="3" src="assets/media/video/v08.mp4" muted playsinline></video>
       <video id="s5-E26" class="clip" data-start="29.82" data-duration="7.44" data-track-index="2" src="assets/media/living/v5_E26.mp4" muted playsinline></video>
       <video id="s5-end" class="clip" data-start="37.16" data-duration="1.74" data-playback-rate="0.8" data-track-index="3" src="assets/media/living/fc_w04L.mp4" muted playsinline></video>
     </div>
@@ -41,7 +40,7 @@
         at.set(rest, { opacity: 0 }, 0);
         at.add(rest, { opacity: [0, 1], filter: ["blur(8px)", "blur(0px)"], duration: 420, ease: E.expo }, T(1) - 120);
         at.add(wrap, { scale: [1.06, 1], duration: 900, ease: E.expo }, 0);
-        K.zoomThrough(at, wrap, T(2) + 140, { dur: 600, to: 36 });
+        K.zoomThrough(at, wrap, T(2) + 140, { dur: 480, to: 36 });
         D.line(C, cam, [3], { y: 930, size: 60, color: "ink", lead: 120 });
       }
 
@@ -56,7 +55,7 @@
       {
         const { cam } = D.shot(C, T(7), T(11));
         D.take("s5-E22", cam);
-        D.line(C, cam, [7, 8, 9, 10], { y: 92, size: 64, color: "ink", love: [7] });
+        D.line(C, cam, [7, 8, 9, 10], { y: 92, size: 56, color: "ink" });
       }
 
       // D. a gallery of their days along the hall; the camera travels to the biggest frame
@@ -66,12 +65,16 @@
           { src: K.photo("d63"), pos: "50% 35%" },
           { src: K.photo("d02"), pos: "50% 50%" },
           { src: K.photo("d64"), pos: "45% 40%" },
-          { src: K.photo("d25"), pos: "50% 40%" },
+          { src: K.photo("d49"), pos: "50% 30%" },
           { src: K.photo("w26"), pos: "50% 38%", grade: "saturate(.92) contrast(.96) sepia(.08)" },
         ], T(11), T(20), { from: { x: -60, y: -60, s: 1.12 }, to: { x: -1344, y: -236, s: 1.7 }, ease: "inout", origin: "0 0" });
         D.scrim(cam, "bottom", { tone: "light", a: 0.5, reach: 26 });
         D.line(C, cam, [11, 12, 13, 14, 15, 16], { y: 930, size: 54, color: "ink", end: T(17) - 40, out: 240 });
-        D.line(C, cam, [17, 18, 19], { y: 930, size: 54, color: "ink", love: [19], lead: 80, enter: 400 });
+        // by now the camera is inside the big frame: the lower band turns dark, so the last phrase goes cream
+        const dark = D.scrim(cam, "bottom", { a: 0.6, reach: 34, z: 21 });
+        at.set(dark, { opacity: 0 }, 0);
+        at.add(dark, { opacity: [0, 1], duration: 500, ease: E.quart }, T(17) - 520);
+        D.line(C, cam, [17, 18, 19], { y: 930, size: 54, color: "cream", love: [19], lead: 80, enter: 400 });
       }
 
       // E. her desk by the window: a small frame with the flower selfie
@@ -109,10 +112,10 @@
         D.line(C, cam, [24, 25, 26, 27], { y: 878, size: 58, color: "cream" });
       }
 
-      // G. the oval mirror holds their real heart hands
+      // G. the oval mirror holds a photo of the two of them smiling at each other
       {
         const { cam } = D.shot(C, T(28), T(31));
-        D.keyed(C, cam, "E11g", [{ video: "s5-heart", pos: "50% 45%" }], T(28), T(31), { from: { s: 1.04 }, to: { s: 1.0 }, dy: 80 });
+        D.keyed(C, cam, "E11g", [{ src: K.photo("d25"), pos: "50% 30%", grade: "saturate(.95) contrast(.97) sepia(.06)" }], T(28), T(31), { from: { s: 1.04 }, to: { s: 1.0 }, dy: 80 });
         D.scrim(cam, "bottom", { a: 0.5, reach: 32 });
         D.line(C, cam, [28, 29, 30], { y: 922, size: 58, color: "cream" });
       }

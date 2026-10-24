@@ -13,7 +13,7 @@
       <video id="s2-E02h" class="clip" data-start="15.94" data-duration="1.85" data-track-index="2" src="assets/media/living/v5_E02h.mp4" muted playsinline></video>
       <video id="s2-umb" class="clip" data-start="17.69" data-duration="2.59" data-media-start="4.0" data-track-index="3" src="assets/media/video/v03.mp4" muted playsinline></video>
       <video id="s2-E03b" class="clip" data-start="20.18" data-duration="5.11" data-track-index="2" src="assets/media/living/v5_E03b.mp4" muted playsinline></video>
-      <video id="s2-laugh" class="clip" data-start="25.19" data-duration="4.72" data-media-start="0.6" data-playback-rate="0.9" data-track-index="3" src="assets/media/video/v09.mp4" muted playsinline></video>
+      <video id="s2-laugh" class="clip" data-start="25.19" data-duration="4.72" data-media-start="2.0" data-track-index="3" src="assets/media/video/v05.mp4" muted playsinline></video>
       <video id="s2-cake" class="clip" data-start="29.81" data-duration="7.44" data-media-start="29.0" data-playback-rate="0.8" data-track-index="3" src="assets/media/video/v06.mp4" muted playsinline></video>
       <video id="s2-E02r" class="clip" data-start="37.15" data-duration="1.1" data-track-index="2" src="assets/media/living/v5_E02r.mp4" muted playsinline></video>
     </div>
@@ -38,7 +38,7 @@
         at.set(glow, { opacity: 0 }, 0);
         at.add(glow, { opacity: [0, 1, 0.55], duration: 1600, ease: E.quart }, 0);
         D.scrim(cam, "bottom", { a: 0.62, reach: 40 });
-        D.line(C, cam, [0, 1, 2], { y: 836, size: 128, font: "serifB", color: "cream", love: [0], lead: 40, enter: 700, dim: 0.22, end: T(3) - 60, out: 320 });
+        D.line(C, cam, [0, 1, 2], { y: 878, size: 88, font: "serifB", color: "cream", love: [0], lead: 40, enter: 700, end: T(3) - 60, out: 320 });
         D.line(C, cam, [3], { y: 920, size: 60, color: "cream", lead: 120 });
       }
 
@@ -61,7 +61,7 @@
       {
         const { cam } = D.shot(C, T(7), T(11));
         D.take("s2-E03", cam);
-        D.line(C, cam, [7, 8, 9, 10], { align: "left", x: 132, y: 104, size: 66, color: "cream", love: [7] });
+        D.line(C, cam, [7, 8, 9, 10], { align: "left", x: 120, y: 70, size: 56, color: "cream", love: [7] });
       }
 
       // D. one frame on his wall: three of their real days, two beats each at least; then their hands on the wall
@@ -105,10 +105,10 @@
         D.line(C, cam, [24, 25, 26], { align: "right", x: 1800, y: 300, size: 62, color: "cream" });
       }
 
-      // G. the oval mirror in her room holds the real laugh
+      // G. the oval mirror in her room holds their photo-booth video (silly poses, both laughing)
       {
         const { cam } = D.shot(C, T(27), T(30));
-        D.keyed(C, cam, "E11g", [{ video: "s2-laugh", pos: "50% 40%" }], T(27), T(30), { from: { s: 1.04 }, to: { s: 1.0 }, dy: 80 });
+        D.keyed(C, cam, "E11g", [{ video: "s2-laugh", pos: "50% 50%" }], T(27), T(30), { from: { s: 1.04 }, to: { s: 1.0 }, dy: 80 });
         D.scrim(cam, "bottom", { a: 0.5, reach: 32 });
         D.line(C, cam, [27, 28, 29], { y: 922, size: 58, color: "cream" });
       }

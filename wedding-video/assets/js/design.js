@@ -3,7 +3,8 @@
  * Plates     GPT-generated miniature sets (scripts/gen_v5.py -> assets/media/gen5/<id>.png). Most become
  *            depth-parallax camera moves (assets/media/living5/<id>.mp4); plates with a chroma-green frame,
  *            mirror or screen are keyed (scripts/key_green.py) and the real footage sits inside the hole.
- * Type       the whole line is set first, dim; each word lights at its sung onset (opacity only).
+ * Type       the whole line is set first in a quiet tone; each word lights at its sung onset (two-tone colour per
+ *            background: warm grey -> ink on light sets, grey-white -> ivory on dark sets; never opacity alone).
  *            SING = Noto Serif KR, RAP = Pretendard (row stack, the active row bright, older rows recede),
  *            meta = Cormorant italic. Heroes enter with blur + opacity, never scale or bounce.
  * Camera     slow dolly/truck in the clips, hard cuts on the beat, no shakes, no flashes, no springs.
@@ -40,7 +41,7 @@
   .v5-sans { font-family:"Pretendard"; font-weight:700; letter-spacing:-0.02em; line-height:1.28; }
   .v5-sansB { font-family:"Pretendard"; font-weight:800; letter-spacing:-0.035em; line-height:1.1; }
   .v5-sansK { font-family:"Pretendard"; font-weight:900; letter-spacing:-0.045em; line-height:1.0; }
-  .v5-meta { font-family:"Cormorant"; font-style:italic; letter-spacing:0.04em; }
+  .v5-meta { font-family:"Cormorant"; font-style:italic; letter-spacing:0.04em; font-variant-numeric:lining-nums; }
   .c-ink { color:${PAL.ink}; text-shadow: 0 1px 10px rgba(250,246,238,.42); }
   .c-cream { color:#F8F3EA; text-shadow: 0 2px 8px rgba(18,14,22,.46), 0 0 2px rgba(18,14,22,.30); }
   .c-coral { color:${PAL.coral}; text-shadow: 0 2px 8px rgba(18,14,22,.46), 0 0 2px rgba(18,14,22,.30); }
@@ -56,6 +57,12 @@
 
   const E = K.ease;
   const px = (v) => (typeof v === "number" ? v + "px" : v);
+  // unlit / lit / lit-love colours per background tone (the line must read before it is sung)
+  const TONE = {
+    ink: { dim: "#7a7068", lit: "#232024", love: "#c24f5c" },
+    cream: { dim: "#b9b1a6", lit: "#fbf6ec", love: "#f49a9a" },
+  };
+  const tone = (c) => TONE[c] || TONE.cream;
 
   const D = {
     PAL,
@@ -172,7 +179,7 @@
     /** Lyric line(s), karaoke style: the line is set first (dim), each word lights at its onset.
      *  idx = [i, ...] or [[row1...], [row2...]]. align: left | center | right (x is the anchor). */
     line(ctx, parent, idx, o = {}) {
-      const { x = 960, y = 140, align = "center", size = 64, font = "serif", color = "ink", love = [], dim = 0.28, lead = 300, enter = 560, end = null, out = 300, gap = 1.34, z = 30 } = o;
+      const { x = 960, y = 140, align = "center", size = 64, font = "serif", color = "ink", love = [], lead = 300, enter = 560, end = null, out = 300, gap = 1.34, z = 30 } = o;
       const rows = Array.isArray(idx[0]) ? idx : [idx];
       const box = K.el("div", `v5-line v5-${font} c-${color}`, parent);
       box.style.fontSize = size + "px";
@@ -203,8 +210,10 @@
       at.set(box, { opacity: 0 }, 0);
       at.add(box, { opacity: [0, 1], filter: ["blur(8px)", "blur(0px)"], duration: enter, ease: E.expo }, tIn);
       words.forEach(({ sp, i }) => {
-        at.set(sp, { opacity: dim }, 0);
-        at.add(sp, { opacity: [dim, 1], duration: 170, ease: E.quart }, Math.max(tIn + 1, ctx.T(i)));
+        const c = tone(color);
+        const lit = sp.classList.contains("love") ? c.love : c.lit;
+        at.set(sp, { color: c.dim }, 0);
+        at.add(sp, { color: [c.dim, lit], duration: 170, ease: E.quart }, Math.max(tIn + 1, ctx.T(i)));
       });
       if (end != null) D.out(ctx, box, end - out, out);
       return box;
@@ -213,7 +222,7 @@
     /** Rap stack: rows enter at their first word, words light at onset, the active row is bright and
      *  older rows recede. rows = [[i...], ...]. */
     rap(ctx, parent, rows, o = {}) {
-      const { x = 120, y = 300, size = 64, color = "cream", font = "sans", love = [], dim = 0.3, recede = 0.38, gap = 1.3, end = null, out = 260, lead = 160, z = 30, align = "left", rot = 0 } = o;
+      const { x = 120, y = 300, size = 64, color = "cream", font = "sans", love = [], recede = 0.5, gap = 1.3, end = null, out = 260, lead = 160, z = 30, align = "left", rot = 0 } = o;
       const at = ctx.at;
       const box = K.el("div", `v5-line v5-${font} c-${color}`, parent);
       const anchor = align === "right" ? `right:${1920 - x}px;text-align:right` : `left:${x}px`;
@@ -223,8 +232,10 @@
         r.forEach((i, k) => {
           const sp = K.el("span", "v5-w" + (love.includes(i) ? " love" : ""), row, ctx.W[i].t);
           if (k < r.length - 1) row.appendChild(document.createTextNode(" "));
-          at.set(sp, { opacity: dim }, 0);
-          at.add(sp, { opacity: [dim, 1], duration: 120, ease: E.quart }, Math.max(1, ctx.T(i)));
+          const c = tone(color);
+          const lit = love.includes(i) ? c.love : c.lit;
+          at.set(sp, { color: c.dim }, 0);
+          at.add(sp, { color: [c.dim, lit], duration: 120, ease: E.quart }, Math.max(1, ctx.T(i)));
         });
         return row;
       });
@@ -296,7 +307,7 @@
     /** Warm light bloom: a soft radial glow that swells to full (the bridge -> final chorus wind-up). */
     bloom(ctx, parent, t0, t1, { color = "255,246,226", x = "50%", y = "48%", z = 58 } = {}) {
       const b = K.el("div", "", parent);
-      b.style.cssText = `position:absolute;inset:-10%;pointer-events:none;z-index:${z};background:radial-gradient(ellipse 60% 60% at ${x} ${y}, rgba(${color},1) 0%, rgba(${color},.85) 40%, rgba(${color},.6) 100%)`;
+      b.style.cssText = `position:absolute;inset:-10%;pointer-events:none;mix-blend-mode:screen;z-index:${z};background:radial-gradient(ellipse 60% 60% at ${x} ${y}, rgba(${color},1) 0%, rgba(${color},.85) 40%, rgba(${color},.6) 100%)`;
       ctx.at.set(b, { opacity: 0 }, 0);
       ctx.at.add(b, { opacity: [0, 1], duration: t1 - t0, ease: E.in3 }, t0);
       return b;

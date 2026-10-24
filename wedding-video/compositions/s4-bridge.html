@@ -48,7 +48,7 @@
         const ov = D.layer(C, 0, END, { z: 60 });
         const bars = K.letterbox(at, ov, 0, { h: 138, dur: 700 });
         bars.forEach((b) => (b.style.background = "#0c0b0a"));
-        const sub = { y: 984, size: 38, color: "cream", font: "serifL", dim: 0.34, lead: 220, enter: 480, z: 70 };
+        const sub = { y: 982, size: 42, color: "cream", font: "serifL", lead: 220, enter: 480, z: 70 };
         D.line(C, ov, [0, 1, 2, 3, 4], { ...sub, end: T(5) - 40, out: 240 });
         D.line(C, ov, [5, 6, 7, 8, 9], { ...sub, lead: 80, end: T(10) - 40, out: 240 });
         D.line(C, ov, [10, 11, 12, 13], { ...sub, lead: 80, end: T(14) - 40, out: 240 });

@@ -510,6 +510,25 @@
       ],
       "outfit": "wedding",
       "prompt": "Change only: the cream partition wall between the two rooms is gone, so the house is one open room (the cobalt and coral halves now meet in the middle); the groom in a black tuxedo and the bride in a white lace gown stand together in the middle of the open room, holding hands and smiling at each other. Keep the house, the camera framing, the night backdrop and the warm lamp light unchanged."
+    },
+    {
+      "id": "E30",
+      "phase": 4,
+      "size": "1536x1024",
+      "edit_of": "E01x",
+      "cast": [
+        "groom",
+        "bride"
+      ],
+      "outfit": "wedding",
+      "prompt": "Change only the camera distance: pull the camera far back so the same open dollhouse becomes small, centered in the lower third of the frame, standing on a dark wooden tabletop; the upper two thirds of the frame are a calm, deep blue night backdrop with soft scattered stars and a few out-of-focus warm lights near the horizon. Keep the house, the open room without the partition wall, the groom in the black tuxedo and the bride in the white lace gown holding hands in the middle, and the warm lamp light exactly the same."
+    },
+    {
+      "id": "E03L",
+      "phase": 4,
+      "size": "1536x1024",
+      "edit_of": "E03",
+      "prompt": "Change only the lifted roof: lower it so it hovers just a little above the tops of the walls, with only a small gap through which the two lamp-lit rooms are still clearly visible; make the underside of the roof plain dark natural wood with no orange glow and no glowing strip; add a soft contact shadow from the roof onto the walls below. Keep the night sky, the two close bright stars, the landscape, the house, the camera angle and the framing unchanged. No people."
     }
   ]
 }

@@ -48,7 +48,7 @@
         sh(16, 18, "s3-P07");
         sh(18, 19, "s3-P07c");
         const ov = D.layer(C, T(16), T(19));
-        D.rap(C, ov, [[16, 17, 18]], { x: 132, y: 108, size: 64, color: "ink" });
+        D.rap(C, ov, [[16, 17, 18]], { x: 760, y: 92, size: 64, color: "ink" });
       }
       // 4. her window, the only warm light on the street
       {
@@ -82,7 +82,7 @@
       {
         const { cam } = sh(51, null);
         const box = K.el("div", "", cam);
-        box.style.cssText = "position:absolute;left:0;top:-100px;width:1920px;height:1280px;transform-origin:50% 42%";
+        box.style.cssText = "position:absolute;left:0;top:-100px;width:1920px;height:1280px;transform-origin:50% 22%";
         const plate = (id, a, b) => {
           const img = K.el("img", "", box);
           img.src = `assets/media/gen5/${id}.png`;
@@ -112,9 +112,9 @@
         D.move(C, box, T(51), END, { from: { s: 1.0 }, to: { s: 1.045 } });
 
         D.scrim(cam, "top", { a: 0.6, reach: 30 });
-        D.line(C, cam, [51, 52, 53, 54, 55, 56], { y: 62, size: 52, color: "cream", lead: 200, end: T(57) - 80, out: 280 });
-        D.line(C, cam, [57, 58, 59, 60, 61, 62, 63], { y: 62, size: 52, color: "cream", lead: 120, end: T(64) - 80, out: 280 });
-        D.line(C, cam, [64, 65, 66], { y: 62, size: 52, color: "cream", love: [64], lead: 120 });
+        D.line(C, cam, [51, 52, 53, 54, 55, 56], { y: 38, size: 48, color: "cream", lead: 200, end: T(57) - 80, out: 280 });
+        D.line(C, cam, [57, 58, 59, 60, 61, 62, 63], { y: 38, size: 48, color: "cream", lead: 120, end: T(64) - 80, out: 280 });
+        D.line(C, cam, [64, 65, 66], { y: 38, size: 48, color: "cream", love: [64], lead: 120 });
       }
 
       D.finish(C);

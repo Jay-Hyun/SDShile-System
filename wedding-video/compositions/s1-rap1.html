@@ -53,7 +53,7 @@
       // C. his shelf: seven cobalt mugs in a row, one coral one turned the other way
       {
         const { cam } = sh(9, 16, "s1-E13");
-        D.rap(C, cam, [[9, 10, 11], [12, 13, 14, 15]], { x: 132, y: 112, size: 64 });
+        D.rap(C, cam, [[9, 10, 11], [12, 13, 14, 15]], { x: 236, y: 112, size: 64 });
       }
       // D. the whole street looks at her window
       {
@@ -76,7 +76,7 @@
         sh(26, 29, "s1-P07");
         sh(29, 30, "s1-P07c");
         const ov = D.layer(C, T(26), T(30));
-        D.rap(C, ov, [[26, 27], [28, 29]], { x: 132, y: 108, size: 64, color: "ink" });
+        D.rap(C, ov, [[26, 27], [28, 29]], { x: 760, y: 92, size: 64, color: "ink" });
       }
       // H. over her shoulder, a small knowing smile
       {
@@ -91,8 +91,8 @@
       // J. through his doorway: her atelier (a slow truck, the door frame passing in the foreground)
       {
         const { cam } = sh(39, 49, "s1-E27");
-        D.scrim(cam, "left", { a: 0.55, reach: 52 });
-        D.rap(C, cam, [[39, 40, 41, 42], [43, 44, 45], [46, 47, 48]], { x: 132, y: 330, size: 60, love: [47] });
+        D.scrim(cam, "bottom", { tone: "light", a: 0.7, reach: 26 });
+        D.line(C, cam, [[39, 40, 41, 42], [43, 44, 45, 46, 47, 48]], { y: 856, size: 50, font: "sans", color: "ink", love: [47], lead: 160, enter: 380, gap: 1.3 });
       }
       // K. caught off guard — pleasantly
       {
@@ -110,7 +110,7 @@
       // M. two windows facing each other at dusk
       {
         const { cam } = sh(62, null, "s1-E18");
-        D.line(C, cam, [[62, 63, 64, 65], [66, 67, 68, 69]], { y: 84, size: 56, color: "cream", font: "sans", lead: 160, enter: 380, gap: 1.3 });
+        D.line(C, cam, [[62, 63, 64, 65], [66, 67, 68, 69]], { y: 84, size: 56, color: "ink", font: "sans", lead: 160, enter: 380, gap: 1.3 });
       }
 
       D.finish(C);

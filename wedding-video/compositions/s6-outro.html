@@ -6,25 +6,33 @@
   <div id="root" data-composition-id="s6" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
     <div id="s6-stage" style="position:absolute;inset:0"></div>
     <div id="s6-media" style="display:none">
-      <video id="s6-E01x" class="clip" data-start="0" data-duration="13.139" data-track-index="2" src="assets/media/living/v5_E01x.mp4" muted playsinline></video>
+      <video id="s6-E01x" class="clip" data-start="0" data-duration="5.21" data-track-index="2" src="assets/media/living/v5_E01xa.mp4" muted playsinline></video>
+      <video id="s6-E30" class="clip" data-start="5.11" data-duration="8.029" data-track-index="2" src="assets/media/living/v5_E30.mp4" muted playsinline></video>
     </div>
   </div>
 
   <script>
     (function () {
-      // s6 outro (night, instrumental) — the opening camera again, pulling back: the wall is gone and they stand together.
+      // s6 outro (night, instrumental) — the opening camera again: the wall is gone and they stand together;
+      // on a beat we are far back, the little house under a night sky, and the card is written in the sky.
       const C = D.scene("s6");
-      const { at, END } = C;
+      const { END } = C;
+      const tWide = C.S.beat(305);
 
-      const { cam } = D.shot(C, 0, END);
-      D.take("s6-E01x", cam);
-      D.scrim(cam, "top", { a: 0.62, reach: 34 });
-      const t0 = 4200;
-      D.hero(C, cam, "박준익  &  김명지", t0, { align: "center", y: 44, size: 66, font: "serif", color: "cream", enter: 1600, blur: 16 });
-      D.rule(C, cam, { x: 960 - 130, y: 150, w: 260, t: t0 + 900, dur: 1400, origin: "center", color: "#C9A86E" });
-      D.hero(C, cam, "2026. 11. 07  SAT", t0 + 1500, { align: "center", y: 164, size: 40, font: "meta", color: "brass", enter: 1300, blur: 10 });
-      D.hero(C, cam, "저희, 결혼합니다", t0 + 2300, { align: "center", y: 218, size: 38, font: "serifL", color: "cream", enter: 1300, blur: 10, spacing: "0.12em" });
-      D.fade(C, cam, END - 1700, 1650, { color: "#0c0b0a", dir: "out", z: 80, ease: "inout" });
+      {
+        const { cam } = D.shot(C, 0, tWide);
+        D.take("s6-E01x", cam);
+      }
+      {
+        const { cam } = D.shot(C, tWide, END);
+        D.take("s6-E30", cam);
+        const t0 = tWide + 500;
+        D.hero(C, cam, "박준익  &  김명지", t0, { align: "center", y: 180, size: 76, font: "serif", color: "cream", enter: 1600, blur: 16 });
+        D.rule(C, cam, { x: 960 - 150, y: 304, w: 300, t: t0 + 800, dur: 1400, origin: "center", color: "#C9A86E" });
+        D.hero(C, cam, "2026. 11. 07  SAT", t0 + 1300, { align: "center", y: 326, size: 38, font: "serifL", color: "brass", enter: 1300, blur: 10, spacing: "0.16em" });
+        D.hero(C, cam, "저희, 결혼합니다", t0 + 2100, { align: "center", y: 396, size: 46, font: "serif", color: "cream", enter: 1300, blur: 10, spacing: "0.12em" });
+        D.fade(C, cam, END - 1700, 1650, { color: "#0c0b0a", dir: "out", z: 80, ease: "inout" });
+      }
 
       D.finish(C);
     })();
