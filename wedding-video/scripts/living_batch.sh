@@ -36,5 +36,14 @@ w35 fc_w35 1920x1080 2.8 push 0.5,0.55
 w38 fc_w38 1920x1080 2.8 right 0.5,0.5
 w45 fc_w45 1920x1080 3.0 pull 0.5,0.5
 w04 fc_w04L 1920x1080 3.4 push 0.5,0.22 1 layers
+# generated dioramas (gen:<id> = assets/media/gen/<id>.png)
+gen:e01 g_e01 1920x1080 2.4 push 0.5,0.5 1
+gen:e05 g_e05 1920x1080 2.6 push 0.5,0.55 1
+gen:e08 g_e08 1920x1080 4.6 push 0.5,0.5 0.8
+gen:e10 g_e10 1920x1080 2.4 push 0.5,0.5 1
+gen:e07 g_e07 1920x1080 5.6 up 0.5,0.5 0.8
+gen:e02 g_e02 1920x1080 5.6 push 0.5,0.55 1
+gen:e03 g_e03 1920x1080 4.6 right 0.5,0.55 1
+gen:e09 g_e09 1920x1080 8.0 push 0.5,0.45 1.6
 LIST
 echo LIVING_DONE

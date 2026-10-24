@@ -174,7 +174,7 @@
       const love = [14, 15, 16].map((i, k) => txt(W[i].t, "B rose", { left: loveX[k], top: 800, fontSize: 96 }));
       love.forEach((el, k) => reveal(el, T(14 + k), { dur: 700, rise: 12 }));
       // 참 좋은 걸요: the title steps back and the two of them walk in holding hands
-      const pair = K.img(document.getElementById("root"), "assets/media/gen/cut/c05.png", { left: 660, top: 330, width: 600, zIndex: 2 });
+      const pair = K.img(document.getElementById("root"), "assets/media/gen/cut/c05.png", { left: 1330, top: 380, width: 500, zIndex: 2 });
       at.set(pair, { opacity: 0 }, 0);
       at.add(pair, { opacity: [0, 1], y: [80, 0], duration: 1000, ease: E.expo }, T(14) - 200);
       at.add("#s0-b1-push", { opacity: [1, 0.0], duration: 700, ease: E.inout }, T(14) - 300);

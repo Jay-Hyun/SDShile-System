@@ -16,8 +16,13 @@ from concurrent.futures import ThreadPoolExecutor
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 M = json.load(open("data/gen_assets.json"))
-args = [a for a in sys.argv[1:] if not a.startswith("--")]
-jobs = int(next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--jobs"), 3))
+argv = sys.argv[1:]
+jobs = 3
+if "--jobs" in argv:
+    k = argv.index("--jobs")
+    jobs = int(argv[k + 1])
+    del argv[k : k + 2]
+args = [a for a in argv if not a.startswith("--")]
 force = "--force" in sys.argv
 items = [it for it in M["items"] if not args or it["id"] in args]
 os.makedirs("assets/media/gen", exist_ok=True)

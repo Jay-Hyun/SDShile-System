@@ -13,6 +13,9 @@
 
   <div id="root" data-composition-id="s3" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
     <div id="s3-stage" style="position:absolute;inset:0"></div>
+    <div id="s3-media" style="display:none">
+      <video id="s3-ge05" class="clip" data-start="2.5" data-duration="2.6" data-track-index="4" src="assets/media/living/g_e05.mp4" muted playsinline></video>
+    </div>
   </div>
 
   <script>
@@ -93,7 +96,7 @@
       {
         const s = shot(T(9), T(16), "bg-black");
         const road = K.el("div", "fill", s);
-        D.gen(road, "e05", {}, { cut: false });
+        road.appendChild(document.getElementById("s3-ge05"));
         at.add(road, { scale: [1.15, 1.0], duration: T(16) - T(9), ease: E.quart }, T(9));
         const shade = K.el("div", "", s);
         shade.style.cssText = "position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,13,.55),rgba(11,11,13,0) 40%,rgba(11,11,13,0) 70%,rgba(11,11,13,.5))";
@@ -136,7 +139,7 @@
         const s = shot(T(19), T(28), "bg-black");
         const win = K.el("div", "win", s);
         win.style.cssText += "left:760px;top:90px;width:400px;height:900px";
-        D.gen(win, "c08", { left: -280, bottom: -40, height: 980 });
+        D.gen(win, "c08", { left: -124, bottom: -40, height: 980 });
         at.set(win, { scaleY: 0 }, 0);
         at.add(win, { scaleY: [0, 1], duration: 420, ease: E.expo }, T(19) - 60);
         // tall -> square -> wide on each phrase
@@ -240,7 +243,7 @@
         const side = K.el("div", "fill bg-lilac", s);
         side.style.zIndex = 21;
         K.window(at, side, tOpen + 600, null);
-        const pair = D.gen(side, "c05", { left: 380, bottom: -30, width: 1160 });
+        const pair = D.gen(side, "c05", { left: 580, bottom: -30, width: 760 });
         at.add(pair, { scale: [1.08, 1], duration: 1600, ease: E.expo }, tOpen + 600);
         const opened = txt(side, W[56].t, "k-serifB c-peri", { left: 0, right: 0, top: 90, fontSize: 170, textAlign: "center" });
         at.set(opened, { opacity: 0 }, 0);

@@ -25,7 +25,7 @@ MODEL = "/opt/models/da2s.onnx"
 FPS = 30
 
 ap = argparse.ArgumentParser()
-ap.add_argument("key")
+ap.add_argument("key", help="photos.json key, or gen:<id> for a generated plate (assets/media/gen/<id>.png)")
 ap.add_argument("name")
 ap.add_argument("--size", default="1920x1080")
 ap.add_argument("--dur", type=float, default=4.0)
@@ -41,7 +41,8 @@ a = ap.parse_args()
 W, H = map(int, a.size.split("x"))
 fx, fy = map(float, a.focus.split(","))
 photos = json.load(open("data/photos.json"))
-src = np.asarray(Image.open(photos[a.key]).convert("RGB")).astype(np.float32) / 255.0
+src_path = f"assets/media/gen/{a.key[4:]}.png" if a.key.startswith("gen:") else photos[a.key]
+src = np.asarray(Image.open(src_path).convert("RGB")).astype(np.float32) / 255.0
 ih, iw = src.shape[:2]
 
 
@@ -81,7 +82,7 @@ def inpaint(img, mask, small=640):
 
 
 depth = depth_of(src)
-cut_path = f"assets/media/cutout/{a.key}.png"
+cut_path = f"assets/media/cutout/{a.key}.png"  # generated plates have no separate subject layer
 fg = None
 if os.path.exists(cut_path):
     c = Image.open(cut_path).convert("RGBA").resize((iw, ih), Image.LANCZOS)

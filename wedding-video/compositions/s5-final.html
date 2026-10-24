@@ -17,6 +17,9 @@
   <div id="root" data-composition-id="s5" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
     <div id="s5-stage" style="position:absolute;inset:0"></div>
     <div id="s5-media" style="display:none">
+      <video id="s5-ge02" class="clip" data-start="1.6" data-duration="5.6" data-track-index="4" src="assets/media/living/g_e02.mp4" muted playsinline></video>
+      <video id="s5-ge03" class="clip" data-start="6.4" data-duration="4.6" data-track-index="4" src="assets/media/living/g_e03.mp4" muted playsinline></video>
+      <video id="s5-ge09" class="clip" data-start="29.6" data-duration="8.0" data-track-index="4" src="assets/media/living/g_e09.mp4" muted playsinline></video>
       <div id="s5-kiss" class="fill"><video id="s5-kiss-v" class="clip" data-start="0" data-duration="1.95" data-track-index="2" src="assets/media/living/fc_w06.mp4" muted playsinline></video></div>
       <video id="s5-flow" class="clip" data-start="17.5" data-duration="4.4" data-playback-rate="0.55" data-track-index="2" src="assets/media/video/v04.mp4" muted playsinline></video>
       <video id="s5-heart" class="clip" data-start="25.0" data-duration="5.1" data-playback-rate="0.9" data-track-index="2" src="assets/media/video/v08.mp4" muted playsinline></video>
@@ -84,6 +87,13 @@
         return f;
       };
 
+      // a generated diorama with a real camera move through it (depth parallax clip, scripts/living_batch.sh)
+      const vplate = (s, vid) => {
+        const f = K.el("div", "fill", s);
+        f.appendChild(document.getElementById(vid));
+        return f;
+      };
+
       // ---- A. THE DROP — 사랑할 is cut out of the light; the real kiss is inside it; on 같아요 we fly through
       {
         const s = shot(0, T(3));
@@ -103,7 +113,7 @@
       // ---- B. 우린 서로 너무 다르지만요 — a miniature river at night; the two of them on the bridge
       {
         const s = shot(T(3), T(7), "bg-dusk");
-        const p = plate(s, "e02");
+        const p = vplate(s, "s5-ge02");
         at.add(p, { scale: [1.14, 1.0], duration: T(7) - T(3) + 400, ease: E.quart }, T(3));
         const pair = D.gen(s, "c05", { left: 620, bottom: 40, width: 680 });
         at.set(pair, { opacity: 0 }, 0);
@@ -117,7 +127,7 @@
       // ---- C. 사랑은 참 신비로운 거죠 — the park proposal, as a miniature (the real one happened on a bench like this)
       {
         const s = shot(T(7), T(11), "bg-mint", 360);
-        const p = plate(s, "e03");
+        const p = vplate(s, "s5-ge03");
         at.add(p, { scale: [1.0, 1.1], x: [0, -40], duration: T(11) - T(7) + 400, ease: "linear" }, T(7) - 200);
         const pr = D.gen(s, "c10", { left: 560, bottom: 60, width: 820 });
         at.set(pr, { opacity: 0 }, 0);
@@ -171,7 +181,9 @@
         out(p2, T(18) - 200, 240);
         // the flight ends in one picture: his hands on her face
         const last = K.el("div", "fill", cam);
-        K.img(last, K.photo("w26"), {}).style.objectPosition = "50% 30%";
+        const lw = K.img(last, K.photo("w26"), {});
+        lw.classList.add("plate");
+        lw.style.objectPosition = "50% 30%";
         K.window(at, last, T(18) - 20, null);
         at.add(last, { scale: [1.18, 1.04], duration: T(20) - T(18) + 500, ease: E.expo }, T(18) - 20);
         K.el("div", "shade", last);
@@ -230,7 +242,7 @@
       // ---- H. 니 곁에 있으면 자꾸만 행복하단 생각이 들죠 — down the aisle: the two of them walk toward the arch
       {
         const s = shot(T(31), T(38), "bg-lilac", 420);
-        const p = plate(s, "e09");
+        const p = vplate(s, "s5-ge09");
         p.style.transformOrigin = "50% 42%";
         at.add(p, { scale: [1.0, 1.35], duration: T(38) - T(31) + 400, ease: E.inout }, T(31) - 200);
         const pair = D.gen(s, "c12", { left: 700, bottom: 30, width: 520 });

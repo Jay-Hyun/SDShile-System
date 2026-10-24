@@ -123,9 +123,9 @@
       // ---------- C: 대체 왤까 — an orange starburst and the question echoing (Actor's TIME OVER)
       {
         const s = shot(T(7), T(9), "bg-orange");
-        const burst = D.burst(s, { color: "#f6c886", rays: 14, size: 2600 });
+        const burst = D.burst(s, { color: "#f4b860", rays: 14, size: 2600 });
         at.add(burst, { rotate: [0, 24], duration: T(9) - T(7) + 400, ease: "linear" }, T(7));
-        const e = D.echo(s, "대체 왤까", { n: 5, gap: 128, cls: "k-sansK", size: 124, color: P.cream, y: 540 });
+        const e = D.echo(s, "대체 왤까", { n: 5, gap: 128, cls: "k-sansK", size: 124, color: P.ink, y: 540 });
         e.rows.forEach((r, k) => {
           at.set(r, { opacity: 0 }, 0);
           at.set(r, { opacity: k === 2 ? 1 : 0.75 }, T(7) + Math.abs(k - 2) * 70);
@@ -195,7 +195,7 @@
         const s = shot(T(19), T(23), "bg-paper");
         const st = stack(s, [[19, 20], [21, 22]], "k-sansB c-cobalt", { x: 160, y: 300, size: 132 });
         const b = D.badge(s, { size: 260 });
-        b.style.left = "860px";
+        b.style.left = "600px";
         b.style.top = "230px";
         s.insertBefore(b, s.firstChild);
         pop(b, T(20) - 40);

@@ -53,7 +53,7 @@
   .pat-check { background-color:${PAL.orange}; background-image: conic-gradient(rgba(255,255,255,.16) 25%, transparent 0 50%, rgba(255,255,255,.16) 0 75%, transparent 0); background-size: 120px 120px; }
   .pat-grid { background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 96px 96px; }
   .fill { position:absolute; inset:0; overflow:hidden; }
-  .fill > img, .fill > video { position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; }
+  .fill > img.plate, .fill > video { position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; }
   .k-sans { font-family: "Pretendard"; font-weight: 500; letter-spacing: -0.01em; }
   .k-sansB { font-family: "Pretendard"; font-weight: 800; letter-spacing: -0.03em; }
   .k-sansK { font-family: "Pretendard"; font-weight: 900; letter-spacing: -0.04em; }
@@ -104,33 +104,39 @@
     /** GPT-generated image: cut-out (alpha) if `cut`, else the full plate. */
     gen(parent, id, css = {}, { cut = true } = {}) {
       const im = K.img(parent, `assets/media/gen/${cut ? "cut/" : ""}${id}.png`, css);
+      if (!cut) im.classList.add("plate");
       return im;
     },
 
     /** Actor's scalloped halftone badge (the cursor that rides ahead of typing). */
     badge(parent, { size = 120, color = "#e88fb6", dot = "#c4588f", n = 14 } = {}) {
+      // returned as a div wrapper: transforms animate reliably on HTML boxes, not on an outer <svg>
+      const box = el("div", "", parent);
+      box.style.cssText = `position:absolute;width:${size}px;height:${size}px`;
       const s = document.createElementNS(NS, "svg");
       s.setAttribute("viewBox", "-60 -60 120 120");
-      s.style.cssText = `position:absolute;width:${size}px;height:${size}px;overflow:visible`;
+      s.style.cssText = `position:absolute;left:0;top:0;width:${size}px;height:${size}px;overflow:visible`;
       let d = "";
       for (let i = 0; i < n; i++) {
         const a0 = (i / n) * Math.PI * 2, a1 = ((i + 1) / n) * Math.PI * 2, am = (a0 + a1) / 2;
         const p = (a, r) => `${(Math.cos(a) * r).toFixed(2)} ${(Math.sin(a) * r).toFixed(2)}`;
-        d += (i ? " " : "M ") + p(a0, 46) + ` Q ${p(am, 60)} ${p(a1, 46)}`;
+        d += (i ? " L " : "M ") + p(a0, 46) + ` Q ${p(am, 60)} ${p(a1, 46)}`;
       }
       const id = "dots" + (D._n = (D._n || 0) + 1);
       s.innerHTML =
         `<defs><pattern id="${id}" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="1.6" fill="${dot}"/></pattern></defs>` +
         `<path d="${d} Z" fill="${color}"/><path d="${d} Z" fill="url(#${id})" opacity=".55"/>`;
-      parent.appendChild(s);
-      return s;
+      box.appendChild(s);
+      return box;
     },
 
     /** Starburst behind a word (Actor's orange burst). */
     burst(parent, { rays = 16, color = "#f6c27a", inner = 0.55, size = 2400, x = 960, y = 540 } = {}) {
+      const box = el("div", "", parent);
+      box.style.cssText = `position:absolute;left:${x - size / 2}px;top:${y - size / 2}px;width:${size}px;height:${size}px`;
       const s = document.createElementNS(NS, "svg");
       s.setAttribute("viewBox", "-100 -100 200 200");
-      s.style.cssText = `position:absolute;left:${x - size / 2}px;top:${y - size / 2}px;width:${size}px;height:${size}px;overflow:visible`;
+      s.style.cssText = `position:absolute;left:0;top:0;width:${size}px;height:${size}px;overflow:visible`;
       let d = "";
       for (let i = 0; i < rays * 2; i++) {
         const a = (i / (rays * 2)) * Math.PI * 2;
@@ -138,8 +144,8 @@
         d += (i ? "L" : "M") + (Math.cos(a) * r).toFixed(2) + " " + (Math.sin(a) * r).toFixed(2);
       }
       s.innerHTML = `<path d="${d}Z" fill="${color}"/>`;
-      parent.appendChild(s);
-      return s;
+      box.appendChild(s);
+      return box;
     },
 
     /** Items placed evenly on a circle (returns wrapper to rotate and the item elements). */

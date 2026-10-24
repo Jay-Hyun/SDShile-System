@@ -62,11 +62,12 @@
       out(big1, T(3) - 200, 400);
 
       // ---- 모든 게 완전히 정말: four hard cuts, black chair, white chair, black, white (closer each time)
+      // chair centres in room px (e06): black armchair ~(576, 781), white chair ~(1373, 768); x = 960 - s*px
       const crops = [
-        { x: -520, y: -420, s: 1.9 },
-        { x: -1500, y: -420, s: 1.9 },
-        { x: -900, y: -800, s: 2.6 },
-        { x: -2300, y: -800, s: 2.6 },
+        { x: -134, y: -944, s: 1.9 },
+        { x: -1649, y: -919, s: 1.9 },
+        { x: -653, y: -1647, s: 2.8 },
+        { x: -2884, y: -1610, s: 2.8 },
       ];
       const hits = [T(5), T(6), T(7), T(8)];
       crops.forEach((c, j) => {
@@ -87,10 +88,10 @@
 
       // ---- 함께 있을 때면 왠지: the two of them dance in the middle of the room; the word stands behind them
       const tTo = T(10);
-      const ham = K.txt(stage, "함께", "k-serifB c-ink", { left: 0, right: 0, top: 170, fontSize: 380, textAlign: "center" });
+      const ham = K.txt(stage, "함께", "k-serifB c-ink", { left: 0, right: 0, top: 110, fontSize: 340, textAlign: "center" });
       K.syllables(ham).forEach((s, k) => soft(s, tTo + k * 160, { dur: 1300, rise: 50, blur: 20 }));
       ham.style.opacity = 0.92;
-      const dance = D.gen(stage, "c11", { left: 520, top: 300, width: 880 });
+      const dance = D.gen(stage, "c11", { left: 560, top: 380, width: 800 });
       at.set(dance, { opacity: 0 }, 0);
       at.add(dance, { opacity: [0, 1], y: [60, 0], duration: 1400, ease: E.expo }, tTo - 100);
       at.add(dance, { scale: [1, 1.05], duration: END - tTo, ease: "linear" }, tTo);

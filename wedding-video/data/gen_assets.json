@@ -3,46 +3,290 @@
   "groom": "the groom figurine: young Korean man, short neat black hair, black rectangular glasses, slim, friendly smile",
   "bride": "the bride figurine: young Korean woman, chin-length black bob with see-through bangs, small pearl earrings, gentle smile",
   "figurine": "stylized designer-toy proportions (head about one quarter of the body height), elegant not childish, clay texture",
-  "refs": { "groom": "assets/media/cutout/w08.png", "bride": "assets/media/cutout/w16.png" },
+  "refs": {
+    "groom": "assets/media/cutout/w08.png",
+    "bride": "assets/media/cutout/w16.png"
+  },
   "items": [
-    { "id": "c01", "kind": "char", "who": "groom", "size": "1024x1536", "alpha": true, "prompt": "full body, standing front view, black tuxedo with bow tie, one hand in pocket, relaxed confident pose" },
-    { "id": "c02", "kind": "char", "who": "bride", "size": "1024x1536", "alpha": true, "prompt": "full body, standing front view, white off-shoulder wedding gown, holding a small bouquet of pink and cream flowers at her waist" },
-    { "id": "c03", "kind": "char", "who": "groom", "size": "1024x1536", "alpha": true, "prompt": "full body, black tuxedo, pushing up his glasses with one finger, the other hand raised palm out as if saying 'wait a second', playful" },
-    { "id": "c04", "kind": "char", "who": "bride", "size": "1024x1536", "alpha": true, "prompt": "upper body, white off-shoulder gown, holding a single pink flower close to her face, eyes closed smiling shyly" },
-    { "id": "c05", "kind": "pair", "size": "1536x1024", "alpha": true, "prompt": "the groom in a black tuxedo and the bride in a white gown standing side by side holding hands, both looking at the viewer and smiling, full body" },
-    { "id": "c06", "kind": "pair", "size": "1536x1024", "alpha": true, "prompt": "the groom and the bride in casual clothes (he: white t-shirt and light grey shirt, she: light blue summer dress) jumping joyfully in the air holding hands, full body, dynamic" },
-    { "id": "c07", "kind": "char", "who": "groom", "size": "1024x1536", "alpha": true, "prompt": "full body, black tuxedo, leaning sideways and tilting his head with a curious puzzled look, hand on chin" },
-    { "id": "c08", "kind": "char", "who": "bride", "size": "1024x1536", "alpha": true, "prompt": "full body, white off-shoulder gown, looking back over her shoulder at the viewer with a confident little smile, unbothered" },
-    { "id": "c09", "kind": "pair", "size": "1536x1024", "alpha": true, "prompt": "the groom in a black tuxedo and the bride in a white gown standing back to back with arms crossed, both pouting playfully and looking away from each other, full body" },
-    { "id": "c10", "kind": "pair", "size": "1536x1024", "alpha": true, "prompt": "the groom in casual clothes kneeling on one knee offering a bouquet to the bride sitting on a small park bench in a white summer dress and veil, full body, side view" },
-    { "id": "c11", "kind": "pair", "size": "1536x1024", "alpha": true, "prompt": "the groom in a black tuxedo spinning the bride in a white gown in a slow dance, her dress flaring, both laughing, full body" },
-    { "id": "c12", "kind": "pair", "size": "1536x1024", "alpha": true, "prompt": "the groom and the bride in casual clothes walking away hand in hand, seen from behind at three quarters, full body" },
-    { "id": "c13", "kind": "char", "who": "groom", "size": "1024x1536", "alpha": true, "prompt": "full body, casual clothes (white t-shirt, light grey open shirt, jeans), arms spread wide like an airplane, playful goofy grin, standing on one leg" },
-    { "id": "c14", "kind": "prop", "size": "1536x1024", "alpha": true, "prompt": "a neat row of seven identical faceless light grey clay mannequin figures standing in a straight line facing forward, all the same pose, plain and uniform" },
-    { "id": "c15", "kind": "pair", "size": "1536x1024", "alpha": true, "prompt": "the groom and the bride in wedding clothes facing each other very close, foreheads almost touching, eyes closed, tender, upper bodies" },
-    { "id": "p01", "kind": "prop", "size": "1536x1024", "alpha": true, "prompt": "two glossy horseshoe magnets facing each other with a small gap, the left one cobalt blue, the right one coral pink, silver tips, floating" },
-    { "id": "p02", "kind": "prop", "size": "1024x1536", "alpha": true, "prompt": "a clear glass vase with three heart-shaped tulips in coral pink and lilac, soft green stems" },
-    { "id": "p03", "kind": "prop", "size": "1024x1024", "alpha": true, "prompt": "a single glossy coral pink clay heart, plump and soft, slightly squished, floating" },
-    { "id": "p04", "kind": "prop", "size": "1024x1024", "alpha": true, "prompt": "an open lilac umbrella seen at a slight angle with a few clay raindrops around it" },
-    { "id": "p05", "kind": "prop", "size": "1024x1024", "alpha": true, "prompt": "an open velvet ring box in cream with two gold wedding rings inside, one slightly larger" },
-    { "id": "p06", "kind": "prop", "size": "1536x1024", "alpha": true, "prompt": "two jigsaw puzzle pieces, one cobalt blue and one coral pink, that clearly do not fit together, slightly apart and tilted" },
-    { "id": "p07", "kind": "prop", "size": "1536x1024", "alpha": true, "prompt": "a pair of cute boxing gloves, one cobalt blue and one coral pink, bumping against each other playfully" },
-    { "id": "p08", "kind": "prop", "size": "1024x1536", "alpha": true, "prompt": "a modern smartphone standing upright, front view, rounded corners, cream frame, the screen is plain solid pure green (#00ff00) edge to edge" },
-    { "id": "p09", "kind": "prop", "size": "1024x1536", "alpha": true, "prompt": "a wooden signpost with two blank arrow signs pointing in opposite directions, the left arrow cobalt blue and the right arrow coral pink, on a small grass base" },
-    { "id": "p10", "kind": "prop", "size": "1024x1024", "alpha": true, "prompt": "a small round cream cake with two thin candles lit, next to a bouquet of lilac and white flowers wrapped in paper" },
-    { "id": "p11", "kind": "prop", "size": "1536x1024", "alpha": true, "prompt": "two cups side by side: a black cup of black coffee and a white cup of milk, top-down three quarter view, saucers" },
-    { "id": "p12", "kind": "prop", "size": "1536x1024", "alpha": true, "prompt": "a smiling-free stylized clay sun in warm coral and a crescent moon in periwinkle, side by side, floating, simple" },
-    { "id": "p13", "kind": "prop", "size": "1024x1536", "alpha": true, "prompt": "a free-standing white clay door slightly open with warm golden light pouring out through the gap and onto the floor" },
-    { "id": "p14", "kind": "prop", "size": "1536x1024", "alpha": true, "prompt": "a cluster of fluffy pastel clouds in lilac and cream" },
-    { "id": "e01", "kind": "scene", "size": "1536x1024", "alpha": false, "prompt": "a calm pastel room corner: soft periwinkle wall, warm window light casting a diagonal shadow, a small cream table with a glass vase of heart-shaped tulips, lots of empty space on the left for typography" },
-    { "id": "e02", "kind": "scene", "size": "1536x1024", "alpha": false, "prompt": "miniature diorama of a river at night with an arched steel bridge lit by warm lights, pastel night sky in deep periwinkle, soft bokeh city lights, calm water reflections, empty space in the upper half" },
-    { "id": "e03", "kind": "scene", "size": "1536x1024", "alpha": false, "prompt": "miniature diorama of a quiet park lawn with round pastel trees and one empty wooden bench, soft afternoon light, empty space on the right" },
-    { "id": "e04", "kind": "scene", "size": "1536x1024", "alpha": false, "prompt": "miniature diorama of a rainy night street with soft glowing street lamps and wet reflections, lilac and deep blue tones, gentle rain" },
-    { "id": "e05", "kind": "scene", "size": "1536x1024", "alpha": false, "prompt": "a fork in the road seen from above at an angle: on the left a straight smooth cream road through tidy grass, on the right a winding bumpy road with rocks and puddles, pastel landscape" },
-    { "id": "e06", "kind": "scene", "size": "1536x1024", "alpha": false, "prompt": "an all-white clay room with tall windows, soft beams of light falling on the floor, two different chairs facing each other in the middle (one black armchair, one white wooden chair), quiet and solemn" },
-    { "id": "e07", "kind": "scene", "size": "1536x1024", "alpha": false, "prompt": "a dreamy sky of soft pastel clouds in periwinkle, lilac and peach at golden hour, gentle light rays, wide open space" },
-    { "id": "e08", "kind": "scene", "size": "1536x1024", "alpha": false, "prompt": "a deep periwinkle night sky full of tiny soft stars, two brighter stars close together in the centre, subtle glow" },
-    { "id": "e09", "kind": "scene", "size": "1536x1024", "alpha": false, "prompt": "miniature diorama of a wedding aisle with cream chairs on both sides, an arch of lilac and white flowers at the end, soft morning light, petals on the floor, nobody there" },
-    { "id": "e10", "kind": "scene", "size": "1536x1024", "alpha": false, "prompt": "a giant cream heart-shaped balloon arch over a pastel lawn at dusk, small fairy lights, festive but calm, empty space in the centre" }
+    {
+      "id": "c01",
+      "kind": "char",
+      "who": "groom",
+      "size": "1024x1536",
+      "alpha": true,
+      "prompt": "full body, standing front view, black tuxedo with bow tie, one hand in pocket, relaxed confident pose"
+    },
+    {
+      "id": "c02",
+      "kind": "char",
+      "who": "bride",
+      "size": "1024x1536",
+      "alpha": true,
+      "prompt": "full body, standing front view, white off-shoulder wedding gown, holding a small bouquet of pink and cream flowers at her waist"
+    },
+    {
+      "id": "c03",
+      "kind": "char",
+      "who": "groom",
+      "size": "1024x1536",
+      "alpha": true,
+      "prompt": "full body, black tuxedo, pushing up his glasses with one finger, the other hand raised palm out as if saying 'wait a second', playful"
+    },
+    {
+      "id": "c04",
+      "kind": "char",
+      "who": "bride",
+      "size": "1024x1536",
+      "alpha": true,
+      "prompt": "upper body, white off-shoulder gown, holding a single pink flower close to her face, eyes closed smiling shyly"
+    },
+    {
+      "id": "c05",
+      "kind": "pair",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "the groom in a black tuxedo and the bride in a white gown standing side by side holding hands, both looking at the viewer and smiling, full body"
+    },
+    {
+      "id": "c06",
+      "kind": "pair",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "the groom and the bride in casual clothes (he: white t-shirt and light grey shirt, she: light blue summer dress) jumping joyfully in the air holding hands, full body, dynamic"
+    },
+    {
+      "id": "c07",
+      "kind": "char",
+      "who": "groom",
+      "size": "1024x1536",
+      "alpha": true,
+      "prompt": "full body, black tuxedo, leaning sideways and tilting his head with a curious puzzled look, hand on chin"
+    },
+    {
+      "id": "c08",
+      "kind": "char",
+      "who": "bride",
+      "size": "1024x1536",
+      "alpha": true,
+      "prompt": "full body, white off-shoulder gown, looking back over her shoulder at the viewer with a confident little smile, unbothered"
+    },
+    {
+      "id": "c09",
+      "kind": "pair",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "the groom in a black tuxedo and the bride in a white gown standing back to back with arms crossed, both pouting playfully and looking away from each other, full body"
+    },
+    {
+      "id": "c10",
+      "kind": "pair",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "the groom in casual clothes kneeling on one knee offering a bouquet to the bride sitting on a small park bench in a white summer dress and veil, full body, side view"
+    },
+    {
+      "id": "c11",
+      "kind": "pair",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "the groom in a black tuxedo spinning the bride in a white gown in a slow dance, her dress flaring, both laughing, full body"
+    },
+    {
+      "id": "c12",
+      "kind": "pair",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "the groom and the bride in casual clothes walking away hand in hand, seen from behind at three quarters, full body"
+    },
+    {
+      "id": "c13",
+      "kind": "char",
+      "who": "groom",
+      "size": "1024x1536",
+      "alpha": true,
+      "prompt": "full body, casual clothes (white t-shirt, light grey open shirt, jeans), arms spread wide like an airplane, playful goofy grin, standing on one leg"
+    },
+    {
+      "id": "c14",
+      "kind": "prop",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "a neat row of seven identical faceless light grey clay mannequin figures standing in a straight line facing forward, all the same pose, plain and uniform"
+    },
+    {
+      "id": "c15",
+      "kind": "pair",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "the groom and the bride in wedding clothes facing each other very close, foreheads almost touching, eyes closed, tender, upper bodies"
+    },
+    {
+      "id": "p01",
+      "kind": "prop",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "two glossy horseshoe magnets facing each other with a small gap, the left one cobalt blue, the right one coral pink, silver tips, floating"
+    },
+    {
+      "id": "p02",
+      "kind": "prop",
+      "size": "1024x1536",
+      "alpha": true,
+      "prompt": "a clear glass vase with three heart-shaped tulips in coral pink and lilac, soft green stems"
+    },
+    {
+      "id": "p03",
+      "kind": "prop",
+      "size": "1024x1024",
+      "alpha": true,
+      "prompt": "a single glossy coral pink clay heart, plump and soft, slightly squished, floating"
+    },
+    {
+      "id": "p04",
+      "kind": "prop",
+      "size": "1024x1024",
+      "alpha": true,
+      "prompt": "an open lilac umbrella seen at a slight angle with a few clay raindrops around it"
+    },
+    {
+      "id": "p05",
+      "kind": "prop",
+      "size": "1024x1024",
+      "alpha": true,
+      "prompt": "an open velvet ring box in cream with two gold wedding rings inside, one slightly larger"
+    },
+    {
+      "id": "p06",
+      "kind": "prop",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "two jigsaw puzzle pieces, one cobalt blue and one coral pink, that clearly do not fit together, slightly apart and tilted"
+    },
+    {
+      "id": "p07",
+      "kind": "prop",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "a pair of cute boxing gloves, one cobalt blue and one coral pink, bumping against each other playfully"
+    },
+    {
+      "id": "p08",
+      "kind": "prop",
+      "size": "1024x1536",
+      "alpha": true,
+      "prompt": "a modern smartphone standing upright, front view, rounded corners, cream frame, the screen is plain solid pure green (#00ff00) edge to edge"
+    },
+    {
+      "id": "p09",
+      "kind": "prop",
+      "size": "1024x1536",
+      "alpha": true,
+      "prompt": "a wooden signpost with two blank arrow signs pointing in opposite directions, the left arrow cobalt blue and the right arrow coral pink, on a small grass base"
+    },
+    {
+      "id": "p10",
+      "kind": "prop",
+      "size": "1024x1024",
+      "alpha": true,
+      "prompt": "a small round cream cake with two thin candles lit, next to a bouquet of lilac and white flowers wrapped in paper"
+    },
+    {
+      "id": "p11",
+      "kind": "prop",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "two cups side by side: a black cup of black coffee and a white cup of milk, top-down three quarter view, saucers"
+    },
+    {
+      "id": "p12",
+      "kind": "prop",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "a smiling-free stylized clay sun in warm coral and a crescent moon in periwinkle, side by side, floating, simple"
+    },
+    {
+      "id": "p13",
+      "kind": "prop",
+      "size": "1024x1536",
+      "alpha": true,
+      "prompt": "a free-standing white clay door slightly open with warm golden light pouring out through the gap and onto the floor"
+    },
+    {
+      "id": "p14",
+      "kind": "prop",
+      "size": "1536x1024",
+      "alpha": true,
+      "prompt": "a cluster of fluffy pastel clouds in lilac and cream"
+    },
+    {
+      "id": "e01",
+      "kind": "scene",
+      "size": "1536x1024",
+      "alpha": false,
+      "prompt": "a calm pastel room corner: soft periwinkle wall, warm window light casting a diagonal shadow, a small cream table with a glass vase of heart-shaped tulips, lots of empty space on the left for typography"
+    },
+    {
+      "id": "e02",
+      "kind": "scene",
+      "size": "1536x1024",
+      "alpha": false,
+      "prompt": "miniature diorama of a river at night with an arched steel bridge lit by warm lights, pastel night sky in deep periwinkle, soft bokeh city lights, calm water reflections, empty space in the upper half"
+    },
+    {
+      "id": "e03",
+      "kind": "scene",
+      "size": "1536x1024",
+      "alpha": false,
+      "prompt": "miniature diorama of a quiet park lawn with round pastel trees, an open flat lawn in the centre with nothing on it, soft afternoon light, no bench, no people, no animals"
+    },
+    {
+      "id": "e04",
+      "kind": "scene",
+      "size": "1536x1024",
+      "alpha": false,
+      "prompt": "miniature diorama of a rainy night street with soft glowing street lamps and wet reflections, lilac and deep blue tones, gentle rain, no people, no animals"
+    },
+    {
+      "id": "e05",
+      "kind": "scene",
+      "size": "1536x1024",
+      "alpha": false,
+      "prompt": "a fork in the road seen from above at an angle: on the left a straight smooth cream road through tidy grass, on the right a winding bumpy road with rocks and puddles, pastel landscape"
+    },
+    {
+      "id": "e06",
+      "kind": "scene",
+      "size": "1536x1024",
+      "alpha": false,
+      "prompt": "an all-white clay room with tall windows, soft beams of light falling on the floor, two different chairs facing each other in the middle (one black armchair, one white wooden chair), quiet and solemn"
+    },
+    {
+      "id": "e07",
+      "kind": "scene",
+      "size": "1536x1024",
+      "alpha": false,
+      "prompt": "a dreamy sky of soft pastel clouds in periwinkle, lilac and peach at golden hour, gentle light rays, wide open space, no people, no characters, no animals, no buildings"
+    },
+    {
+      "id": "e08",
+      "kind": "scene",
+      "size": "1536x1024",
+      "alpha": false,
+      "prompt": "a deep periwinkle night sky full of tiny soft stars, two brighter stars close together in the centre, subtle glow"
+    },
+    {
+      "id": "e09",
+      "kind": "scene",
+      "size": "1536x1024",
+      "alpha": false,
+      "prompt": "miniature diorama of a wedding aisle with cream chairs on both sides, an arch of lilac and white flowers at the end, soft morning light, petals on the floor, nobody there"
+    },
+    {
+      "id": "e10",
+      "kind": "scene",
+      "size": "1536x1024",
+      "alpha": false,
+      "prompt": "a giant cream heart-shaped balloon arch over a pastel lawn at dusk, small fairy lights, festive but calm, empty space in the centre"
+    }
   ]
 }
