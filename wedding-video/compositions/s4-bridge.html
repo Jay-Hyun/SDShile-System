@@ -6,8 +6,8 @@
   <div id="root" data-composition-id="s4" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
     <div id="s4-stage" style="position:absolute;inset:0"></div>
     <div id="s4-media" style="display:none">
-      <video id="s4-E20" class="clip" data-start="0" data-duration="4.05" data-track-index="2" src="assets/media/living/v5_E20.mp4" muted playsinline></video>
-      <video id="s4-E20b" class="clip" data-start="9.22" data-duration="7.68" data-track-index="2" src="assets/media/living/v5_E20b.mp4" muted playsinline></video>
+      <video id="s4-E20" data-shot="0,5" class="clip" data-start="0" data-duration="3.9" data-track-index="2" src="assets/media/living/v5_E20.mp4" muted playsinline></video>
+      <video id="s4-E20b" data-shot="10,end" class="clip" data-start="9.081" data-duration="7.65" data-track-index="2" src="assets/media/living/v5_E20b.mp4" muted playsinline></video>
     </div>
   </div>
 
@@ -16,30 +16,30 @@
       // s4 bridge (morning) — one room now, two different chairs; the film goes widescreen and the lyric is a subtitle.
       // words: 0 두 1 사람 2 이렇게 3 서로 4 다르지만요 | 5 모든 6 게 7 완전히 8 정말 9 반대지만요 | 10 함께 11 있을 12 때면 13 왠지 | 14 참 15 좋은 16 걸요
       const C = D.scene("s4");
-      const { at, T, END } = C;
+      const { at, T, Q, END } = C;
       const E = K.ease;
       const PLATE = "assets/media/gen5/E20.png";
 
       // the empty room, two chairs facing each other
       {
-        const { cam } = D.shot(C, 0, T(5));
+        const { cam } = D.shot(C, 0, Q(5));
         D.take("s4-E20", cam);
       }
       // 모든 게 / 완전히: the black armchair, the white chair (closer, cut on the words)
       {
-        const a = D.shot(C, T(5), T(7));
-        D.still(C, a.cam, PLATE, T(5), T(7), { origin: "634px 694px", from: { x: 285, y: -150, s: 1.45 }, to: { x: 255, y: -150, s: 1.47 } });
-        const b = D.shot(C, T(7), T(8));
-        D.still(C, b.cam, PLATE, T(7), T(8), { origin: "1382px 687px", from: { x: -242, y: -150, s: 1.45 }, to: { x: -222, y: -150, s: 1.47 } });
+        const a = D.shot(C, Q(5), Q(7));
+        D.still(C, a.cam, PLATE, Q(5), Q(7), { origin: "634px 694px", from: { x: 285, y: -150, s: 1.45 }, to: { x: 255, y: -150, s: 1.47 } });
+        const b = D.shot(C, Q(7), Q(8));
+        D.still(C, b.cam, PLATE, Q(7), Q(8), { origin: "1382px 687px", from: { x: -242, y: -150, s: 1.45 }, to: { x: -222, y: -150, s: 1.47 } });
       }
       // 정말 반대지만요: the whole room again, holding still
       {
-        const { cam } = D.shot(C, T(8), T(10));
-        D.still(C, cam, PLATE, T(8), T(10), { from: { s: 1.0 }, to: { s: 1.035 } });
+        const { cam } = D.shot(C, Q(8), Q(10));
+        D.still(C, cam, PLATE, Q(8), Q(10), { from: { s: 1.0 }, to: { s: 1.035 } });
       }
       // 함께: the same room, the same framing — now they sit in the two chairs, facing each other
       {
-        const { cam } = D.shot(C, T(10), END);
+        const { cam } = D.shot(C, Q(10), END);
         D.take("s4-E20b", cam);
       }
 

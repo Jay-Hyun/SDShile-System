@@ -6,13 +6,13 @@
   <div id="root" data-composition-id="s3" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
     <div id="s3-stage" style="position:absolute;inset:0"></div>
     <div id="s3-media" style="display:none">
-      <video id="s3-E10n" class="clip" data-start="0" data-duration="2.61" data-track-index="2" src="assets/media/living/v5_E10n.mp4" muted playsinline></video>
-      <video id="s3-E07" class="clip" data-start="2.51" data-duration="2.4" data-track-index="2" src="assets/media/living/v5_E07.mp4" muted playsinline></video>
-      <video id="s3-P07" class="clip" data-start="4.81" data-duration="0.96" data-track-index="2" src="assets/media/living/v5_P07.mp4" muted playsinline></video>
-      <video id="s3-P07c" class="clip" data-start="5.67" data-duration="0.56" data-track-index="2" src="assets/media/living/v5_P07c.mp4" muted playsinline></video>
-      <video id="s3-E16" class="clip" data-start="6.13" data-duration="3.25" data-track-index="2" src="assets/media/living/v5_E16.mp4" muted playsinline></video>
-      <video id="s3-P08" class="clip" data-start="9.28" data-duration="2.39" data-track-index="2" src="assets/media/living/v5_P08.mp4" muted playsinline></video>
-      <video id="s3-P10" class="clip" data-start="13.95" data-duration="3.24" data-track-index="2" src="assets/media/living/v5_P10.mp4" muted playsinline></video>
+      <video id="s3-E10n" data-shot="0,9" class="clip" data-start="0" data-duration="2.746" data-track-index="2" src="assets/media/living/v5_E10n.mp4" muted playsinline></video>
+      <video id="s3-E07" data-shot="9,16" class="clip" data-start="2.446" data-duration="2.608" data-track-index="2" src="assets/media/living/v5_E07.mp4" muted playsinline></video>
+      <video id="s3-P07" data-shot="16,18" class="clip" data-start="4.754" data-duration="1.165" data-track-index="2" src="assets/media/living/v5_P07.mp4" muted playsinline></video>
+      <video id="s3-P07c" data-shot="18,19" class="clip" data-start="5.619" data-duration="0.589" data-track-index="2" src="assets/media/living/v5_P07c.mp4" muted playsinline></video>
+      <video id="s3-E16" data-shot="19,28" class="clip" data-start="5.908" data-duration="3.473" data-track-index="2" src="assets/media/living/v5_E16.mp4" muted playsinline></video>
+      <video id="s3-P08" data-shot="28,35" class="clip" data-start="9.081" data-duration="2.608" data-track-index="2" src="assets/media/living/v5_P08.mp4" muted playsinline></video>
+      <video id="s3-P10" data-shot="42,51" class="clip" data-start="13.985" data-duration="3.184" data-track-index="2" src="assets/media/living/v5_P10.mp4" muted playsinline></video>
     </div>
   </div>
 
@@ -24,10 +24,10 @@
       //   35 보고 36 싶어져 37 언제나 38 도대체 39 이해가 40 안 41 돼 | 42 빠지나봐 43 나 44 조금씩 45 너에게 46 내 47 가슴 48 뛰는 49 걸 50 봐봐
       //   51 어느새 52 나 53 모르게 54 나의 55 마음이 56 열렸어 | 57 너를 58 향해서 59 망설이지 60 말고 61 들어와 62 어서 63 반가워 | 64 사랑할 65 것 66 같아요
       const C = D.scene("s3");
-      const { at, T, END } = C;
+      const { at, T, Q, END } = C;
       const E = K.ease;
       const sh = (a, b, vid) => {
-        const s = D.shot(C, a === 0 ? 0 : T(a), b == null ? END : T(b));
+        const s = D.shot(C, Q(a), b == null ? END : Q(b));
         if (vid) D.take(vid, s.cam);
         return s;
       };
@@ -47,7 +47,7 @@
       {
         sh(16, 18, "s3-P07");
         sh(18, 19, "s3-P07c");
-        const ov = D.layer(C, T(16), T(19));
+        const ov = D.layer(C, Q(16), Q(19));
         D.rap(C, ov, [[16, 17, 18]], { x: 760, y: 92, size: 64, color: "ink" });
       }
       // 4. her window, the only warm light on the street
@@ -64,7 +64,7 @@
       // 6. his phone on the nightstand: their picture on the lock screen
       {
         const { cam } = sh(35, 42);
-        const k = D.keyed(C, cam, "E08", [{ src: K.photo("d58"), pos: "50% 50%", grade: "saturate(.95) brightness(1.02)" }], T(35), T(42), { from: { s: 1.0 }, to: { s: 1.06 } });
+        const k = D.keyed(C, cam, "E08", [{ src: K.photo("d58"), pos: "50% 50%", grade: "saturate(.95) brightness(1.02)" }], Q(35), Q(42), { from: { s: 1.0 }, to: { s: 1.06 } });
         k.box.style.transformOrigin = "68% 34%";
         D.rap(C, cam, [[35, 36, 37], [38, 39, 40, 41]], { x: 132, y: 128, size: 58, color: "ink" });
       }
@@ -74,7 +74,7 @@
         const glow = K.el("div", "", cam);
         glow.style.cssText = "position:absolute;inset:0;mix-blend-mode:screen;pointer-events:none;background:radial-gradient(ellipse 22% 30% at 50% 44%, rgba(255,206,150,.75), rgba(255,206,150,0) 72%)";
         at.set(glow, { opacity: 0 }, 0);
-        at.add(glow, { opacity: [0, 0.9, 0.45], duration: 1500, ease: E.quart }, T(47));
+        at.add(glow, { opacity: [0, 0.9, 0.45], duration: 1500, ease: E.quart }, D.onBeat(C, T(47)));
         D.scrim(cam, "bottom", { a: 0.5, reach: 34 });
         D.line(C, cam, [[42, 43, 44, 45], [46, 47, 48, 49, 50]], { y: 846, size: 54, font: "sans", color: "cream", lead: 160, enter: 380, love: [47], gap: 1.3 });
       }
@@ -91,8 +91,8 @@
           K.window(at, img, a, b);
           return img;
         };
-        const tOpen = T(56);
-        plate("E09a", T(51), tOpen);
+        const tOpen = Q(56);
+        plate("E09a", Q(51), tOpen);
         plate("E09b", tOpen, END);
         // the wall strip (E09a's partition, hands painted out) sinks below the floor line in two beats
         const k = 1920 / 1536;
@@ -109,7 +109,7 @@
         warm.style.cssText = `position:absolute;left:${(726 - 160) * k}px;top:${150 * k}px;width:${410 * k}px;height:${700 * k}px;mix-blend-mode:screen;pointer-events:none;background:radial-gradient(ellipse 50% 50% at 50% 45%, rgba(255,214,160,.55), rgba(255,214,160,0) 70%)`;
         at.set(warm, { opacity: 0 }, 0);
         at.add(warm, { opacity: [0, 0.8, 0.35], duration: 2600, ease: E.quart }, tOpen + 200);
-        D.move(C, box, T(51), END, { from: { s: 1.0 }, to: { s: 1.045 } });
+        D.move(C, box, Q(51), END, { from: { s: 1.0 }, to: { s: 1.045 } });
 
         D.scrim(cam, "top", { a: 0.6, reach: 30 });
         D.line(C, cam, [51, 52, 53, 54, 55, 56], { y: 38, size: 48, color: "cream", lead: 200, end: T(57) - 80, out: 280 });

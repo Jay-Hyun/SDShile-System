@@ -7,7 +7,12 @@ cobalt room and her coral room share one wall. Light comes through it, they lean
 sinks into the floor on "마음이 열렸어", and the ending returns to the opening camera with the wall gone. Their real
 photos and videos appear only inside the set (picture frames, an oval mirror, a TV, a phone, a corkboard).
 
-Motion language: depth-parallax camera moves on every plate, hard cuts on the beat, no springs, shakes or flashes.
+Timing: every cut sits on the beat grid. `scripts/build_data.py` gives each word a cut time `q` (a quarter beat
+within 160 ms of the vocal, otherwise the nearest 8th) and snaps the scene boundaries the same way; scenes cut on
+`Q(i)`, words light on the voice (`T(i)`), and `scripts/sync_media.py` keeps every video's timing in step.
+
+Motion language: depth-parallax camera moves on every plate at one constant on-screen speed (linear, so the camera
+is still travelling when we cut), hard cuts on the beat, no springs, shakes or flashes.
 Lyrics are set as a whole line in a quiet tone and each word lights at its sung onset (two-tone colour per
 background); rap sections stack rows that recede. Kit: `assets/js/design.js` (`D.*`) on top of the clock and
 helpers in `assets/js/kinetic.js` (`K.bridge`, `K.letterbox`, `K.knock/zoomThrough`, `K.leak`).
@@ -29,8 +34,9 @@ curl -L -o /opt/models/da2s.onnx https://huggingface.co/onnx-community/depth-any
 
 # v5 world: GPT image generation through the Codex CLI (ChatGPT login: `codex login --device-auth`)
 python3 scripts/gen_v5.py --jobs 4                       # data/gen_v5.json -> assets/media/gen5/ (sheets, plates, edits)
-/opt/mediaenv/bin/python scripts/key_green.py            # green frames/mirror/TV/phone -> *_keyed.png + assets/js/green.js
-scripts/living_v5.sh                                     # depth camera moves (data/living_v5.tsv) -> assets/media/living/v5_*.mp4
+/opt/mediaenv/bin/python scripts/key_green.py            # green frames/mirror/TV/phone -> *_keyed.png + frame quads in assets/js/green.js
+python3 scripts/sync_media.py                            # beat-grid cuts -> video data-start/duration, scene hosts, clip lengths
+scripts/living_v5.sh                                     # constant-speed depth camera moves (data/living_v5.tsv) -> assets/media/living/v5_*.mp4
 npx hyperframes check && npx hyperframes render --sdr -w 4 -o renders/wedding-v5.mp4 .
 ```
 

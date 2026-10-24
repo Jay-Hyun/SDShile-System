@@ -19,6 +19,8 @@
   const IN3 = A.cubicBezier(0.55, 0, 1, 0.45);
   const INOUT = A.cubicBezier(0.65, 0, 0.35, 1);
   const BACK = A.cubicBezier(0.34, 1.56, 0.64, 1);
+  const GLIDE = A.cubicBezier(0.3, 0.12, 0.25, 1); // a camera move that is already travelling and lands softly
+  const SETTLE = A.cubicBezier(0.22, 0.45, 0.35, 1); // a pull-back that keeps an even perceived speed
 
   /** Closed-form damped spring 0->1 as an anime ease; zeta = damping ratio, omega = rad/s scaled to the tween. */
   function springEase(zeta = 0.5, cycles = 2.2) {
@@ -37,7 +39,7 @@
     A,
     FILM,
     BEAT,
-    ease: { expo: EXPO, quart: QUART, in3: IN3, inout: INOUT, back: BACK, spring: springEase, linear: (t) => t },
+    ease: { expo: EXPO, quart: QUART, in3: IN3, inout: INOUT, back: BACK, glide: GLIDE, settle: SETTLE, spring: springEase, linear: (t) => t },
 
     /** Scene helper: local-time conversions for scene `id`. */
     scene(id) {
@@ -316,7 +318,7 @@
     flat(sceneObj, lead = 60) {
       const out = [];
       sceneObj.lines.forEach((l) =>
-        l.words.forEach((w) => out.push({ t: w.t, ms: sceneObj.ms(w.start) - lead, end: sceneObj.ms(w.end), line: l.line, i: out.length })),
+        l.words.forEach((w) => out.push({ t: w.t, ms: sceneObj.ms(w.start) - lead, end: sceneObj.ms(w.end), q: w.q != null ? sceneObj.ms(w.q) : null, line: l.line, i: out.length })),
       );
       return out;
     },
@@ -450,10 +452,10 @@
       svg.innerHTML =
         `<defs><mask id="${id}" maskUnits="userSpaceOnUse" x="-4000" y="-4000" width="9920" height="9080">` +
         `<rect x="-4000" y="-4000" width="9920" height="9080" fill="#fff"/>` +
-        `<text x="${geo.x}" y="${geo.baseline}" font-family="${family}" font-weight="${weight}" font-size="${size}" style="font-kerning:none" fill="#000">${text}</text>` +
+        `<text x="${geo.x}" y="${geo.baseline}" font-family="${family}" font-weight="${weight}" font-size="${size}" style="font-kerning:none" fill="#000" stroke="#000" stroke-width="0" stroke-linejoin="round">${text}</text>` +
         `</mask></defs><rect x="-4000" y="-4000" width="9920" height="9080" fill="${fill}" mask="url(#${id})"/>`;
       wrap.appendChild(svg);
-      return { wrap, plate: svg };
+      return { wrap, plate: svg, glyphs: svg.querySelector("mask text") };
     },
 
     /** Fly into the knockout's stroke: scale the plate around its deep point until the frame is all media. */

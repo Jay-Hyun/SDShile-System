@@ -6,11 +6,11 @@
   <div id="root" data-composition-id="s0" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
     <div id="s0-stage" style="position:absolute;inset:0"></div>
     <div id="s0-media" style="display:none">
-      <video id="s0-E01" class="clip" data-start="0" data-duration="4.45" data-track-index="2" src="assets/media/living/v5_E01.mp4" muted playsinline></video>
-      <video id="s0-P01" class="clip" data-start="4.36" data-duration="1.65" data-track-index="2" src="assets/media/living/v5_P01.mp4" muted playsinline></video>
-      <video id="s0-P03" class="clip" data-start="5.9" data-duration="1.38" data-track-index="2" src="assets/media/living/v5_P03.mp4" muted playsinline></video>
-      <video id="s0-P04" class="clip" data-start="7.18" data-duration="3.65" data-track-index="2" src="assets/media/living/v5_P04.mp4" muted playsinline></video>
-      <video id="s0-E02" class="clip" data-start="10.72" data-duration="6.68" data-track-index="2" src="assets/media/living/v5_E02.mp4" muted playsinline></video>
+      <video id="s0-E01" data-shot="0,5" class="clip" data-start="0" data-duration="4.411" data-track-index="2" src="assets/media/living/v5_E01.mp4" muted playsinline></video>
+      <video id="s0-P01" data-shot="5,7" class="clip" data-start="4.111" data-duration="2.03" data-track-index="2" src="assets/media/living/v5_P01.mp4" muted playsinline></video>
+      <video id="s0-P03" data-shot="7,9" class="clip" data-start="5.841" data-duration="1.743" data-track-index="2" src="assets/media/living/v5_P03.mp4" muted playsinline></video>
+      <video id="s0-P04" data-shot="9,10" class="clip" data-start="7.284" data-duration="3.761" data-track-index="2" src="assets/media/living/v5_P04.mp4" muted playsinline></video>
+      <video id="s0-E02" data-shot="10,end" class="clip" data-start="10.745" data-duration="6.785" data-track-index="2" src="assets/media/living/v5_E02.mp4" muted playsinline></video>
     </div>
   </div>
 
@@ -19,11 +19,11 @@
       // s0 intro (day) — the two rooms on the table, three opposite still lifes, the two of them leaning on one wall.
       // words: 0 두 1 사람 2 이렇게 3 서로 4 다르지만요 | 5 모든 6 게 7 완전히 8 정말 9 반대지만요 | 10 함께 11 있을 12 때면 13 왠지 14 참 15 좋은 16 걸요
       const C = D.scene("s0");
-      const { at, T, END } = C;
+      const { at, T, Q, END } = C;
 
       // A. the dollhouse cross-section on a studio table: his room left, hers right, one wall between
       {
-        const { cam } = D.shot(C, 0, T(5));
+        const { cam } = D.shot(C, 0, Q(5));
         D.take("s0-E01", cam);
         D.line(C, cam, [0, 1, 2, 3, 4], { y: 966, size: 48, color: "ink", lead: 420 });
         D.fade(C, cam, 0, 1100, { color: "#0c0b0a", dir: "in", z: 50 });
@@ -31,20 +31,20 @@
 
       // B-D. opposites, cut on the words: coffee | milk, cube | sphere, sun | moon
       {
-        const b = D.shot(C, T(5), T(7));
+        const b = D.shot(C, Q(5), Q(7));
         D.take("s0-P01", b.cam);
-        const c = D.shot(C, T(7), T(9));
+        const c = D.shot(C, Q(7), Q(9));
         D.take("s0-P03", c.cam);
-        const ov = D.layer(C, T(5), T(9));
+        const ov = D.layer(C, Q(5), Q(9));
         D.line(C, ov, [5, 6, 7, 8], { y: 132, size: 64, color: "ink", lead: 80, enter: 380 });
-        const d = D.shot(C, T(9), T(10));
+        const d = D.shot(C, Q(9), Q(10));
         D.take("s0-P04", d.cam);
         D.hero(C, d.cam, "반대지만요", T(9), { align: "center", y: 46, size: 112, font: "serifB", color: "ink", enter: 900, blur: 14, creep: 0.015 });
       }
 
       // E. back to back against the same wall; the title is split by it (his half, her half)
       {
-        const { cam } = D.shot(C, T(10), END);
+        const { cam } = D.shot(C, Q(10), END);
         D.take("s0-E02", cam);
         D.scrim(cam, "bottom", { a: 0.5, reach: 34 });
         D.line(C, cam, [10, 11, 12, 13], { y: 914, size: 54, color: "cream", end: T(14) - 40, out: 260 });

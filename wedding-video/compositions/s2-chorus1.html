@@ -6,16 +6,16 @@
   <div id="root" data-composition-id="s2" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
     <div id="s2-stage" style="position:absolute;inset:0"></div>
     <div id="s2-media" style="display:none">
-      <video id="s2-E02g" class="clip" data-start="0" data-duration="3.57" data-track-index="2" src="assets/media/living/v5_E02g.mp4" muted playsinline></video>
-      <video id="s2-E10m" class="clip" data-start="3.47" data-duration="3.28" data-track-index="2" src="assets/media/living/v5_E10m.mp4" muted playsinline></video>
-      <video id="s2-E11m" class="clip" data-start="3.47" data-duration="3.28" data-track-index="3" src="assets/media/living/v5_E11m.mp4" muted playsinline></video>
-      <video id="s2-E03" class="clip" data-start="6.65" data-duration="3.98" data-track-index="2" src="assets/media/living/v5_E03.mp4" muted playsinline></video>
-      <video id="s2-E02h" class="clip" data-start="15.94" data-duration="1.85" data-track-index="2" src="assets/media/living/v5_E02h.mp4" muted playsinline></video>
-      <video id="s2-umb" class="clip" data-start="17.69" data-duration="2.59" data-media-start="4.0" data-track-index="3" src="assets/media/video/v03.mp4" muted playsinline></video>
-      <video id="s2-E03b" class="clip" data-start="20.18" data-duration="5.11" data-track-index="2" src="assets/media/living/v5_E03b.mp4" muted playsinline></video>
-      <video id="s2-laugh" class="clip" data-start="25.19" data-duration="4.72" data-media-start="2.0" data-track-index="3" src="assets/media/video/v05.mp4" muted playsinline></video>
-      <video id="s2-cake" class="clip" data-start="29.81" data-duration="7.44" data-media-start="29.0" data-playback-rate="0.8" data-track-index="3" src="assets/media/video/v06.mp4" muted playsinline></video>
-      <video id="s2-E02r" class="clip" data-start="37.15" data-duration="1.1" data-track-index="2" src="assets/media/living/v5_E02r.mp4" muted playsinline></video>
+      <video id="s2-E02g" data-shot="0,4" class="clip" data-start="0" data-duration="3.9" data-track-index="2" src="assets/media/living/v5_E02g.mp4" muted playsinline></video>
+      <video id="s2-E10m" data-shot="4,7" class="clip" data-start="3.6" data-duration="3.185" data-track-index="2" src="assets/media/living/v5_E10m.mp4" muted playsinline></video>
+      <video id="s2-E11m" data-shot="4,7" class="clip" data-start="3.6" data-duration="3.185" data-track-index="3" src="assets/media/living/v5_E11m.mp4" muted playsinline></video>
+      <video id="s2-E03" data-shot="7,11" class="clip" data-start="6.485" data-duration="4.338" data-track-index="2" src="assets/media/living/v5_E03.mp4" muted playsinline></video>
+      <video id="s2-E02h" data-shot="17,20" class="clip" data-start="16.004" data-duration="2.031" data-track-index="2" src="assets/media/living/v5_E02h.mp4" muted playsinline></video>
+      <video id="s2-umb" data-shot="20,24" class="clip" data-start="17.735" data-duration="2.608" data-media-start="4.0" data-track-index="3" src="assets/media/video/v03.mp4" muted playsinline></video>
+      <video id="s2-E03b" data-shot="24,27" class="clip" data-start="20.043" data-duration="5.492" data-track-index="2" src="assets/media/living/v5_E03b.mp4" muted playsinline></video>
+      <video id="s2-laugh" data-shot="27,30" class="clip" data-start="25.235" data-duration="4.915" data-media-start="2.0" data-track-index="3" src="assets/media/video/v05.mp4" muted playsinline></video>
+      <video id="s2-cake" data-shot="30,37" class="clip" data-start="29.85" data-duration="7.512" data-media-start="29.0" data-playback-rate="0.8" data-track-index="3" src="assets/media/video/v06.mp4" muted playsinline></video>
+      <video id="s2-E02r" data-shot="37,end" class="clip" data-start="37.062" data-duration="1.304" data-track-index="2" src="assets/media/living/v5_E02r.mp4" muted playsinline></video>
     </div>
   </div>
 
@@ -26,17 +26,21 @@
       //   17 한 18 그런 19 사랑인데 | 20 다가 21 온 22 것 23 같아요 | 24 꿈꾸던 25 모습은 26 아니지만요 | 27 서로를 28 웃게 29 만들어주죠
       //   30 니 31 곁에 32 있으면 | 33 자꾸만 34 행복하단 35 생각이 36 들죠 | 37 사랑할 38 것 39 같아요
       const C = D.scene("s2");
-      const { at, T, END } = C;
+      const { at, T, Q, B, END } = C;
       const E = K.ease;
+      const nb = (ms) => C.S.beatAt(ms); // first beat at or after a scene-local time
 
       // A. THE DROP — a crack of warm light runs down the wall between them; the line lands low, under them
       {
-        const { cam } = D.shot(C, 0, T(4));
+        const { cam } = D.shot(C, 0, Q(4));
         D.take("s2-E02g", cam);
         const glow = K.el("div", "", cam);
         glow.style.cssText = "position:absolute;inset:0;mix-blend-mode:screen;pointer-events:none;background:radial-gradient(ellipse 16% 70% at 50% 40%, rgba(255,214,150,.55), rgba(255,214,150,0) 70%)";
+        // the light swells into the downbeat, then settles
+        const hit = B(nb(0));
         at.set(glow, { opacity: 0 }, 0);
-        at.add(glow, { opacity: [0, 1, 0.55], duration: 1600, ease: E.quart }, 0);
+        at.add(glow, { opacity: [0, 1], duration: Math.max(1, hit), ease: E.in3 }, 0);
+        at.add(glow, { opacity: [1, 0.55], duration: 1400, ease: E.quart }, hit);
         D.scrim(cam, "bottom", { a: 0.62, reach: 40 });
         D.line(C, cam, [0, 1, 2], { y: 878, size: 88, font: "serifB", color: "cream", love: [0], lead: 40, enter: 700, end: T(3) - 60, out: 320 });
         D.line(C, cam, [3], { y: 920, size: 60, color: "cream", lead: 120 });
@@ -44,7 +48,7 @@
 
       // B. the same moment in two rooms: his squared mug, her round cup; the wall is the seam
       {
-        const { shot } = D.shot(C, T(4), T(7));
+        const { shot } = D.shot(C, Q(4), Q(7));
         const L = K.el("div", "", shot);
         L.style.cssText = "position:absolute;left:0;top:0;width:960px;height:1080px;overflow:hidden";
         D.take("s2-E10m", L);
@@ -59,20 +63,22 @@
 
       // C. the roof lifts off the house; two stars close together
       {
-        const { cam } = D.shot(C, T(7), T(11));
+        const { cam } = D.shot(C, Q(7), Q(11));
         D.take("s2-E03", cam);
         D.line(C, cam, [7, 8, 9, 10], { align: "left", x: 120, y: 70, size: 56, color: "cream", love: [7] });
       }
 
       // D. one frame on his wall: three of their real days, two beats each at least; then their hands on the wall
       {
-        const tCut = T(17);
-        const { cam } = D.shot(C, T(11), tCut);
-        const t1 = D.onBeat(C, 12500);
-        const t2 = D.onBeat(C, 14420);
+        const tCut = Q(17);
+        const { cam } = D.shot(C, Q(11), tCut);
+        // the photo changes on the beat, three beats each
+        const b0 = nb(Q(11));
+        const t1 = B(b0 + 3);
+        const t2 = B(b0 + 6);
         D.keyed(C, cam, "E04", [{
           build(win, grade) {
-            [["d38", T(11), t1, "50% 45%"], ["d61", t1, t2, "50% 52%"], ["d63", t2, tCut, "50% 38%"]].forEach(([k, a, b, pos]) => {
+            [["d38", Q(11), t1, "50% 45%"], ["d61", t1, t2, "50% 60%"], ["d63", t2, tCut, "50% 38%"]].forEach(([k, a, b, pos]) => {
               const img = K.el("img", "v5-cover", win);
               img.src = K.photo(k);
               img.alt = "";
@@ -82,8 +88,8 @@
               D.move(C, img, a, b, { from: { s: 1.0 }, to: { s: 1.045 } });
             });
           },
-        }], T(11), tCut, { from: { s: 1.0 }, to: { s: 1.03 } });
-        const { cam: cam2 } = D.shot(C, tCut, T(20));
+        }], Q(11), tCut, { from: { s: 1.0 }, to: { s: 1.035 } });
+        const { cam: cam2 } = D.shot(C, tCut, Q(20));
         D.take("s2-E02h", cam2);
         D.scrim(cam2, "bottom", { a: 0.55, reach: 34 });
         D.line(C, cam, [11, 12, 13, 14, 15, 16], { y: 930, size: 46, color: "ink", lead: 160 });
@@ -92,31 +98,31 @@
 
       // E. rain on his window at night; on the sill, a small frame: the two of them under one umbrella
       {
-        const { cam } = D.shot(C, T(20), T(24));
-        const k = D.keyed(C, cam, "E05", [{ video: "s2-umb", pos: "50% 46%" }], T(20), T(24), { from: { s: 1.0 }, to: { s: 1.07 } });
+        const { cam } = D.shot(C, Q(20), Q(24));
+        const k = D.keyed(C, cam, "E05", [{ video: "s2-umb", pos: "50% 46%" }], Q(20), Q(24), { from: { s: 1.0 }, to: { s: 1.07 } });
         k.box.style.transformOrigin = "52% 58%";
         D.line(C, cam, [20, 21, 22, 23], { y: 92, size: 64, color: "cream", lead: 160 });
       }
 
       // F. side by side on the roof ridge, under the stars
       {
-        const { cam } = D.shot(C, T(24), T(27));
+        const { cam } = D.shot(C, Q(24), Q(27));
         D.take("s2-E03b", cam);
         D.line(C, cam, [24, 25, 26], { align: "right", x: 1800, y: 300, size: 62, color: "cream" });
       }
 
       // G. the oval mirror in her room holds their photo-booth video (silly poses, both laughing)
       {
-        const { cam } = D.shot(C, T(27), T(30));
-        D.keyed(C, cam, "E11g", [{ video: "s2-laugh", pos: "50% 50%" }], T(27), T(30), { from: { s: 1.04 }, to: { s: 1.0 }, dy: 80 });
+        const { cam } = D.shot(C, Q(27), Q(30));
+        D.keyed(C, cam, "E11g", [{ video: "s2-laugh", pos: "50% 50%" }], Q(27), Q(30), { from: { s: 1.0 }, to: { s: 1.05 }, dy: 80 });
         D.scrim(cam, "bottom", { a: 0.5, reach: 32 });
         D.line(C, cam, [27, 28, 29], { y: 922, size: 58, color: "cream" });
       }
 
       // H. the kitchen at night: a cake with two candles; on the wall TV, their real cake
       {
-        const { cam } = D.shot(C, T(30), T(37));
-        const k = D.keyed(C, cam, "E06", [{ video: "s2-cake", pos: "50% 50%" }], T(30), T(37), { from: { s: 1.0 }, to: { s: 1.12 } });
+        const { cam } = D.shot(C, Q(30), Q(37));
+        const k = D.keyed(C, cam, "E06", [{ video: "s2-cake", pos: "50% 50%" }], Q(30), Q(37), { from: { s: 1.0 }, to: { s: 1.12 } });
         k.box.style.transformOrigin = "50% 32%";
         D.scrim(cam, "bottom", { a: 0.55, reach: 34 });
         D.line(C, cam, [30, 31, 32], { y: 922, size: 58, color: "cream", end: T(33) - 60, out: 260 });
@@ -125,7 +131,7 @@
 
       // I. a gap in the wall: their fingertips almost touch
       {
-        const { cam } = D.shot(C, T(37), END);
+        const { cam } = D.shot(C, Q(37), END);
         D.take("s2-E02r", cam);
         D.scrim(cam, "bottom", { a: 0.55, reach: 34 });
         D.line(C, cam, [37, 38, 39], { y: 914, size: 60, color: "cream", love: [37], lead: 60, enter: 360 });

@@ -24,6 +24,30 @@ ids = sys.argv[1:]
 rects_path = "data/green_rects.json"
 rects = json.load(open(rects_path)) if os.path.exists(rects_path) else {}
 
+def frame_quad(comp):
+    """Four corners (TL, TR, BR, BL) of a straight-edged picture area, or None for an oval/irregular one.
+    The picture is warped onto this quad so it lies in the plane of the frame (perspective-correct)."""
+    cnts, _ = cv2.findContours(comp, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    cnt = max(cnts, key=cv2.contourArea)
+    hull = cv2.convexHull(cnt)
+    if cv2.contourArea(hull) == 0:
+        return None
+    # a quad-shaped area fills its hull; an ellipse fills ~0.79 of its quad hull
+    peri = cv2.arcLength(hull, True)
+    ap = None
+    for eps in np.linspace(0.005, 0.08, 60):
+        a = cv2.approxPolyDP(hull, eps * peri, True)
+        if len(a) == 4:
+            ap = a.reshape(4, 2).astype(float)
+            break
+    if ap is None or not 0.93 <= cv2.contourArea(cnt) / cv2.contourArea(ap.astype(np.float32)) <= 1.08:
+        return None
+    s = ap.sum(1)
+    d = ap[:, 1] - ap[:, 0]
+    tl, br, tr, bl = ap[np.argmin(s)], ap[np.argmax(s)], ap[np.argmin(d)], ap[np.argmax(d)]
+    return [[round(float(p[0]), 1), round(float(p[1]), 1)] for p in (tl, tr, br, bl)]
+
+
 for it in M["items"]:
     if not it.get("green") or (ids and it["id"] not in ids):
         continue
@@ -60,8 +84,13 @@ for it in M["items"]:
     Image.fromarray(rgba, "RGBA").save(f"{OUT}/{it['id']}_keyed.png", optimize=True)
     holes = []
     for k in keep:
-        x, y, w, h = cv2.boundingRect((lab == k).astype(np.uint8))
-        holes.append({"x": int(x), "y": int(y), "w": int(w), "h": int(h), "fill": round(float((lab == k).sum()) / (w * h), 2)})
+        comp = (lab == k).astype(np.uint8)
+        x, y, w, h = cv2.boundingRect(comp)
+        hole = {"x": int(x), "y": int(y), "w": int(w), "h": int(h), "fill": round(float(comp.sum()) / (w * h), 2)}
+        quad = frame_quad(comp)
+        if quad is not None:
+            hole["quad"] = quad
+        holes.append(hole)
     holes.sort(key=lambda d: d["x"])
     rects[it["id"]] = {"W": int(W), "H": int(H), "holes": holes}
     print(it["id"], holes)

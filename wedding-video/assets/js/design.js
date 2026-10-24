@@ -31,7 +31,8 @@
   .v5-win { position:absolute; overflow:hidden; background:#1b1917; }
   .v5-glass { position:absolute; inset:0; pointer-events:none;
     background: linear-gradient(128deg, rgba(255,250,240,.16) 0%, rgba(255,250,240,.05) 26%, rgba(255,250,240,0) 46%),
-                radial-gradient(ellipse 120% 120% at 50% 50%, rgba(0,0,0,0) 62%, rgba(10,8,6,.34) 100%); }
+                radial-gradient(ellipse 120% 120% at 50% 50%, rgba(0,0,0,0) 62%, rgba(10,8,6,.34) 100%);
+    box-shadow: inset 0 3px 12px rgba(20,14,8,.32), inset 0 0 2px rgba(20,14,8,.4); }
   .v5-line { position:absolute; white-space:nowrap; }
   .v5-row { display:block; }
   .v5-w { display:inline-block; }
@@ -64,6 +65,29 @@
   };
   const tone = (c) => TONE[c] || TONE.cream;
 
+  /** CSS matrix3d that maps a w x h box (origin 0 0) onto quad q = [TL, TR, BR, BL] (perspective-correct). */
+  function quadMatrix(w, h, q) {
+    const src = [[0, 0], [w, 0], [w, h], [0, h]];
+    const A = [];
+    src.forEach(([x, y], i) => {
+      const [u, v] = q[i];
+      A.push([x, y, 1, 0, 0, 0, -u * x, -u * y, u]);
+      A.push([0, 0, 0, x, y, 1, -v * x, -v * y, v]);
+    });
+    for (let c = 0; c < 8; c++) {
+      let p = c;
+      for (let r = c + 1; r < 8; r++) if (Math.abs(A[r][c]) > Math.abs(A[p][c])) p = r;
+      [A[c], A[p]] = [A[p], A[c]];
+      for (let r = 0; r < 8; r++) {
+        if (r === c) continue;
+        const f = A[r][c] / A[c][c];
+        for (let k = c; k < 9; k++) A[r][k] -= f * A[c][k];
+      }
+    }
+    const [a, b, c, d, e, f, g, hh] = A.map((r, i) => r[8] / r[i]);
+    return `matrix3d(${a},${d},0,${g},${b},${e},0,${hh},0,0,1,0,${c},${f},0,1)`;
+  }
+
   const D = {
     PAL,
 
@@ -75,8 +99,11 @@
       const W = K.flat(S, lead);
       const END = Math.round(S.dur * 1000);
       const T = (i) => (W[i] ? W[i].ms : END);
+      // Q(i): the beat-grid cut for a shot that opens on word i (scripts/build_data.py); B(n): beat n, scene-local ms
+      const Q = (i) => (i === 0 ? 0 : W[i] ? (W[i].q != null ? W[i].q : W[i].ms) : END);
+      const B = (n) => S.beat(n);
       const stage = document.getElementById(id + "-stage");
-      return { id, S, at, gtl, W, T, END, stage };
+      return { id, S, at, gtl, W, T, Q, B, END, stage };
     },
 
     finish(ctx) {
@@ -151,10 +178,24 @@
         if (!m) return null;
         const pad = 6;
         const win = K.el("div", "v5-win", box);
-        win.style.left = (h.x - pad) * k + "px";
-        win.style.top = (h.y - pad) * k + "px";
-        win.style.width = (h.w + 2 * pad) * k + "px";
-        win.style.height = (h.h + 2 * pad) * k + "px";
+        if (h.quad) {
+          // the picture lies in the plane of the frame: warp the window onto the frame's quad
+          const cx = h.quad.reduce((s, p) => s + p[0], 0) / 4;
+          const cy = h.quad.reduce((s, p) => s + p[1], 0) / 4;
+          const q = h.quad.map(([x, y]) => {
+            const L = Math.hypot(x - cx, y - cy) || 1;
+            return [(x + ((x - cx) / L) * pad) * k, (y + ((y - cy) / L) * pad) * k];
+          });
+          const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+          const ww = (dist(q[0], q[1]) + dist(q[3], q[2])) / 2;
+          const hh = (dist(q[0], q[3]) + dist(q[1], q[2])) / 2;
+          win.style.cssText += `;left:0;top:0;width:${ww}px;height:${hh}px;transform-origin:0 0;transform:${quadMatrix(ww, hh, q)}`;
+        } else {
+          win.style.left = (h.x - pad) * k + "px";
+          win.style.top = (h.y - pad) * k + "px";
+          win.style.width = (h.w + 2 * pad) * k + "px";
+          win.style.height = (h.h + 2 * pad) * k + "px";
+        }
         const grade = m.grade || "saturate(.9) contrast(.95) brightness(.94) sepia(.1)";
         if (m.video) D.take(m.video, win, { pos: m.pos, grade });
         else if (m.src) {
@@ -172,14 +213,16 @@
       plate.src = `assets/media/gen5/${id}_keyed.png`;
       plate.alt = "";
       plate.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%";
-      D.move(ctx, box, t0, t1, opts);
+      if (opts.manual) {
+        if (opts.origin) box.style.transformOrigin = opts.origin;
+      } else D.move(ctx, box, t0, t1, opts);
       return { box, wins, k };
     },
 
     /** Lyric line(s), karaoke style: the line is set first (dim), each word lights at its onset.
      *  idx = [i, ...] or [[row1...], [row2...]]. align: left | center | right (x is the anchor). */
     line(ctx, parent, idx, o = {}) {
-      const { x = 960, y = 140, align = "center", size = 64, font = "serif", color = "ink", love = [], lead = 300, enter = 560, end = null, out = 300, gap = 1.34, z = 30 } = o;
+      const { x = 960, y = 140, align = "center", size = 64, font = "serif", color = "ink", love = [], lead = 300, enter = 560, end = null, out = 300, gap = 1.34, z = 30, drift = 10 } = o;
       const rows = Array.isArray(idx[0]) ? idx : [idx];
       const box = K.el("div", `v5-line v5-${font} c-${color}`, parent);
       box.style.fontSize = size + "px";
@@ -209,6 +252,8 @@
       const tIn = Math.max(0, ctx.T(rows[0][0]) - lead);
       at.set(box, { opacity: 0 }, 0);
       at.add(box, { opacity: [0, 1], filter: ["blur(8px)", "blur(0px)"], duration: enter, ease: E.expo }, tIn);
+      // the type floats up a few pixels while it is on screen, so it never sits dead on a moving plate
+      if (drift) at.add(box, { y: [drift / 2, -drift / 2], duration: 4000, ease: "linear" }, tIn);
       words.forEach(({ sp, i }) => {
         const c = tone(color);
         const lit = sp.classList.contains("love") ? c.love : c.lit;
@@ -222,11 +267,13 @@
     /** Rap stack: rows enter at their first word, words light at onset, the active row is bright and
      *  older rows recede. rows = [[i...], ...]. */
     rap(ctx, parent, rows, o = {}) {
-      const { x = 120, y = 300, size = 64, color = "cream", font = "sans", love = [], recede = 0.5, gap = 1.3, end = null, out = 260, lead = 160, z = 30, align = "left", rot = 0 } = o;
+      const { x = 120, y = 300, size = 64, color = "cream", font = "sans", love = [], recede = 0.5, gap = 1.3, end = null, out = 260, lead = 160, z = 30, align = "left", rot = 0, drift = 8 } = o;
       const at = ctx.at;
       const box = K.el("div", `v5-line v5-${font} c-${color}`, parent);
       const anchor = align === "right" ? `right:${1920 - x}px;text-align:right` : `left:${x}px`;
-      box.style.cssText += `;${anchor};top:${y}px;font-size:${size}px;line-height:${gap};z-index:${z}` + (rot ? `;transform:rotate(${rot}deg);transform-origin:0 0` : "");
+      box.style.cssText += `;${anchor};top:${y}px;font-size:${size}px;line-height:${gap};z-index:${z};transform-origin:0 0`;
+      at.set(box, { rotate: rot, y: drift / 2 }, 0);
+      if (drift) at.add(box, { y: [drift / 2, -drift / 2], duration: 5000, ease: "linear" }, Math.max(0, ctx.T(rows[0][0]) - lead));
       const rowEls = rows.map((r) => {
         const row = K.el("div", "v5-row", box);
         r.forEach((i, k) => {
