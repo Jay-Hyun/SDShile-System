@@ -1,11 +1,11 @@
 # 특송 영상 — 옷자락에서 전해지는 사랑
 
-HyperFrames(HTML → MP4) 프로젝트. 1920×1080, 30fps, 약 5분 33초.
+HyperFrames(HTML → MP4) 프로젝트. 1920×1080, 30fps, 약 5분 18초.
 
 | 구간 | 시간 | 내용 |
 |---|---|---|
-| 프렐류드 | 0:00–0:42 | 막 5:27-28 (병든 여인) → 막 5:33-34 (옷자락을 향한 손) → 제목. 잔잔한 배경음 |
-| MR | 0:42–5:32.8 | 순수 크로마 그린 #00FF00 + 하단 가사 한 줄씩. MR 원곡 그대로 |
+| 프렐류드 | 0:00–0:27.5 | 막 5:27-28 (병든 여인) → 막 5:33-34 (옷자락을 향한 손) → 제목. 잔잔한 배경음 |
+| MR | 0:27.5–5:18.3 | 순수 크로마 그린 #00FF00 + 하단 가사 한 줄씩(고운바탕, 「사랑」「옷자락」 금빛). MR 원곡 그대로 |
 
 ## 준비물 (레포에 없음)
 
@@ -24,13 +24,13 @@ npx hyperframes@0.8.192 render -o renders/special-song_full.mp4
 
 `lyrics.json` 의 `text` / `start` / `end` (MR 기준 초)를 고친 뒤 `python3 tools/build_lyrics.py`.
 타이밍 출처: 벅스 소리엘 원곡 싱크 가사, MR 비트(66 BPM)와 대조. 각 줄은 실제 노래보다 0.35초 먼저 뜸.
-새 글자를 쓰면 폰트 서브셋을 다시 만들 것:
+새 글자를 쓰면 폰트 서브셋을 다시 만들 것 (가사·제목 = 고운바탕 Bold, 구절 = Noto Serif KR):
 
 ```bash
 pip install fonttools brotli
-curl -LO "https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifkr/NotoSerifKR%5Bwght%5D.ttf"
-pyftsubset "NotoSerifKR[wght].ttf" --text-file=chars.txt --flavor=woff2 --layout-features='*' \
-  --output-file=assets/fonts/NotoSerifKR-subset.woff2
+curl -LO "https://raw.githubusercontent.com/google/fonts/main/ofl/gowunbatang/GowunBatang-Bold.ttf"
+pyftsubset GowunBatang-Bold.ttf --text-file=chars.txt --flavor=woff2 --layout-features='*' \
+  --output-file=assets/fonts/GowunBatang-Bold-subset.woff2
 ```
 
 ## 크로마키

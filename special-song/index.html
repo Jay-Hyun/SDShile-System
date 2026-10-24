@@ -56,17 +56,17 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="332.78"
+      data-duration="318.28"
       data-width="1920"
       data-height="1080"
     >
-      <!-- Prelude: verses over images, then the title (0 – 42 s) -->
+      <!-- Prelude: verses over images, then the title (0 – 27.5 s) -->
       <div
         id="verse1"
         data-composition-id="verse1"
         data-composition-src="compositions/verse1.html"
         data-start="0"
-        data-duration="17.1"
+        data-duration="11"
         data-track-index="1"
         data-track-kind="graphics"
         data-width="1920"
@@ -76,8 +76,8 @@
         id="verse2"
         data-composition-id="verse2"
         data-composition-src="compositions/verse2.html"
-        data-start="15.9"
-        data-duration="18.7"
+        data-start="9.9"
+        data-duration="12.6"
         data-track-index="2"
         data-track-kind="graphics"
         data-width="1920"
@@ -87,21 +87,21 @@
         id="title"
         data-composition-id="title"
         data-composition-src="compositions/title.html"
-        data-start="33.4"
-        data-duration="8.6"
+        data-start="21.4"
+        data-duration="6.1"
         data-track-index="3"
         data-track-kind="graphics"
         data-width="1920"
         data-height="1080"
       ></div>
 
-      <!-- MR part: pure chroma green with lyrics at the bottom (42 s – end) -->
-      <div id="green" class="clip" data-start="42" data-duration="290.78" data-track-index="4" data-hold></div>
+      <!-- MR part: pure chroma green with lyrics at the bottom (27.5 s – end) -->
+      <div id="green" class="clip" data-start="27.5" data-duration="290.78" data-track-index="4" data-hold></div>
       <div
         id="lyrics"
         data-composition-id="lyrics"
         data-composition-src="compositions/lyrics.html"
-        data-start="42"
+        data-start="27.5"
         data-duration="290.78"
         data-track-index="5"
         data-track-kind="captions"
@@ -114,7 +114,7 @@
         class="clip"
         src="assets/bgm/prelude.wav"
         data-start="0"
-        data-duration="41.5"
+        data-duration="27"
         data-track-index="6"
         data-volume="0.6"
         data-fade-in="1.5"
@@ -124,7 +124,7 @@
         id="mr"
         class="clip"
         src="assets/audio/mr.mp3"
-        data-start="42"
+        data-start="27.5"
         data-duration="290.78"
         data-track-index="7"
         data-volume="0.78"
@@ -132,7 +132,7 @@
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
-      tl.set({}, {}, 332.78);
+      tl.set({}, {}, 318.28);
       window.__timelines["main"] = tl;
     </script>
   </body>
