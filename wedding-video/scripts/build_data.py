@@ -5,24 +5,28 @@ Also writes data/edit_lyrics.json (same content, for review) and data/film.json 
 Run after align_lyrics.py and edit_audio.py.
 Scenes are chapters of the edit, in edit seconds; every scene file reads its window from FILM.scenes.
 
-Cut timing: every word also gets `q`, the musical cut time for a shot that opens on that word: a quarter beat
-within 160 ms of (onset - 60 ms), otherwise the nearest 8th note, never at or before the previous word (which
-must stay on the outgoing shot). Scene boundaries snap the same way but never pass the scene's first word, so
-every word keeps its scene. Shots cut on Q(i); words still light on their sung onset.
+Word times come from data/lyrics.aligned.json (scripts/realign_lyrics.py, forced alignment) when present.
+
+Cut timing: every word also gets `q`, the cut time for a shot that opens on that word: the 16th-note grid point
+the word is sung on (onset + 35 ms, rounded to the grid) minus 10 ms, so the new picture is up on the frame the
+syllable lands; never at or before the previous word, which must stay on the outgoing shot. The intro has no
+drums to lock to, so there a cut simply leads the voice by 30 ms. Scene boundaries are the q of the scene's first
+word. Shots cut on Q(i); words light on their sung onset.
 """
 import json
 import math
+import os
 
 cuts = json.load(open("data/cuts.json"))
 beats = json.load(open("data/beats.json"))
-lyrics = json.load(open("data/lyrics.timed.json"))
+lyrics = json.load(open("data/lyrics.aligned.json" if os.path.exists("data/lyrics.aligned.json") else "data/lyrics.timed.json"))
 couple = json.load(open("data/couple.json"))
 
 NOMINAL = [  # id, nominal start (edit seconds), what it is; starts are snapped to the beat grid below
     ("s0", 0.0, "intro: the two rooms, opposites, the title split by the wall"),
     ("s1", 17.40, "rap 1: he watches the girl next door"),
-    ("s2", 54.25, "chorus 1: light through the wall, their memories inside the set"),
-    ("s3", 92.50, "rap 2: night; the wall goes down"),
+    ("s2", 54.53, "chorus 1: light through the wall, their memories inside the set"),
+    ("s3", 92.56, "rap 2: night; the wall goes down"),
     ("s4", 115.80, "bridge: one room, two chairs, widescreen"),
     ("s5", 132.70, "final chorus: the real photos on their walls"),
     ("s6", 171.60, "outro: the house at night, the card"),
@@ -39,16 +43,18 @@ def grid(a, b, step):
     return [round(first + k * step, 4) for k in range(k0, k1 + 1)]
 
 
-def snap(onset, lo=-1.0, hi=1e9):
-    """musical cut for a shot that opens on a word sung at `onset`, strictly after lo and at most hi"""
-    target = onset - 0.06
-    q = [p for p in grid(target - 0.16, target + 0.16, period) if lo < p <= hi]
-    if q:
-        return min(q, key=lambda p: abs(p - target))
-    e = [p for p in grid(target - 0.45, target + 0.45, period / 2) if lo < p <= hi]
-    if e:
-        return min(e, key=lambda p: abs(p - target))
-    return round(min(max(target, lo + 0.02), hi), 4)
+LEAD = 0.035  # the sung onset sits this far ahead of its grid point (consonant before the beat)
+
+
+def snap(onset, lo=-1.0, hi=1e9, free=False):
+    """cut for a shot that opens on a word sung at `onset`: its 16th-note grid point - 10 ms (strictly after lo)"""
+    t = onset - 0.03
+    if not free:
+        # grid points the syllable can belong to: up to 120 ms before its onset, at most 40 ms after it
+        g = grid(onset - 0.12, onset + 0.04, period / 4)
+        if g:
+            t = min(g, key=lambda p: abs(p - (onset + LEAD))) - 0.01
+    return round(min(max(t, lo + 0.02), hi), 4)
 
 
 def to_edit(t):
@@ -95,7 +101,7 @@ for sid, a, _ in NOMINAL[1:]:
     after = [w["start"] for w in allw if w["start"] >= a]
     lo = (before[-1] + 0.02) if before else 0.0
     if after and after[0] - a < 3.0:
-        starts.append(snap(after[0], lo=lo, hi=after[0] - 0.02))
+        starts.append(snap(after[0], lo=lo, hi=after[0] - 0.001))
     else:  # instrumental boundary: nearest quarter beat
         starts.append(min(grid(a - period, a + period, period), key=lambda p: abs(p - a)))
 SCENES = [(sid, starts[i], starts[i + 1] if i + 1 < len(starts) else cuts["duration"], n)
@@ -110,7 +116,7 @@ scene_start = {sid: a for sid, a, _, _ in SCENES}
 for w in allw:
     s0 = scene_start[w["scene"]]
     first_in_scene = all(x["start"] >= w["start"] for x in allw if x["scene"] == w["scene"])
-    w["q"] = s0 if first_in_scene else snap(w["start"], lo=max(prev + 0.08, s0 + 0.05))
+    w["q"] = s0 if first_in_scene else snap(w["start"], lo=max(prev + 0.08, s0 + 0.05), free=w["start"] < 15.0)
     prev = w["start"]
 
 film = {

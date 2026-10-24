@@ -117,11 +117,17 @@
       return ctx.S.beat(n);
     },
 
-    /** A full-frame shot visible over [t0, t1): `shot` owns visibility, `cam` the camera move. */
-    shot(ctx, t0, t1, { bg = null } = {}) {
+    /** A full-frame shot visible over [t0, t1): `shot` owns visibility, `cam` the camera move.
+     *  soft: a defocus dissolve of that many ms centred on t0 (the shot fades in over the previous one, which
+     *  must stay up with tail >= soft / 2). */
+    shot(ctx, t0, t1, { bg = null, soft = 0, tail = 0 } = {}) {
       const shot = K.el("div", "v5-shot", ctx.stage);
       if (bg) shot.style.background = bg;
-      K.window(ctx.at, shot, Math.max(0, t0), t1);
+      const a0 = Math.max(0, t0 - soft / 2);
+      K.window(ctx.at, shot, a0, t1 + tail);
+      if (soft && t0 > 0) {
+        ctx.at.add(shot, { opacity: [0, 1], filter: ["blur(14px)", "blur(0px)"], duration: soft, ease: E.inout }, a0);
+      }
       const cam = K.el("div", "v5-cam", shot);
       return { shot, cam, t0, t1 };
     },
@@ -222,7 +228,7 @@
     /** Lyric line(s), karaoke style: the line is set first (dim), each word lights at its onset.
      *  idx = [i, ...] or [[row1...], [row2...]]. align: left | center | right (x is the anchor). */
     line(ctx, parent, idx, o = {}) {
-      const { x = 960, y = 140, align = "center", size = 64, font = "serif", color = "ink", love = [], lead = 300, enter = 560, end = null, out = 300, gap = 1.34, z = 30, drift = 10 } = o;
+      const { x = 960, y = 140, align = "center", size = 64, font = "serif", color = "ink", love = [], lead = 300, enter = 560, end = null, out = 300, gap = 1.34, z = 30, drift = 10, reveal = false, spacing = null } = o;
       const rows = Array.isArray(idx[0]) ? idx : [idx];
       const box = K.el("div", `v5-line v5-${font} c-${color}`, parent);
       box.style.fontSize = size + "px";
@@ -249,7 +255,20 @@
         });
       });
       const at = ctx.at;
+      if (spacing) box.style.letterSpacing = spacing;
       const tIn = Math.max(0, ctx.T(rows[0][0]) - lead);
+      if (reveal) {
+        // poem mode: nothing before it is sung; each word breathes in on its own
+        const c = tone(color);
+        words.forEach(({ sp, i }) => {
+          sp.style.color = sp.classList.contains("love") ? c.love : c.lit;
+          at.set(sp, { opacity: 0 }, 0);
+          at.add(sp, { opacity: [0, 1], filter: ["blur(7px)", "blur(0px)"], translateY: [7, 0], duration: 760, ease: E.expo }, Math.max(1, ctx.T(i) - 40));
+        });
+        if (drift) at.add(box, { y: [drift / 2, -drift / 2], duration: 5000, ease: "linear" }, tIn);
+        if (end != null) D.out(ctx, box, end - out, out);
+        return box;
+      }
       at.set(box, { opacity: 0 }, 0);
       at.add(box, { opacity: [0, 1], filter: ["blur(8px)", "blur(0px)"], duration: enter, ease: E.expo }, tIn);
       // the type floats up a few pixels while it is on screen, so it never sits dead on a moving plate
@@ -349,6 +368,52 @@
       ctx.at.set(f, { opacity: a[0] }, 0);
       ctx.at.add(f, { opacity: a, duration: dur, ease: E[ease] || (dir === "in" ? E.quart : E.in3) }, t);
       return f;
+    },
+
+    /** Dust in the light: seeded soft motes drifting up through [t0, t1) (seek-safe, deterministic). */
+    dust(ctx, parent, t0, t1, { n = 34, seed = 7, area = [0, 0, 1920, 1080], z = 26, color = "255,244,224", size = [2, 7], peak = [0.25, 0.75] } = {}) {
+      const r = K.rng(seed);
+      const box = K.el("div", "", parent);
+      box.style.cssText = `position:absolute;inset:0;pointer-events:none;z-index:${z};mix-blend-mode:screen`;
+      const dur = Math.max(1, t1 - t0);
+      for (let i = 0; i < n; i++) {
+        const d = K.el("div", "", box);
+        const sz = size[0] + r() * (size[1] - size[0]);
+        const x = area[0] + r() * (area[2] - area[0]);
+        const y = area[1] + r() * (area[3] - area[1]);
+        const blur = 0.4 + (sz / size[1]) * 1.8;
+        d.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;border-radius:50%;filter:blur(${blur}px);background:radial-gradient(circle, rgba(${color},1) 0%, rgba(${color},.55) 45%, rgba(${color},0) 72%)`;
+        const pk = peak[0] + r() * (peak[1] - peak[0]);
+        const dx = (r() - 0.5) * 90 * (dur / 6000);
+        const dy = -(20 + r() * 70) * (dur / 6000);
+        const ph = r();
+        ctx.at.set(d, { opacity: 0, x: 0, y: 0 }, 0);
+        ctx.at.add(d, { x: [0, dx], y: [0, dy], duration: dur, ease: "linear" }, t0);
+        // fade in, two slow twinkles, fade out
+        const kf = [0, pk, pk * (0.35 + 0.3 * ph), pk, pk * 0.5, 0];
+        const step = dur / (kf.length - 1);
+        for (let k = 1; k < kf.length; k++) ctx.at.add(d, { opacity: [kf[k - 1], kf[k]], duration: step, ease: E.inout }, t0 + (k - 1) * step);
+      }
+      return box;
+    },
+
+    /** A soft diagonal shaft of window light, drifting slowly (screen blend). */
+    beam(ctx, parent, t0, t1, { angle = 112, x0 = -8, x1 = 6, peak = 0.32, z = 25, color = "255,236,204" } = {}) {
+      const b = K.el("div", "", parent);
+      b.style.cssText = `position:absolute;inset:-20%;pointer-events:none;z-index:${z};mix-blend-mode:screen;filter:blur(26px);background:linear-gradient(${angle}deg, rgba(${color},0) 30%, rgba(${color},.55) 44%, rgba(${color},.85) 50%, rgba(${color},.45) 56%, rgba(${color},0) 70%)`;
+      const dur = Math.max(1, t1 - t0);
+      ctx.at.set(b, { opacity: 0, translateX: `${x0}%` }, 0);
+      ctx.at.add(b, { translateX: [`${x0}%`, `${x1}%`], duration: dur, ease: "linear" }, t0);
+      ctx.at.add(b, { opacity: [0, peak], duration: Math.min(1400, dur / 3), ease: E.inout }, t0);
+      ctx.at.add(b, { opacity: [peak, 0], duration: Math.min(1200, dur / 3), ease: E.inout }, t1 - Math.min(1200, dur / 3));
+      return b;
+    },
+
+    /** Diffusion (a Pro-Mist filter): a blurred, brightened copy of everything under it, screened on top. */
+    glow(parent, { a = 0.24, blur = 16, z = 27 } = {}) {
+      const g = K.el("div", "", parent);
+      g.style.cssText = `position:absolute;inset:0;pointer-events:none;z-index:${z};mix-blend-mode:screen;opacity:${a};-webkit-backdrop-filter:blur(${blur}px) brightness(1.15) saturate(1.1);backdrop-filter:blur(${blur}px) brightness(1.15) saturate(1.1)`;
+      return g;
     },
 
     /** Warm light bloom: a soft radial glow that swells to full (the bridge -> final chorus wind-up). */

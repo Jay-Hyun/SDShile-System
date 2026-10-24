@@ -77,8 +77,9 @@ for path in sorted(glob.glob("compositions/*.html")):
         t0, t1 = at(a, sid), at(b, sid)
         if t1 - t0 < 0.2:
             problems.append(f"{sid} {attr(tag, 'id')}: shot {shot} is {t1 - t0:.3f} s")
-        s = round(max(0.0, t0 - PRE), 3)
-        e = round(min(dur, t1 + POST), 3)
+        hd = float(attr(tag, "data-handle") or 0)  # a dissolve needs the clip to run longer on both sides
+        s = round(max(0.0, t0 - max(PRE, hd)), 3)
+        e = round(min(dur, t1 + max(POST, hd)), 3)
         tag = set_attr(tag, "data-start", f"{s:g}")
         tag = set_attr(tag, "data-duration", f"{e - s:g}")
         src = attr(tag, "src")

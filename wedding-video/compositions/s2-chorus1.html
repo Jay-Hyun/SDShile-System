@@ -6,16 +6,16 @@
   <div id="root" data-composition-id="s2" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
     <div id="s2-stage" style="position:absolute;inset:0"></div>
     <div id="s2-media" style="display:none">
-      <video id="s2-E02g" data-shot="0,4" class="clip" data-start="0" data-duration="3.9" data-track-index="2" src="assets/media/living/v5_E02g.mp4" muted playsinline></video>
-      <video id="s2-E10m" data-shot="4,7" class="clip" data-start="3.6" data-duration="3.185" data-track-index="2" src="assets/media/living/v5_E10m.mp4" muted playsinline></video>
-      <video id="s2-E11m" data-shot="4,7" class="clip" data-start="3.6" data-duration="3.185" data-track-index="3" src="assets/media/living/v5_E11m.mp4" muted playsinline></video>
-      <video id="s2-E03" data-shot="7,11" class="clip" data-start="6.485" data-duration="4.338" data-track-index="2" src="assets/media/living/v5_E03.mp4" muted playsinline></video>
-      <video id="s2-E02h" data-shot="17,20" class="clip" data-start="16.004" data-duration="2.031" data-track-index="2" src="assets/media/living/v5_E02h.mp4" muted playsinline></video>
-      <video id="s2-umb" data-shot="20,24" class="clip" data-start="17.735" data-duration="2.608" data-media-start="4.0" data-track-index="3" src="assets/media/video/v03.mp4" muted playsinline></video>
-      <video id="s2-E03b" data-shot="24,27" class="clip" data-start="20.043" data-duration="5.492" data-track-index="2" src="assets/media/living/v5_E03b.mp4" muted playsinline></video>
-      <video id="s2-laugh" data-shot="27,30" class="clip" data-start="25.235" data-duration="4.915" data-media-start="2.0" data-track-index="3" src="assets/media/video/v05.mp4" muted playsinline></video>
-      <video id="s2-cake" data-shot="30,37" class="clip" data-start="29.85" data-duration="7.512" data-media-start="29.0" data-playback-rate="0.8" data-track-index="3" src="assets/media/video/v06.mp4" muted playsinline></video>
-      <video id="s2-E02r" data-shot="37,end" class="clip" data-start="37.062" data-duration="1.304" data-track-index="2" src="assets/media/living/v5_E02r.mp4" muted playsinline></video>
+      <video id="s2-E02g" data-shot="0,3" class="clip" data-start="0" data-duration="3.179" data-track-index="2" src="assets/media/living/v5_E02g.mp4" muted playsinline></video>
+      <video id="s2-E10m" data-shot="3,7" class="clip" data-start="2.879" data-duration="4.771" data-track-index="2" src="assets/media/living/v5_E10m.mp4" muted playsinline></video>
+      <video id="s2-E11m" data-shot="3,7" class="clip" data-start="2.879" data-duration="4.771" data-track-index="3" src="assets/media/living/v5_E11m.mp4" muted playsinline></video>
+      <video id="s2-E03" data-shot="7,11" class="clip" data-start="7.35" data-duration="4.483" data-track-index="2" src="assets/media/living/v5_E03.mp4" muted playsinline></video>
+      <video id="s2-E02h" data-shot="17,20" class="clip" data-start="15.86" data-duration="2.896" data-track-index="2" src="assets/media/living/v5_E02h.mp4" muted playsinline></video>
+      <video id="s2-umb" data-shot="20,24" class="clip" data-start="18.456" data-duration="2.608" data-media-start="4.0" data-track-index="3" src="assets/media/video/v03.mp4" muted playsinline></video>
+      <video id="s2-E03b" data-shot="24,27" class="clip" data-start="20.764" data-duration="5.492" data-track-index="2" src="assets/media/living/v5_E03b.mp4" muted playsinline></video>
+      <video id="s2-laugh" data-shot="27,30" class="clip" data-start="25.956" data-duration="3.473" data-media-start="2.0" data-track-index="3" src="assets/media/video/v05.mp4" muted playsinline></video>
+      <video id="s2-cake" data-shot="30,37" class="clip" data-start="29.129" data-duration="8.089" data-media-start="29.0" data-playback-rate="0.8" data-track-index="3" src="assets/media/video/v06.mp4" muted playsinline></video>
+      <video id="s2-E02r" data-shot="37,end" class="clip" data-start="36.918" data-duration="1.133" data-track-index="2" src="assets/media/living/v5_E02r.mp4" muted playsinline></video>
     </div>
   </div>
 
@@ -32,23 +32,22 @@
 
       // A. THE DROP — a crack of warm light runs down the wall between them; the line lands low, under them
       {
-        const { cam } = D.shot(C, 0, Q(4));
+        const { cam } = D.shot(C, 0, Q(3));
         D.take("s2-E02g", cam);
         const glow = K.el("div", "", cam);
         glow.style.cssText = "position:absolute;inset:0;mix-blend-mode:screen;pointer-events:none;background:radial-gradient(ellipse 16% 70% at 50% 40%, rgba(255,214,150,.55), rgba(255,214,150,0) 70%)";
-        // the light swells into the downbeat, then settles
-        const hit = B(nb(0));
+        // the light swells with 사랑할, then settles
+        const hit = 380;
         at.set(glow, { opacity: 0 }, 0);
         at.add(glow, { opacity: [0, 1], duration: Math.max(1, hit), ease: E.in3 }, 0);
         at.add(glow, { opacity: [1, 0.55], duration: 1400, ease: E.quart }, hit);
         D.scrim(cam, "bottom", { a: 0.62, reach: 40 });
-        D.line(C, cam, [0, 1, 2], { y: 878, size: 88, font: "serifB", color: "cream", love: [0], lead: 40, enter: 700, end: T(3) - 60, out: 320 });
-        D.line(C, cam, [3], { y: 920, size: 60, color: "cream", lead: 120 });
+        D.line(C, cam, [0, 1, 2], { y: 878, size: 88, font: "serifB", color: "cream", love: [0], lead: 40, enter: 700 });
       }
 
       // B. the same moment in two rooms: his squared mug, her round cup; the wall is the seam
       {
-        const { shot } = D.shot(C, Q(4), Q(7));
+        const { shot } = D.shot(C, Q(3), Q(7));
         const L = K.el("div", "", shot);
         L.style.cssText = "position:absolute;left:0;top:0;width:960px;height:1080px;overflow:hidden";
         D.take("s2-E10m", L);
@@ -58,7 +57,7 @@
         const seam = K.el("div", "", shot);
         seam.style.cssText = "position:absolute;left:957px;top:0;width:6px;height:1080px;background:linear-gradient(90deg,#d9cfbf,#f4ede1,#cfc4b2);box-shadow:0 0 18px rgba(20,16,12,.35);z-index:5";
         D.scrim(shot, "bottom", { a: 0.55, reach: 34 });
-        D.line(C, shot, [4, 5, 6], { y: 914, size: 60, color: "cream", lead: 120 });
+        D.line(C, shot, [3, 4, 5, 6], { y: 914, size: 60, color: "cream", lead: 120 });
       }
 
       // C. the roof lifts off the house; two stars close together
@@ -72,10 +71,10 @@
       {
         const tCut = Q(17);
         const { cam } = D.shot(C, Q(11), tCut);
-        // the photo changes on the beat, three beats each
+        // the photo changes on the beat, every two beats
         const b0 = nb(Q(11));
-        const t1 = B(b0 + 3);
-        const t2 = B(b0 + 6);
+        const t1 = B(b0 + 2);
+        const t2 = B(b0 + 4);
         D.keyed(C, cam, "E04", [{
           build(win, grade) {
             [["d38", Q(11), t1, "50% 45%"], ["d61", t1, t2, "50% 60%"], ["d63", t2, tCut, "50% 38%"]].forEach(([k, a, b, pos]) => {
