@@ -1,0 +1,94 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Noto Serif KR";
+      src: url("assets/fonts/NotoSerifKR-subset.woff2") format("woff2");
+      font-weight: 200 900;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    #v2-cam {
+      position: absolute;
+      inset: 0;
+    }
+    #v2-img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: cover;
+    }
+    #v2-scrim {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(18, 12, 8, 0.78) 0%, rgba(18, 12, 8, 0.5) 42%, rgba(18, 12, 8, 0) 72%),
+        linear-gradient(0deg, rgba(18, 12, 8, 0.7) 0%, rgba(18, 12, 8, 0) 45%);
+    }
+    #v2-text {
+      position: absolute;
+      left: 170px;
+      bottom: 150px;
+      width: 1380px;
+      font-family: "Noto Serif KR", serif;
+      color: #f3e9d6;
+    }
+    #v2-text .ref {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #c9a25e;
+      margin-bottom: 28px;
+    }
+    #v2-text .verse {
+      font-size: 50px;
+      font-weight: 500;
+      line-height: 1.55;
+      letter-spacing: -0.01em;
+      margin-top: 18px;
+    }
+    #v2-text .vn {
+      display: inline-block;
+      font-size: 30px;
+      font-weight: 700;
+      color: #c9a25e;
+      margin-right: 14px;
+      transform: translateY(-14px);
+    }
+    #v2-text .w {
+      display: inline-block;
+      white-space: pre;
+    }
+  </style>
+  <div id="root" data-composition-id="verse2" data-width="1920" data-height="1080">
+    <div id="v2-cam" class="clip" data-start="0" data-duration="18.7" data-track-index="0">
+      <img id="v2-img" src="assets/images/02_hand_hem.png" alt="군중 사이로 옷자락을 향해 뻗은 여인의 손" />
+    </div>
+    <div id="v2-scrim" class="clip" data-start="0" data-duration="18.7" data-track-index="1"></div>
+    <div id="v2-text" class="clip" data-start="0" data-duration="18.7" data-track-index="2">
+      <div id="v2-ref" class="ref">마가복음 5:33-34</div>
+      <div id="v2-33" class="verse"><span class="vn">33</span><span class="w">여자가 </span><span class="w">자기에게 </span><span class="w">이루어진 </span><span class="w">일을 </span><span class="w">알고 </span><span class="w">두려워하여 </span><span class="w">떨며 </span><span class="w">와서 </span><span class="w">그 </span><span class="w">앞에 </span><span class="w">엎드려 </span><span class="w">모든 </span><span class="w">사실을 </span><span class="w">여쭈니</span></div>
+      <div id="v2-34" class="verse"><span class="vn">34</span><span class="w">예수께서 </span><span class="w">이르시되 </span><span class="w">딸아 </span><span class="w">네 </span><span class="w">믿음이 </span><span class="w">너를 </span><span class="w">구원하였으니 </span><span class="w">평안히 </span><span class="w">가라 </span><span class="w">네 </span><span class="w">병에서 </span><span class="w">놓여 </span><span class="w">건강할지어다</span></div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      // dissolve in over the previous scene, slow push the other way
+      tl.fromTo("#v2-cam", { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "power2.inOut" }, 0);
+      tl.fromTo("#v2-img", { scale: 1.06, x: -16, y: 10 }, { scale: 1.0, x: 0, y: 0, duration: 18.7, ease: "none" }, 0);
+      tl.fromTo("#v2-scrim", { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "power2.inOut" }, 0.3);
+      tl.fromTo("#v2-ref", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 2.1);
+      tl.fromTo("#v2-33 .vn", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 2.7);
+      tl.fromTo("#v2-33 .w", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.07 }, 2.7);
+      tl.fromTo("#v2-34 .vn", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 9.5);
+      tl.fromTo("#v2-34 .w", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.07 }, 9.5);
+      tl.to("#v2-text", { opacity: 0, duration: 0.6, ease: "power2.in" }, 16.7);
+      window.__timelines["verse2"] = tl;
+    })();
+  </script>
+</template>

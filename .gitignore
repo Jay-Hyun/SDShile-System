@@ -1,0 +1,8 @@
+# Copyrighted MR track: keep it local, never in this public repo
+special-song/assets/audio/
+# Renders and caches
+special-song/renders/
+special-song/snapshots/
+special-song/.hyperframes/
+special-song/.media/
+node_modules/

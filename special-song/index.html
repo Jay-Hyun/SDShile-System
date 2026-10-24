@@ -1,0 +1,139 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-resolution="landscape"
+  data-composition-variables='[{"id":"chroma","type":"color","label":"Chroma key colour","default":"#00ff00"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --chroma: #00ff00;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #000;
+      }
+      #verse1 {
+        z-index: 1;
+      }
+      #verse2 {
+        z-index: 2;
+      }
+      #title {
+        z-index: 3;
+      }
+      #green {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        background: var(--chroma);
+      }
+      #lyrics {
+        z-index: 5;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="332.78"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Prelude: verses over images, then the title (0 – 42 s) -->
+      <div
+        id="verse1"
+        data-composition-id="verse1"
+        data-composition-src="compositions/verse1.html"
+        data-start="0"
+        data-duration="17.1"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+      <div
+        id="verse2"
+        data-composition-id="verse2"
+        data-composition-src="compositions/verse2.html"
+        data-start="15.9"
+        data-duration="18.7"
+        data-track-index="2"
+        data-track-kind="graphics"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+      <div
+        id="title"
+        data-composition-id="title"
+        data-composition-src="compositions/title.html"
+        data-start="33.4"
+        data-duration="8.6"
+        data-track-index="3"
+        data-track-kind="graphics"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+
+      <!-- MR part: pure chroma green with lyrics at the bottom (42 s – end) -->
+      <div id="green" class="clip" data-start="42" data-duration="290.78" data-track-index="4" data-hold></div>
+      <div
+        id="lyrics"
+        data-composition-id="lyrics"
+        data-composition-src="compositions/lyrics.html"
+        data-start="42"
+        data-duration="290.78"
+        data-track-index="5"
+        data-track-kind="captions"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+
+      <audio
+        id="bgm"
+        class="clip"
+        src="assets/bgm/prelude.wav"
+        data-start="0"
+        data-duration="41.5"
+        data-track-index="6"
+        data-volume="0.55"
+        data-fade-in="1.5"
+        data-fade-out="2"
+      ></audio>
+      <audio
+        id="mr"
+        class="clip"
+        src="assets/audio/mr.mp3"
+        data-start="42"
+        data-duration="290.78"
+        data-track-index="7"
+        data-volume="1"
+      ></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.set({}, {}, 332.78);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
