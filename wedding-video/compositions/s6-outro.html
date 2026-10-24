@@ -96,6 +96,7 @@
       at.add("#s6-booth", { y: [40, 0], rotate: [-3, -1.5], duration: 1600, ease: E.expo }, 4300);
       const we = txt("We're getting married", "E ink", { left: 0, right: 0, top: 900, fontSize: 64, textAlign: "center" });
       soft(we, 5200);
+      K.leak(at, document.getElementById("s6-boothshot"), 4400, 4000, { peak: 0.55, from: "right", tone: "rose", z: 5 });
       out(["#s6-boothshot", we], 8400, 500);
 
       // ---- names, date, thanks (8.4 s - end), then black
@@ -112,6 +113,7 @@
       soft(date, 9600);
       soft(marry, 10100, { dur: 1100 });
       soft(thanks, 10800);
+      K.leak(at, document.getElementById("s6-card"), 8600, 3800, { peak: 0.35, from: "left", z: 5 });
       at.set("#s6-black", { opacity: 0 }, 0);
       at.add("#s6-black", { opacity: [0, 1], duration: 1100, ease: E.inout }, END - 1100);
 

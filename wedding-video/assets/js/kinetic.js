@@ -321,6 +321,147 @@
       return out;
     },
 
+    /* ---------- camera language (cinematic pass) ---------- */
+
+    /** A shot with a camera rig inside it: `shot` owns visibility, `cam` owns shake/punch/pulse,
+     *  so content inside can keep its own push without fighting over transform properties. */
+    rig(parent, at, t0, t1, { bg = null, cls = "" } = {}) {
+      const shot = K.shot(parent, at, t0, t1, { bg, cls });
+      const cam = K.el("div", "cam", shot);
+      cam.style.cssText = "position:absolute;inset:0;transform-origin:50% 50%";
+      return { shot, cam };
+    },
+
+    /** Handheld hit: seeded jitter that decays to rest over `dur` ms (one set per frame, seek-safe). */
+    shake(at, el, t, { dur = 420, amp = 14, rot = 0.5, seed = 1 } = {}) {
+      const r = K.rng(seed * 7919 + Math.round(t));
+      const n = Math.max(2, Math.round(dur / 33.333));
+      at.set(el, { x: 0, y: 0, rotate: 0 }, 0);
+      for (let i = 0; i <= n; i++) {
+        const d = i === n ? 0 : Math.pow(1 - i / n, 1.6);
+        at.set(el, { x: (r() - 0.5) * 2 * amp * d, y: (r() - 0.5) * 2 * amp * 0.7 * d, rotate: (r() - 0.5) * 2 * rot * d }, t + i * 33.333);
+      }
+    },
+
+    /** Beat punch: the frame lunges in and settles (scale `from` -> 1). */
+    punch(at, el, t, { from = 1.06, dur = 380 } = {}) {
+      at.add(el, { scale: [from, 1], duration: dur, ease: EXPO }, t);
+    },
+
+    /** Pump the frame on every beat in [t0, t1) — a breath of scale on each kick. */
+    pulse(at, el, sceneObj, t0, t1, { amp = 0.012, every = 1 } = {}) {
+      for (let n = sceneObj.beatAt(t0); ; n += every) {
+        const t = sceneObj.beat(n);
+        if (t >= t1) break;
+        at.add(el, { scale: [1 + amp, 1], duration: Math.min(BEAT * every * 0.9, 420), ease: QUART }, t);
+      }
+    },
+
+    /** Exposure flash: a full-frame layer that blows out and decays (warm white by default). */
+    flashFrame(at, parent, t, { color = "#fffaf0", dur = 300, peak = 1, z = 50 } = {}) {
+      const f = K.el("div", "", parent);
+      f.style.cssText = `position:absolute;inset:0;background:${color};pointer-events:none;z-index:${z}`;
+      at.set(f, { opacity: 0 }, 0);
+      at.set(f, { opacity: peak }, t);
+      at.add(f, { opacity: [peak, 0], duration: dur, ease: EXPO }, t + 33);
+      return f;
+    },
+
+    /** Exposure ramp up to white (the wind-up before a drop): eases in and lands at t1 fully white. */
+    whiteout(at, parent, t0, t1, { color = "#fffaf0", z = 50 } = {}) {
+      const f = K.el("div", "", parent);
+      f.style.cssText = `position:absolute;inset:0;background:${color};pointer-events:none;z-index:${z}`;
+      at.set(f, { opacity: 0 }, 0);
+      at.add(f, { opacity: [0, 1], duration: t1 - t0, ease: IN3 }, t0);
+      return f;
+    },
+
+    /** Organic light leak (adapted from the registry block organic-light-leak-overlay): three soft
+     *  gradient layers drift across the frame in screen blend, finite envelope over `dur` ms. */
+    leak(at, parent, t, dur, { peak = 0.8, from = "left", z = 40, tone = "warm" } = {}) {
+      const box = K.el("div", "", parent);
+      box.style.cssText = `position:absolute;inset:-16%;overflow:hidden;pointer-events:none;mix-blend-mode:screen;z-index:${z}`;
+      const pal = tone === "rose"
+        ? ["rgb(255 228 214 / 90%)", "rgb(232 120 120 / 70%)", "rgb(255 92 120 / 62%)", "rgb(255 214 190 / 70%)"]
+        : ["rgb(255 241 197 / 92%)", "rgb(255 126 57 / 74%)", "rgb(255 79 61 / 60%)", "rgb(255 247 205 / 70%)"];
+      const sx = from === "left" ? 1 : -1;
+      const L = (css) => {
+        const l = K.el("div", "", box);
+        l.style.cssText = "position:absolute;inset:-20%;" + css;
+        return l;
+      };
+      const a = L(`background:radial-gradient(ellipse 52% 110% at ${from === "left" ? 10 : 90}% 58%, ${pal[0]}, transparent 45%),radial-gradient(ellipse 72% 120% at ${from === "left" ? 24 : 76}% 54%, ${pal[1]}, transparent 66%);filter:blur(30px)`);
+      const b = L(`background:radial-gradient(ellipse 58% 105% at ${from === "left" ? 78 : 22}% 34%, ${pal[2]}, transparent 76%);filter:blur(43px)`);
+      const c = L(`background:linear-gradient(${from === "left" ? 104 : 76}deg, transparent 24%, ${pal[1].replace(/\/ \d+%/, "/ 30%")} 40%, ${pal[3]} 51%, transparent 78%);filter:blur(22px)`);
+      at.set(box, { opacity: 0 }, 0);
+      at.add(box, { opacity: [0, peak], duration: dur * 0.3, ease: A.cubicBezier(0.39, 0.575, 0.565, 1) }, t);
+      at.add(box, { opacity: [peak, peak * 0.5], duration: dur * 0.25, ease: INOUT }, t + dur * 0.4);
+      at.add(box, { opacity: [peak * 0.5, 0], duration: dur * 0.3, ease: IN3 }, t + dur * 0.7);
+      at.add(a, { translateX: [`${-20 * sx}%`, `${18 * sx}%`], scale: [0.92, 1.1], rotate: [-4 * sx, 2 * sx], duration: dur, ease: INOUT }, t);
+      at.add(b, { translateX: [`${20 * sx}%`, `${-16 * sx}%`], translateY: ["-8%", "8%"], scale: [1.08, 0.94], duration: dur, ease: INOUT }, t);
+      at.add(c, { translateX: [`${-28 * sx}%`, `${24 * sx}%`], rotate: [-6 * sx, 4 * sx], duration: dur, ease: INOUT }, t);
+      return box;
+    },
+
+    /** Whip pan: outgoing frame streaks off, incoming streaks in, directional blur peaking mid-whip
+     *  (stepped SVG filters #hb1..#hb4 declared in index.html). dir 1 = camera pans right. */
+    whip(at, outEl, inEl, t, { dir = 1, dur = 330 } = {}) {
+      const n = Math.max(4, Math.round(dur / 33.333));
+      if (outEl) at.add(outEl, { x: [0, -dir * 1920], duration: dur, ease: A.cubicBezier(0.7, 0, 0.84, 0) }, t);
+      if (inEl) {
+        at.set(inEl, { x: dir * 1920 }, Math.max(0, t - 1));
+        at.add(inEl, { x: [dir * 1920, 0], duration: dur, ease: A.cubicBezier(0.16, 1, 0.3, 1) }, t + dur * 0.35);
+      }
+      const els = [outEl, inEl].filter(Boolean);
+      for (let i = 0; i <= n; i++) {
+        const k = Math.sin((Math.PI * i) / n);
+        const lvl = i === n ? 0 : Math.min(4, Math.round(k * 4.2));
+        at.set(els, { filter: lvl ? `url(#hb${lvl})` : "none" }, t + i * 33.333);
+      }
+      if (outEl) at.set(outEl, { x: 0, filter: "none" }, t + dur * 1.35 + 34);
+    },
+
+    /** Letterbox bars (2.39:1 by default) that slide in over `dur` ms and optionally out again. */
+    letterbox(at, parent, t, { h = 138, dur = 900, out = null, z = 45 } = {}) {
+      const mk = (top) => {
+        const b = K.el("div", "", parent);
+        b.style.cssText = `position:absolute;left:0;right:0;${top ? "top" : "bottom"}:0;height:${h}px;background:#0c0b0a;z-index:${z}`;
+        at.set(b, { translateY: top ? -h : h }, 0);
+        at.add(b, { translateY: [top ? -h : h, 0], duration: dur, ease: INOUT }, t);
+        if (out != null) at.add(b, { translateY: [0, top ? -h : h], duration: dur * 0.7, ease: INOUT }, out);
+        return b;
+      };
+      return [mk(true), mk(false)];
+    },
+
+    /** Knockout type: a full-frame plate with the word cut out of it, so whatever is behind shows
+     *  through the letters. geo comes from scripts/knock_points.py (x, baseline, deep point).
+     *  Returns { wrap, plate } — scale `wrap` around geo.deep to fly into the stroke. */
+    knock(parent, text, geo, { fill = "#f2ede4", family = "Noto Serif KR", weight = 800, size = 560, z = 20 } = {}) {
+      const NS = "http://www.w3.org/2000/svg";
+      const id = "kn" + (K._kn = (K._kn || 0) + 1);
+      const wrap = K.el("div", "", parent);
+      wrap.style.cssText = `position:absolute;inset:0;z-index:${z};transform-origin:${geo.deep[0]}px ${geo.deep[1]}px`;
+      const svg = document.createElementNS(NS, "svg");
+      svg.setAttribute("width", "1920");
+      svg.setAttribute("height", "1080");
+      svg.setAttribute("viewBox", "0 0 1920 1080");
+      svg.style.cssText = "position:absolute;left:0;top:0;overflow:visible";
+      svg.innerHTML =
+        `<defs><mask id="${id}" maskUnits="userSpaceOnUse" x="-4000" y="-4000" width="9920" height="9080">` +
+        `<rect x="-4000" y="-4000" width="9920" height="9080" fill="#fff"/>` +
+        `<text x="${geo.x}" y="${geo.baseline}" font-family="${family}" font-weight="${weight}" font-size="${size}" style="font-kerning:none" fill="#000">${text}</text>` +
+        `</mask></defs><rect x="-4000" y="-4000" width="9920" height="9080" fill="${fill}" mask="url(#${id})"/>`;
+      wrap.appendChild(svg);
+      return { wrap, plate: svg };
+    },
+
+    /** Fly into the knockout's stroke: scale the plate around its deep point until the frame is all media. */
+    zoomThrough(at, wrap, t, { dur = 520, to = 34 } = {}) {
+      at.add(wrap, { scale: [1, to], duration: dur, ease: A.cubicBezier(0.55, 0, 0.9, 0.3) }, t);
+      at.set(wrap, { opacity: 0 }, t + dur);
+    },
+
     /** Seeded PRNG (mulberry32) for any variation. */
     rng(seed) {
       let a = seed >>> 0;

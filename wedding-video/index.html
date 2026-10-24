@@ -38,6 +38,23 @@
         overflow: hidden;
         background: var(--color-ink);
       }
+      /* the look: a soft optical vignette and a faint warm print tone over every scene */
+      #look {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 99;
+        background: radial-gradient(ellipse 78% 82% at 50% 48%, rgba(12, 10, 8, 0) 58%, rgba(12, 10, 8, 0.32) 100%);
+      }
+      #tone {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 98;
+        background: #e8c9a0;
+        mix-blend-mode: soft-light;
+        opacity: 0.16;
+      }
       #grain {
         position: absolute;
         inset: -64px;
@@ -62,6 +79,16 @@
       <div id="s5" data-composition-id="s5" data-composition-src="compositions/s5-final.html" data-start="132.7" data-duration="38.9" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
       <div id="s6" data-composition-id="s6" data-composition-src="compositions/s6-outro.html" data-start="171.6" data-duration="13.139" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
 
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+          <filter id="hb1" x="-20%" y="0" width="140%" height="100%"><feGaussianBlur stdDeviation="8 0" /></filter>
+          <filter id="hb2" x="-20%" y="0" width="140%" height="100%"><feGaussianBlur stdDeviation="18 0" /></filter>
+          <filter id="hb3" x="-20%" y="0" width="140%" height="100%"><feGaussianBlur stdDeviation="32 0" /></filter>
+          <filter id="hb4" x="-20%" y="0" width="140%" height="100%"><feGaussianBlur stdDeviation="52 0" /></filter>
+        </defs>
+      </svg>
+      <div id="tone" class="clip" data-start="0" data-duration="184.739" data-track-index="2" data-layout-ignore></div>
+      <div id="look" class="clip" data-start="0" data-duration="184.739" data-track-index="2" data-layout-ignore></div>
       <div id="grain" class="clip" data-start="0" data-duration="184.739" data-track-index="2" data-layout-ignore></div>
     </div>
     <script>

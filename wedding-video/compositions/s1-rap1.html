@@ -56,7 +56,8 @@
       const E = K.ease;
       const stage = document.getElementById("s1-stage");
       const cut = (k) => `assets/media/cutout/${k}.png`;
-      const shot = (t0, t1, opts) => K.shot(stage, at, t0, t1, opts);
+      const cuts = [];
+      const shot = (t0, t1, opts) => (cuts.push(t0), K.shot(stage, at, t0, t1, opts));
       const txt = K.txt;
       const syl = K.syllables;
       const GREY = "radial-gradient(ellipse 70% 80% at 50% 38%, #e0ddd7 0%, #c9c5be 62%, #b7b2aa 100%)";
@@ -402,6 +403,12 @@
         at.set(lift, { opacity: 0 }, 0);
         at.add(lift, { opacity: [0, 1], duration: 260, ease: E.in3 }, END - 260);
       }
+
+      // camera language: every cut lands with a small lunge; the drop and the hardest words jolt the frame
+      cuts.forEach((t) => K.punch(at, stage, t, { from: 1.035, dur: 320 }));
+      K.flashFrame(at, stage, 0, { dur: 380, peak: 0.9, z: 80 });
+      K.shake(at, stage, T(0), { amp: 18, rot: 0.8, seed: 2, dur: 520 });
+      [6, 52].forEach((i, j) => W[i] && K.shake(at, stage, T(i), { amp: 12, seed: 11 + j, dur: 360 }));
 
       K.bridge(gtl, at, S.dur);
       window.__timelines["s1"] = gtl;

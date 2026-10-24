@@ -159,6 +159,10 @@
       const names = txt(`${FILM.couple.groom}   &   ${FILM.couple.bride}`, "M ink", { left: 0, right: 0, top: 962, textAlign: "center" });
       K.write(at, names, T(16), 900);
 
+      // warm light drifts across while the title settles, a rose one on 참 좋은 걸요
+      K.leak(at, document.getElementById("root"), S.ms(8.46 + 2.6), 3600, { peak: 0.5, from: "left", z: 30 });
+      K.leak(at, document.getElementById("root"), T(14) - 300, S.dur * 1000 - T(14) + 300, { peak: 0.55, from: "right", tone: "rose", z: 30 });
+
       // ---- out: dip cut into the rap (the frame darkens 40 % for 3 frames before the cut)
       const dip = K.el("div", "", document.getElementById("root"));
       dip.style.cssText = "position:absolute;inset:0;background:#161514";

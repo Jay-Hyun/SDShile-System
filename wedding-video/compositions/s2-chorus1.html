@@ -1,36 +1,46 @@
 <template>
   <style>
-    @font-face { font-family: "Pretendard"; font-weight: 600; src: url("assets/fonts/Pretendard-Bold.woff2"); }
     @font-face { font-family: "Pretendard"; font-weight: 900; src: url("assets/fonts/Pretendard-Black.woff2"); }
     @font-face { font-family: "Noto Serif KR"; font-weight: 200 900; src: url("assets/fonts/NotoSerifKR-VF.ttf"); }
-    @font-face { font-family: "Cormorant"; font-style: italic; src: url("assets/fonts/CormorantGaramond-Italic.ttf"); }
 
     #root { position: absolute; inset: 0; overflow: hidden; background: #161514; }
     .kt { line-height: 1.12; will-change: transform, opacity, filter; }
+    .kt .syl { display: inline-block; }
     .A { font-family: "Pretendard"; font-weight: 900; letter-spacing: -0.035em; }
     .B { font-family: "Noto Serif KR"; font-weight: 500; letter-spacing: -0.01em; }
     .Bb { font-family: "Noto Serif KR"; font-weight: 700; letter-spacing: -0.015em; }
-    .E { font-family: "Cormorant"; font-style: italic; }
     .ink { color: #161514; }
     .ivory { color: #f7f3ec; }
     .rose { color: #a65e66; }
     .on-photo { color: #f7f3ec; text-shadow: 0 2px 28px rgba(10, 9, 8, 0.55), 0 1px 3px rgba(10, 9, 8, 0.35); }
     .paper { background: radial-gradient(ellipse 80% 90% at 50% 40%, #f7f3ec 0%, #efe9df 70%, #e6dfd3 100%); }
-    .studio { background: radial-gradient(ellipse 70% 80% at 50% 38%, #e0ddd7 0%, #c9c5be 62%, #b7b2aa 100%); }
-    .bleed { position: absolute; inset: 0; overflow: hidden; }
-    .bleed img, .bleed video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
-    .shade { position: absolute; left: 0; right: 0; bottom: 0; height: 520px; background: linear-gradient(to top, rgba(12, 11, 10, 0.62), rgba(12, 11, 10, 0)); }
-    .print { position: absolute; overflow: hidden; background: #fff; padding: 14px 14px 56px; box-shadow: 0 24px 50px rgba(22, 21, 20, 0.28); }
-    .print img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    .vframe { position: absolute; overflow: hidden; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45); }
-    .vframe video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+    .fill, .fill video, .fill img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+    .fill { overflow: hidden; }
+    .shade { position: absolute; left: 0; right: 0; bottom: 0; height: 520px; background: linear-gradient(to top, rgba(12, 11, 10, 0.6), rgba(12, 11, 10, 0)); }
+    .half { position: absolute; top: 0; width: 960px; height: 1080px; overflow: hidden; }
   </style>
 
   <div id="root" data-composition-id="s2" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
     <div id="s2-stage" style="position:absolute;inset:0"></div>
-    <div id="s2-v2" class="bleed" style="opacity:0"><video id="s2-v07" class="clip" data-start="1.6" data-duration="5.3" data-media-start="1.5" data-playback-rate="0.85" data-track-index="2" src="assets/media/video/v07.mp4" muted playsinline></video></div>
-    <div id="s2-v5" class="vframe" style="left:1060px;top:80px;width:520px;height:920px;opacity:0"><video id="s2-v03" class="clip" data-start="17.6" data-duration="4.2" data-media-start="4.0" data-track-index="2" src="assets/media/video/v03.mp4" muted playsinline></video></div>
-    <div id="s2-v7" class="bleed" style="opacity:0"><video id="s2-v09" class="clip" data-start="25.1" data-duration="5.0" data-media-start="0.6" data-playback-rate="0.9" data-track-index="2" src="assets/media/video/v09.mp4" muted playsinline></video></div>
+    <!-- every moving picture of the chorus, declared up front and moved into its shot by the script -->
+    <div id="s2-media" style="display:none">
+      <div id="s2-a-bg" class="fill"><video id="s2-a-bg-v" class="clip" data-start="0" data-duration="1.95" data-track-index="2" src="assets/media/living/c1_w03L_bg.mp4" muted playsinline></video></div>
+      <div id="s2-a-fg" class="fill"><video id="s2-a-fg-v" class="clip" data-start="0" data-duration="1.95" data-track-index="3" src="assets/media/living/c1_w03L_fg.webm" muted playsinline></video></div>
+      <div id="s2-him" class="fill"><video id="s2-him-v" class="clip" data-start="1.5" data-duration="3.9" data-playback-rate="0.9" data-track-index="2" src="assets/media/living/c1_w10.mp4" muted playsinline></video></div>
+      <div id="s2-her" class="fill"><video id="s2-her-v" class="clip" data-start="1.5" data-duration="3.9" data-playback-rate="0.9" data-track-index="3" src="assets/media/living/c1_w23.mp4" muted playsinline></video></div>
+      <div id="s2-sel" class="fill"><video id="s2-sel-v" class="clip" data-start="4.4" data-duration="2.6" data-media-start="1.5" data-playback-rate="0.85" data-track-index="4" src="assets/media/video/v07.mp4" muted playsinline></video></div>
+      <div id="s2-prop" class="fill"><video id="s2-prop-v" class="clip" data-start="6.4" data-duration="4.4" data-track-index="2" src="assets/media/living/c1_w33.mp4" muted playsinline></video></div>
+      <div id="s2-hug" class="fill"><video id="s2-hug-v" class="clip" data-start="16.2" data-duration="1.95" data-track-index="2" src="assets/media/living/c1_w40.mp4" muted playsinline></video></div>
+      <div id="s2-umb-bg" class="fill"><video id="s2-umb-bg-v" class="clip" data-start="17.5" data-duration="2.95" data-media-start="4.0" data-track-index="3" src="assets/media/video/v03.mp4" muted playsinline></video></div>
+      <div id="s2-umb" class="fill"><video id="s2-umb-v" class="clip" data-start="17.5" data-duration="2.95" data-media-start="4.0" data-track-index="4" src="assets/media/video/v03.mp4" muted playsinline></video></div>
+      <div id="s2-g1" class="fill"><video id="s2-g1-v" class="clip" data-start="20.0" data-duration="2.6" data-playback-rate="0.85" data-track-index="2" src="assets/media/living/c1_w30.mp4" muted playsinline></video></div>
+      <div id="s2-g2" class="fill"><video id="s2-g2-v" class="clip" data-start="21.9" data-duration="1.9" data-track-index="3" src="assets/media/living/c1_w31.mp4" muted playsinline></video></div>
+      <div id="s2-g3" class="fill"><video id="s2-g3-v" class="clip" data-start="23.1" data-duration="2.3" data-playback-rate="0.95" data-track-index="4" src="assets/media/living/c1_w36.mp4" muted playsinline></video></div>
+      <div id="s2-laugh" class="fill"><video id="s2-laugh-v" class="clip" data-start="25.0" data-duration="5.1" data-media-start="0.6" data-playback-rate="0.9" data-track-index="2" src="assets/media/video/v09.mp4" muted playsinline></video></div>
+      <div id="s2-cake" class="fill"><video id="s2-cake-v" class="clip" data-start="29.6" data-duration="7.8" data-media-start="29.0" data-playback-rate="0.8" data-track-index="3" src="assets/media/video/v06.mp4" muted playsinline></video></div>
+      <div id="s2-j-bg" class="fill"><video id="s2-j-bg-v" class="clip" data-start="37.0" data-duration="1.25" data-track-index="2" src="assets/media/living/c1_w05L_bg.mp4" muted playsinline></video></div>
+      <div id="s2-j-fg" class="fill"><video id="s2-j-fg-v" class="clip" data-start="37.0" data-duration="1.25" data-track-index="3" src="assets/media/living/c1_w05L_fg.webm" muted playsinline></video></div>
+    </div>
   </div>
 
   <script>
@@ -43,35 +53,28 @@
       const T = (i) => (W[i] ? W[i].ms : END);
       const E = K.ease;
       const stage = document.getElementById("s2-stage");
-      const txt = K.txt;
-      const cut = (k) => `assets/media/cutout/${k}.png`;
-      const XF = 500; // chorus shots cross-dissolve over 500 ms
+      const take = (id, parent) => { const m = document.getElementById(id); parent.appendChild(m); return m; };
+      const beatNear = (ms) => S.beat(S.beatAt(ms - 120));
 
-      // a chorus shot fades in over the previous one and holds until t1
-      function shot(t0, t1, cls) {
-        const el = K.el("div", "shot " + (cls || ""), stage);
-        el.style.cssText = "position:absolute;inset:0;overflow:hidden";
-        at.set(el, { opacity: 0 }, 0);
-        at.add(el, { opacity: [0, 1], duration: XF, ease: E.inout }, Math.max(0, t0 - XF / 2));
-        at.set(el, { opacity: 0 }, t1 + XF / 2);
-        return el;
+      // a shot that dissolves in over xf ms (0 = hard cut) and stays under the next one
+      function rig(t0, t1, { xf = 0, bg = null, cls = "" } = {}) {
+        const shot = K.el("div", "shot " + cls, stage);
+        shot.style.cssText = "position:absolute;inset:0;overflow:hidden;" + (bg ? `background:${bg}` : "");
+        const cam = K.el("div", "cam", shot);
+        cam.style.cssText = "position:absolute;inset:0;transform-origin:50% 50%";
+        at.set(shot, { opacity: 0 }, 0);
+        if (xf) at.add(shot, { opacity: [0, 1], duration: xf, ease: E.inout }, Math.max(0, t0 - xf / 2));
+        else at.set(shot, { opacity: 1 }, t0);
+        at.set(shot, { opacity: 0 }, t1 + 400);
+        return { shot, cam };
       }
       function soft(el, t, { dur = 700, rise = 16, blur = 12 } = {}) {
         at.set(el, { opacity: 0 }, 0);
         at.add(el, { opacity: [0, 1], y: [rise, 0], filter: [`blur(${blur}px)`, "blur(0px)"], duration: dur, ease: E.expo }, t);
       }
-      function out(els, t, dur = 360) {
+      function out(els, t, dur = 340) {
         at.add(els, { opacity: [1, 0], filter: ["blur(0px)", "blur(10px)"], duration: dur, ease: E.in3 }, t);
       }
-      function push(el, t0, t1, from = 1.0, to = 1.07) {
-        at.add(el, { scale: [from, to], duration: Math.max(1, t1 - t0 + XF), ease: "linear" }, t0 - XF / 2);
-      }
-      function photo(parent, key, pos = "50% 40%") {
-        const b = K.el("div", "bleed", parent);
-        K.img(b, K.photo(key), {}).style.objectPosition = pos;
-        return b;
-      }
-      // a line of words, each blurring in at its sung time, centred as one row
       function line(parent, idx, cls, css, align = "center") {
         const row = K.el("div", "kt " + cls, parent);
         row.style.cssText += `position:absolute;left:0;right:0;text-align:${align};white-space:nowrap`;
@@ -84,140 +87,207 @@
           return sp;
         });
       }
-
-      // ---- 1. 사랑할 것 같아요 — the two of them, the words standing behind
-      {
-        const s = shot(0, T(3), "studio");
-        const words = line(s, [0, 1, 2], "Bb ink", { top: 60, fontSize: 170 });
-        const g = K.img(s, cut("w03"), { left: 600, bottom: -90, height: 900 });
-        at.set(g, { opacity: 0 }, 0);
-        at.add(g, { opacity: [0, 1], y: [40, 0], filter: ["blur(10px)", "blur(0px)"], duration: 900, ease: E.expo }, Math.max(0, T(0) - 200));
-        push(s, 0, T(3), 1.0, 1.04);
+      // a word built of syllables that rise out of a blur one after another
+      function rising(parent, text, cls, css, t, step = 110) {
+        const el = K.txt(parent, text, cls, css);
+        const syl = K.syllables(el);
+        syl.forEach((s, k) => soft(s, t + k * step, { dur: 900, rise: 60, blur: 18 }));
+        return el;
       }
 
-      // ---- 2. 우린 서로 너무 다르지만요 — the selfie under the trees, slowed down
+      // ---- A. 사랑할 것 같아요 — the chorus lands: the word stands behind the two of them
       {
-        const s = shot(T(3), T(7));
-        const v = document.getElementById("s2-v2");
-        s.appendChild(v);
-        v.style.opacity = 1;
-        K.el("div", "shade", s);
-        line(s, [3, 4, 5, 6], "B on-photo", { top: 820, fontSize: 92 });
+        const { cam } = rig(0, T(3));
+        take("s2-a-bg", cam);
+        rising(cam, "사랑할", "Bb ink", { left: 0, right: 0, top: -30, fontSize: 380, textAlign: "center" }, T(0));
+        take("s2-a-fg", cam);
+        const rest = K.txt(cam, "것 같아요", "B on-photo", { left: 0, right: 0, top: 880, fontSize: 84, textAlign: "center" });
+        soft(rest, T(1));
+        K.punch(at, cam, 0, { from: 1.07, dur: 600 });
+        K.flashFrame(at, cam, 0, { dur: 420, peak: 0.85 });
       }
 
-      // ---- 3. 사랑은 참 신비로운 거죠 — the proposal in the park, a slow push
+      // ---- B/C. 우린 서로 너무 / 다르지만요 — him and her in opposite halves; on 다르지만요 they part
+      //      like a curtain and behind them is the two of them, laughing together
       {
-        const s = shot(T(7), T(11));
-        const p = photo(s, "w33");
-        push(p, T(7), T(11), 1.0, 1.08);
-        K.el("div", "shade", s);
-        const ws = line(s, [7, 8, 9, 10], "B on-photo", { top: 800, fontSize: 104 });
+        const t0 = T(3), tPart = T(6);
+        const { cam } = rig(t0, T(7), { xf: 0 });
+        const back = K.el("div", "fill", cam);
+        take("s2-sel", back);
+        K.el("div", "shade", back);
+        const L = K.el("div", "half", cam);
+        L.style.left = "0px";
+        take("s2-him", L);
+        const R = K.el("div", "half", cam);
+        R.style.left = "960px";
+        take("s2-her", R);
+        const seam = K.el("div", "", cam);
+        seam.style.cssText = "position:absolute;left:958px;top:0;width:4px;height:1080px;background:#f2ede4";
+        // they arrive from opposite directions: his half drops in, hers rises
+        at.add(L, { y: [-1080, 0], duration: 620, ease: E.expo }, t0 - 40);
+        at.add(R, { y: [1080, 0], duration: 620, ease: E.expo }, t0 - 40);
+        const uri = K.txt(cam, "우린", "B on-photo", { left: 0, right: 0, top: 70, fontSize: 96, textAlign: "center" });
+        soft(uri, t0 + 120);
+        const seo = K.txt(L, "서로", "A ivory", { right: 70, top: 760, fontSize: 190 });
+        seo.style.textShadow = "0 4px 40px rgba(10,9,8,.45)";
+        const neo = K.txt(R, "너무", "Bb ivory", { left: 70, top: 760, fontSize: 190 });
+        neo.style.textShadow = "0 4px 40px rgba(10,9,8,.45)";
+        K.slam(at, seo, T(4), null, { from: 1.25, blur: 14 });
+        K.slam(at, neo, T(5), null, { from: 1.25, blur: 14 });
+        K.shake(at, L, T(4), { amp: 10, seed: 3 });
+        K.shake(at, R, T(5), { amp: 10, seed: 4 });
+        // part: his half exits left, hers right; the together shot is underneath
+        out([uri], tPart - 200, 260);
+        at.add(L, { x: [0, -980], duration: 760, ease: E.inout }, tPart);
+        at.add(R, { x: [0, 980], duration: 760, ease: E.inout }, tPart);
+        at.add(seam, { opacity: [1, 0], duration: 200, ease: "linear" }, tPart);
+        at.add(back, { scale: [1.12, 1.0], duration: 1400, ease: E.expo }, tPart);
+        const dar = K.txt(cam, "다르지만요", "Bb on-photo", { left: 0, right: 0, top: 760, fontSize: 150, textAlign: "center" });
+        soft(dar, tPart + 260, { dur: 900, rise: 24 });
       }
 
-      // ---- 4. 살아 가면서 한 번 올까 말까 한 그런 사랑인데 — a ring of words around one photo
+      // ---- D. 사랑은 참 신비로운 거죠 — the proposal in the park; the frame goes widescreen, light leaks in
       {
-        const s = shot(T(11), T(20), "paper");
-        const disc = K.el("div", "", s);
-        disc.style.cssText = "position:absolute;left:660px;top:140px;width:600px;height:600px;border-radius:50%;overflow:hidden;box-shadow:0 30px 60px rgba(22,21,20,.25)";
-        const ph = K.img(disc, K.photo("w40"), { left: 0, top: 0, width: "100%", height: "100%" });
-        ph.style.objectFit = "cover";
-        at.add(ph, { scale: [1.12, 1.0], rotate: [-6, 0], duration: T(20) - T(11) + XF, ease: "linear" }, T(11) - XF / 2);
+        const { shot, cam } = rig(T(7), T(11), { xf: 360 });
+        take("s2-prop", cam);
+        K.el("div", "shade", cam);
+        K.letterbox(at, shot, T(7) - 150, { dur: 900 });
+        K.leak(at, shot, T(7) + 200, 3600, { peak: 0.75, from: "left" });
+        line(cam, [7, 8, 9, 10], "B on-photo", { top: 800, fontSize: 92 });
+      }
+
+      let camE;
+      // ---- E. 살아 가면서 한 번 올까 말까 한 그런 사랑인데 — once in a lifetime: their days flicker past
+      //      in a circle, faster and faster, until the circle opens onto the two of them
+      {
+        const tOpen = T(18);
+        const { cam } = rig(T(11), T(20), { xf: 300, cls: "paper" });
+        camE = cam;
+        const disc = K.el("div", "fill", cam);
+        disc.style.clipPath = "circle(300px at 960px 430px)";
+        const days = ["d01", "d03", "d05", "d08", "d09", "d10", "d12", "d13", "d16", "d20", "d25", "d27", "d28", "d29", "d35", "d36", "d38", "d44", "d47", "d48", "d49", "d53", "d56", "d59", "d61", "d63", "d64", "d67"];
+        // cut lengths: 4 beats, then 8ths, then 16ths, then 32nds into the hit
+        const steps = [];
+        const b = K.BEAT;
+        [[4, b], [4, b / 2], [12, b / 4], [8, (tOpen - (T(11) + 4 * b + 4 * b / 2 + 12 * b / 4)) / 8]].forEach(([n, d]) => { for (let i = 0; i < n; i++) steps.push(d); });
+        let tc = T(11);
+        days.forEach((k, j) => {
+          const im = K.img(disc, K.photo(k), {});
+          im.style.cssText += "left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%";
+          K.window(at, im, tc, tc + steps[j] + 1);
+          at.add(im, { scale: [1.08, 1.0], duration: Math.max(steps[j], 80), ease: E.expo }, tc);
+          tc += steps[j];
+        });
+        const hug = K.el("div", "fill", disc);
+        take("s2-hug", hug);
+        K.window(at, hug, tOpen - 30, null);
+        at.add(disc, { clipPath: ["circle(300px at 960px 430px)", "circle(1150px at 960px 430px)"], duration: 900, ease: E.expo }, tOpen);
+        K.flashFrame(at, cam, tOpen, { dur: 360, peak: 0.6 });
+        // the ring of words turns around the circle while the days go by
         const NS = "http://www.w3.org/2000/svg";
         const svg = document.createElementNS(NS, "svg");
         svg.setAttribute("viewBox", "0 0 1920 1080");
         svg.style.cssText = "position:absolute;inset:0;overflow:visible";
-        s.appendChild(svg);
-        const path = document.createElementNS(NS, "path");
-        path.setAttribute("id", "s2-ring");
-        path.setAttribute("d", "M 960 440 m -380 0 a 380 380 0 1 1 760 0 a 380 380 0 1 1 -760 0");
-        path.setAttribute("fill", "none");
-        svg.appendChild(path);
-        const ringG = document.createElementNS(NS, "g");
-        svg.appendChild(ringG);
-        ringG.style.transformOrigin = "960px 440px";
-        const tx = document.createElementNS(NS, "text");
-        tx.setAttribute("font-family", "Noto Serif KR");
-        tx.setAttribute("font-size", "34");
-        tx.setAttribute("letter-spacing", "10");
-        tx.setAttribute("fill", "#161514");
-        const tp = document.createElementNS(NS, "textPath");
-        tp.setAttribute("href", "#s2-ring");
-        tp.textContent = "살아 가면서 · 한 번 올까 말까 한 · 그런 사랑인데 · 살아 가면서 · 한 번 올까 말까 한 · 그런 사랑인데 ·";
-        tx.appendChild(tp);
-        ringG.appendChild(tx);
+        svg.innerHTML =
+          `<path id="s2-ring" d="M 960 430 m -350 0 a 350 350 0 1 1 700 0 a 350 350 0 1 1 -700 0" fill="none"/>` +
+          `<g id="s2-ringg"><text font-family="Noto Serif KR" font-size="30" letter-spacing="9" fill="#161514"><textPath href="#s2-ring">살아 가면서 · 한 번 올까 말까 한 · 그런 사랑인데 · 살아 가면서 · 한 번 올까 말까 한 · 그런 사랑인데 ·</textPath></text></g>`;
+        cam.appendChild(svg);
+        const ringG = svg.querySelector("#s2-ringg");
+        ringG.style.transformOrigin = "960px 430px";
         at.set(ringG, { opacity: 0 }, 0);
         at.add(ringG, { opacity: [0, 1], duration: 900, ease: E.inout }, T(11));
-        at.add(ringG, { rotate: [0, 40], duration: T(20) - T(11) + XF, ease: "linear" }, T(11) - XF / 2);
-        // the sung phrase sits under the circle, three phrases in turn
-        const p1 = line(s, [11, 12], "B ink", { top: 880, fontSize: 84 });
-        out(p1, T(13) - 360);
-        const p2 = line(s, [13, 14, 15, 16, 17], "B ink", { top: 880, fontSize: 84 });
-        out(p2, T(18) - 360);
-        const p3 = line(s, [18, 19], "Bb rose", { top: 870, fontSize: 104 });
+        at.add(ringG, { rotate: [0, 70], duration: tOpen - T(11), ease: E.in3 }, T(11));
+        at.add(ringG, { opacity: [1, 0], scale: [1, 1.6], duration: 500, ease: E.in3 }, tOpen);
+        const p1 = line(cam, [11, 12], "B ink", { top: 860, fontSize: 80 });
+        out(p1, T(13) - 340);
+        const p2 = line(cam, [13, 14, 15, 16, 17], "B ink", { top: 860, fontSize: 80 });
+        out(p2, tOpen - 200, 240);
+        const sh = K.el("div", "shade", cam);
+        K.window(at, sh, tOpen, null);
+        line(cam, [18, 19], "Bb on-photo", { top: 820, fontSize: 124 });
       }
 
-      // ---- 5. 다가 온 것 같아요 — the night with the umbrella
+      // ---- F. 다가 온 것 같아요 — night, the umbrella; whip into it
+      const tF = T(20);
+      const F = rig(tF - 200, T(24));
       {
-        const s = shot(T(20), T(24));
-        s.style.background = "#161514";
-        const v = document.getElementById("s2-v5");
-        s.appendChild(v);
-        v.style.opacity = 1;
-        at.add(v, { y: [30, 0], duration: 1400, ease: E.expo }, T(20) - 250);
-        line(s, [20, 21, 22, 23], "B ivory", { top: 400, fontSize: 96, left: 180, right: "auto" }, "left");
+        const back = take("s2-umb-bg", F.cam);
+        back.style.filter = "blur(36px) brightness(0.55)";
+        back.style.transform = "scale(1.2)";
+        const frame = K.el("div", "", F.cam);
+        frame.style.cssText = "position:absolute;left:1000px;top:60px;width:540px;height:960px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.55)";
+        const fv = take("s2-umb", frame);
+        at.add(frame, { y: [40, 0], scale: [1.04, 1], duration: 1600, ease: E.expo }, tF);
+        const a = K.txt(F.cam, "", "Bb ivory", { left: 170, top: 360, fontSize: 112 });
+        const b = K.txt(F.cam, "", "Bb ivory", { left: 170, top: 520, fontSize: 112 });
+        [[a, [20, 21]], [b, [22, 23]]].forEach(([el, ids]) => ids.forEach((i, k) => {
+          const sp = K.el("span", "", el, W[i].t);
+          sp.style.display = "inline-block";
+          if (k === 0) K.el("span", "", el, " ");
+          soft(sp, T(i), { rise: 20 });
+        }));
+      }
+      // whip from the circle into the night
+      K.whip(at, camE, F.cam, tF - 200, { dir: 1, dur: 360 });
+
+      // ---- G. 꿈꾸던 모습은 아니지만요 — three days in the park, whipping one into the next
+      {
+        const tw1 = beatNear(22000), tw2 = T(26) - 40;
+        const g1 = rig(T(24) - 160, tw1 + 500);
+        take("s2-g1", g1.cam);
+        const g2 = rig(tw1, tw2 + 500);
+        take("s2-g2", g2.cam);
+        const g3 = rig(tw2, T(27));
+        take("s2-g3", g3.cam);
+        K.whip(at, F.cam, g1.cam, T(24) - 160, { dir: -1, dur: 320 });
+        K.whip(at, g1.cam, g2.cam, tw1, { dir: 1, dur: 300 });
+        K.whip(at, g2.cam, g3.cam, tw2, { dir: -1, dur: 300 });
+        // the line rides above the whips, steady
+        const top = rig(T(24), T(27));
+        top.shot.style.pointerEvents = "none";
+        K.el("div", "shade", top.cam);
+        const words = line(top.cam, [24, 25], "B on-photo", { top: 700, fontSize: 92 });
+        const big = K.txt(top.cam, W[26].t, "Bb on-photo", { left: 0, right: 0, top: 820, fontSize: 132, textAlign: "center" });
+        K.slam(at, big, T(26), null, { from: 1.18, blur: 12 });
       }
 
-      // ---- 6. 꿈꾸던 모습은 아니지만요 — three prints: not the dream picture, a better one
+      // ---- H. 서로를 웃게 만들어주죠 — laughing; the frame kicks on 웃게
       {
-        const s = shot(T(24), T(27), "paper");
-        const keys = ["w30", "w31", "w36"];
-        keys.forEach((k, j) => {
-          const p = K.el("div", "print", s);
-          p.style.cssText += `left:${300 + j * 460}px;top:${300 + (j % 2) * 40}px;width:400px;height:520px`;
-          K.img(p, K.photo(k), { position: "static", width: "100%", height: "100%" });
-          const rot = [-4, 2.5, -1.5][j];
-          at.set(p, { opacity: 0 }, 0);
-          at.add(p, { opacity: [0, 1], y: [60, 0], rotate: [rot * 2, rot], duration: 800, ease: E.expo }, T(24) + j * 260);
-        });
-        line(s, [24, 25, 26], "B ink", { top: 110, fontSize: 96 });
+        const { shot, cam } = rig(T(27), T(30));
+        take("s2-laugh", cam);
+        K.el("div", "shade", cam);
+        K.flashFrame(at, shot, T(27), { dur: 260, peak: 0.55 });
+        K.punch(at, cam, T(27), { from: 1.05 });
+        K.punch(at, cam, T(28), { from: 1.08, dur: 460 });
+        K.shake(at, cam, T(28), { amp: 9, seed: 8 });
+        line(cam, [27, 28, 29], "B on-photo", { top: 810, fontSize: 100 });
       }
 
-      // ---- 7. 서로를 웃게 만들어주죠 — them, laughing
+      // ---- I. 니 곁에 있으면 자꾸만 행복하단 생각이 들죠 — her flowers and the cake, slowed, widescreen
       {
-        const s = shot(T(27), T(30));
-        const v = document.getElementById("s2-v7");
-        s.appendChild(v);
-        v.style.opacity = 1;
-        K.el("div", "shade", s);
-        line(s, [27, 28, 29], "B on-photo", { top: 820, fontSize: 96 });
+        const { shot, cam } = rig(T(30), T(37), { xf: 420 });
+        take("s2-cake", cam);
+        at.add(cam, { scale: [1.0, 1.06], duration: T(37) - T(30) + 400, ease: "linear" }, T(30) - 200);
+        K.el("div", "shade", cam);
+        K.letterbox(at, shot, T(30) - 200, { dur: 900 });
+        K.leak(at, shot, T(33) - 400, 3800, { peak: 0.7, from: "right", tone: "rose" });
+        const a = line(cam, [30, 31, 32], "B on-photo", { top: 800, fontSize: 92 });
+        out(a, T(33) - 340);
+        line(cam, [33, 34, 35, 36], "B on-photo", { top: 800, fontSize: 92 });
       }
 
-      // ---- 8. 니 곁에 있으면 자꾸만 행복하단 생각이 들죠 — sunsets, one after another
+      // ---- J. 사랑할 것 같아요 — the word behind them again, then black for the rap
       {
-        const s = shot(T(30), T(37));
-        const keys = ["d04", "d10", "d46", "d00"];
-        const span = (T(37) - T(30)) / keys.length;
-        keys.forEach((k, j) => {
-          const p = photo(s, k);
-          const a0 = T(30) + j * span;
-          at.set(p, { opacity: j ? 0 : 1 }, 0);
-          if (j) at.add(p, { opacity: [0, 1], duration: 700, ease: E.inout }, a0 - 350);
-          at.add(p, { scale: [1.0, 1.06], duration: span + 700, ease: "linear" }, a0 - 350);
-        });
-        K.el("div", "shade", s);
-        const p1 = line(s, [30, 31, 32], "B on-photo", { top: 800, fontSize: 96 });
-        out(p1, T(33) - 360);
-        const p2 = line(s, [33, 34, 35, 36], "B on-photo", { top: 800, fontSize: 96 });
-      }
-
-      // ---- 9. 사랑할 것 같아요 — back to the studio, both of them, and a breath before the rap
-      {
-        const s = shot(T(37), END - 200, "studio");
-        const g = K.img(s, cut("w05"), { left: 560, bottom: -90, height: 920 });
-        at.set(g, { opacity: 0 }, 0);
-        at.add(g, { opacity: [0, 1], filter: ["blur(10px)", "blur(0px)"], duration: 800, ease: E.expo }, T(37) - 200);
-        line(s, [37, 38, 39], "Bb ink", { top: 60, fontSize: 150 });
-        push(s, T(37), END, 1.0, 1.03);
+        const { shot, cam } = rig(T(37), END);
+        take("s2-j-bg", cam);
+        rising(cam, "사랑할", "Bb ink", { left: 0, right: 0, top: -30, fontSize: 380, textAlign: "center" }, T(37), 70);
+        take("s2-j-fg", cam);
+        K.punch(at, cam, T(37), { from: 1.08, dur: 500 });
+        K.flashFrame(at, shot, T(37), { dur: 300, peak: 0.8 });
+        const dark = K.el("div", "", shot);
+        dark.style.cssText = "position:absolute;inset:0;background:#0c0b0a;z-index:60";
+        at.set(dark, { opacity: 0 }, 0);
+        at.add(dark, { opacity: [0, 1], duration: 260, ease: E.in3 }, END - 280);
       }
 
       K.bridge(gtl, at, S.dur);

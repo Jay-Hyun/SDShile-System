@@ -29,6 +29,9 @@
 
   <div id="root" data-composition-id="s3" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
     <div id="s3-stage" style="position:absolute;inset:0"></div>
+    <div id="s3-media" style="display:none">
+      <div id="s3-open" class="bleed"><video id="s3-open-v" class="clip" data-start="18.5" data-duration="4.8" data-playback-rate="0.95" data-track-index="2" src="assets/media/living/r2_w29.mp4" muted playsinline></video></div>
+    </div>
   </div>
 
   <script>
@@ -43,7 +46,8 @@
       const stage = document.getElementById("s3-stage");
       const txt = K.txt;
       const cut = (k) => `assets/media/cutout/${k}.png`;
-      const shot = (t0, t1, opts) => K.shot(stage, at, t0, t1, opts);
+      const cuts = [];
+      const shot = (t0, t1, opts) => (cuts.push(t0), K.shot(stage, at, t0, t1, opts));
       const slam = (el, t, until) => K.slam(at, el, t, until, { from: 1.1, creep: 1.02, blur: 6 });
       function soft(el, t, { dur = 520, rise = 14, blur = 10 } = {}) {
         at.set(el, { opacity: 0 }, 0);
@@ -210,9 +214,11 @@
       // ---------- 8. 어느새 나 모르게 나의 마음이 / 열렸어 — the black opens like a door onto light
       {
         const s = shot(T(51), END, {});
-        const ph = K.el("div", "bleed", s);
-        K.img(ph, K.photo("w29"), {}).style.objectPosition = "50% 24%";
+        const ph = document.getElementById("s3-open");
+        s.appendChild(ph);
+        ph.querySelector("video").style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover";
         at.add(ph, { scale: [1.1, 1.0], duration: END - T(56) + 400, ease: E.expo }, T(56) - 200);
+        K.leak(at, s, T(56) - 100, 3400, { peak: 0.85, from: "left", z: 30 });
         K.el("div", "shade", s);
         const dl = K.el("div", "door", s); dl.style.left = "0";
         const dr = K.el("div", "door", s); dr.style.left = "960px";
@@ -238,6 +244,11 @@
         const g = txt(s, "사랑할 것 같아요", "B on-photo", { left: 0, right: 0, top: 740, fontSize: 130, textAlign: "center" });
         soft(g, T(64), { dur: 800 });
       }
+
+      // camera language: each cut lands with a small lunge; 반대라서 and 열렸어 jolt the frame
+      cuts.forEach((t) => K.punch(at, stage, t, { from: 1.035, dur: 320 }));
+      [16, 47].forEach((i, j) => W[i] && K.shake(at, stage, T(i), { amp: 12, seed: 61 + j, dur: 380 }));
+      K.flashFrame(at, stage, T(56) - 120, { dur: 520, peak: 0.7, z: 80 });
 
       K.bridge(gtl, at, S.dur);
       window.__timelines["s3"] = gtl;
