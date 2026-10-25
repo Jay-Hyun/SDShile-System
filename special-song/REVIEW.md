@@ -1,5 +1,11 @@
 # REVIEW — 특송 「옷자락에서 전해지는 사랑」
 
+## Revision 7 (after a live rehearsal)
+- Rehearsal setup: an ATEM switcher keying the green video at default settings, with no PNG overlay. The revision 6 tint (35% black over green) was keyed away completely.
+- Crackle at the end: the MR file itself carries impulsive clicks from 285.45 s to its end, at 285.45, 285.85, 286.2, 287.0, 287.6, 288.0, 288.4 … 290.6, with peaks of -6 to -16 dB over a -40 dB floor. A full-file scan finds no other clicks; the 0.6 s hit is the first note. The MR now stops at 285.4 s with a 2 s fade-out, and the film is 314.0 s.
+- Lyrics are 110 px (+22%). `build_lyrics.py` measures each line with fontTools, and the 4 lines wider than 1536 px are set at 106 px. Measured on snapshots: glyph rows y 854–958, middle 906; the longest line is 1513 px wide.
+- Tint: the ATEM keyer maths is not public, so `build_tint.py` defines 5 levels of (19,5,19) paint (a0 at the glyph middle → L at the bottom): 1 0.50→0.75, 2 0.60→0.82, 3 0.68→0.88, 4 0.75→0.93, 5 0.82→0.98. The film uses level 3 until the person runs `renders/tint_calibration.mp4` (five columns side by side) through their ATEM and picks one. The overlay PNG was regenerated with a 55% peak as an optional alternative.
+
 ## Revision 6 (requested by the person)
 - The person was judging the raw green file. They wanted a fade that is faint at the bottom edge, eases up and is gone by the middle of the glyphs, not a band that starts at the glyph middle.
 - The fade is now drawn exactly that way in the green: black from 35% at y 1080 down to 0% at y 917, on a smoothstep curve.

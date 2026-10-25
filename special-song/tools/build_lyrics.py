@@ -3,6 +3,7 @@
 
 Edit a line's text or times in lyrics.json (MR seconds), then run:
     python3 tools/build_lyrics.py
+Needs fontTools + brotli (pip install fonttools brotli) to measure line widths.
 If you add characters that never appeared before, also re-subset the font
 (see README.md), or they fall back to a system font.
 """
@@ -11,15 +12,28 @@ import json
 import math
 from pathlib import Path
 
+from fontTools.ttLib import TTFont
+
 ROOT = Path(__file__).resolve().parent.parent
 CHAR_IN = 0.7
 CHAR_STAGGER = 0.035
 FADE_OUT = 0.35
+FONT_SIZE = 110
+LETTER_SPACING = 0.02  # em
+MAX_WIDTH = 1536  # 80% title-safe width; longer lines are set smaller to fit
 # the song's own words, set in gold: one per line, "사랑" wins when both appear
 GOLD_WORDS = ["사랑", "옷자락"]
 
 lines = json.loads((ROOT / "lyrics.json").read_text(encoding="utf-8"))["lines"]
-mr_len = 290.78
+mr_len = 286.5  # the lyrics host slot (the MR is cut at 285.4 s)
+
+font = TTFont(ROOT / "assets" / "fonts" / "GowunBatang-Bold-subset.woff2")
+upm, cmap, hmtx = font["head"].unitsPerEm, font.getBestCmap(), font["hmtx"]
+
+
+def line_width(text, size):
+    advance = sum(hmtx[cmap[ord(ch)]][0] for ch in text) / upm
+    return (advance + LETTER_SPACING * len(text)) * size
 
 
 def gold_span(text):
@@ -44,9 +58,13 @@ for ln in lines:
             pos += 1
         pos += 1  # the space
         words.append(f'<span class="w">{"".join(chars)}</span>')
+    size = FONT_SIZE
+    if line_width(text, size) > MAX_WIDTH:
+        size = math.floor(FONT_SIZE * MAX_WIDTH / line_width(text, FONT_SIZE))
+    fit = f' style="font-size: {size}px"' if size != FONT_SIZE else ""
     markup.append(
         f'    <div id="{lid}" class="clip line" data-start="{start}" data-duration="{dur}" data-track-index="0">'
-        f'<div id="{lid}-t" class="lt">{" ".join(words)}</div></div>'
+        f'<div id="{lid}-t" class="lt"{fit}>{" ".join(words)}</div></div>'
     )
     tweens.append(
         f'      tl.fromTo("#{lid}-t .c", {{ opacity: 0, y: 18 }}, {{ opacity: 1, y: 0, duration: {CHAR_IN}, ease: "power3.out", stagger: {CHAR_STAGGER} }}, {start});\n'
@@ -81,10 +99,10 @@ page = f"""<template>
       bottom: 110px;
       text-align: center;
       font-family: "Gowun Batang", serif;
-      font-size: 90px;
+      font-size: {FONT_SIZE}px;
       font-weight: 700;
       line-height: 1.25;
-      letter-spacing: 0.02em;
+      letter-spacing: {LETTER_SPACING}em;
       color: #fffaf0;
       text-shadow: {ring}, 3px 4px 0 #1e150c;
     }}

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <style>
+      @font-face {
+        font-family: "Gowun Batang";
+        src: url("assets/fonts/GowunBatang-Bold-subset.woff2") format("woff2");
+        font-weight: 700;
+      }
+      @font-face {
+        font-family: "Noto Serif KR";
+        src: url("assets/fonts/NotoSerifKR-subset.woff2") format("woff2");
+        font-weight: 200 900;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #00ff00;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #00ff00;
+      }
+      #root .col {
+        position: absolute;
+        top: 849px;
+        width: 384px;
+        height: 231px;
+      }
+      #root .num {
+        position: absolute;
+        top: 140px;
+        width: 384px;
+        text-align: center;
+        font-family: "Noto Serif KR", serif;
+        font-size: 160px;
+        font-weight: 700;
+        color: #fffaf0;
+        text-shadow: 2.0px 0.0px 0 #1e150c, 1.85px 0.77px 0 #1e150c, 1.41px 1.41px 0 #1e150c, 0.77px 1.85px 0 #1e150c, 0.0px 2.0px 0 #1e150c, -0.77px 1.85px 0 #1e150c, -1.41px 1.41px 0 #1e150c, -1.85px 0.77px 0 #1e150c, -2.0px 0.0px 0 #1e150c, -1.85px -0.77px 0 #1e150c, -1.41px -1.41px 0 #1e150c, -0.77px -1.85px 0 #1e150c, -0.0px -2.0px 0 #1e150c, 0.77px -1.85px 0 #1e150c, 1.41px -1.41px 0 #1e150c, 1.85px -0.77px 0 #1e150c, 3px 4px 0 #1e150c;
+      }
+      #cal-lyric {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 110px;
+        text-align: center;
+        font-family: "Gowun Batang", serif;
+        font-size: 110px;
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: 0.02em;
+        color: #fffaf0;
+        text-shadow: 2.0px 0.0px 0 #1e150c, 1.85px 0.77px 0 #1e150c, 1.41px 1.41px 0 #1e150c, 0.77px 1.85px 0 #1e150c, 0.0px 2.0px 0 #1e150c, -0.77px 1.85px 0 #1e150c, -1.41px 1.41px 0 #1e150c, -1.85px 0.77px 0 #1e150c, -2.0px 0.0px 0 #1e150c, -1.85px -0.77px 0 #1e150c, -1.41px -1.41px 0 #1e150c, -0.77px -1.85px 0 #1e150c, -0.0px -2.0px 0 #1e150c, 0.77px -1.85px 0 #1e150c, 1.41px -1.41px 0 #1e150c, 1.85px -0.77px 0 #1e150c, 3px 4px 0 #1e150c;
+      }
+      #cal-lyric .g {
+        color: #e6c07a;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ATEM tint calibration: key this like the film and pick the column that looks right -->
+    <div id="root" data-composition-id="calibration" data-start="0" data-duration="10" data-width="1920" data-height="1080" data-no-timeline>
+      <div id="cal-col1" class="clip col" data-start="0" data-duration="10" data-track-index="1" style="left: 0px; background: linear-gradient(to bottom, rgba(19, 5, 19, 0.000) 0%, rgba(19, 5, 19, 0.021) 3%, rgba(19, 5, 19, 0.076) 6.1%, rgba(19, 5, 19, 0.154) 9.1%, rgba(19, 5, 19, 0.243) 12.1%, rgba(19, 5, 19, 0.334) 15.2%, rgba(19, 5, 19, 0.414) 18.2%, rgba(19, 5, 19, 0.473) 21.2%, rgba(19, 5, 19, 0.500) 24.2%, rgba(19, 5, 19, 0.501) 27.3%, rgba(19, 5, 19, 0.504) 30.3%, rgba(19, 5, 19, 0.509) 33.3%, rgba(19, 5, 19, 0.516) 36.4%, rgba(19, 5, 19, 0.525) 39.4%, rgba(19, 5, 19, 0.535) 42.4%, rgba(19, 5, 19, 0.547) 45.5%, rgba(19, 5, 19, 0.559) 48.5%, rgba(19, 5, 19, 0.573) 51.5%, rgba(19, 5, 19, 0.587) 54.5%, rgba(19, 5, 19, 0.601) 57.6%, rgba(19, 5, 19, 0.616) 60.6%, rgba(19, 5, 19, 0.631) 63.6%, rgba(19, 5, 19, 0.646) 66.7%, rgba(19, 5, 19, 0.661) 69.7%, rgba(19, 5, 19, 0.675) 72.7%, rgba(19, 5, 19, 0.689) 75.8%, rgba(19, 5, 19, 0.702) 78.8%, rgba(19, 5, 19, 0.713) 81.8%, rgba(19, 5, 19, 0.724) 84.8%, rgba(19, 5, 19, 0.733) 87.9%, rgba(19, 5, 19, 0.740) 90.9%, rgba(19, 5, 19, 0.745) 93.9%, rgba(19, 5, 19, 0.749) 97%, rgba(19, 5, 19, 0.750) 100%)"></div>
+      <div id="cal-col2" class="clip col" data-start="0" data-duration="10" data-track-index="2" style="left: 384px; background: linear-gradient(to bottom, rgba(19, 5, 19, 0.000) 0%, rgba(19, 5, 19, 0.025) 3%, rgba(19, 5, 19, 0.091) 6.1%, rgba(19, 5, 19, 0.184) 9.1%, rgba(19, 5, 19, 0.292) 12.1%, rgba(19, 5, 19, 0.401) 15.2%, rgba(19, 5, 19, 0.497) 18.2%, rgba(19, 5, 19, 0.568) 21.2%, rgba(19, 5, 19, 0.599) 24.2%, rgba(19, 5, 19, 0.601) 27.3%, rgba(19, 5, 19, 0.604) 30.3%, rgba(19, 5, 19, 0.608) 33.3%, rgba(19, 5, 19, 0.614) 36.4%, rgba(19, 5, 19, 0.622) 39.4%, rgba(19, 5, 19, 0.631) 42.4%, rgba(19, 5, 19, 0.641) 45.5%, rgba(19, 5, 19, 0.652) 48.5%, rgba(19, 5, 19, 0.664) 51.5%, rgba(19, 5, 19, 0.676) 54.5%, rgba(19, 5, 19, 0.689) 57.6%, rgba(19, 5, 19, 0.702) 60.6%, rgba(19, 5, 19, 0.716) 63.6%, rgba(19, 5, 19, 0.729) 66.7%, rgba(19, 5, 19, 0.742) 69.7%, rgba(19, 5, 19, 0.754) 72.7%, rgba(19, 5, 19, 0.766) 75.8%, rgba(19, 5, 19, 0.777) 78.8%, rgba(19, 5, 19, 0.788) 81.8%, rgba(19, 5, 19, 0.797) 84.8%, rgba(19, 5, 19, 0.805) 87.9%, rgba(19, 5, 19, 0.811) 90.9%, rgba(19, 5, 19, 0.816) 93.9%, rgba(19, 5, 19, 0.819) 97%, rgba(19, 5, 19, 0.820) 100%)"></div>
+      <div id="cal-col3" class="clip col" data-start="0" data-duration="10" data-track-index="3" style="left: 768px; background: linear-gradient(to bottom, rgba(19, 5, 19, 0.000) 0%, rgba(19, 5, 19, 0.028) 3%, rgba(19, 5, 19, 0.103) 6.1%, rgba(19, 5, 19, 0.209) 9.1%, rgba(19, 5, 19, 0.331) 12.1%, rgba(19, 5, 19, 0.454) 15.2%, rgba(19, 5, 19, 0.564) 18.2%, rgba(19, 5, 19, 0.644) 21.2%, rgba(19, 5, 19, 0.679) 24.2%, rgba(19, 5, 19, 0.681) 27.3%, rgba(19, 5, 19, 0.683) 30.3%, rgba(19, 5, 19, 0.687) 33.3%, rgba(19, 5, 19, 0.693) 36.4%, rgba(19, 5, 19, 0.700) 39.4%, rgba(19, 5, 19, 0.708) 42.4%, rgba(19, 5, 19, 0.717) 45.5%, rgba(19, 5, 19, 0.727) 48.5%, rgba(19, 5, 19, 0.738) 51.5%, rgba(19, 5, 19, 0.749) 54.5%, rgba(19, 5, 19, 0.761) 57.6%, rgba(19, 5, 19, 0.773) 60.6%, rgba(19, 5, 19, 0.785) 63.6%, rgba(19, 5, 19, 0.797) 66.7%, rgba(19, 5, 19, 0.809) 69.7%, rgba(19, 5, 19, 0.820) 72.7%, rgba(19, 5, 19, 0.831) 75.8%, rgba(19, 5, 19, 0.841) 78.8%, rgba(19, 5, 19, 0.851) 81.8%, rgba(19, 5, 19, 0.859) 84.8%, rgba(19, 5, 19, 0.866) 87.9%, rgba(19, 5, 19, 0.872) 90.9%, rgba(19, 5, 19, 0.876) 93.9%, rgba(19, 5, 19, 0.879) 97%, rgba(19, 5, 19, 0.880) 100%)"></div>
+      <div id="cal-col4" class="clip col" data-start="0" data-duration="10" data-track-index="4" style="left: 1152px; background: linear-gradient(to bottom, rgba(19, 5, 19, 0.000) 0%, rgba(19, 5, 19, 0.031) 3%, rgba(19, 5, 19, 0.114) 6.1%, rgba(19, 5, 19, 0.230) 9.1%, rgba(19, 5, 19, 0.365) 12.1%, rgba(19, 5, 19, 0.501) 15.2%, rgba(19, 5, 19, 0.622) 18.2%, rgba(19, 5, 19, 0.710) 21.2%, rgba(19, 5, 19, 0.749) 24.2%, rgba(19, 5, 19, 0.751) 27.3%, rgba(19, 5, 19, 0.753) 30.3%, rgba(19, 5, 19, 0.757) 33.3%, rgba(19, 5, 19, 0.762) 36.4%, rgba(19, 5, 19, 0.768) 39.4%, rgba(19, 5, 19, 0.775) 42.4%, rgba(19, 5, 19, 0.784) 45.5%, rgba(19, 5, 19, 0.793) 48.5%, rgba(19, 5, 19, 0.802) 51.5%, rgba(19, 5, 19, 0.812) 54.5%, rgba(19, 5, 19, 0.823) 57.6%, rgba(19, 5, 19, 0.834) 60.6%, rgba(19, 5, 19, 0.845) 63.6%, rgba(19, 5, 19, 0.855) 66.7%, rgba(19, 5, 19, 0.866) 69.7%, rgba(19, 5, 19, 0.876) 72.7%, rgba(19, 5, 19, 0.886) 75.8%, rgba(19, 5, 19, 0.895) 78.8%, rgba(19, 5, 19, 0.904) 81.8%, rgba(19, 5, 19, 0.911) 84.8%, rgba(19, 5, 19, 0.918) 87.9%, rgba(19, 5, 19, 0.923) 90.9%, rgba(19, 5, 19, 0.927) 93.9%, rgba(19, 5, 19, 0.929) 97%, rgba(19, 5, 19, 0.930) 100%)"></div>
+      <div id="cal-col5" class="clip col" data-start="0" data-duration="10" data-track-index="5" style="left: 1536px; background: linear-gradient(to bottom, rgba(19, 5, 19, 0.000) 0%, rgba(19, 5, 19, 0.034) 3%, rgba(19, 5, 19, 0.124) 6.1%, rgba(19, 5, 19, 0.252) 9.1%, rgba(19, 5, 19, 0.399) 12.1%, rgba(19, 5, 19, 0.548) 15.2%, rgba(19, 5, 19, 0.680) 18.2%, rgba(19, 5, 19, 0.776) 21.2%, rgba(19, 5, 19, 0.819) 24.2%, rgba(19, 5, 19, 0.821) 27.3%, rgba(19, 5, 19, 0.823) 30.3%, rgba(19, 5, 19, 0.826) 33.3%, rgba(19, 5, 19, 0.830) 36.4%, rgba(19, 5, 19, 0.836) 39.4%, rgba(19, 5, 19, 0.842) 42.4%, rgba(19, 5, 19, 0.850) 45.5%, rgba(19, 5, 19, 0.858) 48.5%, rgba(19, 5, 19, 0.866) 51.5%, rgba(19, 5, 19, 0.876) 54.5%, rgba(19, 5, 19, 0.885) 57.6%, rgba(19, 5, 19, 0.894) 60.6%, rgba(19, 5, 19, 0.904) 63.6%, rgba(19, 5, 19, 0.914) 66.7%, rgba(19, 5, 19, 0.923) 69.7%, rgba(19, 5, 19, 0.932) 72.7%, rgba(19, 5, 19, 0.941) 75.8%, rgba(19, 5, 19, 0.949) 78.8%, rgba(19, 5, 19, 0.957) 81.8%, rgba(19, 5, 19, 0.963) 84.8%, rgba(19, 5, 19, 0.969) 87.9%, rgba(19, 5, 19, 0.974) 90.9%, rgba(19, 5, 19, 0.977) 93.9%, rgba(19, 5, 19, 0.979) 97%, rgba(19, 5, 19, 0.980) 100%)"></div>
+      <div id="cal-num1" class="clip num" data-start="0" data-duration="10" data-track-index="6" style="left: 0px">1</div>
+      <div id="cal-num2" class="clip num" data-start="0" data-duration="10" data-track-index="7" style="left: 384px">2</div>
+      <div id="cal-num3" class="clip num" data-start="0" data-duration="10" data-track-index="8" style="left: 768px">3</div>
+      <div id="cal-num4" class="clip num" data-start="0" data-duration="10" data-track-index="9" style="left: 1152px">4</div>
+      <div id="cal-num5" class="clip num" data-start="0" data-duration="10" data-track-index="10" style="left: 1536px">5</div>
+      <div id="cal-lyric" class="clip" data-start="0" data-duration="10" data-track-index="11">옷자락에서 전해지는 <span class="g">사랑</span></div>
+    </div>
+  </body>
+</html>
