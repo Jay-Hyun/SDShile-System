@@ -200,7 +200,8 @@
    "phase": 1,
    "size": "1536x1024",
    "green": "phone screen",
-   "prompt": "His bedside at night, macro close-up: a smartphone standing upright in a small walnut stand on the nightstand, its screen facing the camera and filling about 72 percent of the frame height, slightly right of center; a brass lamp glow and a glass of water softly out of focus on the left; the edge of cobalt bed linen. Calm area in the left third for typography. No people."
+   "prompt": "His bedside at night, macro close-up: an iPhone 14 Pro (gold, thin even bezels, Dynamic Island) standing upright in a small walnut stand on the nightstand, its screen facing the camera and filling about 72 percent of the frame height, slightly right of center; a brass lamp glow and a glass of water softly out of focus on the left; the edge of cobalt bed linen. Calm area in the left third for typography. No people.",
+   "media_aspect": 0.4613
   },
   {
    "id": "P10",

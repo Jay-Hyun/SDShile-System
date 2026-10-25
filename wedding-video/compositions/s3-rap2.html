@@ -61,10 +61,11 @@
         D.scrim(cam, "top", { a: 0.5, reach: 36 });
         D.rap(C, cam, [[28, 29, 30], [31, 32, 33, 34]], { align: "right", x: 1792, y: 84, size: 58 });
       }
-      // 6. his phone on the nightstand: their picture on the lock screen
+      // 6. his phone on the nightstand (an iPhone 14 Pro, like the screenshot): their lock screen, edge to edge;
+      //    the stand hides the very bottom of the screen
       {
         const { cam } = sh(35, 42);
-        const k = D.keyed(C, cam, "E08", [{ src: K.photo("d58"), pos: "50% 50%", grade: "saturate(.95) brightness(1.02)" }], Q(35), Q(42), { from: { s: 1.0 }, to: { s: 1.06 } });
+        const k = D.keyed(C, cam, "E08", [{ src: K.photo("d58"), pos: "50% 50%", pad: 1, grade: "saturate(.97) brightness(1.03)" }], Q(35), Q(42), { from: { s: 1.0 }, to: { s: 1.06 } });
         k.box.style.transformOrigin = "64% 43%";
         D.rap(C, cam, [[35, 36, 37], [38, 39, 40, 41]], { x: 132, y: 128, size: 58, color: "ink" });
       }

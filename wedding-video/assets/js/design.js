@@ -182,7 +182,7 @@
       const wins = R.holes.map((h, j) => {
         const m = media[j];
         if (!m) return null;
-        const pad = 6;
+        const pad = m.pad != null ? m.pad : 6; // how far the picture runs under the frame (a phone screen: ~0)
         const win = K.el("div", "v5-win", box);
         if (h.quad) {
           // the picture lies in the plane of the frame: warp the window onto the frame's quad
