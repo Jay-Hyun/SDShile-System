@@ -1,5 +1,13 @@
 # REVIEW — 특송 「옷자락에서 전해지는 사랑」
 
+## Revision 8 (MR swapped to tempo 105%)
+- New MR: the same 소리엘 MR at tempo 105% with pitch unchanged, 276.936 s long (= 290.784 / 1.05). Its onset envelope matches the old one with t_new = t_old / 1.05: correlation 0.991, offset 0.00 s in every section checked. Key is B♭ major and the beat is 69.8 BPM, so the B♭ prelude bed still fits.
+- Every MR time was scaled by 1/1.05. Lyric `sung` times were divided by 1.05, with the 0.35 s lead and 0.15 s gaps kept and the capped ends scaled. Against the new MR's beat grid the lines sit within 0.41 s (mean 0.21 s).
+- The end clicks are present here too, from about 271.86 s (detected windows at 272.2 s and after). The MR is cut at 271.8 s with a 2 s fade, so the film is 300.4 s.
+- The tint keeps its margins: it starts 1.75 s before the first line and fades 0.1 s after the last, at film 52.92–290.53 s.
+- Loudness: -12.0 LUFS, true peak +0.4 dBTP (the old MR was +1.2). Gain stays at 0.78.
+- Snapshots: at 146.2 s 「옷자락에서 전해지는 사랑」 (l13) is on screen, and at 283 s 「나 찬양해」 (l32).
+
 ## Revision 7 (after a live rehearsal)
 - Rehearsal setup: an ATEM switcher keying the green video at default settings, with no PNG overlay. The revision 6 tint (35% black over green) was keyed away completely.
 - Crackle at the end: the MR file itself carries impulsive clicks from 285.45 s to its end, at 285.45, 285.85, 286.2, 287.0, 287.6, 288.0, 288.4 … 290.6, with peaks of -6 to -16 dB over a -40 dB floor. A full-file scan finds no other clicks; the 0.6 s hit is the first note. The MR now stops at 285.4 s with a 2 s fade-out, and the film is 314.0 s.

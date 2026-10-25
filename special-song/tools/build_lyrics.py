@@ -25,7 +25,7 @@ MAX_WIDTH = 1536  # 80% title-safe width; longer lines are set smaller to fit
 GOLD_WORDS = ["사랑", "옷자락"]
 
 lines = json.loads((ROOT / "lyrics.json").read_text(encoding="utf-8"))["lines"]
-mr_len = 286.5  # the lyrics host slot (the MR is cut at 285.4 s)
+mr_len = 272.9  # the lyrics host slot (the tempo-105% MR is cut at 271.8 s)
 
 font = TTFont(ROOT / "assets" / "fonts" / "GowunBatang-Bold-subset.woff2")
 upm, cmap, hmtx = font["head"].unitsPerEm, font.getBestCmap(), font["hmtx"]

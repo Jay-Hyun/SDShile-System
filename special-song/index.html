@@ -73,7 +73,7 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="314.0"
+      data-duration="300.4"
       data-width="1920"
       data-height="1080"
     >
@@ -113,9 +113,9 @@
       ></div>
 
       <!-- MR part: pure chroma green with lyrics at the bottom (27.5 s – end) -->
-      <div id="green" class="clip" data-start="27.5" data-duration="286.5" data-track-index="4" data-hold></div>
-      <!-- tint only while lyrics run: MR 26.8 s – 276.1 s -->
-      <div id="tint" class="clip" data-start="54.3" data-duration="249.3" data-track-index="8" data-hold>
+      <div id="green" class="clip" data-start="27.5" data-duration="272.9" data-track-index="4" data-hold></div>
+      <!-- tint only while lyrics run: 1.75 s before the first line to 0.1 s after the last (+1.5 s fades) -->
+      <div id="tint" class="clip" data-start="52.92" data-duration="237.61" data-track-index="8" data-hold>
         <div id="tint-ramp"></div>
       </div>
       <div
@@ -123,7 +123,7 @@
         data-composition-id="lyrics"
         data-composition-src="compositions/lyrics.html"
         data-start="27.5"
-        data-duration="286.5"
+        data-duration="272.9"
         data-track-index="5"
         data-track-kind="captions"
         data-width="1920"
@@ -141,13 +141,13 @@
         data-fade-in="1.5"
         data-fade-out="2"
       ></audio>
-      <!-- the MR file carries digital clicks from 285.45 s to its end; stop just before them -->
+      <!-- tempo-105% MR; the file carries digital clicks from ~271.86 s to its end, so stop just before them -->
       <audio
         id="mr"
         class="clip"
         src="assets/audio/mr.mp3"
         data-start="27.5"
-        data-duration="285.4"
+        data-duration="271.8"
         data-track-index="7"
         data-volume="0.78"
         data-fade-out="2"
@@ -155,9 +155,9 @@
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
-      tl.fromTo("#tint-ramp", { opacity: 0 }, { opacity: 1, duration: 1.5, ease: "power1.inOut" }, 54.3);
-      tl.fromTo("#tint-ramp", { opacity: 1 }, { opacity: 0, duration: 1.5, ease: "power1.inOut", immediateRender: false }, 302.1);
-      tl.set({}, {}, 314.0);
+      tl.fromTo("#tint-ramp", { opacity: 0 }, { opacity: 1, duration: 1.5, ease: "power1.inOut" }, 52.92);
+      tl.fromTo("#tint-ramp", { opacity: 1 }, { opacity: 0, duration: 1.5, ease: "power1.inOut", immediateRender: false }, 289.03);
+      tl.set({}, {}, 300.4);
       window.__timelines["main"] = tl;
     </script>
   </body>
