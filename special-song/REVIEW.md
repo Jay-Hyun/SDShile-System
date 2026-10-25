@@ -1,5 +1,9 @@
 # REVIEW — 특송 「옷자락에서 전해지는 사랑」
 
+## Revision 4 (requested by the person)
+- Tint made light ("살짝") and kept inside the green, as the person chose over a PNG overlay or an alpha video. `tools/build_tint.py` designs it backwards from the keyed result: it sets the darkness wanted after keying (OBS default Similarity 400: 0% above y 800, 35% by y 960, 40% at the bottom), then inverts the keyer to find the paint at each height (26 stops, 20 px apart).
+- Simulated over a stand-in picture: at 400 the keyed alpha is 0.06 at y 840, 0.29 at y 920, 0.37 at y 1000 and 0.40 at the bottom; the colour is a dark neutral with a faint green cast (+10). At 420 the tint drops to 0.16 and at 380 it rises to 0.70. The person was told about this sensitivity before choosing.
+
 ## Revision 3 (requested by the person)
 - Gradient lowered on request: it now starts at y 580 instead of 420. At similarity 400 it darkens from y≈840, just above the lyric, and is solid from y≈920.
 - The title card is now two lines, 「옷자락에서 / 전해지는 사랑」, at 120 px.
