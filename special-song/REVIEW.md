@@ -1,5 +1,11 @@
 # REVIEW — 특송 「옷자락에서 전해지는 사랑」
 
+## Revision 6 (requested by the person)
+- The person was judging the raw green file. They wanted a fade that is faint at the bottom edge, eases up and is gone by the middle of the glyphs, not a band that starts at the glyph middle.
+- The fade is now drawn exactly that way in the green: black from 35% at y 1080 down to 0% at y 917, on a smoothstep curve.
+- Trade-off, stated to the person: a chroma key removes this in-green fade completely (the keyer model keeps 0%). `extras/tint_overlay.png` carries the same fade on a transparent background, for use between the camera and the keyed lyrics. The preview `renders/tint_preview.jpg` shows the raw file next to camera, overlay and keyed lyrics.
+- The keyer-inversion design from revisions 4–5 is retired, and `tools/build_tint.py` now draws the shape directly and writes the PNG.
+
 ## Revision 5 (requested by the person)
 - The tint is lower and lighter, and it now begins at the middle of the lyric glyphs (measured glyph rows y 875–960, middle 917; `TINT_START` is 915). Its keyed darkness eases from 0 there to 25% at the bottom (`PEAK`). The paint starts at y 880, so above that the raw green is untouched.
 - Calibrated through an H.264 round trip of a snapshot frame. The keyed alpha after encoding is 0.04 at y 960, 0.15 at y 1000 and 0.25 at the bottom. Sensitivity at the bottom: Similarity 420 gives 0.06, 380 gives 0.52, 360 gives 0.85.
