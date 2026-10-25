@@ -60,7 +60,7 @@
         D.line(C, shot, [3, 4, 5, 6], { y: 914, size: 60, color: "cream", lead: 120 });
       }
 
-      // C. the roof lifts off the house; two stars close together
+      // C. their house at night by the lake, two windows lit (his cobalt, her coral); two stars close together
       {
         const { cam } = D.shot(C, Q(7), Q(11));
         D.take("s2-E03", cam);
@@ -95,19 +95,19 @@
         D.line(C, cam2, [17, 18, 19], { y: 914, size: 58, color: "cream", love: [19], lead: 60, enter: 380 });
       }
 
-      // E. rain on his window at night; on the sill, a small frame: the two of them under one umbrella
+      // E. rain on his window at night; on the sill, a big frame: the two of them under one umbrella
       {
         const { cam } = D.shot(C, Q(20), Q(24));
         const k = D.keyed(C, cam, "E05", [{ video: "s2-umb", pos: "50% 46%" }], Q(20), Q(24), { from: { s: 1.0 }, to: { s: 1.07 } });
-        k.box.style.transformOrigin = "52% 58%";
-        D.line(C, cam, [20, 21, 22, 23], { y: 92, size: 64, color: "cream", lead: 160 });
+        k.box.style.transformOrigin = "64% 47%";
+        D.line(C, cam, [20, 21, 22, 23], { align: "left", x: 420, y: 150, size: 58, color: "cream", lead: 160 });
       }
 
-      // F. side by side on the roof ridge, under the stars
+      // F. back to back on the roof of the same house, under the stars
       {
         const { cam } = D.shot(C, Q(24), Q(27));
         D.take("s2-E03b", cam);
-        D.line(C, cam, [24, 25, 26], { align: "right", x: 1800, y: 300, size: 62, color: "cream" });
+        D.line(C, cam, [24, 25, 26], { align: "left", x: 120, y: 110, size: 62, color: "cream" });
       }
 
       // G. the oval mirror in her room holds their photo-booth video (silly poses, both laughing)
@@ -122,7 +122,7 @@
       {
         const { cam } = D.shot(C, Q(30), Q(37));
         const k = D.keyed(C, cam, "E06", [{ video: "s2-cake", pos: "50% 50%" }], Q(30), Q(37), { from: { s: 1.0 }, to: { s: 1.12 } });
-        k.box.style.transformOrigin = "50% 32%";
+        k.box.style.transformOrigin = "50% 33%";
         D.scrim(cam, "bottom", { a: 0.55, reach: 34 });
         D.line(C, cam, [30, 31, 32], { y: 922, size: 58, color: "cream", end: T(33) - 60, out: 260 });
         D.line(C, cam, [33, 34, 35, 36], { y: 922, size: 58, color: "cream", lead: 140 });

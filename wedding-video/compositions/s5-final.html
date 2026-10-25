@@ -104,31 +104,26 @@
         D.line(C, cam, [7, 8, 9, 10], { y: 92, size: 56, color: "ink" });
       }
 
-      // D. a hallway of their days, from the first selfies to the proposal; the camera arrives at the biggest frame
+      // D. a hallway of their days in three big frames: a selfie by the lake, the proposal, the studio portrait;
+      //    the camera drifts toward the biggest
       {
         const { cam } = D.shot(C, Q(11), Q(20));
         D.keyed(C, cam, "E29", [
-          { src: K.photo("d10"), pos: "50% 40%", grade: WARM },
-          { src: K.photo("d01"), pos: "50% 62%", grade: WARM },
-          { src: K.photo("d64"), pos: "66% 30%", grade: WARM },
-          { src: K.photo("d36"), pos: "50% 52%", grade: WARM },
-          { src: K.photo("w26"), pos: "50% 38%", grade: WARM },
-        ], Q(11), Q(20) + 400, { from: { x: -60, y: -60, s: 1.12 }, to: { x: -1344, y: -236, s: 1.7 }, ease: "glide", origin: "0 0" });
+          { src: K.photo("d72"), pos: "50% 42%", grade: WARM },
+          { src: K.photo("d64"), pos: "58% 40%", grade: WARM },
+          { src: K.photo("w26"), pos: "50% 32%", grade: WARM },
+        ], Q(11), Q(20) + 400, { from: { x: 0, y: -40, s: 1.12 }, to: { x: -300, y: -70, s: 1.17 }, ease: "glide", origin: "0 0" });
         D.scrim(cam, "bottom", { tone: "light", a: 0.5, reach: 26 });
         D.line(C, cam, [11, 12, 13, 14, 15, 16], { y: 930, size: 54, color: "ink", end: T(17) - 40, out: 240 });
-        // by now the camera is inside the big frame: the lower band turns dark, so the last phrase goes cream
-        const dark = D.scrim(cam, "bottom", { a: 0.6, reach: 34, z: 21 });
-        at.set(dark, { opacity: 0 }, 0);
-        at.add(dark, { opacity: [0, 1], duration: 500, ease: E.quart }, T(17) - 520);
-        D.line(C, cam, [17, 18, 19], { y: 930, size: 54, color: "cream", love: [19], lead: 80, enter: 400 });
+        D.line(C, cam, [17, 18, 19], { y: 930, size: 54, color: "ink", love: [19], lead: 80, enter: 400 });
       }
 
-      // E. her desk by the window: a small frame with the flower selfie
+      // E. her desk by the window: a big frame with the flower selfie
       {
         const { cam } = D.shot(C, Q(20), Q(24));
         const k = D.keyed(C, cam, "E24", [{ video: "s5-flow", pos: "50% 50%", grade: WARM }], Q(20), Q(24) + 400, { from: { s: 1.0 }, to: { s: 1.11 } });
-        k.box.style.transformOrigin = "51% 48%";
-        D.line(C, cam, [20, 21, 22, 23], { y: 930, size: 58, color: "ink" });
+        k.box.style.transformOrigin = "50% 47%";
+        D.line(C, cam, [20, 21, 22, 23], { align: "left", x: 64, y: 64, size: 56, color: "ink" });
       }
 
       // F. the corkboard: two big prints are pinned, two beats apart (the heart pose, then the photo-booth strip)

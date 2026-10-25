@@ -3,9 +3,13 @@
 HyperFrames composition (HTML → MP4) for god「반대가 끌리는 이유」, cut to ~3:05, for 박준익 & 김명지 (2026. 11. 07 SAT).
 
 Story (v5, "두 개의 방, 하나의 집"): one premium miniature world. A dollhouse cross-section on a studio table: his
-cobalt room and her coral room share one wall. Light comes through it, they lean and press their hands on it, it
-sinks into the floor on "마음이 열렸어", and the ending returns to the opening camera with the wall gone. Their real
-photos and videos appear only inside the set (picture frames, an oval mirror, a TV, a phone, a corkboard).
+cobalt room (the orderly study of a purchasing manager: binders with index tabs, a squared stack of documents, a
+calculator) and her coral room (a counselor's room: two armchairs facing each other, tissues, a teapot) share one
+wall. Light comes through it, they lean and press their hands on it, it
+sinks into the floor on "마음이 열렸어", and the ending returns to the opening camera with the wall gone; the card
+writes "Happy Wedding Day" by hand (`scripts/calligraphy.py`: the lettering's skeleton as pen strokes). Their real
+photos and videos appear only inside the set (picture frames, an oval mirror, a TV, a phone, a corkboard), and each
+one fills most of the frame.
 
 Timing: word times come from CTC forced alignment of the isolated vocal (`scripts/realign_lyrics.py`); chorus 1
 and the final chorus are the same recording and their independent alignments agree within ~20 ms. Every cut sits
@@ -41,9 +45,9 @@ curl -L -o /opt/models/da2s.onnx https://huggingface.co/onnx-community/depth-any
 # v5 world: GPT image generation through the Codex CLI (ChatGPT login: `codex login --device-auth`)
 python3 scripts/gen_v5.py --jobs 4                       # data/gen_v5.json -> assets/media/gen5/ (sheets, plates, edits)
 /opt/mediaenv/bin/python scripts/key_green.py            # green frames/mirror/TV/phone -> *_keyed.png + frame quads in assets/js/green.js
-# her head where she stands beside him, shrunk with a local warp (reads <id>_orig.png, so re-running is safe)
-for a in "E01 1049,382,50,56 1043,428 0.85 --ramp 22 --vfill 0,0" "E01n 1049,382,50,56 1043,428 0.85 --ramp 22 --vfill 0,0" \
-         "E02 948,365,118,170 880,470 0.87 --ramp 70 --keep-x 836 --vfill 836,975" \
+# her head where she leans on the wall beside him, shrunk with a local warp (reads <id>_orig.png, so re-running
+# is safe); the v8 dollhouse plates (E01 family) were drawn with matching heads and need no fix
+for a in "E02 948,365,118,170 880,470 0.87 --ramp 70 --keep-x 836 --vfill 836,975" \
          "E02g 948,365,118,170 880,470 0.87 --ramp 70 --keep-x 836 --vfill 836,975" \
          "E02h 1005,320,140,135 1010,480 0.87 --ramp 60 --keep-x 852 --vfill 852,940" \
          "E02r 967,320,125,125 880,440 0.87 --ramp 60 --keep-x 846 --vfill 846,975"; do
@@ -51,7 +55,8 @@ for a in "E01 1049,382,50,56 1043,428 0.85 --ramp 22 --vfill 0,0" "E01n 1049,382
 done
 python3 scripts/sync_media.py                            # beat-grid cuts -> video data-start/duration, scene hosts, clip lengths
 scripts/living_v5.sh                                     # constant-speed depth camera moves (data/living_v5.tsv) -> assets/media/living/v5_*.mp4
-npx hyperframes check && npx hyperframes render --sdr -w 4 -o renders/wedding-v7.mp4 .
+/opt/mediaenv/bin/python scripts/calligraphy.py         # Happy Wedding Day pen strokes -> assets/js/calligraphy.js
+npx hyperframes check && npx hyperframes render --sdr -w 4 -o renders/wedding-v8.mp4 .
 ```
 
 `assets/media/gen5/E09w.png` (the partition wall that sinks in s3) is cut from E09a with the hands painted out;
