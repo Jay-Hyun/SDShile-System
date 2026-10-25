@@ -4,6 +4,7 @@
 - The person was judging the raw green file. They wanted a fade that is faint at the bottom edge, eases up and is gone by the middle of the glyphs, not a band that starts at the glyph middle.
 - The fade is now drawn exactly that way in the green: black from 35% at y 1080 down to 0% at y 917, on a smoothstep curve.
 - Trade-off, stated to the person: a chroma key removes this in-green fade completely (the keyer model keeps 0%). `extras/tint_overlay.png` carries the same fade on a transparent background, for use between the camera and the keyed lyrics. The preview `renders/tint_preview.jpg` shows the raw file next to camera, overlay and keyed lyrics.
+- Rendered file: 318.3 s. The fade reads (0,164,0) at y 1075, 35% black over green as drawn. Above y 917 it stays (0,254,0). There is no fade at 40 s or 304 s. The MR head is at 27.5 s, -14.9 LUFS, true peak -1.5 dBTP, no clipping. Split files were re-cut.
 - The keyer-inversion design from revisions 4–5 is retired, and `tools/build_tint.py` now draws the shape directly and writes the PNG.
 
 ## Revision 5 (requested by the person)
