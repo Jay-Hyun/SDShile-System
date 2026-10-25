@@ -7,6 +7,7 @@
 - The tint keeps its margins: it starts 1.75 s before the first line and fades 0.1 s after the last, at film 52.92–290.53 s.
 - Loudness: -12.0 LUFS, true peak +0.4 dBTP (the old MR was +1.2). Gain stays at 0.78.
 - Snapshots: at 146.2 s 「옷자락에서 전해지는 사랑」 (l13) is on screen, and at 283 s 「나 찬양해」 (l32).
+- Rendered file: 300.4 s. The new MR head is at 27.5 s, with no impulsive windows after 290 s, and the audio is silent after about 299.2 s. -14.5 LUFS, true peak -1.5 dBTP, no clipping. The tint is present at 152 s and absent at 40 s and 292 s. Splits: 27.5 s and 272.9 s.
 
 ## Revision 7 (after a live rehearsal)
 - Rehearsal setup: an ATEM switcher keying the green video at default settings, with no PNG overlay. The revision 6 tint (35% black over green) was keyed away completely.
