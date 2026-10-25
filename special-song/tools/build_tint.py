@@ -22,7 +22,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SIMILARITY = 0.40
 SMOOTHNESS = 0.08
 END = (19, 5, 19)  # leans magenta so the kept part desaturates to a neutral dark
-RAMP_TOP, RAMP_BOTTOM, STEP = 580, 1080, 20  # matches #tint-ramp top/height
+RAMP_TOP, RAMP_BOTTOM, STEP = 880, 1080, 10  # matches #tint-ramp top/height
+TINT_START = 915  # middle of the lyric glyphs: the tint begins here
+PEAK = 0.25  # darkness kept by the keyer at the very bottom
 
 CB = (-0.100644, -0.338572, 0.439216, 0.501961)
 CR = (0.439216, -0.398942, -0.040274, 0.501961)
@@ -64,20 +66,18 @@ def smoothstep(x):
 
 
 def target(y):
-    """Darkness wanted after keying: clear above y 800, 35% by y 960, 40% at the bottom."""
-    if y < 800:
+    """Darkness wanted after keying: none above the middle of the lyric, easing to PEAK at the bottom."""
+    if y <= TINT_START:
         return 0.0
-    if y < 960:
-        return 0.35 * smoothstep((y - 800) / 160)
-    return 0.35 + 0.05 * (y - 960) / (RAMP_BOTTOM - 960)
+    return PEAK * smoothstep((y - TINT_START) / (RAMP_BOTTOM - TINT_START))
 
 
 threshold = paint_for(1e-6)  # the most paint the keyer still removes completely
 stops = []
 for y in range(RAMP_TOP, RAMP_BOTTOM + 1, STEP):
-    if y < 800:
-        # ease the paint up to the threshold so the green preview has no visible step
-        a = threshold * smoothstep((y - RAMP_TOP) / (800 - RAMP_TOP))
+    if y < TINT_START:
+        # ease the paint up to the threshold so the green preview has no hard step
+        a = threshold * smoothstep((y - RAMP_TOP) / (TINT_START - RAMP_TOP))
     else:
         a = paint_for(target(y)) if target(y) > 0 else threshold
     pct = round((y - RAMP_TOP) / (RAMP_BOTTOM - RAMP_TOP) * 100, 1)
@@ -90,6 +90,6 @@ if n != 1:
     raise SystemExit("could not find the #tint-ramp background in index.html")
 index.write_text(html, encoding="utf-8")
 print(f"wrote {len(stops)} stops; keyer removes paint below {threshold:.3f}")
-for y in (800, 860, 900, 960, 1080):
+for y in (TINT_START, 960, 1000, 1040, 1080):
     a = paint_for(target(y)) if target(y) > 0 else threshold
     print(f"  y {y}: paint {a:.3f} -> keyed {keyed_alpha(a):.2f}")

@@ -1,5 +1,10 @@
 # REVIEW — 특송 「옷자락에서 전해지는 사랑」
 
+## Revision 5 (requested by the person)
+- The tint is lower and lighter, and it now begins at the middle of the lyric glyphs (measured glyph rows y 875–960, middle 917; `TINT_START` is 915). Its keyed darkness eases from 0 there to 25% at the bottom (`PEAK`). The paint starts at y 880, so above that the raw green is untouched.
+- Calibrated through an H.264 round trip of a snapshot frame. The keyed alpha after encoding is 0.04 at y 960, 0.15 at y 1000 and 0.25 at the bottom. Sensitivity at the bottom: Similarity 420 gives 0.06, 380 gives 0.52, 360 gives 0.85.
+- A raw-versus-keyed preview image (`renders/tint_preview.jpg`) was sent, because the raw green file looks much darker than the keyed result.
+
 ## Revision 4 (requested by the person)
 - Tint made light ("살짝") and kept inside the green, as the person chose over a PNG overlay or an alpha video. `tools/build_tint.py` designs it backwards from the keyed result: it sets the darkness wanted after keying (OBS default Similarity 400: 0% above y 800, 35% by y 960, 40% at the bottom), then inverts the keyer to find the paint at each height (26 stops, 20 px apart).
 - Simulated over a stand-in picture: at 400 the keyed alpha is 0.06 at y 840, 0.29 at y 920, 0.37 at y 1000 and 0.40 at the bottom; the colour is a dark neutral with a faint green cast (+10). At 420 the tint drops to 0.16 and at 380 it rises to 0.70. The person was told about this sensitivity before choosing.
