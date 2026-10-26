@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #f7f3ea; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="28" data-width="1080" data-height="1920">
+      <!-- SCENES -->
+      <div id="cover" class="clip" data-composition-id="cover" data-composition-src="compositions/cover.html"
+        data-start="0" data-duration="1.3" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="q1" class="clip" data-composition-id="q1" data-composition-src="compositions/q1.html"
+        data-start="1.3" data-duration="6.855" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="q2" class="clip" data-composition-id="q2" data-composition-src="compositions/q2.html"
+        data-start="8.155" data-duration="3.43" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="q3" class="clip" data-composition-id="q3" data-composition-src="compositions/q3.html"
+        data-start="11.585" data-duration="3.43" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="q4" class="clip" data-composition-id="q4" data-composition-src="compositions/q4.html"
+        data-start="15.015" data-duration="3.43" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="q5" class="clip" data-composition-id="q5" data-composition-src="compositions/q5.html"
+        data-start="18.445" data-duration="3.43" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="cta" class="clip" data-composition-id="cta" data-composition-src="compositions/cta.html"
+        data-start="21.875" data-duration="6.125" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <!-- BGM: "Drum Energetic (Gotta Go Fast)" (bombinsound, Pixabay #616775). 원곡 1.535s(첫 강박)부터 26.7초, 포스터 뒤 1.3s에 시작 -->
+      <audio id="bgm" class="clip" src="assets/music/bgm.mp3" data-start="1.3" data-duration="26.7" data-track-index="2" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

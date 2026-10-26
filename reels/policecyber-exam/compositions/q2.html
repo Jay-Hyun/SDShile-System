@@ -1,0 +1,126 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOVVariable.woff2") format("woff2");
+      font-weight: 100 900;
+    }
+    @font-face {
+      font-family: "NotoSerifKR";
+      src: url("assets/fonts/NotoSerifKR.woff2") format("woff2");
+      font-weight: 200 900;
+    }
+    #root {
+      --noise: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.09 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      /* 시험지 종이: 크림 + 노이즈 + 아주 옅은 종이결 + 왼쪽 여백선 */
+      --exam-paper:
+        var(--noise),
+        repeating-linear-gradient(90deg, rgba(22, 22, 22, 0.012) 0 1px, rgba(22, 22, 22, 0) 1px 7px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0) 0 78px, rgba(217, 58, 43, 0.22) 78px 80px, rgba(0, 0, 0, 0) 80px),
+        radial-gradient(70% 45% at 100% 100%, rgba(224, 194, 126, 0.18), rgba(224, 194, 126, 0) 100%),
+        #f7f3ea;
+      --ink-paper:
+        var(--noise),
+        radial-gradient(70% 40% at 50% 35%, rgba(46, 92, 190, 0.3), rgba(46, 92, 190, 0) 100%),
+        radial-gradient(circle, rgba(255, 255, 255, 0.07) 1.6px, rgba(255, 255, 255, 0) 1.8px) 0 0 / 40px 40px,
+        #0a1020;
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: "PretendardGOV", sans-serif;
+      color: #161616;
+      letter-spacing: -0.03em;
+      word-break: keep-all;
+      background: var(--exam-paper);
+    }
+    .cam { position: absolute; inset: 0; }
+    .serif { font-family: "NotoSerifKR", serif; letter-spacing: -0.02em; }
+    /* 시험지 머리 */
+    .hd { position: absolute; left: 110px; width: 860px; top: 180px; }
+    .hd-top { display: flex; justify-content: space-between; align-items: center; font-size: 30px; font-weight: 700; color: #3a3732; }
+    .hd-top b { border: 3px solid #161616; padding: 4px 18px; font-size: 30px; font-weight: 800; color: #161616; }
+    .hd-title { margin-top: 14px; font-family: "NotoSerifKR", serif; font-size: 58px; font-weight: 800; text-align: center; letter-spacing: 0.08em; }
+    .hd-rule { margin-top: 18px; height: 10px; border-top: 4px solid #161616; border-bottom: 2px solid #161616; }
+    /* 문항 */
+    .q { position: absolute; left: 110px; width: 860px; top: 380px; font-family: "NotoSerifKR", serif; font-size: 58px; font-weight: 700; line-height: 1.38; }
+    .q b { font-weight: 900; }
+    .opts { position: absolute; left: 130px; width: 840px; top: 580px; }
+    .opt { position: relative; height: 96px; display: flex; align-items: center; gap: 22px; font-family: "NotoSerifKR", serif; font-size: 52px; font-weight: 600; white-space: nowrap; }
+    .opt .num { width: 60px; text-align: center; }
+    .pen { position: absolute; overflow: visible; }
+    .pen path { fill: none; stroke: #d93a2b; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+    .pen.circle { left: -26px; top: -6px; width: 112px; height: 108px; }
+    .pen.slash { left: 70px; top: 30px; width: 520px; height: 36px; }
+    .pen.slash path { stroke-width: 5; opacity: 0.85; }
+    .ans { position: absolute; font-family: "PretendardGOV", sans-serif; font-weight: 900; color: #d93a2b; transform-origin: 0 50%; }
+    /* 해설 박스 */
+    .ex { position: absolute; left: 110px; width: 860px; top: 1080px; padding: 28px 34px; background: rgba(46, 92, 190, 0.08); border-left: 10px solid #2e5cbe; }
+    .ex small { display: block; font-size: 30px; font-weight: 800; color: #2e5cbe; letter-spacing: 0.02em; }
+    .ex p { margin-top: 8px; font-size: 46px; font-weight: 800; line-height: 1.3; color: #0b1a33; }
+    .hl { background: linear-gradient(rgba(255, 214, 64, 0.75), rgba(255, 214, 64, 0.75)) no-repeat 0 88% / 0% 38%; }
+    .foot { position: absolute; left: 110px; width: 860px; top: 1360px; border-top: 2px solid #161616; padding-top: 14px; display: flex; justify-content: space-between; font-size: 30px; font-weight: 700; color: #3a3732; }
+    .fine { position: absolute; left: 110px; width: 860px; font-size: 30px; font-weight: 500; color: #6b6660; line-height: 1.3; letter-spacing: -0.02em; }
+
+    #q2-ox { position: absolute; left: 110px; width: 860px; top: 640px; display: flex; justify-content: center; gap: 140px; font-family: "NotoSerifKR", serif; font-size: 180px; font-weight: 800; }
+    #q2-ox span { position: relative; width: 200px; text-align: center; }
+    #q2-ox .pen.circle { left: -20px; top: -10px; width: 240px; height: 240px; }
+    #q2-ex { top: 1000px; }
+
+  </style>
+  <div id="root" data-composition-id="q2" data-width="1080" data-height="1920">
+    <div id="q2-cam" class="cam" data-layout-allow-overlap>
+      <div class="hd">
+        <div class="hd-top"><span>2026학년도 2학기 법학사 과정 문제지</span><b>홀수형</b></div>
+        <div class="hd-title">제1교시 법학 영역</div>
+        <div class="hd-rule"></div>
+      </div>
+      <div class="foot" data-layout-ignore><span>법학 영역</span><span>2 / 5</span></div>
+      <div class="q" id="q2-q"><b>2.</b> 법학을 전공하려면 일을 그만둬야 한다.</div>
+      <div id="q2-ox"><span id="q2-o">O</span><span id="q2-x">X<svg class="pen circle" viewBox="0 0 120 110"><path pathLength="1" d="M96 24 C80 6 30 6 14 32 C2 54 14 88 54 94 C92 98 114 74 106 46 C101 28 86 16 66 12" /></svg></span></div>
+      <div class="ex" id="q2-ex"><small>해설</small><p>퇴근 후 <span class="hl" id="q2-hl">100% 온라인</span>.<br />오프라인 수업 0회.</p></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const CAM = "#q2-cam";
+
+    const D = 3.43;
+    const B = {"10": 0.0, "11": 0.65, "12": 1.29, "13": 1.93, "14": 2.78};
+    function IN(sel, t, from, dur) {
+      const f = Object.assign({ opacity: 0, filter: "blur(10px)" }, from || {});
+      const to = { opacity: 1, filter: "blur(0px)", duration: dur || 0.16, ease: "power3.out" };
+      for (const k in f) if (!(k in to)) to[k] = k.startsWith("scale") ? 1 : 0;
+      tl.fromTo(sel, f, to, t);
+    }
+    function OUT(sel, t, to) {
+      tl.to(sel, Object.assign({ opacity: 0, filter: "blur(10px)", duration: 0.08, ease: "power2.in" }, to || {}), t - 0.08);
+    }
+    // 빨간 펜: 선이 그려져 나감 (pathLength=1)
+    function PEN(sel, t, dur) {
+      tl.fromTo(sel, { strokeDasharray: "1 1", strokeDashoffset: 1, opacity: 1 }, { strokeDashoffset: 0, duration: dur || 0.2, ease: "power2.out" }, t);
+    }
+    // 형광펜: 왼쪽 → 오른쪽
+    function HL(sel, t) {
+      tl.fromTo(sel, { backgroundSize: "0% 38%" }, { backgroundSize: "100% 38%", duration: 0.22, ease: "power2.out" }, t);
+    }
+    // 손글씨처럼 왼쪽부터 드러남
+    function WRITE(sel, t, dur) {
+      tl.fromTo(sel, { clipPath: "inset(0% 100% 0% 0%)", opacity: 1 }, { clipPath: "inset(0% 0% 0% 0%)", duration: dur || 0.3, ease: "none" }, t);
+    }
+    // 카메라: 천천히 다가감 (튀는 모션 없음)
+    tl.fromTo(CAM, { scale: 1 }, { scale: 1.04, duration: 3.43, ease: "none" }, 0);
+
+
+    // G10 문제 · G11 O / X · G12 X 동그라미 · G13 해설 · G14 형광펜
+    tl.set(".pen path", { strokeDasharray: "1 1", strokeDashoffset: 1 }, 0);
+    IN("#q2-q", B[10], { y: 40 }, 0.18);
+    IN(["#q2-o", "#q2-x"], B[11], { y: 30 }, 0.16);
+    PEN("#q2-x .circle path", B[12], 0.26);
+    tl.to("#q2-o", { opacity: 0.3, duration: 0.2 }, B[12] + 0.2);
+    IN("#q2-ex", B[13], { y: 40 }, 0.2);
+    HL("#q2-hl", B[14]);
+    OUT(CAM, D, { y: -200 });
+
+    window.__timelines["q2"] = tl;
+  </script>
+</template>
