@@ -1,0 +1,82 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOVVariable.woff2") format("woff2");
+      font-weight: 100 900;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      font-family: "PretendardGOV", sans-serif;
+      color: #f3eee3;
+      letter-spacing: -0.035em;
+      word-break: keep-all;
+    }
+    .stage {
+      position: absolute;
+      left: 80px;
+      width: 920px;
+      text-align: center;
+    }
+    .w {
+      display: inline-block;
+    }
+    .g {
+      color: #e0c27e;
+    }
+    #start-q {
+      top: 680px;
+      font-size: 96px;
+      font-weight: 800;
+      line-height: 1.17;
+      color: #8d97ab;
+    }
+    #start-a {
+      top: 660px;
+      font-size: 98px;
+      font-weight: 800;
+      line-height: 1.16;
+    }
+    #start-sub {
+      top: 930px;
+      font-size: 40px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    #start-sub .w {
+      color: rgba(243, 238, 227, 0.35);
+    }
+  </style>
+  <div id="root" data-composition-id="start" data-width="1080" data-height="1920">
+    <div id="start-q" class="stage" data-layout-allow-overlap>
+      <div><span class="w">법대도</span></div>
+      <div><span class="w">안</span> <span class="w">나왔는데요?</span></div>
+    </div>
+
+    <div id="start-a" class="stage" data-layout-allow-overlap>
+      <div class="line"><span class="w">지금</span> <span class="w">학력</span> <span class="w g">그대로,</span></div>
+      <div class="line"><span class="w">시작할</span> <span class="w">수</span> <span class="w">있어요.</span></div>
+    </div>
+
+    <div id="start-sub" class="stage">
+      <span class="w">고졸·전문대졸·대졸,</span><br />
+      <span class="w">출발점이</span> <span class="w">달라도</span> <span class="w">괜찮아요.</span>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.fromTo("#start-q .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.15, ease: "power4.out", stagger: 0.08 }, 0.05);
+    tl.to("#start-q .w", { opacity: 0, filter: "blur(10px)", duration: 0.18, ease: "power3.in", stagger: 0.03 }, 1.45);
+
+    // 답: 줄 단위 블러 인
+    tl.fromTo("#start-a .line", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out", stagger: 0.2 }, 1.7);
+    // 서브: 단어별 회색 → 크림
+    tl.fromTo("#start-sub .w", { color: "rgba(243, 238, 227, 0.35)" }, { color: "rgba(243, 238, 227, 0.92)", duration: 0.2, ease: "power1.out", stagger: 0.09 }, 2.2);
+
+    tl.to(["#start-a", "#start-sub"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power3.in", stagger: 0.03 }, 3.72);
+
+    window.__timelines["start"] = tl;
+  </script>
+</template>
