@@ -129,7 +129,7 @@ SLOTS.append(scene("poster", 0, 3, f"""
 # ---------- why B3–B9 ----------
 # 장면: 계약서는 AI가 금방 쓰지만, 서명하는 손은 망설인다 → 그 망설임을 확신으로, 법학 전공
 SLOTS.append(scene("far", 3, 9, f"""
-    #root {{ color: #0b1a33; background: var(--paper); }}
+    #root {{ color: #0b1a33; background: var(--noise), var(--pat-ruled), var(--paper-tone); }}
     .ta {{ top: {EYE - 70}px; font-size: 80px; font-weight: 800; color: #6b6660; white-space: nowrap; }}
     .tb {{ top: {EYE + 50}px; font-size: 112px; font-weight: 900; white-space: nowrap; }}
     #fa-mesh {{ position: absolute; inset: 0; }}
@@ -160,7 +160,7 @@ SLOTS.append(scene("far", 3, 9, f"""
 items = ["직장인", "비전공자", "수험생", "로스쿨 준비생"]
 LH = 130
 SLOTS.append(scene("who", 9, 15, f'''
-    #root {{ color: #0b1a33; background: var(--paper); }}
+    #root {{ color: #0b1a33; background: var(--noise), var(--pat-dots), var(--paper-tone); }}
     #wh-label {{ top: {EYE - 210}px; font-size: 60px; font-weight: 800; color: #6b6660; }}
     #wh-row {{ position: absolute; left: 0; width: 1080px; top: {EYE - LH}px; height: {LH * 3}px; }}
     #wh-box {{ position: absolute; left: 170px; top: {LH + 13}px; width: 104px; height: 104px; border-radius: 22px; background: #2e5cbe; display: flex; align-items: center; justify-content: center; }}
@@ -201,7 +201,7 @@ SLOTS.append(scene("who", 9, 15, f'''
 
 # ---------- online B15–B21 ----------
 SLOTS.append(scene("online", 15, 21, f'''
-    #root {{ color: #ffffff; background: var(--paper); }}
+    #root {{ color: #ffffff; background: var(--noise), var(--pat-dots), var(--paper-tone); }}
     .q {{ top: {EYE}px; font-size: 230px; font-weight: 900; line-height: 1; }}
     .x {{ position: absolute; left: 290px; top: {EYE - 135}px; width: 500px; height: 500px; }}
     #on-t1 {{ top: {EYE - 330}px; font-size: 130px; font-weight: 900; }}
@@ -244,11 +244,11 @@ SLOTS.append(scene("online", 15, 21, f'''
     tl.fromTo(["#on-b1", "#on-b2", "#on-b3"], { scaleX: 0.05 }, { scaleX: 0.7, duration: 0.8, ease: "power2.inOut", stagger: 0.06 }, B[19] + 0.1);
     IN("#on-pill div", B[20] - 0.2, { y: 30 });
     OUT(CAM, D, {});
-''', bg='<div class="mesh"></div>'))
+''', bg='<div class="mesh scan"></div>'))
 
 # ---------- degree B21–B27 ----------
 SLOTS.append(scene("degree", 21, 27, f'''
-    #root {{ color: #0b1a33; background: var(--paper); }}
+    #root {{ color: #0b1a33; background: var(--noise), var(--pat-guilloche), var(--paper-tone); }}
     #dg-t {{ top: {EYE}px; font-size: 160px; font-weight: 900; }}
     #dg-t .b {{ color: #2e5cbe; }}
     #dg-cert {{ position: absolute; left: 260px; top: 470px; width: 560px; height: 680px; background: #fffdf8; color: #161616; border: 3px solid #b8955a; outline: 2px solid #b8955a; outline-offset: -18px; box-shadow: 0 40px 90px rgba(11, 26, 51, 0.25); padding: 58px 52px 0; text-align: center; letter-spacing: -0.03em; }}
@@ -293,7 +293,7 @@ SLOTS.append(scene("degree", 21, 27, f'''
 chips = [("퇴근 후 1시간", 110, 250, -6), ("주말 집중 플랜", 610, 220, 5), ("진도 체크", 90, 400, 4),
          ("시험 대비", 730, 380, -5), ("과목 추천", 200, 540, -3), ("맞춤 일정", 640, 530, 4)]
 SLOTS.append(scene("together", 27, 33, f'''
-    #root {{ color: #ffffff; background: var(--ink); }}
+    #root {{ color: #ffffff; background: var(--noise), var(--pat-stars), var(--ink-tone); }}
     #tg-q {{ top: {EYE}px; font-size: 150px; font-weight: 900; line-height: 1; white-space: nowrap; color: rgba(255, 255, 255, 0.62); }}
     #tg-line {{ top: {EYE + 180}px; font-size: 150px; font-weight: 900; line-height: 1; white-space: nowrap; }}
     #tg-yes {{ color: #f0d595; }}
@@ -323,8 +323,8 @@ subs = [("헌법", 80, 240, -6), ("형법", 700, 220, 5), ("행정법", 420, 170
         ("민사소송법", 500, 1110, -4), ("형사소송법", 120, 1200, 3), ("노동법", 810, 1010, -6),
         ("경제법", 790, 1140, 5), ("물권법", 120, 520, -4), ("채권총칙", 600, 520, 4)]
 SLOTS.append(scene("subjects", 33, 41, '''
-    #root { color: #0b1a33; background: var(--ink); }
-    #sj-paper { position: absolute; inset: 0; background: var(--paper); }
+    #root { color: #0b1a33; background: var(--noise), var(--pat-stars), var(--ink-tone); }
+    #sj-paper { position: absolute; inset: 0; background: var(--noise), var(--pat-hatch), var(--paper-tone); }
     .sc { position: absolute; padding: 22px 30px; border-radius: 22px; background: #ffffff; border: 2px solid #e8e2d6; box-shadow: 0 16px 40px rgba(11, 26, 51, 0.12); font-size: 46px; font-weight: 900; white-space: nowrap; letter-spacing: -0.03em; }
     .sc small { display: block; font-size: 30px; font-weight: 700; color: #6b6660; }
     .sc.hot { background: #0b1a33; color: #f0d595; border-color: #e0c27e; }
@@ -361,7 +361,7 @@ SLOTS.append(scene("subjects", 33, 41, '''
 # ---------- paths B41–B49 ----------
 cards = [("로스쿨", "지원 자격 학사학위", 90, 330, -8), ("로펌·법무팀", "법학 전공으로 증명", 600, 300, 7), ("경찰·공무원", "수험 과목과 학위를 함께", 300, 1010, -4)]
 SLOTS.append(scene("paths", 41, 49, f'''
-    #root {{ color: #ffffff; background: var(--ink); }}
+    #root {{ color: #ffffff; background: var(--noise), var(--pat-topo), var(--ink-tone); }}
     #pa-t1 {{ top: {EYE - 60}px; font-size: 140px; font-weight: 900; }}
     #pa-t2 {{ top: {EYE + 100}px; font-size: 140px; font-weight: 900; color: #f0d595; }}
     .slash {{ position: absolute; width: 8px; height: 260px; background: #ffffff; border-radius: 4px; }}
@@ -391,7 +391,7 @@ SLOTS.append(scene("paths", 41, 49, f'''
 
 # ---------- go B49–B53 ----------
 SLOTS.append(scene("go", 49, 53, f'''
-    #root {{ color: #ffffff; background: var(--ink); }}
+    #root {{ color: #ffffff; background: var(--noise), var(--pat-stars), var(--ink-tone); }}
     #go-t {{ top: {EYE}px; font-size: 180px; font-weight: 900; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 24px; }}
     #go-t svg {{ width: 150px; height: 150px; }}
     #go-white {{ position: absolute; inset: 0; background: #fbf9f4; }}
@@ -407,8 +407,8 @@ SLOTS.append(scene("go", 49, 53, f'''
 
 # ---------- cta B53–end ----------
 SLOTS.append(scene("cta", 53, None, f'''
-    #root {{ color: #0b1a33; background: var(--ink); }}
-    #ct-paper {{ position: absolute; inset: 0; background: var(--paper); }}
+    #root {{ color: #0b1a33; background: var(--noise), var(--pat-stars), var(--ink-tone); }}
+    #ct-paper {{ position: absolute; inset: 0; background: var(--noise), var(--pat-rings), var(--paper-tone); }}
     #ct-lead {{ top: {EYE - 310}px; font-size: 48px; font-weight: 700; color: #6b6660; }}
     #ct-b1 {{ top: {EYE - 230}px; font-size: 180px; font-weight: 900; line-height: 1; }}
     #ct-b2 {{ top: {EYE - 40}px; font-size: 140px; font-weight: 900; line-height: 1; color: #2e5cbe; }}

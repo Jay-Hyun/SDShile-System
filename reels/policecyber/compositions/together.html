@@ -8,19 +8,29 @@
     #root {
       /* 배경 토닝: 밝은 씬 = 옅은 괘선 + 블루/골드 토닝, 어두운 씬 = 도트 그리드 + 글로우. 전부 노이즈를 아주 약하게 */
       --noise: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.09 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-      --paper:
-        var(--noise),
+      /* 토닝(색) */
+      --paper-tone:
         radial-gradient(60% 38% at 0% 0%, rgba(46, 92, 190, 0.09), rgba(46, 92, 190, 0) 100%),
         radial-gradient(60% 40% at 100% 100%, rgba(224, 194, 126, 0.22), rgba(224, 194, 126, 0) 100%),
-        repeating-linear-gradient(0deg, rgba(11, 26, 51, 0.045) 0 2px, rgba(11, 26, 51, 0) 2px 72px),
-        linear-gradient(90deg, rgba(0, 0, 0, 0) 0 118px, rgba(184, 149, 90, 0.18) 118px 120px, rgba(0, 0, 0, 0) 120px),
         #fbf9f4;
-      --ink:
-        var(--noise),
+      --ink-tone:
         radial-gradient(70% 40% at 50% 35%, rgba(46, 92, 190, 0.3), rgba(46, 92, 190, 0) 100%),
         radial-gradient(55% 35% at 95% 100%, rgba(224, 194, 126, 0.14), rgba(224, 194, 126, 0) 100%),
-        radial-gradient(circle, rgba(255, 255, 255, 0.07) 1.6px, rgba(255, 255, 255, 0) 1.8px) 0 0 / 40px 40px,
         #0a1020;
+      /* 패턴(씬 내용별) */
+      --pat-ruled:
+        repeating-linear-gradient(0deg, rgba(11, 26, 51, 0.045) 0 2px, rgba(11, 26, 51, 0) 2px 72px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0) 0 118px, rgba(184, 149, 90, 0.2) 118px 120px, rgba(0, 0, 0, 0) 120px);
+      --pat-dots: radial-gradient(circle, rgba(11, 26, 51, 0.09) 1.8px, rgba(11, 26, 51, 0) 2px) 0 0 / 36px 36px;
+      --pat-guilloche:
+        repeating-radial-gradient(circle at 50% 42%, rgba(184, 149, 90, 0.12) 0 2px, rgba(184, 149, 90, 0) 2px 24px),
+        repeating-radial-gradient(circle at 50% 42%, rgba(46, 92, 190, 0.05) 0 1px, rgba(46, 92, 190, 0) 1px 9px);
+      --pat-hatch: repeating-linear-gradient(45deg, rgba(11, 26, 51, 0.04) 0 2px, rgba(11, 26, 51, 0) 2px 30px);
+      --pat-rings: repeating-radial-gradient(circle at 50% 55%, rgba(46, 92, 190, 0.07) 0 2px, rgba(46, 92, 190, 0) 2px 64px);
+      --pat-stars: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1.6px, rgba(255, 255, 255, 0) 1.8px) 0 0 / 40px 40px;
+      --pat-topo:
+        repeating-radial-gradient(ellipse 120% 80% at 15% 85%, rgba(255, 255, 255, 0.05) 0 2px, rgba(255, 255, 255, 0) 2px 46px),
+        repeating-radial-gradient(ellipse 90% 70% at 90% 10%, rgba(224, 194, 126, 0.05) 0 2px, rgba(224, 194, 126, 0) 2px 58px);
       position: absolute;
       inset: 0;
       overflow: hidden;
@@ -59,12 +69,18 @@
         repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 2px, rgba(255, 255, 255, 0) 2px 120px),
         repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 2px, rgba(255, 255, 255, 0) 2px 120px);
     }
+    /* 그라데이션 씬 변형: 가는 주사선 */
+    .mesh.scan::after {
+      background:
+        var(--noise),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 2px, rgba(255, 255, 255, 0) 2px 14px);
+    }
     .bgl {
       position: absolute;
       inset: 0;
     }
 
-    #root { color: #ffffff; background: var(--ink); }
+    #root { color: #ffffff; background: var(--noise), var(--pat-stars), var(--ink-tone); }
     #tg-q { top: 700px; font-size: 150px; font-weight: 900; line-height: 1; white-space: nowrap; color: rgba(255, 255, 255, 0.62); }
     #tg-line { top: 880px; font-size: 150px; font-weight: 900; line-height: 1; white-space: nowrap; }
     #tg-yes { color: #f0d595; }
