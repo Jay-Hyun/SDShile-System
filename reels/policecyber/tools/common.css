@@ -33,3 +33,7 @@
         radial-gradient(70% 45% at 40% 60%, #2e5cbe, rgba(46, 92, 190, 0) 100%),
         linear-gradient(160deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%);
     }
+    .bgl {
+      position: absolute;
+      inset: 0;
+    }

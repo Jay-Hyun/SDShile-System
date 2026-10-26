@@ -35,24 +35,29 @@
         radial-gradient(70% 45% at 40% 60%, #2e5cbe, rgba(46, 92, 190, 0) 100%),
         linear-gradient(160deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%);
     }
+    .bgl {
+      position: absolute;
+      inset: 0;
+    }
 
     #root { color: #0b1a33; background: #0a1020; }
-    #sj-bg { position: absolute; inset: 0; background: #fbf9f4; }
-    #sj-blob { position: absolute; left: -300px; top: 300px; width: 1680px; height: 1680px; border-radius: 50%; background: radial-gradient(circle, #ffffff 0%, #9bb4ec 35%, #2e5cbe 55%, rgba(224, 194, 126, 0.9) 70%, rgba(10, 16, 32, 0) 72%); }
+    #sj-paper { position: absolute; inset: 0; background: #fbf9f4; }
     .sc { position: absolute; padding: 22px 30px; border-radius: 22px; background: #ffffff; border: 2px solid #e8e2d6; box-shadow: 0 16px 40px rgba(11, 26, 51, 0.12); font-size: 46px; font-weight: 900; white-space: nowrap; letter-spacing: -0.03em; }
-    .sc small { display: block; font-size: 26px; font-weight: 700; color: #6b6660; }
+    .sc small { display: block; font-size: 30px; font-weight: 700; color: #6b6660; }
     .sc.hot { background: #0b1a33; color: #f0d595; border-color: #e0c27e; }
     .sc.hot small { color: #f0d595; }
-    #sj-title { top: 690px; font-size: 104px; font-weight: 900; line-height: 1.1; }
-    #sj-title b { color: #2e5cbe; }
+    #sj-t1 { top: 690px; font-size: 104px; font-weight: 900; line-height: 1.1; }
+    #sj-t1 b { color: #2e5cbe; }
+    #sj-t2 { top: 805px; font-size: 104px; font-weight: 900; line-height: 1.1; }
     #sj-tag { top: 950px; display: flex; justify-content: center; }
-    #sj-tag div { height: 76px; padding: 0 32px; border-radius: 999px; background: #e0c27e; color: #0b1a33; font-size: 40px; font-weight: 900; display: flex; align-items: center; letter-spacing: -0.02em; }
+    #sj-tag div { height: 80px; padding: 0 34px; border-radius: 999px; background: #e0c27e; color: #0b1a33; font-size: 42px; font-weight: 900; display: flex; align-items: center; letter-spacing: -0.02em; }
     #sj-fine { top: 1290px; font-size: 30px; font-weight: 500; color: #6b6660; letter-spacing: -0.02em; }
 
   </style>
   <div id="root" data-composition-id="subjects" data-width="1080" data-height="1920">
-    <div id="sj-bg"></div>
-    <div id="sj-cam" class="cam" data-layout-allow-overlap>
+    <div id="subjects-bg" class="bgl" data-layout-ignore></div>
+    <div id="subjects-cam" class="cam" data-layout-allow-overlap>
+      <div id="sj-paper" data-layout-ignore></div>
       <div class="sc" id="sj-s0" style="left: 80px; top: 240px">헌법</div>
       <div class="sc" id="sj-s1" style="left: 700px; top: 220px">형법</div>
       <div class="sc" id="sj-s2" style="left: 420px; top: 170px">행정법</div>
@@ -63,30 +68,49 @@
       <div class="sc" id="sj-s7" style="left: 790px; top: 1140px">경제법</div>
       <div class="sc hot" id="sj-s8" style="left: 120px; top: 520px"><small>전공필수</small>물권법</div>
       <div class="sc hot" id="sj-s9" style="left: 600px; top: 520px"><small>전공필수</small>채권총칙</div>
-      <div id="sj-title" class="stage">진짜 <b>‘법학 전공’</b><br />과목으로</div>
+      <div id="sj-t1" class="stage">진짜 <b>‘법학 전공’</b></div>
+      <div id="sj-t2" class="stage">과목으로</div>
       <div id="sj-tag" class="stage"><div>물권법·채권총칙 개설은 여기뿐*</div></div>
       <div id="sj-fine" class="stage">* 표준교육과정 전공필수 개설 평생교육원 기준, 2026.10 조회</div>
     </div>
-    <div id="sj-blob" data-layout-ignore></div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
-    // 로컬 비트: .45 .9 1.27 1.66 2.11 2.54 3.0 — 원형 블롭 전환 + 카드 콜라주 (레퍼런스 리뷰 카드)
+    const CAM = "#subjects-cam", BG = "#subjects-bg";
+
+    const D = 3.45;
+    const B = {"33": 0.0, "34": 0.45, "35": 0.89, "36": 1.27, "37": 1.65, "38": 2.09, "39": 2.54, "40": 2.99};
+    // 등장: 블러 → 선명, 짧고 정확하게. 오버슈트 없음
+    function IN(sel, t, from, dur) {
+      const f = Object.assign({ opacity: 0, filter: "blur(12px)" }, from || {});
+      const to = { opacity: 1, filter: "blur(0px)", duration: dur || 0.16, ease: "power3.out" };
+      for (const k in f) if (!(k in to)) to[k] = k.startsWith("scale") ? 1 : 0;
+      tl.fromTo(sel, f, to, t);
+    }
+    // 퇴장: 다음 비트 직전에 짧게 빠짐
+    function OUT(sel, t, to) {
+      tl.to(sel, Object.assign({ opacity: 0, filter: "blur(10px)", duration: 0.07, ease: "power2.in" }, to || {}), t - 0.07);
+    }
+    // 카메라: 씬 내내 한 방향으로 천천히 다가감 (펌프·흔들림 없음)
+    tl.fromTo(CAM, { scale: 1 }, { scale: 1.06, duration: 3.45, ease: "none" }, 0);
+    tl.fromTo(BG, { scale: 1.08 }, { scale: 1, duration: D, ease: "none" }, 0);
+
+
+    // B33 종이 아이리스 · B34 과목 카드 · B35 진짜 '법학 전공' · B36 과목으로 · B37 나머지 흐림 · B38 물권법 · B39 채권총칙 · B40 여기뿐*
     const rot = [-6, 5, -3, 4, -4, 3, -6, 5, -4, 4];
-    tl.fromTo("#sj-blob", { scale: 0.05, opacity: 1 }, { scale: 2.2, opacity: 1, duration: 0.4, ease: "power3.in" }, 0);
-    tl.to("#sj-blob", { opacity: 0, duration: 0.15 }, 0.38);
-    tl.fromTo("#sj-bg", { opacity: 0 }, { opacity: 1, duration: 0.05 }, 0.3);
-    tl.fromTo("#sj-cam", { scale: 1.08 }, { scale: 0.96, duration: 3.45, ease: "none" }, 0);
+    tl.fromTo("#sj-paper", { clipPath: "circle(0% at 50% 40%)" }, { clipPath: "circle(120% at 50% 40%)", duration: 0.3, ease: "power3.inOut" }, B[33]);
     rot.forEach((r, i) => {
-      tl.fromTo(`#sj-s${i}`, { opacity: 0, scale: 0.6, rotation: 0, y: 60 }, { opacity: 1, scale: 1, rotation: r, y: 0, duration: 0.35, ease: "back.out(1.5)" }, 0.4 + i * 0.07);
+      tl.fromTo(`#sj-s${i}`, { opacity: 0, y: -160, rotation: r }, { opacity: 1, y: 0, rotation: r, duration: 0.2, ease: "power3.out" }, B[34] + i * 0.035);
     });
-    tl.fromTo("#sj-title", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.9);
-    // 물권법·채권총칙만 남기고 흐리게
-    tl.to(["#sj-s0", "#sj-s1", "#sj-s2", "#sj-s3", "#sj-s4", "#sj-s5", "#sj-s6", "#sj-s7"], { opacity: 0.25, duration: 0.2 }, 1.66);
-    tl.fromTo(["#sj-s8", "#sj-s9"], { scale: 1 }, { scale: 1.12, duration: 0.25, ease: "back.out(2)", immediateRender: false }, 1.66);
-    tl.fromTo("#sj-tag div", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 1.75);
-    tl.fromTo("#sj-fine", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 1.8);
-    tl.to("#sj-cam", { opacity: 0, filter: "blur(12px)", duration: 0.15, ease: "power3.in" }, 3.3);
+    IN("#sj-t1", B[35], { y: 30 });
+    IN("#sj-t2", B[35] + 0.12, { y: 30 });
+    tl.to(["#sj-s0", "#sj-s1", "#sj-s2", "#sj-s3", "#sj-s4", "#sj-s5", "#sj-s6", "#sj-s7"], { opacity: 0.22, duration: 0.14 }, B[36]);
+    tl.fromTo("#sj-s8", { scale: 1 }, { scale: 1.12, duration: 0.14, ease: "power3.out", immediateRender: false }, B[37]);
+    tl.fromTo("#sj-s9", { scale: 1 }, { scale: 1.12, duration: 0.14, ease: "power3.out", immediateRender: false }, B[38]);
+    IN("#sj-tag div", B[39], { y: 24 });
+    IN("#sj-fine", B[39], {}, 0.2);
+    OUT(CAM, D, {});
+
     window.__timelines["subjects"] = tl;
   </script>
 </template>

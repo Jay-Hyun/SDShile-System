@@ -35,12 +35,17 @@
         radial-gradient(70% 45% at 40% 60%, #2e5cbe, rgba(46, 92, 190, 0) 100%),
         linear-gradient(160deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%);
     }
+    .bgl {
+      position: absolute;
+      inset: 0;
+    }
 
     #root { color: #ffffff; background: #fbf9f4; }
-    #on-mesh { position: absolute; inset: 0; }
-    #on-t1 { top: 380px; font-size: 130px; font-weight: 900; }
+    .q { top: 700px; font-size: 230px; font-weight: 900; line-height: 1; }
+    .x { position: absolute; left: 290px; top: 565px; width: 500px; height: 500px; }
+    #on-t1 { top: 370px; font-size: 130px; font-weight: 900; }
     #on-t2 { top: 1050px; font-size: 130px; font-weight: 900; }
-    .oc { position: absolute; top: 590px; width: 340px; height: 420px; border-radius: 34px; background: #fbf9f4; color: #0b1a33; box-shadow: 0 30px 70px rgba(11, 26, 51, 0.45); padding: 34px 30px; letter-spacing: -0.03em; }
+    .oc { position: absolute; top: 550px; width: 340px; height: 420px; border-radius: 34px; background: #fbf9f4; color: #0b1a33; box-shadow: 0 30px 70px rgba(11, 26, 51, 0.45); padding: 34px 30px; letter-spacing: -0.03em; }
     #on-c1 { left: 80px; }
     #on-c2 { left: 370px; z-index: 2; }
     #on-c3 { left: 660px; }
@@ -49,13 +54,17 @@
     .oc .bar { position: absolute; left: 30px; right: 30px; bottom: 44px; height: 14px; border-radius: 7px; background: #e8e2d6; overflow: hidden; }
     .oc .bar i { display: block; width: 100%; height: 100%; background: linear-gradient(90deg, #2e5cbe, #e0c27e); transform-origin: 0 50%; }
     .oc .ic { position: absolute; left: 30px; bottom: 90px; font-size: 30px; font-weight: 800; color: #2e5cbe; }
-    #on-pill { top: 1235px; display: flex; justify-content: center; }
-    #on-pill div { height: 76px; padding: 0 36px; border-radius: 999px; background: #0b1a33; color: #f0d595; font-size: 40px; font-weight: 900; display: flex; align-items: center; letter-spacing: -0.02em; }
+    #on-pill { top: 1240px; display: flex; justify-content: center; }
+    #on-pill div { height: 80px; padding: 0 38px; border-radius: 999px; background: #0b1a33; color: #f0d595; font-size: 42px; font-weight: 900; display: flex; align-items: center; letter-spacing: -0.02em; }
 
   </style>
   <div id="root" data-composition-id="online" data-width="1080" data-height="1920">
-    <div id="on-mesh" class="mesh" data-layout-ignore></div>
-    <div id="on-cam" class="cam" data-layout-allow-overlap>
+    <div id="online-bg" class="bgl" data-layout-ignore><div class="mesh"></div></div>
+    <div id="online-cam" class="cam" data-layout-allow-overlap>
+      <div id="on-q1" class="stage q">퇴사?</div>
+      <svg id="on-x1" class="x" viewBox="0 0 24 24" data-layout-ignore><path d="M5 5l14 14M19 5L5 19" stroke="#ff5a4e" stroke-width="2.2" stroke-linecap="round" /></svg>
+      <div id="on-q2" class="stage q" data-layout-allow-overlap>재입학?</div>
+      <svg id="on-x2" class="x" viewBox="0 0 24 24" data-layout-ignore><path d="M5 5l14 14M19 5L5 19" stroke="#ff5a4e" stroke-width="2.2" stroke-linecap="round" /></svg>
       <div id="on-t1" class="stage">퇴근 후,</div>
       <div id="on-c1" class="oc"><small>평일 밤</small><b>민법총칙<br />3주차</b><div class="ic">▶ 수강 중</div><div class="bar"><i id="on-b1"></i></div></div>
       <div id="on-c2" class="oc"><small>주말</small><b>형법<br />몰아보기</b><div class="ic">▶ 2강 연속</div><div class="bar"><i id="on-b2"></i></div></div>
@@ -66,17 +75,44 @@
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
-    // 로컬 비트: .44 .91 1.35 1.79 2.22 — 문장 사이로 카드가 끼어듦 (레퍼런스 'Show [photos] what matters')
-    tl.fromTo("#on-mesh", { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.25, ease: "power2.inOut" }, 0);
-    tl.fromTo("#on-cam", { scale: 1.05 }, { scale: 0.96, duration: 2.69, ease: "none" }, 0);
-    tl.fromTo("#on-t1", { opacity: 0, filter: "blur(10px)", y: 260 }, { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.3, ease: "expo.out" }, 0.1);
-    tl.fromTo("#on-t2", { opacity: 0, filter: "blur(10px)", y: -260 }, { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.3, ease: "expo.out" }, 0.1);
-    tl.fromTo("#on-c1", { opacity: 0, y: 200, rotation: -14 }, { opacity: 1, y: 30, rotation: -8, duration: 0.4, ease: "expo.out" }, 0.44);
-    tl.fromTo("#on-c2", { opacity: 0, y: 200, rotation: 0 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "expo.out" }, 0.56);
-    tl.fromTo("#on-c3", { opacity: 0, y: 200, rotation: 14 }, { opacity: 1, y: 30, rotation: 8, duration: 0.4, ease: "expo.out" }, 0.68);
-    tl.fromTo(["#on-b1", "#on-b2", "#on-b3"], { scaleX: 0.05 }, { scaleX: 0.7, duration: 1.2, ease: "power2.inOut", stagger: 0.1 }, 0.9);
-    tl.fromTo("#on-pill div", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 1.35);
-    tl.to("#on-cam", { opacity: 0, filter: "blur(12px)", duration: 0.16, ease: "power3.in" }, 2.52);
+    const CAM = "#online-cam", BG = "#online-bg";
+
+    const D = 2.7;
+    const B = {"15": 0.0, "16": 0.45, "17": 0.91, "18": 1.35, "19": 1.8, "20": 2.23};
+    // 등장: 블러 → 선명, 짧고 정확하게. 오버슈트 없음
+    function IN(sel, t, from, dur) {
+      const f = Object.assign({ opacity: 0, filter: "blur(12px)" }, from || {});
+      const to = { opacity: 1, filter: "blur(0px)", duration: dur || 0.16, ease: "power3.out" };
+      for (const k in f) if (!(k in to)) to[k] = k.startsWith("scale") ? 1 : 0;
+      tl.fromTo(sel, f, to, t);
+    }
+    // 퇴장: 다음 비트 직전에 짧게 빠짐
+    function OUT(sel, t, to) {
+      tl.to(sel, Object.assign({ opacity: 0, filter: "blur(10px)", duration: 0.07, ease: "power2.in" }, to || {}), t - 0.07);
+    }
+    // 카메라: 씬 내내 한 방향으로 천천히 다가감 (펌프·흔들림 없음)
+    tl.fromTo(CAM, { scale: 1 }, { scale: 1.06, duration: 2.7, ease: "none" }, 0);
+    tl.fromTo(BG, { scale: 1.08 }, { scale: 1, duration: D, ease: "none" }, 0);
+
+
+    // B15 퇴사? · B16 ✕ 그어짐 · B17 재입학? · B18 ✕ · B19 퇴근 후 [카드] 온라인으로 · B20 오프라인 0회
+    tl.fromTo(BG, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.14, ease: "power3.inOut" }, 0);
+    IN("#on-q1", B[15], { x: 120 });
+    tl.fromTo("#on-x1 path", { strokeDasharray: "20 20", strokeDashoffset: 20 }, { strokeDashoffset: 0, duration: 0.14, ease: "power2.out" }, B[16]);
+    OUT(["#on-q1", "#on-x1"], B[17], { x: -160 });
+    IN("#on-q2", B[17], { x: 160 });
+    tl.fromTo("#on-x2 path", { strokeDasharray: "20 20", strokeDashoffset: 20 }, { strokeDashoffset: 0, duration: 0.14, ease: "power2.out" }, B[18]);
+    OUT(["#on-q2", "#on-x2"], B[19], { x: -160 });
+    // B19: 문장이 위아래로 벌어지고 그 사이로 카드
+    IN("#on-t1", B[19], { y: 300 });
+    IN("#on-t2", B[19], { y: -300 });
+    tl.fromTo("#on-c1", { opacity: 0, y: 160, rotation: -8 }, { opacity: 1, y: 30, rotation: -8, duration: 0.22, ease: "power3.out" }, B[19] + 0.04);
+    tl.fromTo("#on-c2", { opacity: 0, y: 160 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, B[19] + 0.08);
+    tl.fromTo("#on-c3", { opacity: 0, y: 160, rotation: 8 }, { opacity: 1, y: 30, rotation: 8, duration: 0.22, ease: "power3.out" }, B[19] + 0.12);
+    tl.fromTo(["#on-b1", "#on-b2", "#on-b3"], { scaleX: 0.05 }, { scaleX: 0.7, duration: 0.8, ease: "power2.inOut", stagger: 0.06 }, B[19] + 0.1);
+    IN("#on-pill div", B[20] - 0.2, { y: 30 });
+    OUT(CAM, D, {});
+
     window.__timelines["online"] = tl;
   </script>
 </template>

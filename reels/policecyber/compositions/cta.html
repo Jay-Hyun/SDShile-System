@@ -35,13 +35,18 @@
         radial-gradient(70% 45% at 40% 60%, #2e5cbe, rgba(46, 92, 190, 0) 100%),
         linear-gradient(160deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%);
     }
+    .bgl {
+      position: absolute;
+      inset: 0;
+    }
 
-    #root { color: #0b1a33; background: #fbf9f4; }
+    #root { color: #0b1a33; background: #0a1020; }
+    #ct-paper { position: absolute; inset: 0; background: #fbf9f4; }
     #ct-lead { top: 380px; font-size: 60px; font-weight: 700; color: #6b6660; }
     #ct-b1 { top: 470px; font-size: 180px; font-weight: 900; line-height: 1; }
     #ct-b2 { top: 660px; font-size: 140px; font-weight: 900; line-height: 1; color: #2e5cbe; }
     #ct-pill { top: 860px; display: flex; justify-content: center; }
-    #ct-pill div { height: 68px; padding: 0 30px; border-radius: 999px; background: #ff5a4e; color: #fff; font-size: 36px; font-weight: 900; display: flex; align-items: center; letter-spacing: -0.02em; }
+    #ct-pill div { height: 70px; padding: 0 30px; border-radius: 999px; background: #ff5a4e; color: #fff; font-size: 38px; font-weight: 900; display: flex; align-items: center; letter-spacing: -0.02em; }
     #ct-btn { position: absolute; left: 110px; top: 960px; width: 860px; height: 156px; border-radius: 999px; background: linear-gradient(100deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 24px; box-shadow: 0 24px 60px rgba(46, 92, 190, 0.35); }
     #ct-btn svg { width: 60px; height: 60px; }
     #ct-btn b { font-size: 84px; font-weight: 900; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
@@ -52,7 +57,9 @@
 
   </style>
   <div id="root" data-composition-id="cta" data-width="1080" data-height="1920">
-    <div id="ct-cam" class="cam" data-layout-allow-overlap>
+    <div id="cta-bg" class="bgl" data-layout-ignore></div>
+    <div id="cta-cam" class="cam" data-layout-allow-overlap>
+      <div id="ct-paper" data-layout-ignore></div>
       <div id="ct-lead" class="stage">망설여진다면,</div>
       <div id="ct-b1" class="stage">상담만</div>
       <div id="ct-b2" class="stage">받아도 돼요.</div>
@@ -66,18 +73,38 @@
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
-    // 로컬 비트: .45 .89 1.34 1.8 2.18 2.55 3.0 3.45 — 그라데이션 버튼 + 커서 클릭 (레퍼런스 'Book a demo')
-    tl.fromTo("#ct-cam", { scale: 1.04 }, { scale: 0.98, duration: 4.98, ease: "none" }, 0);
-    tl.fromTo("#ct-lead", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0);
-    tl.fromTo("#ct-b1", { opacity: 0, scale: 1.6, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.45);
-    tl.fromTo("#ct-b2", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.89);
-    tl.fromTo("#ct-pill div", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 1.34);
-    tl.fromTo("#ct-btn", { opacity: 0, y: 80, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "expo.out" }, 1.34);
-    tl.fromTo(["#ct-hours", "#ct-brand", "#ct-fine"], { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out", stagger: 0.1 }, 1.8);
-    // 커서가 들어와 버튼 클릭
-    tl.fromTo("#ct-cursor", { opacity: 0, x: 220, y: 260 }, { opacity: 1, x: 0, y: 0, duration: 0.5, ease: "power3.out" }, 2.18);
-    tl.fromTo("#ct-cursor", { scale: 1 }, { scale: 0.85, duration: 0.08, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, 2.68);
-    tl.fromTo("#ct-btn", { scale: 1 }, { scale: 0.95, duration: 0.09, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, 2.7);
+    const CAM = "#cta-cam", BG = "#cta-bg";
+
+    const D = 4.985;
+    const B = {"53": 0.0, "54": 0.45, "55": 0.9, "56": 1.35, "57": 1.8, "58": 2.18, "59": 2.56, "60": 3.0, "61": 3.45};
+    // 등장: 블러 → 선명, 짧고 정확하게. 오버슈트 없음
+    function IN(sel, t, from, dur) {
+      const f = Object.assign({ opacity: 0, filter: "blur(12px)" }, from || {});
+      const to = { opacity: 1, filter: "blur(0px)", duration: dur || 0.16, ease: "power3.out" };
+      for (const k in f) if (!(k in to)) to[k] = k.startsWith("scale") ? 1 : 0;
+      tl.fromTo(sel, f, to, t);
+    }
+    // 퇴장: 다음 비트 직전에 짧게 빠짐
+    function OUT(sel, t, to) {
+      tl.to(sel, Object.assign({ opacity: 0, filter: "blur(10px)", duration: 0.07, ease: "power2.in" }, to || {}), t - 0.07);
+    }
+    // 카메라: 씬 내내 한 방향으로 천천히 다가감 (펌프·흔들림 없음)
+    tl.fromTo(CAM, { scale: 1 }, { scale: 1.06, duration: 4.985, ease: "none" }, 0);
+    tl.fromTo(BG, { scale: 1.08 }, { scale: 1, duration: D, ease: "none" }, 0);
+
+
+    // B53 흰 화면 와이프 + 망설여진다면 · B54 상담만 · B55 받아도 돼요 · B56 마감 · B57 버튼 · B58 커서 · B59 클릭 · B60 정보
+    tl.fromTo("#ct-paper", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.16, ease: "power3.inOut" }, 0);
+    IN("#ct-lead", B[53] + 0.1, { y: -20 });
+    IN("#ct-b1", B[54], { scale: 1.4, filter: "blur(18px)" }, 0.22);
+    IN("#ct-b2", B[55], { y: 40 });
+    IN("#ct-pill div", B[56], { y: 24 });
+    IN("#ct-btn", B[57], { y: 60 }, 0.22);
+    tl.fromTo("#ct-cursor", { opacity: 0, x: 200, y: 220 }, { opacity: 1, x: 0, y: 0, duration: 0.3, ease: "power3.out" }, B[58]);
+    tl.fromTo("#ct-btn", { scale: 1 }, { scale: 0.96, duration: 0.07, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, B[59]);
+    tl.fromTo("#ct-cursor", { scale: 1 }, { scale: 0.86, duration: 0.07, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, B[59]);
+    IN(["#ct-hours", "#ct-brand", "#ct-fine"], B[58], { y: 16 }, 0.2);
+
     window.__timelines["cta"] = tl;
   </script>
 </template>
