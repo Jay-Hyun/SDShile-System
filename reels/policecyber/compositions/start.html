@@ -8,10 +8,12 @@
     #root {
       position: absolute;
       inset: 0;
+      overflow: hidden;
       font-family: "PretendardGOV", sans-serif;
-      color: #f3eee3;
-      letter-spacing: -0.035em;
+      color: #161616;
+      letter-spacing: -0.05em;
       word-break: keep-all;
+      background: #fbf9f4;
     }
     .stage {
       position: absolute;
@@ -19,63 +21,81 @@
       width: 920px;
       text-align: center;
     }
-    .w {
-      display: inline-block;
+    #st-h {
+      top: 270px;
+      font-size: 130px;
+      font-weight: 900;
+      line-height: 1.08;
     }
-    .g {
-      color: #e0c27e;
+    #st-h .g {
+      color: #7d6233;
     }
-    #start-q {
-      top: 680px;
-      font-size: 96px;
+    #st-list {
+      position: absolute;
+      left: 170px;
+      top: 620px;
+      width: 740px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .sr {
+      height: 132px;
+      border-radius: 28px;
+      background: #ffffff;
+      border: 3px solid #e8e2d6;
+      display: flex;
+      align-items: center;
+      padding: 0 44px;
+      font-size: 72px;
+      font-weight: 900;
+      gap: 30px;
+    }
+    .sr i {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #b8955a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sr i svg {
+      width: 38px;
+      height: 38px;
+    }
+    .sr span {
+      margin-left: auto;
+      font-size: 34px;
+      font-weight: 700;
+      color: #7d6233;
+    }
+    #st-sub {
+      top: 1120px;
+      font-size: 46px;
       font-weight: 800;
-      line-height: 1.17;
-      color: #8d97ab;
-    }
-    #start-a {
-      top: 660px;
-      font-size: 98px;
-      font-weight: 800;
-      line-height: 1.16;
-    }
-    #start-sub {
-      top: 930px;
-      font-size: 40px;
-      font-weight: 600;
-      line-height: 1.4;
-    }
-    #start-sub .w {
-      color: rgba(243, 238, 227, 0.35);
     }
   </style>
   <div id="root" data-composition-id="start" data-width="1080" data-height="1920">
-    <div id="start-q" class="stage" data-layout-allow-overlap>
-      <div><span class="w">법대도</span></div>
-      <div><span class="w">안</span> <span class="w">나왔는데요?</span></div>
+    <div id="st-h" class="stage">법대 안 나와도,<br /><span class="g">학력 그대로.</span></div>
+    <div id="st-list">
+      <div class="sr"><i><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" /></svg></i>고졸<span>시작 가능</span></div>
+      <div class="sr"><i><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" /></svg></i>전문대졸<span>이어서</span></div>
+      <div class="sr"><i><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" /></svg></i>대졸<span>전공만 더</span></div>
     </div>
-
-    <div id="start-a" class="stage" data-layout-allow-overlap>
-      <div class="line"><span class="w">지금</span> <span class="w">학력</span> <span class="w g">그대로,</span></div>
-      <div class="line"><span class="w">시작할</span> <span class="w">수</span> <span class="w">있어요.</span></div>
-    </div>
-
-    <div id="start-sub" class="stage">
-      <span class="w">고졸·전문대졸·대졸,</span><br />
-      <span class="w">출발점이</span> <span class="w">달라도</span> <span class="w">괜찮아요.</span>
-    </div>
+    <div id="st-sub" class="stage">출발점이 달라도 괜찮아요.</div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
+    // 로컬 비트: 0, .47, .91, 1.35, 1.74, 2.11
 
-    tl.fromTo("#start-q .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.15, ease: "power4.out", stagger: 0.08 }, 0.05);
-    tl.to("#start-q .w", { opacity: 0, filter: "blur(10px)", duration: 0.18, ease: "power3.in", stagger: 0.03 }, 1.45);
+    // 앞 씬 휩을 이어받아 오른쪽에서 들어옴
+    tl.fromTo("#st-h", { opacity: 0, x: 260, filter: "blur(14px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0);
+    tl.fromTo(".sr", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out", stagger: 0.44 }, 0.47);
+    tl.fromTo(".sr i", { scale: 0 }, { scale: 1, duration: 0.25, ease: "back.out(1.8)", stagger: 0.44 }, 0.6);
+    tl.fromTo("#st-sub", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 1.4);
 
-    // 답: 줄 단위 블러 인
-    tl.fromTo("#start-a .line", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out", stagger: 0.2 }, 1.7);
-    // 서브: 단어별 회색 → 크림
-    tl.fromTo("#start-sub .w", { color: "rgba(243, 238, 227, 0.35)" }, { color: "rgba(243, 238, 227, 0.92)", duration: 0.2, ease: "power1.out", stagger: 0.09 }, 2.2);
-
-    tl.to(["#start-a", "#start-sub"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power3.in", stagger: 0.03 }, 3.72);
+    tl.to(["#st-h", "#st-list", "#st-sub"], { y: -200, opacity: 0, filter: "blur(12px)", duration: 0.2, ease: "power3.in" }, 2.34);
 
     window.__timelines["start"] = tl;
   </script>

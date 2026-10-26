@@ -8,10 +8,12 @@
     #root {
       position: absolute;
       inset: 0;
+      overflow: hidden;
       font-family: "PretendardGOV", sans-serif;
       color: #f3eee3;
-      letter-spacing: -0.035em;
+      letter-spacing: -0.05em;
       word-break: keep-all;
+      background: #0b1a33;
     }
     .stage {
       position: absolute;
@@ -19,160 +21,78 @@
       width: 920px;
       text-align: center;
     }
-    .w {
-      display: inline-block;
+    #on-num {
+      position: absolute;
+      left: 0;
+      width: 1080px;
+      top: 330px;
+      text-align: center;
+      font-size: 640px;
+      font-weight: 900;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 6px #e0c27e;
+      letter-spacing: -0.06em;
     }
-    .g {
+    #on-h {
+      top: 250px;
+      font-size: 120px;
+      font-weight: 900;
+    }
+    #on-label {
+      top: 930px;
+      font-size: 96px;
+      font-weight: 900;
       color: #e0c27e;
     }
-    #online-q {
-      top: 680px;
-      font-size: 96px;
-      font-weight: 800;
-      line-height: 1.17;
-      color: #8d97ab;
-    }
-    #online-a {
-      top: 650px;
-      font-size: 100px;
-      font-weight: 800;
-    }
-    #online-card {
-      position: absolute;
-      left: 170px;
-      top: 815px;
-      width: 740px;
-      padding: 34px 40px 36px;
-      border-radius: 32px;
-      background: #f3eee3;
-      color: #161616;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
-    }
-    .oc-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 36px;
-      font-weight: 800;
-      padding-bottom: 22px;
-      border-bottom: 2px solid #e8e2d6;
-      margin-bottom: 10px;
-    }
-    .oc-head span {
-      font-size: 30px;
-      font-weight: 600;
-      color: #7d6233;
-      font-variant-numeric: tabular-nums;
-    }
-    .oc-row {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      height: 74px;
-      font-size: 32px;
-      font-weight: 700;
-    }
-    .oc-row em {
-      font-style: normal;
-      margin-left: auto;
-      font-size: 28px;
-      font-weight: 600;
-      color: #6b6660;
-    }
-    .oc-check {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: #b8955a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .oc-check svg {
-      width: 26px;
-      height: 26px;
-    }
-    .oc-dot {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 4px solid #b8955a;
-    }
-    .oc-bar {
-      height: 12px;
-      border-radius: 6px;
-      background: #e8e2d6;
-      overflow: hidden;
-      margin: 6px 0 0 64px;
-    }
-    #online-fill {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, #b8955a, #e0c27e);
-      transform-origin: 0 50%;
-    }
-    #online-pill {
-      top: 1225px;
+    #on-tags {
+      top: 1070px;
       display: flex;
       justify-content: center;
+      gap: 16px;
     }
-    #online-pill div {
+    .tag {
       height: 76px;
-      padding: 0 40px;
+      padding: 0 30px;
       border-radius: 999px;
-      background: #e0c27e;
+      background: #f3eee3;
       color: #0b1a33;
-      font-size: 40px;
+      font-size: 38px;
       font-weight: 800;
       display: flex;
       align-items: center;
+      letter-spacing: -0.02em;
+    }
+    #on-sub {
+      top: 1176px;
+      font-size: 44px;
+      font-weight: 700;
+      color: rgba(243, 238, 227, 0.85);
     }
   </style>
   <div id="root" data-composition-id="online" data-width="1080" data-height="1920">
-    <div id="online-q" class="stage" data-layout-allow-overlap>
-      <div><span class="w">일,</span> <span class="w">그만둬야</span></div>
-      <div><span class="w">하나요?</span></div>
+    <div id="on-num" data-layout-allow-overflow data-layout-allow-overlap>0</div>
+    <div id="on-h" class="stage">일은 그대로.</div>
+    <div id="on-label" class="stage">오프라인 수업 0회</div>
+    <div id="on-tags" class="stage">
+      <div class="tag">퇴근 후</div>
+      <div class="tag">주말</div>
+      <div class="tag">이동 중</div>
     </div>
-
-    <div id="online-a" class="stage" data-layout-allow-overlap>
-      <span class="w">퇴근</span> <span class="w">후,</span> <span class="w g">주말에.</span>
-    </div>
-
-    <div id="online-card">
-      <div class="oc-head">민법총칙 · 3주차<span>12:40</span></div>
-      <div class="oc-row">
-        <div class="oc-check" id="online-c1"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
-        1주차<em>완료</em>
-      </div>
-      <div class="oc-row">
-        <div class="oc-check" id="online-c2"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
-        2주차<em>완료</em>
-      </div>
-      <div class="oc-row">
-        <div class="oc-dot"></div>
-        3주차<em class="g" style="color: #7d6233">수강 중</em>
-      </div>
-      <div class="oc-bar"><div id="online-fill"></div></div>
-    </div>
-
-    <div id="online-pill" class="stage"><div>오프라인 수업 0회</div></div>
+    <div id="on-sub" class="stage">100% 온라인으로 수강해요</div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
+    // 로컬 비트: 0, .44, .91, 1.38, 1.81, 2.24
 
-    tl.fromTo("#online-q .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.15, ease: "power4.out", stagger: 0.08 }, 0.05);
-    tl.to("#online-q .w", { opacity: 0, filter: "blur(10px)", duration: 0.18, ease: "power3.in", stagger: 0.03 }, 1.3);
+    tl.fromTo("#on-h", { opacity: 0, x: -120, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0);
+    tl.fromTo("#on-num", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: "expo.out" }, 0.3);
+    tl.fromTo("#on-label", { opacity: 0, scale: 0.8, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.44);
+    tl.fromTo(".tag", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "expo.out", stagger: 0.12 }, 0.91);
+    tl.fromTo("#on-sub", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 1.3);
 
-    tl.fromTo("#online-a .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power4.out", stagger: 0.1 }, 1.5);
-
-    // 학습 카드: 아래 길에서 올라와 안착
-    tl.fromTo("#online-card", { opacity: 0, y: 120, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "expo.out" }, 1.65);
-    tl.fromTo(["#online-c1", "#online-c2"], { scale: 0 }, { scale: 1, duration: 0.35, ease: "back.out(1.6)", stagger: 0.2 }, 2.0);
-    tl.fromTo("#online-fill", { scaleX: 0.04 }, { scaleX: 0.62, duration: 1.1, ease: "power2.inOut" }, 2.35);
-
-    tl.fromTo("#online-pill div", { opacity: 0, scale: 0.85, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 2.6);
-
-    tl.to(["#online-a", "#online-card", "#online-pill"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power3.in", stagger: 0.03 }, 3.6);
+    // 다음 씬(크림)으로: 왼쪽으로 휩
+    tl.to(["#on-h", "#on-num", "#on-label", "#on-tags", "#on-sub"], { x: -260, opacity: 0, filter: "blur(14px)", duration: 0.2, ease: "power3.in" }, 2.47);
 
     window.__timelines["online"] = tl;
   </script>

@@ -1,18 +1,17 @@
 # 경찰복지사이버평생교육원 홍보 릴스 (HyperFrames)
 
-1080×1920, 30fps, 30초. BGM: Pixabay "Event Music"(MUSIC.md), 씬 전환은 비트에 맞춤. 앵글: "법조계가 멀게만 느껴졌던 사람들" — 씬마다 법원이 가까워지는 구조.
+1080×1920, 30fps, 30초. SaaS 런칭 영상 스타일(큰 단어, 빠른 컷, 슬롯 롤, 가이드 라인). 컷은 BGM 비트(134 BPM)에 맞춤.
 
 | 시간 | 씬 파일 | 내용 |
 |---|---|---|
-| 0–6.2s | compositions/hook.html | 종합 훅: "나와는 먼 얘기 같았나요?" → "생각보다 가까워요" + 핵심 3포인트 |
-| 6.2–10.2s | compositions/start.html | 법대 안 나와도 — 지금 학력 그대로 |
-| 10.2–14.1s | compositions/online.html | 일 그만두지 않아도 — 퇴근 후·주말, 오프라인 0회 |
-| 14.1–18.1s | compositions/planner.html | 혼자가 아니어도 — 1:1 학습 설계 |
-| 18.1–22.1s | compositions/degree.html | 교양 아닌 '법학 전공' 학위 (교육부장관 명의) |
-| 22.1–26s | compositions/paths.html | 로스쿨 · 로펌/법무팀 · 경찰/공무원 |
-| 26–30s | compositions/cta.html | 상담 CTA, 개강/마감, 면책 |
-
-배경(법원·길·과목 마키)은 compositions/world.html 하나가 30초 내내 깔림.
+| 0–3.3s | compositions/poster.html | 1차 훅: 핵심을 모은 포스터 (유일한 법학 전공* · 오프라인 0회 · 교육부장관 명의 학사 · 1:1 · 개강 · 전화) |
+| 3.3–8.4s | compositions/hook2.html | 2차 훅: 변호사→검사→법무관 슬롯 → "나랑은 먼 얘기?" → "아니요. 출발점은 법학 전공" |
+| 8.4–11.1s | compositions/online.html | 일은 그대로 · 오프라인 수업 0회 |
+| 11.1–13.7s | compositions/start.html | 법대 안 나와도, 학력 그대로 (고졸·전문대졸·대졸) |
+| 13.7–16.8s | compositions/degree.html | 학위는 진짜 · 교육부장관 명의 법학사 |
+| 16.8–19.4s | compositions/planner.html | 혼자 말고, 같이 · 1:1 학습 설계 |
+| 19.4–23.7s | compositions/paths.html | 로스쿨/로펌/법무팀/경찰/공무원 롤 → 출발점은 법학 전공 |
+| 23.7–30s | compositions/cta.html | 상담만 받아도 돼요 · 개강/마감 · 전화 버튼 · 면책 |
 
 ```bash
 npx hyperframes@0.8.200 preview      # 미리보기

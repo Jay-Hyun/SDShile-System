@@ -8,10 +8,28 @@
     #root {
       position: absolute;
       inset: 0;
+      overflow: hidden;
       font-family: "PretendardGOV", sans-serif;
       color: #f3eee3;
-      letter-spacing: -0.035em;
+      letter-spacing: -0.05em;
       word-break: keep-all;
+      background: #e0c27e;
+    }
+    #pa-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(90% 60% at 50% 45%, #1a3566 0%, #0b1a33 70%);
+    }
+    #pa-grid {
+      position: absolute;
+      inset: 0;
+    }
+    .gl {
+      stroke: rgba(243, 238, 227, 0.35);
+      stroke-width: 2;
+    }
+    .gh {
+      fill: #f3eee3;
     }
     .stage {
       position: absolute;
@@ -19,62 +37,35 @@
       width: 920px;
       text-align: center;
     }
-    .w {
-      display: inline-block;
+    #pa-top {
+      top: 380px;
+      font-size: 84px;
+      font-weight: 800;
     }
-    .g {
+    #pa-top2 {
+      top: 380px;
+      font-size: 84px;
+      font-weight: 800;
+    }
+    .pw {
+      top: 610px;
+      font-size: 240px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    #pa-final {
+      top: 640px;
+      font-size: 200px;
+      font-weight: 900;
+      line-height: 1;
       color: #e0c27e;
     }
-    #paths-q {
-      top: 700px;
-      font-size: 96px;
+    #pa-sub {
+      top: 980px;
+      font-size: 48px;
       font-weight: 800;
-      color: #8d97ab;
     }
-    #paths-a {
-      top: 660px;
-      font-size: 92px;
-      font-weight: 800;
-      line-height: 1.15;
-    }
-    #paths-cards {
-      position: absolute;
-      left: 110px;
-      top: 905px;
-      width: 860px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .pc {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      height: 98px;
-      padding: 0 34px;
-      border-radius: 24px;
-      background: rgba(18, 38, 74, 0.86);
-      border: 2px solid rgba(224, 194, 126, 0.45);
-    }
-    .pc b {
-      font-size: 34px;
-      font-weight: 800;
-      color: #e0c27e;
-      font-variant-numeric: tabular-nums;
-    }
-    .pc strong {
-      font-size: 40px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-    .pc span {
-      font-size: 28px;
-      font-weight: 500;
-      color: rgba(243, 238, 227, 0.7);
-      margin-left: auto;
-      text-align: right;
-    }
-    #paths-fine {
+    #pa-fine {
       top: 1262px;
       font-size: 28px;
       font-weight: 500;
@@ -83,37 +74,57 @@
     }
   </style>
   <div id="root" data-composition-id="paths" data-width="1080" data-height="1920">
-    <div id="paths-q" class="stage" data-layout-allow-overlap>
-      <span class="w">그다음은요?</span>
-    </div>
+    <div id="pa-bg"></div>
+    <!-- 디자인 툴 가이드 박스 (레퍼런스 톤) -->
+    <svg id="pa-grid" viewBox="0 0 1080 1920" data-layout-ignore>
+      <line class="gl" x1="0" y1="570" x2="1080" y2="570" />
+      <line class="gl" x1="0" y1="890" x2="1080" y2="890" />
+      <line class="gl" x1="90" y1="0" x2="90" y2="1920" />
+      <line class="gl" x1="990" y1="0" x2="990" y2="1920" />
+      <rect class="gh" x="82" y="562" width="16" height="16" />
+      <rect class="gh" x="982" y="562" width="16" height="16" />
+      <rect class="gh" x="82" y="882" width="16" height="16" />
+      <rect class="gh" x="982" y="882" width="16" height="16" />
+    </svg>
 
-    <div id="paths-a" class="stage" data-layout-allow-overlap>
-      <div><span class="w">이런</span> <span class="w">길들이</span></div>
-      <div><span class="w g">가까워져요.</span></div>
-    </div>
+    <div id="pa-top" class="stage" data-layout-allow-overlap>이 길이 가까워져요</div>
+    <div id="pa-w1" class="stage pw">로스쿨</div>
+    <div id="pa-w2" class="stage pw">로펌</div>
+    <div id="pa-w3" class="stage pw">법무팀</div>
+    <div id="pa-w4" class="stage pw">경찰</div>
+    <div id="pa-w5" class="stage pw" data-layout-allow-overlap>공무원</div>
 
-    <div id="paths-cards">
-      <div class="pc"><b>01</b><strong>로스쿨 진학</strong><span>LEET 전, 학사학위와 법학 기초</span></div>
-      <div class="pc"><b>02</b><strong>로펌·법무팀</strong><span>법학사로 증명하는 준비</span></div>
-      <div class="pc"><b>03</b><strong>경찰·공무원</strong><span>수험 과목과 학위를 함께</span></div>
-    </div>
-
-    <div id="paths-fine" class="stage">※ 로스쿨 입학·인턴·채용 여부는 각 기관의 선발 기준에 따릅니다.</div>
+    <div id="pa-top2" class="stage">그 출발점은</div>
+    <div id="pa-final" class="stage">법학 전공</div>
+    <div id="pa-sub" class="stage">법학사, 여기서 시작하세요</div>
+    <div id="pa-fine" class="stage">※ 로스쿨 입학·인턴·채용 여부는 각 기관의 선발 기준에 따릅니다.</div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
+    // 로컬 비트: 0, .45, .91, 1.34, 1.79, 2.25, 2.7, 3.07, 3.45, 3.9
 
-    // 질문: 한 줄 전체 블러 인
-    tl.fromTo("#paths-q", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.05);
-    tl.to("#paths-q", { opacity: 0, filter: "blur(10px)", duration: 0.18, ease: "power3.in" }, 1.0);
+    // 골드 → 네이비 아이리스
+    tl.fromTo("#pa-bg", { clipPath: "circle(0% at 50% 45%)" }, { clipPath: "circle(120% at 50% 45%)", duration: 0.3, ease: "power2.inOut" }, 0);
+    tl.fromTo("#pa-grid", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 0.2);
+    tl.fromTo("#pa-top", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.2, ease: "expo.out" }, 0.2);
 
-    tl.fromTo("#paths-a .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power4.out", stagger: 0.1 }, 1.2);
+    // 슬롯머신 롤: 비트마다 한 단어
+    const ws = ["#pa-w1", "#pa-w2", "#pa-w3", "#pa-w4", "#pa-w5"];
+    const at = [0.45, 0.91, 1.34, 1.79, 2.25];
+    ws.forEach((w, i) => {
+      tl.fromTo(w, { opacity: 0, y: 150, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.12, ease: "power4.out" }, at[i]);
+      const out = i < 4 ? at[i + 1] - 0.08 : 2.62;
+      tl.to(w, { opacity: 0, y: -150, filter: "blur(12px)", duration: 0.1, ease: "power3.in" }, out);
+    });
+    tl.to("#pa-top", { opacity: 0, filter: "blur(8px)", duration: 0.12, ease: "power3.in" }, 2.6);
 
-    // 세 갈래 카드: 좌측에서 가로 블러와 함께 안착
-    tl.fromTo(".pc", { opacity: 0, x: -90, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.55, ease: "expo.out", stagger: 0.16 }, 1.65);
-    tl.fromTo("#paths-fine", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 2.3);
+    // 결론
+    tl.fromTo("#pa-top2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.2, ease: "expo.out" }, 2.7);
+    tl.fromTo("#pa-final", { opacity: 0, scale: 1.4, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 2.7);
+    tl.fromTo("#pa-sub", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 3.07);
+    tl.fromTo("#pa-fine", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 2.7);
 
-    tl.to(["#paths-a", "#paths-cards", "#paths-fine"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power3.in", stagger: 0.03 }, 3.58);
+    tl.to(["#pa-top2", "#pa-final", "#pa-sub", "#pa-fine", "#pa-grid"], { opacity: 0, filter: "blur(10px)", duration: 0.16, ease: "power3.in" }, 4.16);
 
     window.__timelines["paths"] = tl;
   </script>

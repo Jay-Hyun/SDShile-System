@@ -8,10 +8,17 @@
     #root {
       position: absolute;
       inset: 0;
+      overflow: hidden;
       font-family: "PretendardGOV", sans-serif;
-      color: #f3eee3;
-      letter-spacing: -0.035em;
+      color: #0b1a33;
+      letter-spacing: -0.05em;
       word-break: keep-all;
+      background: #0b1a33;
+    }
+    #pl-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(80% 55% at 50% 40%, #f0d595 0%, #e0c27e 55%, #c9a666 100%);
     }
     .stage {
       position: absolute;
@@ -19,88 +26,77 @@
       width: 920px;
       text-align: center;
     }
-    .w {
-      display: inline-block;
-    }
-    .g {
-      color: #e0c27e;
-    }
-    #planner-q {
-      top: 680px;
-      font-size: 96px;
+    #pl-h1 {
+      top: 280px;
+      font-size: 120px;
       font-weight: 800;
-      line-height: 1.17;
-      color: #8d97ab;
     }
-    #planner-a {
-      top: 640px;
-      font-size: 96px;
-      font-weight: 800;
-      line-height: 1.16;
+    #pl-h2 {
+      top: 420px;
+      font-size: 300px;
+      font-weight: 900;
+      line-height: 1;
     }
-    #planner-label {
-      top: 920px;
-      font-size: 32px;
-      font-weight: 700;
+    #pl-pill {
+      top: 790px;
+      display: flex;
+      justify-content: center;
+    }
+    #pl-pill div {
+      height: 84px;
+      padding: 0 40px;
+      border-radius: 999px;
+      background: #0b1a33;
       color: #e0c27e;
-      letter-spacing: 0.02em;
+      font-size: 44px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      letter-spacing: -0.02em;
     }
     .bubble {
       position: absolute;
-      max-width: 700px;
-      padding: 28px 38px;
-      font-size: 38px;
-      font-weight: 700;
-      line-height: 1.3;
-      border-radius: 40px;
+      padding: 26px 36px;
+      font-size: 40px;
+      font-weight: 800;
+      line-height: 1.25;
+      border-radius: 38px;
+      letter-spacing: -0.03em;
     }
-    #planner-b1 {
-      left: 100px;
-      top: 990px;
-      background: #1c3563;
-      border: 2px solid rgba(243, 238, 227, 0.18);
+    #pl-b1 {
+      left: 110px;
+      top: 930px;
+      background: #fbf9f4;
       border-bottom-left-radius: 10px;
-      color: #f3eee3;
     }
-    #planner-b2 {
-      right: 100px;
-      top: 1120px;
-      background: #e0c27e;
-      color: #0b1a33;
+    #pl-b2 {
+      right: 110px;
+      top: 1060px;
+      background: #0b1a33;
+      color: #f3eee3;
       border-bottom-right-radius: 10px;
     }
   </style>
   <div id="root" data-composition-id="planner" data-width="1080" data-height="1920">
-    <div id="planner-q" class="stage" data-layout-allow-overlap>
-      <div><span class="w">혼자</span> <span class="w">할</span> <span class="w">수</span></div>
-      <div><span class="w">있을까요?</span></div>
-    </div>
-
-    <div id="planner-a" class="stage" data-layout-allow-overlap>
-      <div><span class="w">1:1</span> <span class="w">학습</span> <span class="w">설계로,</span></div>
-      <div><span class="w g">같이</span> <span class="w">걸어요.</span></div>
-    </div>
-
-    <div id="planner-label" class="stage">학습플래너 1:1 상담</div>
-    <div id="planner-b1" class="bubble">퇴근이 늦는 날이 많아요</div>
-    <div id="planner-b2" class="bubble">내 일정에 맞춰 같이 짜드려요</div>
+    <div id="pl-bg"></div>
+    <div id="pl-h1" class="stage">혼자 말고,</div>
+    <div id="pl-h2" class="stage">같이.</div>
+    <div id="pl-pill" class="stage"><div>학습플래너 1:1 학습 설계</div></div>
+    <div id="pl-b1" class="bubble">퇴근이 늦는 날이 많아요</div>
+    <div id="pl-b2" class="bubble">내 일정에 맞춰 같이 짜드려요</div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
+    // 로컬 비트: 0, .45, .82, 1.21, 1.66, 2.09
 
-    tl.fromTo("#planner-q .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.15, ease: "power4.out", stagger: 0.07 }, 0.05);
-    tl.to("#planner-q .w", { opacity: 0, filter: "blur(10px)", duration: 0.18, ease: "power3.in", stagger: 0.03 }, 1.3);
+    tl.fromTo("#pl-bg", { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(120% at 50% 50%)", duration: 0.3, ease: "power2.inOut" }, 0);
+    tl.fromTo("#pl-h1", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.2, ease: "expo.out" }, 0.12);
+    tl.fromTo("#pl-h2", { opacity: 0, scale: 1.4, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.45);
+    tl.fromTo("#pl-pill div", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 0.82);
+    tl.fromTo("#pl-b1", { opacity: 0, scale: 0.6, transformOrigin: "0% 100%" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.4)" }, 0.95);
+    tl.fromTo("#pl-b2", { opacity: 0, scale: 0.6, transformOrigin: "100% 100%" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.4)" }, 1.1);
 
-    // 답: 회색 → 크림 단어별 점등 (위치 이동 없음)
-    tl.fromTo("#planner-a .w", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 1.48);
-    tl.fromTo("#planner-a .w:not(.g)", { color: "#5b6680" }, { color: "#f3eee3", duration: 0.18, ease: "power1.out", stagger: 0.09 }, 1.5);
-    tl.fromTo("#planner-a .g", { color: "#5b6680" }, { color: "#e0c27e", duration: 0.18, ease: "power1.out" }, 1.78);
-
-    tl.fromTo("#planner-label", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 1.85);
-    tl.fromTo("#planner-b1", { opacity: 0, scale: 0.6, transformOrigin: "0% 100%" }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.3)" }, 1.9);
-    tl.fromTo("#planner-b2", { opacity: 0, scale: 0.6, transformOrigin: "100% 100%" }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.3)" }, 2.25);
-
-    tl.to(["#planner-a", "#planner-label", "#planner-b1", "#planner-b2"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power3.in", stagger: 0.03 }, 3.6);
+    tl.to(["#pl-h1", "#pl-h2", "#pl-pill", "#pl-b1", "#pl-b2"], { opacity: 0, scale: 0.92, filter: "blur(10px)", duration: 0.18, ease: "power3.in" }, 2.36);
 
     window.__timelines["planner"] = tl;
   </script>
