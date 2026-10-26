@@ -120,6 +120,46 @@
   #en-btn svg { width: 58px; height: 58px; }
   #en-pill { top: 990px; }
   #en-fine { top: 1110px; }
+
+  /* 장면별 바탕 */
+  #bg { display: none; }
+  .sbg { position: absolute; inset: -120px; overflow: hidden; }
+  #G-poster { background: radial-gradient(55% 35% at 15% 12%, rgba(120, 160, 255, 0.5), rgba(120, 160, 255, 0) 70%), radial-gradient(60% 40% at 88% 88%, rgba(242, 205, 140, 0.6), rgba(242, 205, 140, 0) 70%), #f7f6f2; }
+  #G-poster .grid { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(11, 26, 51, 0.05) 0 2px, rgba(0, 0, 0, 0) 2px 90px), repeating-linear-gradient(90deg, rgba(11, 26, 51, 0.05) 0 2px, rgba(0, 0, 0, 0) 2px 90px); -webkit-mask-image: radial-gradient(60% 45% at 50% 42%, #000, rgba(0, 0, 0, 0)); }
+  #G-chat { background: linear-gradient(180deg, #d9e3fb 0%, #eaf0fc 45%, #f7f8fd 100%); }
+  #G-chat .floor { position: absolute; left: -900px; right: -900px; top: 1250px; height: 1400px; background: repeating-linear-gradient(90deg, rgba(46, 92, 190, 0.2) 0 2px, rgba(0, 0, 0, 0) 2px 130px), repeating-linear-gradient(0deg, rgba(46, 92, 190, 0.2) 0 2px, rgba(0, 0, 0, 0) 2px 130px); transform: perspective(800px) rotateX(64deg); transform-origin: 50% 0; -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0), #000 35%); }
+  #G-chat .horizon { position: absolute; left: 0; right: 0; top: 1120px; height: 260px; background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0)); }
+  .bok { position: absolute; border-radius: 50%; filter: blur(70px); }
+  #G-turn { background: radial-gradient(45% 28% at 50% 44%, rgba(70, 110, 220, 0.55), rgba(70, 110, 220, 0) 70%), radial-gradient(80% 45% at 50% 110%, rgba(242, 205, 140, 0.2), rgba(242, 205, 140, 0) 70%), #060b18; }
+  #G-turn .beam { position: absolute; left: 50%; top: -200px; width: 1600px; height: 2200px; margin-left: -800px; background: conic-gradient(from 166deg at 50% 0%, rgba(0, 0, 0, 0) 0deg, rgba(170, 195, 255, 0.26) 14deg, rgba(0, 0, 0, 0) 28deg); filter: blur(28px); transform-origin: 50% 0; }
+  #G-turn .dots { position: absolute; inset: 0; background: radial-gradient(circle, rgba(255, 255, 255, 0.09) 1.6px, rgba(0, 0, 0, 0) 2px) 0 0 / 44px 44px; -webkit-mask-image: radial-gradient(55% 40% at 50% 46%, #000, rgba(0, 0, 0, 0)); }
+  #G-start { background: linear-gradient(180deg, #e6edff 0%, #f8f6f0 55%, #fde4b8 100%); }
+  #G-start .sun { position: absolute; left: 50%; width: 1600px; height: 1600px; margin: -800px 0 0 -800px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 210, 130, 0.95), rgba(255, 214, 140, 0.4) 32%, rgba(255, 214, 140, 0) 62%); }
+  #G-start .rays { position: absolute; left: 50%; width: 3200px; height: 3200px; margin: -1600px 0 0 -1600px; background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.42) 0deg 3deg, rgba(255, 255, 255, 0) 3deg 12deg); -webkit-mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0) 42%); }
+  #G-cta { background: radial-gradient(55% 35% at 50% 42%, rgba(120, 160, 255, 0.9), rgba(120, 160, 255, 0) 70%), linear-gradient(160deg, #0f2147 0%, #2e5cbe 58%, #86a5ec 100%); }
+  #G-cta .ring { position: absolute; left: 50%; top: 940px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.5); }
+  #G-end { background: radial-gradient(55% 35% at 88% 88%, rgba(224, 194, 126, 0.75), rgba(224, 194, 126, 0) 100%), radial-gradient(70% 45% at 25% 25%, rgba(46, 92, 190, 0.9), rgba(46, 92, 190, 0) 100%), linear-gradient(160deg, #081429 0%, #1a3a86 60%, #b8955a 135%); }
+  #G-end .lines { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 2px, rgba(0, 0, 0, 0) 2px 14px); }
+  #vig { position: absolute; inset: 0; z-index: 54; pointer-events: none; background: radial-gradient(80% 62% at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(4, 9, 22, 0.3) 100%); }
+  #fx { position: absolute; inset: 0; z-index: 55; pointer-events: none; }
+  #leak { position: absolute; left: 0; top: -500px; width: 900px; height: 2900px; z-index: 60; pointer-events: none; opacity: 0; background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 226, 170, 0.6), rgba(255, 255, 255, 0.85), rgba(160, 190, 255, 0.5), rgba(255, 255, 255, 0)); filter: blur(46px); mix-blend-mode: screen; }
+
+  /* 어두운 장면 글자색 */
+  #tu-top { color: rgba(255, 255, 255, 0.7) !important; }
+  #tu-bot { color: #fff; }
+  .tw { color: #fff; }
+  #tw0h { background: linear-gradient(#f5c45c, #f5c45c) no-repeat 0 96% / 0% 12%; }
+  #tu-pill { background: linear-gradient(120deg, #2e5cbe, #5d86ea) !important; box-shadow: 0 0 80px rgba(93, 134, 234, 0.6), 0 30px 70px rgba(0, 0, 0, 0.4) !important; }
+  #L-turn .frag { background: rgba(255, 255, 255, 0.07); box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.16), 0 30px 60px rgba(0, 0, 0, 0.4); }
+  #L-turn .frag h5 { color: #9db8ff; }
+  #L-turn .frag b { color: #fff; }
+  #L-turn .frag i { background: rgba(255, 255, 255, 0.14); }
+  #tu-fine { color: rgba(255, 255, 255, 0.58); }
+  #en-1 { color: #f0d595 !important; }
+  #en-2 { color: #fff; }
+  #en-btn { background: #fff !important; color: #0b1a33 !important; }
+  #en-btn path { fill: #0b1a33; }
+  #en-fine { color: rgba(255, 255, 255, 0.66); }
 </style>
 </head>
 <body>
@@ -127,6 +167,7 @@
 
 <!-- 포스터 -->
 <div class="layer" id="L-poster">
+  <div class="sbg" id="G-poster"><div class="grid"></div></div>
   <div class="cam" id="C-poster">
     <div class="abs c" id="po-k">경찰복지사이버평생교육원 · 법학 전공</div>
     <div class="abs c" id="po-1">AI의 답은 늘<br />이렇게 끝납니다.</div>
@@ -139,6 +180,7 @@
 
 <!-- 채팅 (질문 1 + 쌓임) -->
 <div class="layer" id="L-chat">
+  <div class="sbg" id="G-chat"><div class="horizon"></div><div class="floor" id="floor"></div><div class="bok" id="bk1" style="width: 520px; height: 520px; background: rgba(110, 150, 255, 0.55)"></div><div class="bok" id="bk2" style="width: 440px; height: 440px; background: rgba(245, 205, 140, 0.6)"></div></div>
   <div class="cam" id="C-chat">
     <div class="glow" id="ch-glow" style="left: 66px; top: 246px; width: 948px; height: 1108px"></div>
     <div class="card" id="ch-card" style="left: 70px; top: 250px; width: 940px; height: 1100px">
@@ -158,6 +200,7 @@
 
 <!-- 반전 + 자리 -->
 <div class="layer" id="L-turn">
+  <div class="sbg" id="G-turn"><div class="beam" id="beam"></div><div class="dots"></div></div>
   <div class="cam" id="C-turn">
     <div class="frag" id="fr0" style="left: 40px; top: 230px"><h5>사건 목록</h5><b>2026가합 1234 · 손해배상</b><i style="width: 90%"></i><i style="width: 70%"></i></div>
     <div class="frag" id="fr1" style="left: 640px; top: 1110px"><h5>등기 신청서</h5><b>소유권이전등기</b><i style="width: 85%"></i><i style="width: 60%"></i></div>
@@ -179,6 +222,7 @@
 
 <!-- 시작 -->
 <div class="layer" id="L-start">
+  <div class="sbg" id="G-start"><div class="sun" id="sun"></div><div class="rays" id="rays"></div></div>
   <div class="cam" id="C-start">
     <div class="abs c" id="st-1">그 사람들의 시작,</div>
     <div class="abs c" id="st-2">법학.</div>
@@ -202,6 +246,7 @@
 
 <!-- CTA -->
 <div class="layer" id="L-cta">
+  <div class="sbg" id="G-cta"><div class="ring" id="rg0"></div><div class="ring" id="rg1"></div><div class="ring" id="rg2"></div></div>
   <div class="cam" id="C-cta">
     <div class="glow" style="left: 66px; top: 296px; width: 948px; height: 968px"></div>
     <div class="card" id="cta-card">
@@ -217,6 +262,7 @@
 
 <!-- 엔드카드 -->
 <div class="layer" id="L-end">
+  <div class="sbg" id="G-end"><div class="lines"></div></div>
   <div class="cam" id="C-end">
     <div class="abs c" id="en-1">경찰복지사이버평생교육원</div>
     <div class="abs c" id="en-2">법학 전공<br />상담 신청</div>
@@ -226,6 +272,7 @@
   </div>
 </div>
 
+<div id="vig"></div><canvas id="fx" width="1080" height="1920"></canvas><div id="leak"></div>
 <div id="ripple"></div>
 <svg id="cursor" viewBox="0 0 24 24"><path d="M5 3l14 7-6.2 1.8L10.8 18z" fill="#0b1a33" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round" /></svg>
 
@@ -270,6 +317,7 @@ function cam(id, s, ox, oy, tx = 0, ty = 0) {
   el.style.transformOrigin = `${ox}px ${oy}px`;
   el.style.transform = `translate(${tx}px, ${ty}px) scale(${s})`;
 }
+const rng = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
 const chars = (s) => Array.from(s);
 const typed = (s, t, t0, t1) => chars(s).slice(0, Math.round(chars(s).length * cl((t - t0) / (t1 - t0)))).join("");
 const hl = (el, p) => ((typeof el === "string" ? $(el) : el).style.backgroundSize = `${(p * 100).toFixed(1)}% 42%`);
@@ -403,7 +451,7 @@ window.seek = function (t) {
         const outP = i < ws.length - 1 ? ext(t, ws[i + 1] - 0.02, 0.1) : 1;
         show("tw" + i, Math.min(inP, outP), i === 0 ? { y: 0, s: 0.35, blur: 24 } : { y: 40, blur: 10 });
       });
-      hl("tw0h", E.io(cl((t - S.turn - 0.3) / 0.3)));
+      $("tw0h").style.backgroundSize = `${E.io(cl((t - S.turn - 0.3) / 0.3)) * 100}% 12%`;
       // 알약: '전문가'를 감싸며 생겨나고, 단어 폭에 맞춰 늘고 줄어듦
       const widths = ws.map((_, i) => $("tw" + i).firstElementChild.offsetWidth + 120);
       const wk = [[S.pill, widths[0]]]; S.w.forEach((w, i) => { wk.push([w - 0.02, widths[i]]); wk.push([w + 0.16, widths[i + 1]]); });
@@ -412,8 +460,7 @@ window.seek = function (t) {
       const pill = $("tu-pill");
       pill.style.width = pw + "px"; pill.style.marginLeft = -pw / 2 + "px";
       pill.style.transform = `scaleX(${lerp(0.6, 1, pp)})`; pill.style.opacity = pp;
-      ws.forEach((_, i) => ($("tw" + i).style.color = pp > 0.5 ? "#fff" : "#0b1a33"));
-      if (pp > 0.5) $("tw0h").style.backgroundSize = "0% 42%";
+      if (pp > 0.5) $("tw0h").style.backgroundSize = "0% 12%";
       // 뒤에 지나가는 각 자리의 화면 조각
       S.w.forEach((w, i) => {
         const q = Math.min(ent(t, w, 0.25), i < 3 ? ext(t, S.w[i + 1] + 0.3, 0.3) : ext(t, S.turnOut, 0.3));
@@ -492,6 +539,54 @@ window.seek = function (t) {
       show("en-pill", ent(t, B(48.5)), { y: 20 });
       show("en-fine", ent(t, B(49)), { y: 0 });
     }
+  }
+
+
+  // ── 장면별 바탕 움직임
+  $("floor").style.backgroundPosition = `0 ${(t * 70).toFixed(1)}px`;
+  $("bk1").style.transform = `translate(${-80 + Math.sin(t * 0.5) * 90}px, ${300 + Math.cos(t * 0.4) * 80}px)`;
+  $("bk2").style.transform = `translate(${760 + Math.cos(t * 0.45) * 90}px, ${900 + Math.sin(t * 0.35) * 90}px)`;
+  $("beam").style.transform = `rotate(${Math.sin(t * 0.8) * 6}deg)`;
+  const sunY = kf(t, [[S.st, 2050], [S.stOut, 1500]], E.out);
+  $("sun").style.top = sunY + "px"; $("rays").style.top = sunY + "px";
+  $("rays").style.transform = `rotate(${t * 3}deg)`;
+  for (let i = 0; i < 3; i++) {
+    const ph = (((t - S.cta) / (P * 2) + i / 3) % 1 + 1) % 1, r = 200 + ph * 1300;
+    const g = $("rg" + i);
+    g.style.width = g.style.height = r + "px"; g.style.margin = `${-r / 2}px 0 0 ${-r / 2}px`;
+    g.style.opacity = (1 - ph) * 0.8;
+  }
+  ["G-poster", "G-chat", "G-turn", "G-start", "G-cta", "G-end"].forEach((id, i) => ($(id).style.transform = `scale(${1.04 + 0.02 * Math.sin(t * 0.3 + i)})`));
+  // 어두운 장면일수록 비네트 강하게
+  const dark = Math.max(+$("L-turn").style.opacity || 0, +$("L-end").style.opacity || 0);
+  $("vig").style.opacity = 0.55 + dark * 0.45;
+
+  // ── 빛 번짐: 장면 전환마다 한 번 지나감
+  let lk = 0, lx = -900;
+  for (const c of [T0, S.turn, S.st, S.cta, S.endT]) {
+    const q = (t - (c - 0.3)) / 0.8;
+    if (q > 0 && q < 1) { lk = Math.sin(q * Math.PI); lx = lerp(-900, 1300, E.io(q)); }
+  }
+  $("leak").style.opacity = lk * 0.75; $("leak").style.transform = `translateX(${lx}px) rotate(18deg)`;
+
+  // ── 떠다니는 먼지·보케 (시간만으로 결정)
+  const ctx = $("fx").getContext("2d");
+  ctx.clearRect(0, 0, 1080, 1920);
+  const lightCol = dark > 0.5 ? "255,255,255" : "70,110,210";
+  for (let i = 0; i < 46; i++) {
+    const r1 = rng(i * 3 + 1), r2 = rng(i * 3 + 2), r3 = rng(i * 3 + 3);
+    const x = (r1 * 1180 + Math.sin(t * 0.3 + i) * 40 + t * (8 + r3 * 14)) % 1180 - 50;
+    const y = (r2 * 2020 - t * (14 + r3 * 26)) % 2020;
+    const yy = y < 0 ? y + 2020 : y;
+    const sz = 1.5 + r3 * 3.5, a = (0.18 + 0.32 * r1) * (0.6 + 0.4 * Math.sin(t * 1.3 + i));
+    ctx.fillStyle = `rgba(${lightCol},${a.toFixed(3)})`;
+    ctx.beginPath(); ctx.arc(x, yy - 50, sz, 0, Math.PI * 2); ctx.fill();
+  }
+  for (let i = 0; i < 4; i++) {
+    const x = rng(100 + i) * 1080 + Math.sin(t * 0.25 + i * 2) * 120, y = rng(200 + i) * 1920 + Math.cos(t * 0.2 + i) * 160;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, 120 + i * 30);
+    g.addColorStop(0, `rgba(${dark > 0.5 ? "255,220,160" : "255,255,255"},${dark > 0.5 ? 0.1 : 0.22})`); g.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = g; ctx.fillRect(x - 200, y - 200, 400, 400);
   }
 
   // 커서 + 눌림 + 리플 (장면 카메라 변환을 그대로 따름)
