@@ -78,107 +78,97 @@ def scene(cid, a, b, css, html, js, bg="", cam_tail=0.0):
 SLOTS = []
 
 # ---------- poster B0–B3 ----------
-SLOTS.append(scene("poster", 0, 3, '''
-    #root { color: #ffffff; background: #0b1a33; }
-    #po-grid { position: absolute; inset: 0; }
-    .gl { stroke: rgba(255, 255, 255, 0.35); stroke-width: 2; }
-    .gh { fill: #ffffff; }
-    #po-alert { top: 196px; display: flex; justify-content: center; }
-    #po-alert div { height: 72px; padding: 0 32px; border-radius: 999px; background: #ff5a4e; color: #fff; font-size: 38px; font-weight: 900; display: flex; align-items: center; gap: 14px; letter-spacing: -0.02em; }
-    #po-alert i { width: 16px; height: 16px; border-radius: 50%; background: #fff; }
-    #po-kicker { top: 318px; font-size: 68px; font-weight: 800; }
-    #po-kicker b { color: #f0d595; }
-    #po-one { position: absolute; left: 0; width: 1080px; top: 400px; text-align: center; font-weight: 900; line-height: 1; letter-spacing: -0.06em; white-space: nowrap; }
-    #po-one .pre, #po-one .post { font-size: 160px; }
-    #po-one .n { font-size: 500px; color: #f0d595; }
-    #po-one sup { font-size: 80px; color: #f0d595; vertical-align: 3em; }
-    #po-seal { position: absolute; left: 770px; top: 430px; width: 230px; height: 230px; border-radius: 50%; background: #fbf9f4; color: #0b1a33; border: 6px solid #b8955a; box-shadow: 0 0 0 6px #fbf9f4, 0 20px 50px rgba(0, 0, 0, 0.45); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: 900; line-height: 1.1; }
-    #po-seal img { width: 58px; height: 58px; margin-bottom: 6px; }
-    #po-seal span { font-size: 30px; letter-spacing: -0.04em; }
-    #po-seal b { font-size: 44px; color: #7d6233; }
-    #po-nos { top: 965px; display: flex; justify-content: center; gap: 16px; }
-    .no { height: 100px; padding: 0 30px; border-radius: 24px; background: rgba(255, 255, 255, 0.16); border: 2px solid rgba(255, 255, 255, 0.45); font-size: 46px; font-weight: 800; display: flex; align-items: center; gap: 12px; letter-spacing: -0.03em; }
-    .no svg { width: 46px; height: 46px; }
-    #po-sub { top: 1100px; font-size: 54px; font-weight: 900; }
-    #po-fine { top: 1262px; font-size: 30px; font-weight: 500; line-height: 1.3; color: rgba(255, 255, 255, 0.78); letter-spacing: -0.02em; }
-''', '''      <svg id="po-grid" viewBox="0 0 1080 1920" data-layout-ignore>
+# 질문으로 멈춰 세우고(왜 법학?), 답의 근거(왜 여기)를 같은 화면에 깔아 둔다.
+SLOTS.append(scene("poster", 0, 3, f"""
+    #root {{ color: #ffffff; background: #0b1a33; }}
+    #po-grid {{ position: absolute; inset: 0; }}
+    .gl {{ stroke: rgba(255, 255, 255, 0.3); stroke-width: 2; }}
+    .gh {{ fill: #ffffff; }}
+    #po-alert {{ top: 190px; display: flex; justify-content: center; }}
+    #po-alert div {{ height: 70px; padding: 0 30px; border-radius: 999px; background: #ff5a4e; color: #fff; font-size: 36px; font-weight: 900; display: flex; align-items: center; gap: 14px; letter-spacing: -0.02em; }}
+    #po-alert i {{ width: 14px; height: 14px; border-radius: 50%; background: #fff; }}
+    #po-kicker {{ top: 300px; font-size: 68px; font-weight: 900; }}
+    #po-q {{ top: 400px; font-size: 270px; font-weight: 900; line-height: 1; letter-spacing: -0.06em; white-space: nowrap; }}
+    #po-q b {{ color: #f0d595; }}
+    #po-ans {{ top: 720px; font-size: 56px; font-weight: 800; color: rgba(255, 255, 255, 0.92); }}
+    #po-only {{ top: 820px; display: flex; justify-content: center; }}
+    #po-only div {{ height: 112px; padding: 0 40px; border-radius: 28px; background: #fbf9f4; color: #0b1a33; font-size: 56px; font-weight: 900; display: flex; align-items: center; gap: 14px; letter-spacing: -0.04em; }}
+    #po-only b {{ color: #2e5cbe; }}
+    #po-only sup {{ font-size: 34px; color: #2e5cbe; align-self: flex-start; margin-top: 22px; }}
+    #po-pts {{ top: 960px; display: flex; justify-content: center; gap: 14px; }}
+    .pt {{ height: 84px; padding: 0 26px; border-radius: 22px; background: rgba(255, 255, 255, 0.14); border: 2px solid rgba(255, 255, 255, 0.4); font-size: 38px; font-weight: 800; display: flex; align-items: center; gap: 10px; letter-spacing: -0.03em; white-space: nowrap; }}
+    .pt img {{ width: 40px; height: 40px; }}
+    #po-cta {{ top: 1090px; font-size: 46px; font-weight: 900; color: #f0d595; }}
+    #po-fine {{ top: 1262px; font-size: 30px; font-weight: 500; line-height: 1.3; color: rgba(255, 255, 255, 0.78); letter-spacing: -0.02em; }}
+""", """      <svg id="po-grid" viewBox="0 0 1080 1920" data-layout-ignore>
         <line class="gl" x1="60" y1="0" x2="60" y2="1920" />
         <line class="gl" x1="1020" y1="0" x2="1020" y2="1920" />
-        <line class="gl" x1="0" y1="430" x2="1080" y2="430" />
-        <line class="gl" x1="0" y1="910" x2="1080" y2="910" />
-        <rect class="gh" x="52" y="422" width="16" height="16" />
-        <rect class="gh" x="1012" y="422" width="16" height="16" />
-        <rect class="gh" x="52" y="902" width="16" height="16" />
-        <rect class="gh" x="1012" y="902" width="16" height="16" />
+        <line class="gl" x1="0" y1="400" x2="1080" y2="400" />
+        <line class="gl" x1="0" y1="690" x2="1080" y2="690" />
+        <rect class="gh" x="52" y="392" width="16" height="16" />
+        <rect class="gh" x="1012" y="392" width="16" height="16" />
+        <rect class="gh" x="52" y="682" width="16" height="16" />
+        <rect class="gh" x="1012" y="682" width="16" height="16" />
       </svg>
       <div id="po-alert" class="stage"><div><i></i>11/10 접수 마감 · 11/4 개강</div></div>
-      <div id="po-kicker" class="stage">평생교육원 중 <b>법학 전공</b>은</div>
-      <div id="po-one" data-layout-allow-overlap><span class="pre">단 </span><span class="n">1</span><span class="post">곳</span><sup>*</sup></div>
-      <div id="po-seal" data-layout-allow-overlap><img src="assets/img/moe-emblem.svg" alt="" /><span>교육부장관 명의</span><b>학사학위</b></div>
-      <div id="po-nos" class="stage">
-        <div class="no">퇴사''' + XMARK + '''</div>
-        <div class="no">재입학''' + XMARK + '''</div>
-        <div class="no">출석수업''' + XMARK + '''</div>
+      <div id="po-kicker" class="stage">AI가 계약서를 쓰는 시대,</div>
+      <div id="po-q" class="stage">왜 <b>법학</b>?</div>
+      <div id="po-ans" class="stage">서명하는 손은 여전히 사람이니까</div>
+      <div id="po-only" class="stage"><div>평생교육원 중 법학 전공 <b>단 1곳</b><sup>*</sup></div></div>
+      <div id="po-pts" class="stage">
+        <div class="pt"><img src="assets/img/moe-emblem.svg" alt="" />교육부장관 명의 학사</div>
+        <div class="pt">일하면서 100% 온라인</div>
       </div>
-      <div id="po-sub" class="stage">일하면서, 온라인으로 법학사</div>
-      <div id="po-fine" class="stage">* 전공필수(물권법·채권총칙) 개설 평생교육원 기준, 2026.10 조회<br />입학·합격·취업을 보장하지 않습니다.</div>''', '''
-    // 첫 프레임 = 완성 포스터(✕ 포함). 카메라만 천천히 다가가다 마지막에 '1' 속으로
-    tl.set("#po-seal", { rotation: -12 }, 0);
-    // 다음 씬으로: 숫자 1이 시선 중심(EYE)으로 밀려오며 화면을 채움
-    tl.to(CAM, { scale: 3.2, opacity: 0, filter: "blur(16px)", duration: 0.3, ease: "power3.in", transformOrigin: "50% 33%" }, D - 0.3);
-''', bg='<div class="mesh"></div>', cam_tail=0.3))
+      <div id="po-cta" class="stage">부담 없는 상담 · 070-4006-7128</div>
+      <div id="po-fine" class="stage">* 전공필수(물권법·채권총칙) 개설 평생교육원 기준, 2026.10 조회<br />입학·합격·취업을 보장하지 않습니다.</div>""", """
+    // 첫 프레임 = 완성 포스터(썸네일). 카메라만 천천히, 마지막에 '법학' 속으로
+    tl.to(CAM, { scale: 3.2, opacity: 0, filter: "blur(16px)", duration: 0.3, ease: "power3.in", transformOrigin: "55% 28%" }, D - 0.3);
+""", bg='<div class="mesh"></div>', cam_tail=0.3))
 
-# ---------- far B3–B9 ----------
-SLOTS.append(scene("far", 3, 9, f'''
+# ---------- why B3–B9 ----------
+# 납득: AI가 대신 써줘도 판단과 책임은 사람에게 남는다 → 그 사람이 법을 아는 사람
+SLOTS.append(scene("far", 3, 9, f"""
     #root {{ color: #0b1a33; background: #fbf9f4; }}
-    .grad {{ background: linear-gradient(100deg, #0b1a33 0%, #2e5cbe 60%, #b8955a 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }}
-    .hero {{ top: {EYE}px; font-size: 280px; font-weight: 900; line-height: 1; }}
-    #fa-kick {{ top: {EYE - 150}px; font-size: 64px; font-weight: 800; color: #6b6660; }}
-    #fa-still {{ top: {EYE + 60}px; font-size: 140px; font-weight: 900; }}
+    .hero {{ top: {EYE}px; font-size: 220px; font-weight: 900; line-height: 1; white-space: nowrap; }}
+    .hero b {{ color: #2e5cbe; }}
+    #fa-kick {{ top: {EYE - 150}px; font-size: 72px; font-weight: 800; color: #6b6660; }}
     #fa-mesh {{ position: absolute; inset: 0; }}
     #fa-grid {{ position: absolute; inset: 0; }}
     .gl {{ stroke: rgba(255, 255, 255, 0.4); stroke-width: 2; }}
     .gh {{ fill: #ffffff; }}
-    .far {{ top: {EYE}px; font-size: 280px; font-weight: 900; line-height: 1; color: #ffffff; }}
-    #fa-g1 {{ top: {EYE - 310}px; }}
-    #fa-g2 {{ top: {EYE + 310}px; }}
-''', f'''      <div id="fa-kick" class="stage">꿈꿔본 적 있죠</div>
-      <div id="fa-w1" class="stage hero grad">변호사</div>
-      <div id="fa-w2" class="stage hero grad" data-layout-allow-overlap>검사</div>
-      <div id="fa-w3" class="stage hero grad" data-layout-allow-overlap>법무관</div>
-      <div id="fa-still" class="stage" data-layout-allow-overlap>근데, 아직도</div>
+    #fa-a1 {{ top: {EYE - 130}px; font-size: 110px; font-weight: 900; color: #ffffff; }}
+    #fa-a2 {{ top: {EYE + 30}px; font-size: 200px; font-weight: 900; line-height: 1; color: #f0d595; }}
+""", f"""      <div id="fa-kick" class="stage">AI가 써 준 계약서,</div>
+      <div id="fa-w1" class="stage hero"><b>읽고</b></div>
+      <div id="fa-w2" class="stage hero" data-layout-allow-overlap><b>따지고</b></div>
+      <div id="fa-w3" class="stage hero" data-layout-allow-overlap style="font-size: 170px">서명은 사람이.</div>
       <div id="fa-mesh" class="mesh" data-layout-ignore></div>
       <svg id="fa-grid" viewBox="0 0 1080 1920" data-layout-ignore>
-        <line class="gl" x1="0" y1="{EYE - 30}" x2="1080" y2="{EYE - 30}" />
-        <line class="gl" x1="0" y1="{EYE + 310}" x2="1080" y2="{EYE + 310}" />
+        <line class="gl" x1="0" y1="{EYE - 150}" x2="1080" y2="{EYE - 150}" />
+        <line class="gl" x1="0" y1="{EYE + 250}" x2="1080" y2="{EYE + 250}" />
         <line class="gl" x1="120" y1="0" x2="120" y2="1920" />
         <line class="gl" x1="960" y1="0" x2="960" y2="1920" />
-        <rect class="gh" x="112" y="{EYE - 38}" width="16" height="16" />
-        <rect class="gh" x="952" y="{EYE - 38}" width="16" height="16" />
-        <rect class="gh" x="112" y="{EYE + 302}" width="16" height="16" />
-        <rect class="gh" x="952" y="{EYE + 302}" width="16" height="16" />
+        <rect class="gh" x="112" y="{EYE - 158}" width="16" height="16" />
+        <rect class="gh" x="952" y="{EYE - 158}" width="16" height="16" />
+        <rect class="gh" x="112" y="{EYE + 242}" width="16" height="16" />
+        <rect class="gh" x="952" y="{EYE + 242}" width="16" height="16" />
       </svg>
-      <div id="fa-g1" class="stage far" data-layout-ignore>멀게?</div>
-      <div id="fa-word" class="stage far" data-layout-allow-overlap>멀게?</div>
-      <div id="fa-g2" class="stage far" data-layout-ignore>멀게?</div>''', '''
-    // B3 변호사(초근접 블러 → 안착) · B4 검사 · B5 법무관 · B6 근데, 아직도 · B7 멀게? · B8 잔상
-    IN("#fa-kick", B[3], { y: -20 });
-    IN("#fa-w1", B[3], { scale: 2.4, filter: "blur(28px)" }, 0.3);
-    OUT("#fa-w1", B[4], { y: -140 });
-    IN("#fa-w2", B[4], { y: 140 }, 0.14);
-    OUT("#fa-w2", B[5], { y: -140 });
-    IN("#fa-w3", B[5], { y: 140 }, 0.14);
-    OUT(["#fa-w3", "#fa-kick"], B[6], { y: -140 });
-    IN("#fa-still", B[6], { y: 40 });
-    // B7: 화면이 그라데이션으로 뒤덮이며 같은 눈높이에 '멀게?'
+      <div id="fa-a1" class="stage" data-layout-allow-overlap>법을 아는 사람이</div>
+      <div id="fa-a2" class="stage" data-layout-allow-overlap>한 수 위.</div>""", """
+    // B3 AI가 써 준 계약서, · B4 읽고 · B5 따지고 · B6 서명은 사람이. · B7 법을 아는 사람이 · B8 한 수 위.
+    IN("#fa-kick", B[3], { y: -20 }, 0.2);
+    IN("#fa-w1", B[4], { scale: 1.3, filter: "blur(20px)" }, 0.2);
+    OUT("#fa-w1", B[5], { y: -140 });
+    IN("#fa-w2", B[5], { y: 140 }, 0.14);
+    OUT(["#fa-w2", "#fa-kick"], B[6], { y: -140 });
+    IN("#fa-w3", B[6], { y: 140 }, 0.14);
+    // B7: 그라데이션이 덮이며 답
     tl.fromTo("#fa-mesh", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.16, ease: "power3.inOut" }, B[7] - 0.1);
-    IN("#fa-word", B[7], { scale: 1.12 });
     tl.fromTo("#fa-grid", { opacity: 0 }, { opacity: 1, duration: 0.12 }, B[7]);
-    // B8: 위아래 잔상이 같은 축에서 갈라져 나옴
-    tl.fromTo("#fa-g1", { opacity: 0, y: 310 }, { opacity: 0.22, y: 0, duration: 0.22, ease: "power3.out" }, B[8]);
-    tl.fromTo("#fa-g2", { opacity: 0, y: -310 }, { opacity: 0.22, y: 0, duration: 0.22, ease: "power3.out" }, B[8]);
+    IN("#fa-a1", B[7], { y: 30 });
+    IN("#fa-a2", B[8], { scale: 1.15, filter: "blur(16px)" }, 0.2);
     OUT(CAM, D, {});
-'''))
+"""))
 
 # ---------- who B9–B15 ----------
 items = ["직장인", "비전공자", "수험생", "로스쿨 준비생"]
@@ -191,15 +181,15 @@ SLOTS.append(scene("who", 9, 15, f'''
     #wh-box svg {{ width: 70px; height: 70px; }}
     #wh-list {{ position: absolute; left: 310px; top: 0; }}
     .wi {{ height: {LH}px; font-size: 100px; font-weight: 900; line-height: {LH}px; white-space: nowrap; }}
-    #wh-ok {{ top: {EYE - 20}px; font-size: 220px; font-weight: 900; line-height: 1; }}
+    #wh-ok {{ top: {EYE + 20}px; white-space: nowrap; font-size: 130px; font-weight: 900; line-height: 1; }}
     #wh-ok b {{ color: #2e5cbe; }}
     #wh-sub {{ top: {EYE + 250}px; font-size: 56px; font-weight: 800; }}
-''', f'''      <div id="wh-label" class="stage">이런 분도 시작해요</div>
+''', f'''      <div id="wh-label" class="stage">지금 내 자리에서</div>
       <div id="wh-row" data-layout-allow-overflow data-layout-allow-overlap>
         <div id="wh-box">{CHECK}</div>
         <div id="wh-list">{''.join(f'<div class="wi" id="wh-i{i}">{t}</div>' for i, t in enumerate(items))}</div>
       </div>
-      <div id="wh-ok" class="stage" data-layout-allow-overlap>누구나 <b>OK</b></div>
+      <div id="wh-ok" class="stage" data-layout-allow-overlap>출발선은 <b>같아요.</b></div>
       <div id="wh-sub" class="stage">법을 처음 배워도 괜찮아요</div>''', f'''
     // B9 체크 + 직장인 · B10 비전공자 · B11 수험생 · B12 로스쿨 준비생 · B13 누구나 OK · B14 서브
     const LH = {LH};
@@ -318,15 +308,15 @@ chips = [("퇴근 후 1시간", 110, 300, -6), ("주말 집중 플랜", 620, 250
          ("시험 대비", 700, 1120, -5), ("과목 추천", 130, 1240, -3), ("맞춤 일정", 700, 1250, 4)]
 SLOTS.append(scene("together", 27, 33, f'''
     #root {{ color: #ffffff; background: #0a1020; }}
-    #tg-q {{ top: {EYE}px; font-size: 240px; font-weight: 900; line-height: 1; }}
+    #tg-q {{ top: {EYE}px; font-size: 170px; font-weight: 900; line-height: 1; }}
     #tg-line {{ top: {EYE + 50}px; font-size: 120px; font-weight: 900; white-space: nowrap; }}
     #tg-coin {{ display: inline-flex; width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff2c9, #e0c27e 45%, #9c7a3e 100%); color: #0b1a33; font-size: 64px; font-weight: 900; align-items: center; justify-content: center; vertical-align: -0.2em; margin: 0 16px; letter-spacing: -0.04em; }}
     #tg-yes {{ color: #f0d595; }}
     #tg-sub {{ top: {EYE + 290}px; font-size: 50px; font-weight: 800; color: rgba(255, 255, 255, 0.88); }}
     .chip {{ position: absolute; height: 84px; padding: 0 30px; border-radius: 22px; background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.22); font-size: 38px; font-weight: 800; display: flex; align-items: center; white-space: nowrap; letter-spacing: -0.03em; }}
-''', '''      <div id="tg-q" class="stage">혼자?</div>
-      <div id="tg-line" class="stage" data-layout-allow-overlap><span class="w" id="tg-no">아니,</span><span id="tg-coin">1:1</span><span class="w" id="tg-yes">같이.</span></div>
-      <div id="tg-sub" class="stage">학습플래너가 내 일정에 맞춰 설계해요</div>
+''', '''      <div id="tg-q" class="stage">공부는 혼자,</div>
+      <div id="tg-line" class="stage" data-layout-allow-overlap><span class="w" id="tg-no">계획은</span><span id="tg-coin">1:1</span><span class="w" id="tg-yes">같이.</span></div>
+      <div id="tg-sub" class="stage">학습플래너가 내 일정에 맞춰 짜 줘요</div>
 ''' + "\n".join(f'      <div class="chip" id="tg-c{i}" style="left: {x}px; top: {y}px">{t}</div>' for i, (t, x, y, r) in enumerate(chips)), '''
     // B27 혼자? · B28 아니, · B29 1:1 코인 · B30 같이. · B31 플랜 칩 · B32 서브
     const rot = ''' + json.dumps([r for *_, r in chips]) + ''';
@@ -353,16 +343,17 @@ SLOTS.append(scene("subjects", 33, 41, '''
     .sc small { display: block; font-size: 30px; font-weight: 700; color: #6b6660; }
     .sc.hot { background: #0b1a33; color: #f0d595; border-color: #e0c27e; }
     .sc.hot small { color: #f0d595; }
-    #sj-t1 { top: 690px; font-size: 104px; font-weight: 900; line-height: 1.1; }
+    #sj-t1 { top: 700px; font-size: 76px; font-weight: 800; line-height: 1.1; color: #6b6660; }
     #sj-t1 b { color: #2e5cbe; }
     #sj-t2 { top: 805px; font-size: 104px; font-weight: 900; line-height: 1.1; }
+    #sj-t2 b { color: #2e5cbe; }
     #sj-tag { top: 950px; display: flex; justify-content: center; }
     #sj-tag div { height: 80px; padding: 0 34px; border-radius: 999px; background: #e0c27e; color: #0b1a33; font-size: 42px; font-weight: 900; display: flex; align-items: center; letter-spacing: -0.02em; }
     #sj-fine { top: 1290px; font-size: 30px; font-weight: 500; color: #6b6660; letter-spacing: -0.02em; }
 ''', '''      <div id="sj-paper" data-layout-ignore></div>
 ''' + "\n".join(f'      <div class="sc{" hot" if t in ("물권법", "채권총칙") else ""}" id="sj-s{i}" style="left: {x}px; top: {y}px">{"<small>전공필수</small>" if t in ("물권법", "채권총칙") else ""}{t}</div>' for i, (t, x, y, r) in enumerate(subs)) + '''
-      <div id="sj-t1" class="stage">진짜 <b>‘법학 전공’</b></div>
-      <div id="sj-t2" class="stage">과목으로</div>
+      <div id="sj-t1" class="stage">교양 몇 과목 말고,</div>
+      <div id="sj-t2" class="stage"><b>법학 전공</b>으로.</div>
       <div id="sj-tag" class="stage"><div>물권법·채권총칙 개설은 여기뿐*</div></div>
       <div id="sj-fine" class="stage">* 표준교육과정 전공필수 개설 평생교육원 기준, 2026.10 조회</div>''', '''
     // B33 종이 아이리스 · B34 과목 카드 · B35 진짜 '법학 전공' · B36 과목으로 · B37 나머지 흐림 · B38 물권법 · B39 채권총칙 · B40 여기뿐*
@@ -395,8 +386,8 @@ SLOTS.append(scene("paths", 41, 49, f'''
     #pa-fine {{ top: 1270px; font-size: 30px; font-weight: 500; color: rgba(255, 255, 255, 0.62); letter-spacing: -0.02em; }}
 ''', '''      <div class="slash" id="pa-sl1" style="left: 300px; top: 560px" data-layout-ignore></div>
       <div class="slash" id="pa-sl2" style="left: 770px; top: 860px" data-layout-ignore></div>
-      <div id="pa-t1" class="stage">이 길이</div>
-      <div id="pa-t2" class="stage">가까워져요</div>
+      <div id="pa-t1" class="stage">어디로 가든</div>
+      <div id="pa-t2" class="stage">기본기는 법학.</div>
 ''' + "\n".join(f'      <div class="mc" id="pa-m{i}" style="left: {x}px; top: {y}px"><i>↗</i><b>{a}</b><span>{b}</span></div>' for i, (a, b, x, y, r) in enumerate(cards)) + '''
       <div id="pa-fine" class="stage">※ 로스쿨 입학·인턴·채용 여부는 각 기관의 선발 기준에 따릅니다.</div>''', '''
     // B41 이 길이 · B42 칼선 · B43~B45 진로 카드 · B46 가까워져요 · B47 면책
@@ -432,7 +423,7 @@ SLOTS.append(scene("go", 49, 53, f'''
 SLOTS.append(scene("cta", 53, None, f'''
     #root {{ color: #0b1a33; background: #0a1020; }}
     #ct-paper {{ position: absolute; inset: 0; background: #fbf9f4; }}
-    #ct-lead {{ top: {EYE - 320}px; font-size: 60px; font-weight: 700; color: #6b6660; }}
+    #ct-lead {{ top: {EYE - 310}px; font-size: 48px; font-weight: 700; color: #6b6660; }}
     #ct-b1 {{ top: {EYE - 230}px; font-size: 180px; font-weight: 900; line-height: 1; }}
     #ct-b2 {{ top: {EYE - 40}px; font-size: 140px; font-weight: 900; line-height: 1; color: #2e5cbe; }}
     #ct-pill {{ top: {EYE + 160}px; display: flex; justify-content: center; }}
@@ -445,13 +436,13 @@ SLOTS.append(scene("cta", 53, None, f'''
     #ct-brand {{ top: {EYE + 496}px; font-size: 36px; font-weight: 800; color: #7d6233; letter-spacing: -0.02em; }}
     #ct-fine {{ top: {EYE + 552}px; font-size: 30px; font-weight: 500; line-height: 1.3; color: #6b6660; letter-spacing: -0.02em; }}
 ''', '''      <div id="ct-paper" data-layout-ignore></div>
-      <div id="ct-lead" class="stage">망설여진다면,</div>
-      <div id="ct-b1" class="stage">상담만</div>
-      <div id="ct-b2" class="stage">받아도 돼요.</div>
+      <div id="ct-lead" class="stage">결정은 상담 뒤에 해도 늦지 않아요</div>
+      <div id="ct-b1" class="stage">질문만</div>
+      <div id="ct-b2" class="stage">들고 오세요.</div>
       <div id="ct-pill" class="stage"><div>11/10 접수 마감 · 11/4 개강</div></div>
       <div id="ct-btn"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="#fff" /></svg><b>070-4006-7128</b></div>
       <svg id="ct-cursor" viewBox="0 0 24 24" data-layout-ignore><path d="M5 3l14 7-6.2 1.8L10.8 18z" fill="#ffffff" stroke="#0b1a33" stroke-width="1.6" stroke-linejoin="round" /></svg>
-      <div id="ct-hours" class="stage">평일 10~18시 · 내 학력에 맞춘 1:1 플랜 상담</div>
+      <div id="ct-hours" class="stage">평일 10~18시 · 내 학력 기준 1:1 상담</div>
       <div id="ct-brand" class="stage">경찰복지사이버평생교육원</div>
       <div id="ct-fine" class="stage">※ 변호사·검사·법무관은 로스쿨 졸업·변호사시험 합격 등 별도 요건이 필요하며,<br />이 과정은 입학·합격·취업을 보장하지 않습니다.</div>''', '''
     // B53 흰 화면 와이프 + 망설여진다면 · B54 상담만 · B55 받아도 돼요 · B56 마감 · B57 버튼 · B58 커서 · B59 클릭 · B60 정보

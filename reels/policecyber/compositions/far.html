@@ -41,41 +41,37 @@
     }
 
     #root { color: #0b1a33; background: #fbf9f4; }
-    .grad { background: linear-gradient(100deg, #0b1a33 0%, #2e5cbe 60%, #b8955a 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .hero { top: 700px; font-size: 280px; font-weight: 900; line-height: 1; }
-    #fa-kick { top: 550px; font-size: 64px; font-weight: 800; color: #6b6660; }
-    #fa-still { top: 760px; font-size: 140px; font-weight: 900; }
+    .hero { top: 700px; font-size: 220px; font-weight: 900; line-height: 1; white-space: nowrap; }
+    .hero b { color: #2e5cbe; }
+    #fa-kick { top: 550px; font-size: 72px; font-weight: 800; color: #6b6660; }
     #fa-mesh { position: absolute; inset: 0; }
     #fa-grid { position: absolute; inset: 0; }
     .gl { stroke: rgba(255, 255, 255, 0.4); stroke-width: 2; }
     .gh { fill: #ffffff; }
-    .far { top: 700px; font-size: 280px; font-weight: 900; line-height: 1; color: #ffffff; }
-    #fa-g1 { top: 390px; }
-    #fa-g2 { top: 1010px; }
+    #fa-a1 { top: 570px; font-size: 110px; font-weight: 900; color: #ffffff; }
+    #fa-a2 { top: 730px; font-size: 200px; font-weight: 900; line-height: 1; color: #f0d595; }
 
   </style>
   <div id="root" data-composition-id="far" data-width="1080" data-height="1920">
     <div id="far-bg" class="bgl" data-layout-ignore></div>
     <div id="far-cam" class="cam" data-layout-allow-overlap>
-      <div id="fa-kick" class="stage">꿈꿔본 적 있죠</div>
-      <div id="fa-w1" class="stage hero grad">변호사</div>
-      <div id="fa-w2" class="stage hero grad" data-layout-allow-overlap>검사</div>
-      <div id="fa-w3" class="stage hero grad" data-layout-allow-overlap>법무관</div>
-      <div id="fa-still" class="stage" data-layout-allow-overlap>근데, 아직도</div>
+      <div id="fa-kick" class="stage">AI가 써 준 계약서,</div>
+      <div id="fa-w1" class="stage hero"><b>읽고</b></div>
+      <div id="fa-w2" class="stage hero" data-layout-allow-overlap><b>따지고</b></div>
+      <div id="fa-w3" class="stage hero" data-layout-allow-overlap style="font-size: 170px">서명은 사람이.</div>
       <div id="fa-mesh" class="mesh" data-layout-ignore></div>
       <svg id="fa-grid" viewBox="0 0 1080 1920" data-layout-ignore>
-        <line class="gl" x1="0" y1="670" x2="1080" y2="670" />
-        <line class="gl" x1="0" y1="1010" x2="1080" y2="1010" />
+        <line class="gl" x1="0" y1="550" x2="1080" y2="550" />
+        <line class="gl" x1="0" y1="950" x2="1080" y2="950" />
         <line class="gl" x1="120" y1="0" x2="120" y2="1920" />
         <line class="gl" x1="960" y1="0" x2="960" y2="1920" />
-        <rect class="gh" x="112" y="662" width="16" height="16" />
-        <rect class="gh" x="952" y="662" width="16" height="16" />
-        <rect class="gh" x="112" y="1002" width="16" height="16" />
-        <rect class="gh" x="952" y="1002" width="16" height="16" />
+        <rect class="gh" x="112" y="542" width="16" height="16" />
+        <rect class="gh" x="952" y="542" width="16" height="16" />
+        <rect class="gh" x="112" y="942" width="16" height="16" />
+        <rect class="gh" x="952" y="942" width="16" height="16" />
       </svg>
-      <div id="fa-g1" class="stage far" data-layout-ignore>멀게?</div>
-      <div id="fa-word" class="stage far" data-layout-allow-overlap>멀게?</div>
-      <div id="fa-g2" class="stage far" data-layout-ignore>멀게?</div>
+      <div id="fa-a1" class="stage" data-layout-allow-overlap>법을 아는 사람이</div>
+      <div id="fa-a2" class="stage" data-layout-allow-overlap>한 수 위.</div>
     </div>
   </div>
   <script>
@@ -100,22 +96,18 @@
     tl.fromTo(BG, { scale: 1.08 }, { scale: 1, duration: D, ease: "none" }, 0);
 
 
-    // B3 변호사(초근접 블러 → 안착) · B4 검사 · B5 법무관 · B6 근데, 아직도 · B7 멀게? · B8 잔상
-    IN("#fa-kick", B[3], { y: -20 });
-    IN("#fa-w1", B[3], { scale: 2.4, filter: "blur(28px)" }, 0.3);
-    OUT("#fa-w1", B[4], { y: -140 });
-    IN("#fa-w2", B[4], { y: 140 }, 0.14);
-    OUT("#fa-w2", B[5], { y: -140 });
-    IN("#fa-w3", B[5], { y: 140 }, 0.14);
-    OUT(["#fa-w3", "#fa-kick"], B[6], { y: -140 });
-    IN("#fa-still", B[6], { y: 40 });
-    // B7: 화면이 그라데이션으로 뒤덮이며 같은 눈높이에 '멀게?'
+    // B3 AI가 써 준 계약서, · B4 읽고 · B5 따지고 · B6 서명은 사람이. · B7 법을 아는 사람이 · B8 한 수 위.
+    IN("#fa-kick", B[3], { y: -20 }, 0.2);
+    IN("#fa-w1", B[4], { scale: 1.3, filter: "blur(20px)" }, 0.2);
+    OUT("#fa-w1", B[5], { y: -140 });
+    IN("#fa-w2", B[5], { y: 140 }, 0.14);
+    OUT(["#fa-w2", "#fa-kick"], B[6], { y: -140 });
+    IN("#fa-w3", B[6], { y: 140 }, 0.14);
+    // B7: 그라데이션이 덮이며 답
     tl.fromTo("#fa-mesh", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.16, ease: "power3.inOut" }, B[7] - 0.1);
-    IN("#fa-word", B[7], { scale: 1.12 });
     tl.fromTo("#fa-grid", { opacity: 0 }, { opacity: 1, duration: 0.12 }, B[7]);
-    // B8: 위아래 잔상이 같은 축에서 갈라져 나옴
-    tl.fromTo("#fa-g1", { opacity: 0, y: 310 }, { opacity: 0.22, y: 0, duration: 0.22, ease: "power3.out" }, B[8]);
-    tl.fromTo("#fa-g2", { opacity: 0, y: -310 }, { opacity: 0.22, y: 0, duration: 0.22, ease: "power3.out" }, B[8]);
+    IN("#fa-a1", B[7], { y: 30 });
+    IN("#fa-a2", B[8], { scale: 1.15, filter: "blur(16px)" }, 0.2);
     OUT(CAM, D, {});
 
     window.__timelines["far"] = tl;
