@@ -131,7 +131,7 @@
   #bg { display: none; }
   .sbg { position: absolute; inset: -120px; overflow: hidden; }
   .sky { position: absolute; left: -60px; right: -60px; bottom: -40px; height: 1060px; transform-origin: 50% 100%; -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 22%, #000 45%); }
-  .sky svg { width: 100%; height: 100%; display: block; }
+  .sky img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 50% 100%; }
   #G-poster { background: radial-gradient(55% 35% at 15% 12%, rgba(120, 160, 255, 0.5), rgba(120, 160, 255, 0) 70%), radial-gradient(60% 40% at 88% 88%, rgba(242, 205, 140, 0.6), rgba(242, 205, 140, 0) 70%), #f7f6f2; }
   #G-poster .grid { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(11, 26, 51, 0.05) 0 2px, rgba(0, 0, 0, 0) 2px 90px), repeating-linear-gradient(90deg, rgba(11, 26, 51, 0.05) 0 2px, rgba(0, 0, 0, 0) 2px 90px); -webkit-mask-image: radial-gradient(60% 45% at 50% 42%, #000, rgba(0, 0, 0, 0)); }
   #G-chat { background: linear-gradient(180deg, #d9e3fb 0%, #eaf0fc 45%, #f7f8fd 100%); }
@@ -177,7 +177,7 @@
 <!-- 포스터 -->
 <div class="layer" id="L-poster">
   <div class="sbg" id="G-poster"><div class="grid"></div></div>
-  <div class="sky" id="sky-p"></div>
+  <div class="sky" id="sky-p"><img src="assets/bg-poster.png" alt="" /></div>
   <div class="cam" id="C-poster">
     <div class="abs c" id="po-k">경찰복지사이버평생교육원 · 법학 전공</div>
     <div class="abs c" id="po-1">법대 안 가도</div>
@@ -278,7 +278,7 @@
 <!-- 엔드카드 -->
 <div class="layer" id="L-end">
   <div class="sbg" id="G-end"><div class="lines"></div></div>
-  <div class="sky" id="sky-e"></div>
+  <div class="sky" id="sky-e"><img src="assets/bg-end.png" alt="" /></div>
   <div class="cam" id="C-end">
     <div class="abs c" id="en-1">경찰복지사이버평생교육원</div>
     <div class="abs c" id="en-2" data-w>법대 안 가도<br />법학 학위</div>
@@ -336,33 +336,6 @@ function cam(id, s, ox, oy, tx = 0, ty = 0) {
 }
 let NOW = 0, SPLIT = false;
 const MEAS = { ctx: null };
-// 도시 야경: 결정적 난수로 빌딩·창문을 그린다 (퇴근 후 불 켜진 도시)
-function skyline(id, pal) {
-  const W = 1200, H = 900;
-  let svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg"><defs>
-    <linearGradient id="g${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${pal.glow}" stop-opacity="0"/><stop offset="1" stop-color="${pal.glow}" stop-opacity="0.85"/></linearGradient>
-    <linearGradient id="h${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${pal.haze}" stop-opacity="0"/><stop offset="1" stop-color="${pal.haze}" stop-opacity="0.6"/></linearGradient>
-    <filter id="b${id}"><feGaussianBlur stdDeviation="3"/></filter></defs>
-    <rect x="0" y="200" width="${W}" height="700" fill="url(#g${id})"/>`;
-  // 먼 빌딩(흐림) → 가까운 빌딩(선명, 창문)
-  [[pal.far, 0.45, 330, 30, 1, 60, 120], [pal.mid, 0.75, 420, 230, 0, 50, 95], [pal.front, 1, 300, 430, 0, 80, 150]].forEach(([col, op, hmax, seed, blur, wmin, wvar], L) => {
-    let x = -30, n = 0, g = `<g opacity="${op}"${blur ? ` filter="url(#b${id})"` : ""}>`;
-    while (x < W + 30) {
-      const w = wmin + rng(seed + n) * wvar, h = hmax * (0.35 + rng(seed + n + 50) * 0.65);
-      const y = H - h;
-      g += `<rect x="${x.toFixed(0)}" y="${y.toFixed(0)}" width="${w.toFixed(0)}" height="${h.toFixed(0)}" rx="2" fill="${col}"/>`;
-      if (rng(seed + n + 90) > 0.6) g += `<rect x="${(x + w / 2 - 2).toFixed(0)}" y="${(y - 28).toFixed(0)}" width="4" height="28" fill="${col}"/>`;
-      if (L > 0) for (let yy = y + 18; yy < H - 14; yy += L === 2 ? 26 : 20) for (let xx = x + 10; xx < x + w - 12; xx += L === 2 ? 16 : 13) {
-        const r = rng(xx * 7.13 + yy * 3.37 + L);
-        if (r > (L === 2 ? 0.7 : 0.78)) g += `<rect x="${xx.toFixed(0)}" y="${yy.toFixed(0)}" width="${L === 2 ? 7 : 5}" height="${L === 2 ? 11 : 8}" fill="${pal.win}" opacity="${(0.35 + r * 0.55).toFixed(2)}"/>`;
-      }
-      x += w + (L === 2 ? 6 : 3); n++;
-    }
-    svg += g + "</g>";
-    if (L < 2) svg += `<rect x="0" y="${H - hmax}" width="${W}" height="${hmax}" fill="url(#h${id})"/>`;
-  });
-  $(id).innerHTML = svg + "</svg>";
-}
 // 어절 단위 분할: data-w 요소의 텍스트를 span.wd로 감싼다
 function splitWords() {
   document.querySelectorAll("[data-w]").forEach((el) => {
@@ -445,8 +418,6 @@ window.seek = function (t) {
   NOW = t;
   if (!SPLIT) {
     splitWords(); SPLIT = true;
-    skyline("sky-p", { far: "#b9c8e8", mid: "#7f97c8", front: "#2b4170", win: "#ffd88f", glow: "#f6c98f", haze: "#f3e9dc" });
-    skyline("sky-e", { far: "#2a4a94", mid: "#18306a", front: "#0a1530", win: "#f5c45c", glow: "#c9a666", haze: "#1a3a86" });
   }
   if (!M) {
     measure();
