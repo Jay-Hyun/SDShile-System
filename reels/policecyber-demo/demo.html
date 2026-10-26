@@ -148,6 +148,7 @@
   #tu-top { color: rgba(255, 255, 255, 0.7) !important; }
   #tu-bot { color: #fff; }
   .tw { color: #fff; }
+  .wd { display: inline-block; }
   #tw0h { background: linear-gradient(#f5c45c, #f5c45c) no-repeat 0 96% / 0% 12%; }
   #tu-pill { background: linear-gradient(120deg, #2e5cbe, #5d86ea) !important; box-shadow: 0 0 80px rgba(93, 134, 234, 0.6), 0 30px 70px rgba(0, 0, 0, 0.4) !important; }
   #L-turn .frag { background: rgba(255, 255, 255, 0.07); box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.16), 0 30px 60px rgba(0, 0, 0, 0.4); }
@@ -209,13 +210,15 @@
     <div class="abs c" id="tu-top">AI도 결국</div>
     <div class="abs c" id="tu-word">
       <div id="tu-pill"></div>
+      <div id="tu-mask" style="position: absolute; left: 0; width: 940px; top: 0; height: 230px; overflow: hidden">
       <div class="tw" id="tw0"><span class="hl" id="tw0h">전문가</span></div>
       <div class="tw" id="tw1"><span>변호사</span></div>
       <div class="tw" id="tw2"><span>법무사</span></div>
       <div class="tw" id="tw3"><span>노무사</span></div>
       <div class="tw" id="tw4"><span>기업 법무팀</span></div>
+      </div>
     </div>
-    <div class="abs c" id="tu-bot">사람을 찾습니다.</div>
+    <div class="abs c" id="tu-bot" data-w>사람을 찾습니다.</div>
     <div class="abs c fine" id="tu-fine">※ 변호사는 로스쿨 졸업·변호사시험 합격, 법무사·노무사는 각 자격시험 합격이<br />별도로 필요합니다. 화면 속 AI 대화는 연출된 예시입니다.</div>
   </div>
 </div>
@@ -224,13 +227,13 @@
 <div class="layer" id="L-start">
   <div class="sbg" id="G-start"><div class="sun" id="sun"></div><div class="rays" id="rays"></div></div>
   <div class="cam" id="C-start">
-    <div class="abs c" id="st-1">그 사람들의 시작,</div>
+    <div class="abs c" id="st-1" data-w>그 사람들의 시작,</div>
     <div class="abs c" id="st-2">법학.</div>
     <div class="abs c" id="st-chips"><span class="chip" id="stc1">1:1 학습플래너</span><span class="chip" id="stc2">평생교육원 중 법학 전공<b>단 1곳*</b></span></div>
     <div class="glow" id="pl-glow" style="left: 106px; top: 716px; width: 868px; height: 468px"></div>
     <div class="card" id="player" style="position: absolute">
       <div class="phead"><em>헌법</em> 1주차<span>법학 전공 · 온라인 강의</span></div>
-      <div class="screen"><small>제1강</small><h4>헌법이란<br />무엇인가</h4><ul><li>· 국가와 국민의 약속</li><li>· 기본권의 뜻</li></ul><div class="play" id="pl-play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#2e5cbe" /></svg></div></div>
+      <div class="screen"><small>제1강</small><h4>헌법이란<br />무엇인가</h4><ul><li id="pl-l1">· 국가와 국민의 약속</li><li id="pl-l2">· 기본권의 뜻</li></ul><div class="play" id="pl-play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#2e5cbe" /></svg></div></div>
       <div class="prog"><i id="pl-prog"></i></div>
     </div>
     <div class="abs" id="phone"><div class="in">
@@ -239,7 +242,7 @@
       <div class="prog"><i id="ph-prog"></i></div>
       <div class="row"><div>제2강 · 기본권의 주체</div><div>제3강 · 국가의 구조</div><div>민법총칙 · 1주차</div></div>
     </div></div>
-    <div class="abs c" id="st-3"><span id="st-3a">법을 몰라도 헌법부터,</span><br /><span id="st-3b">퇴근 후 온라인으로.</span></div>
+    <div class="abs c" id="st-3"><span id="st-3a" data-w>법을 몰라도 헌법부터,</span><br /><span id="st-3b" data-w>퇴근 후 온라인으로.</span></div>
     <div class="abs c fine" id="st-fine">* 전공필수(물권법·채권총칙) 개설 평생교육원 기준, 2026.10 조회</div>
   </div>
 </div>
@@ -252,7 +255,7 @@
     <div class="card" id="cta-card">
       <div class="chead"><div class="ava" style="background: #0b1a33"></div>경찰복지사이버평생교육원<span>상담</span></div>
       <div id="cta-msg"><div class="ava">경</div><div id="cta-t"><span id="cta-t1">이번엔,</span><br /><span id="cta-t2">저희와 <span class="hl" id="cta-h">상담하세요.</span></span></div></div>
-      <div id="cta-sub">법을 몰라도 괜찮아요.<br />내 상황에 맞는 시작부터 같이 봐요.</div>
+      <div id="cta-sub" data-w>법을 몰라도 괜찮아요.<br />내 상황에 맞는 시작부터 같이 봐요.</div>
       <div id="cta-btn">상담 신청 <span style="font-size: 44px">→</span></div>
       <div id="cta-done">✓ 신청 완료</div>
       <div id="cta-ok">평일 10~18시에 먼저 연락드려요</div>
@@ -265,13 +268,14 @@
   <div class="sbg" id="G-end"><div class="lines"></div></div>
   <div class="cam" id="C-end">
     <div class="abs c" id="en-1">경찰복지사이버평생교육원</div>
-    <div class="abs c" id="en-2">법학 전공<br />상담 신청</div>
+    <div class="abs c" id="en-2" data-w>법학 전공<br />상담 신청</div>
     <div class="abs" id="en-btn"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="#fff" /></svg>070-4006-7128</div>
     <div class="abs c" id="en-pill"><span class="chip red">11/10 접수 마감 · 11/4 개강</span><span class="chip">100% 온라인</span></div>
     <div class="abs c fine" id="en-fine">※ 변호사는 로스쿨 졸업·변호사시험 합격, 법무사·노무사는 각 자격시험 합격이 별도로 필요하며,<br />이 과정은 입학·합격·취업을 보장하지 않습니다. 화면 속 AI 대화는 연출된 예시입니다.<br />* 전공필수(물권법·채권총칙) 개설 평생교육원 기준, 2026.10 조회</div>
   </div>
 </div>
 
+<svg width="0" height="0" style="position: absolute"><filter id="wbA" x="-20%" y="0" width="140%" height="100%"><feGaussianBlur id="wbAs" stdDeviation="0 0" /></filter><filter id="wbB" x="-20%" y="0" width="140%" height="100%"><feGaussianBlur id="wbBs" stdDeviation="0 0" /></filter></svg>
 <div id="vig"></div><canvas id="fx" width="1080" height="1920"></canvas><div id="leak"></div>
 <div id="ripple"></div>
 <svg id="cursor" viewBox="0 0 24 24"><path d="M5 3l14 7-6.2 1.8L10.8 18z" fill="#0b1a33" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round" /></svg>
@@ -315,7 +319,40 @@ function layer(id, t, a, b, d = 0.3) {
 function cam(id, s, ox, oy, tx = 0, ty = 0) {
   const el = $(id);
   el.style.transformOrigin = `${ox}px ${oy}px`;
-  el.style.transform = `translate(${tx}px, ${ty}px) scale(${s})`;
+  el.style.transform = `translate(${tx}px, ${ty}px) scale(${s}) rotate(${(Math.sin(NOW * 0.37 + ox * 0.01) * 0.35).toFixed(3)}deg)`;
+}
+let NOW = 0, SPLIT = false;
+// 어절 단위 분할: data-w 요소의 텍스트를 span.wd로 감싼다
+function splitWords() {
+  document.querySelectorAll("[data-w]").forEach((el) => {
+    const walk = (n) => {
+      [...n.childNodes].forEach((c) => {
+        if (c.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          c.textContent.split(/(\s+)/).forEach((w) => {
+            if (!w) return;
+            if (/^\s+$/.test(w)) frag.appendChild(document.createTextNode(w));
+            else { const sp = document.createElement("span"); sp.className = "wd"; sp.textContent = w; frag.appendChild(sp); }
+          });
+          c.replaceWith(frag);
+        } else if (c.nodeType === 1 && c.tagName !== "BR" && !c.classList.contains("wd")) walk(c);
+      });
+    };
+    walk(el);
+  });
+}
+// 어절이 차례로 블러 → 선명
+function words(id, t, t0, st = 0.07, o = {}) {
+  const el = $(id);
+  el.style.opacity = 1; el.style.filter = "none";
+  [...el.querySelectorAll(".wd")].forEach((w, i) => show(w, ent(t, t0 + i * st, o.d || 0.3), { y: o.y ?? 26, blur: 14 }));
+}
+// 마스크 리빌 (왼쪽 → 오른쪽)
+function reveal(id, p) {
+  const el = $(id);
+  el.style.opacity = p > 0 ? 1 : 0;
+  el.style.clipPath = `inset(-30% ${((1 - p) * 100).toFixed(2)}% -30% -10%)`;
+  el.style.filter = p < 0.999 ? `blur(${((1 - p) * 8).toFixed(2)}px)` : "none";
 }
 const rng = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
 const chars = (s) => Array.from(s);
@@ -335,19 +372,23 @@ const S = {
   q1: [B(1), B(2), B(3), B(4)], send1: B(5), a1: B(6), a1e: B(7.7), h1: B(8.2),
   ty2: B(10), u2: B(11), a2: B(11.5), h2: B(12.2),
   ty3: B(13), u3: B(14), a3: B(14.5), h3: B(15.2),
-  dim: B(16), chatOut: B(17.6),
-  turn: B(18), top: B(19), bot: B(20), pill: B(22), w: [B(23), B(24), B(25), B(26)], turnOut: B(28),
-  st: B(28), st2: B(29), pl: B(30.5), play: B(32), s3a: B(33), s3b: B(34), phone: B(35.5), chips: B(37), stOut: B(40),
+  dim: B(16), zoom: B(16.9), chatOut: B(17.62),
+  turn: B(17.75), top: B(19), bot: B(20), pill: B(22), w: [B(23), B(24), B(25), B(26)], grow: B(27.4), turnOut: B(28.55),
+  st: B(28), st1: B(28.4), st2: B(29), pl: B(30.5), play: B(32), s3a: B(33), s3b: B(34), phone: B(35.5), chips: B(37), stOut: B(40.2),
   cta: B(40), c1: B(41), c2: B(42), ch: B(42.8), btn: B(43.5), press: B(45), endT: B(47),
 };
 // 효과음 큐 등록
 S.q1.forEach((t) => cue(t, "type"));
 cue(S.send1, "click"); cue(S.ty2, "type"); cue(S.u2 - 0.05, "click"); cue(S.ty3, "type"); cue(S.u3 - 0.05, "click");
 cue(S.play, "click"); cue(S.press, "click");
+cue(T0, "swish"); cue(S.turn, "hit"); cue(S.grow - 0.35, "rise"); cue(B(40) - 0.2, "whoosh"); cue(S.endT, "swish");
+[S.h1, S.h2, S.h3, S.ch].forEach((t) => cue(t, "mark"));
 
 // 채팅 스크롤 위치 (초기 1회 측정)
 let M = null;
 function measure() {
+  // 첫 답이 다 써진 상태에서 잰다
+  $("a1m").textContent = A1M; $("a1e").textContent = A1E; $("d1").style.display = "none";
   const g = (id) => ({ top: $(id).offsetTop, bot: $(id).offsetTop + $(id).offsetHeight });
   const viewH = 1100 - 104 - 140;
   const pad = 36;
@@ -356,6 +397,8 @@ function measure() {
 }
 
 window.seek = function (t) {
+  NOW = t;
+  if (!SPLIT) { splitWords(); SPLIT = true; }
   if (!M) measure();
   // 바탕 워시
   $("b1").style.transform = `translate(${-150 + Math.sin(t * 0.21) * 120}px, ${80 + Math.cos(t * 0.17) * 140}px)`;
@@ -367,13 +410,22 @@ window.seek = function (t) {
 
   // ── 포스터 0–B0
   {
-    const p = layer("L-poster", t, -1, T0 - 0.02, 0.3);
-    if (p > 0) cam("C-poster", kf(t, [[0, 1], [T0, 1.04]], E.lin), 540, 800);
+    const p = layer("L-poster", t, -1, T0 + 0.12, 0.25);
+    if (p > 0) {
+      cam("C-poster", kf(t, [[0, 1], [T0, 1.035]], E.lin), 540, 800);
+      // 첫 강박: 따옴표 문장만 남고 나머지는 녹는다. 문장은 작아지며 채팅창 안쪽으로 빨려 들어감
+      const q = E.io(cl((t - (T0 - 0.04)) / 0.36));
+      ["po-k", "po-1", "po-chips", "po-chips2", "po-fine"].forEach((id) => show(id, 1 - ent(t, T0 - 0.06, 0.16), { y: -30, blur: 16 }));
+      const pq = $("po-q");
+      pq.style.transform = `translateY(${(-60 * q).toFixed(1)}px) scale(${(1 - 0.6 * q).toFixed(3)})`;
+      pq.style.filter = q > 0 ? `blur(${(q * 10).toFixed(2)}px)` : "none";
+      pq.style.opacity = 1 - q * q;
+    }
   }
 
   // ── 채팅 B0–B17.6
   {
-    const p = layer("L-chat", t, T0 - 0.05, S.chatOut, 0.32);
+    const p = layer("L-chat", t, T0 - 0.08, S.chatOut, 0.3);
     if (p > 0) {
       // 카드: 기울어진 채 떠올라 점점 정면으로
       const pi = ent(t, T0 - 0.05, 0.5);
@@ -425,32 +477,57 @@ window.seek = function (t) {
       const a1hY = 250 + 104 + M.a1.bot - 50;
       const s = kf(t, [[T0, 1.0], [S.h1, 1.02], [S.h1 + 0.6, 1.5], [S.ty2 - 0.1, 1.53], [S.ty2 + 0.35, 1.0], [S.dim, 1.02], [S.dim + 0.6, 0.94]]);
       const pushY = kf(t, [[S.h1, 0], [S.h1 + 0.6, 840 - a1hY], [S.ty2 - 0.1, 840 - a1hY], [S.ty2 + 0.35, 0]]);
-      cam("C-chat", s, 540, a1hY, 0, pushY);
+      // 매치 컷: 마지막 '전문가'로 파고든다 (가속, 1 → 4.2배)
+      let zs = s, ox = 540, oy = a1hY, tx = 0, ty = pushY;
+      const zq = cl((t - S.zoom) / (S.chatOut + 0.1 - S.zoom));
+      if (zq > 0) {
+        $("C-chat").style.transform = "none";
+        const tn = $("a3h").firstChild, rg = document.createRange();
+        rg.setStart(tn, 0); rg.setEnd(tn, 3);
+        const rc = rg.getBoundingClientRect();
+        const cx = rc.left + rc.width / 2, cy = rc.top + rc.height / 2;
+        const z = zq * zq * zq;
+        zs = lerp(0.94, 4.2, z); ox = cx; oy = cy; tx = (540 - cx) * E.io(zq); ty = (805 - cy) * E.io(zq);
+      }
+      cam("C-chat", zs, ox, oy, tx, ty);
+      const rack = Math.max(kf(t, [[S.h1, 0], [S.h1 + 0.5, 1], [S.ty2 - 0.1, 1], [S.ty2 + 0.3, 0]]), zq);
+      $("G-chat").style.filter = rack > 0.001 ? `blur(${(rack * 10).toFixed(2)}px)` : "none";
 
       // 커서 → 전송 버튼
       if (t > S.q1[3] - 0.3 && t < S.send1 + 0.5) {
         const k = E.io(cl((t - (S.q1[3] - 0.3)) / 0.75));
-        cur = { x: lerp(1000, 905, k), y: lerp(1500, 1268, k), o: ent(t, S.q1[3] - 0.3, 0.2) * ext(t, S.send1 + 0.3, 0.2), press: S.send1, scale: s, ox: 540, oy: a1hY };
+        cur = { x: lerp(1000, 905, k), y: lerp(1500, 1268, k), o: ent(t, S.q1[3] - 0.3, 0.2) * ext(t, S.send1 + 0.3, 0.2), press: S.send1, scale: zs, ox, oy };
       }
     }
   }
 
   // ── 반전 + 자리 B18–B28
   {
-    const p = layer("L-turn", t, S.turn - 0.1, S.turnOut, 0.3);
+    const p = layer("L-turn", t, S.turn - 0.06, S.turnOut, 0.12);
     if (p > 0) {
-      cam("C-turn", kf(t, [[S.turn, 1.08], [S.pill, 1.0], [S.turnOut + 0.3, 1.03]]), 540, 800);
-      show("tu-top", Math.min(ent(t, S.top), 1), { y: -20 });
-      show("tu-bot", Math.min(ent(t, S.bot), ext(t, S.pill - 0.1, 0.2)), { y: 30 });
+      cam("C-turn", kf(t, [[S.turn, 1.0], [S.pill, 1.04], [S.grow, 1.06]], E.lin), 540, 805);
+      // 스포트라이트가 켜진다 (0.15초 램프)
+      const on = E.out(cl((t - S.turn - 0.05) / 0.15));
+      $("beam").style.opacity = on; $("G-turn").style.filter = `brightness(${(0.35 + 0.65 * on).toFixed(3)})`;
+      words("tu-bot", t, S.bot, 0.08); $("tu-bot").style.opacity = ext(t, S.pill - 0.1, 0.2);
       // 단어: 전문가 → 변호사 → 법무사 → 노무사 → 기업 법무팀
       const ws = [S.turn, ...S.w];
       let cur_i = 0;
       ws.forEach((w, i) => { if (t >= w) cur_i = i; });
+      // 슬롯처럼: 이전 단어는 위로, 새 단어는 아래에서 마스크 안으로
       ws.forEach((w, i) => {
-        const inP = i === 0 ? ent(t, S.turn, 0.4) : ent(t, w, 0.16);
-        const outP = i < ws.length - 1 ? ext(t, ws[i + 1] - 0.02, 0.1) : 1;
-        show("tw" + i, Math.min(inP, outP), i === 0 ? { y: 0, s: 0.35, blur: 24 } : { y: 40, blur: 10 });
+        const inP = i === 0 ? 1 : E.out(cl((t - w) / 0.22));
+        const outP = i < ws.length - 1 ? E.io(cl((t - ws[i + 1]) / 0.2)) : 0;
+        const el = $("tw" + i);
+        const vis = i === 0 ? (t >= S.turn - 0.06 ? 1 : 0) : (t >= w ? 1 : 0);
+        el.style.opacity = vis * (1 - outP);
+        el.style.transform = `translateY(${((1 - inP) * 230 - outP * 230).toFixed(1)}px)`;
+        const b = Math.max(1 - inP, outP) * 10;
+        el.style.filter = b > 0.01 ? `blur(${b.toFixed(2)}px)` : "none";
       });
+      // 확장 직전 마지막 단어는 빠진다
+      const gq = E.io(cl((t - S.grow) / 0.55));
+      $("tu-mask").style.opacity = 1 - cl(gq * 3);
       $("tw0h").style.backgroundSize = `${E.io(cl((t - S.turn - 0.3) / 0.3)) * 100}% 12%`;
       // 알약: '전문가'를 감싸며 생겨나고, 단어 폭에 맞춰 늘고 줄어듦
       const widths = ws.map((_, i) => $("tw" + i).firstElementChild.offsetWidth + 120);
@@ -458,8 +535,15 @@ window.seek = function (t) {
       const pw = kf(t, wk);
       const pp = E.io(cl((t - S.pill) / 0.25));
       const pill = $("tu-pill");
-      pill.style.width = pw + "px"; pill.style.marginLeft = -pw / 2 + "px";
+      show("tu-fine", ent(t, S.w[0], 0.3), { y: 10 });
+      // 알약이 화면 전체로 커지며 다음 장면을 연다
+      const W = lerp(pw, 2600, gq), H = lerp(230, 3000, gq);
+      pill.style.width = W + "px"; pill.style.marginLeft = -W / 2 + "px";
+      pill.style.height = H + "px"; pill.style.top = (230 - H) / 2 + "px";
+      pill.style.borderRadius = lerp(115, 0, gq) + "px";
       pill.style.transform = `scaleX(${lerp(0.6, 1, pp)})`; pill.style.opacity = pp;
+      show("tu-top", Math.min(ent(t, S.top), 1 - cl(gq * 3)), { y: -20 });
+      $("tu-fine").style.opacity = Math.min(+$("tu-fine").style.opacity || 0, 1 - cl(gq * 3));
       if (pp > 0.5) $("tw0h").style.backgroundSize = "0% 12%";
       // 뒤에 지나가는 각 자리의 화면 조각
       S.w.forEach((w, i) => {
@@ -468,18 +552,23 @@ window.seek = function (t) {
         fr.style.opacity = q * 0.9; fr.style.filter = `blur(${(1 - q) * 10 + 1.2}px)`;
         fr.style.transform = `translateY(${(1 - q) * 50 - (t - w) * 18}px) rotate(${[-4, 3, 4, -3][i]}deg)`;
       });
-      show("tu-fine", ent(t, S.w[0], 0.3), { y: 10 });
     }
   }
 
   // ── 시작 B28–B40
   {
-    const p = layer("L-start", t, S.st - 0.05, S.stOut, 0.3);
+    const p = layer("L-start", t, S.st, S.stOut + 1, 0.45);
     if (p > 0) {
-      const s = kf(t, [[S.st, 1.06], [S.pl, 1.0], [S.stOut, 1.02]]);
+      const s = kf(t, [[S.st, 1.08], [S.pl, 1.0], [S.stOut, 1.03]]);
       cam("C-start", s, 540, 700);
-      show("st-1", ent(t, S.st), { y: -20 });
-      show("st-2", ent(t, S.st2, 0.32), { s: 0.4, y: 0, blur: 24 });
+      words("st-1", t, S.st1, 0.08, { y: -20 });
+      reveal("st-2", E.io(cl((t - S.st2) / 0.42)));
+      show("pl-l1", ent(t, S.play + 0.3), { x: -30, y: 0 });
+      show("pl-l2", ent(t, S.play + 0.3 + P), { x: -30, y: 0 });
+      // 휩 팬: 왼쪽으로 빠르게 빠짐 + 가로 모션 블러
+      const wq = cl((t - (B(40) - 0.22)) / 0.3), wz = wq * wq;
+      $("L-start").style.transform = `translateX(${(-1300 * wz).toFixed(1)}px)`;
+      if (wq > 0) { $("wbAs").setAttribute("stdDeviation", `${(Math.sin(wq * Math.PI) * 60 + wz * 20).toFixed(1)} 0`); $("L-start").style.filter = "url(#wbA)"; }
       const pi = ent(t, S.pl, 0.5);
       const rx = kf(t, [[S.pl, 18], [S.play, 6], [S.stOut, 3]]);
       const pshift = E.io(cl((t - S.phone) / 0.5));
@@ -491,8 +580,8 @@ window.seek = function (t) {
       $("pl-prog").style.width = (playing ? cl((t - S.play) / 14) * 100 : 0) + "%";
       $("ph-prog").style.width = (playing ? cl((t - S.play) / 14) * 100 : 0) + "%";
       show("phone", ent(t, S.phone, 0.4), { x: 160, y: 60, blur: 14 });
-      show("st-3a", ent(t, S.s3a), { y: 24 });
-      show("st-3b", ent(t, S.s3b), { y: 24 });
+      words("st-3a", t, S.s3a, 0.08);
+      words("st-3b", t, S.s3b, 0.08);
       show("stc1", ent(t, S.chips), { y: 20 });
       show("stc2", ent(t, S.chips + 0.15), { y: 20 });
       show("st-fine", ent(t, S.chips + 0.15), { y: 0 });
@@ -506,16 +595,19 @@ window.seek = function (t) {
 
   // ── CTA B40–B47
   {
-    const p = layer("L-cta", t, S.cta - 0.05, S.endT, 0.3);
+    const p = layer("L-cta", t, B(40) - 0.12, S.endT + 0.1, 0.35);
     if (p > 0) {
-      const s = kf(t, [[S.cta, 1.05], [S.c2, 1.0], [S.btn, 1.0], [S.press + 0.5, 1.04]]);
+      const iq = E.out(cl((t - (B(40) - 0.12)) / 0.42));
+      $("L-cta").style.transform = `translateX(${((1 - iq) * 1300).toFixed(1)}px)`;
+      if (iq < 0.999 && t > B(40) - 0.12) { $("wbBs").setAttribute("stdDeviation", `${((1 - iq) * 70).toFixed(1)} 0`); $("L-cta").style.filter = "url(#wbB)"; }
+      const s = kf(t, [[S.cta, 1.05], [S.c2, 1.0], [S.btn, 1.0], [S.press + 0.5, 1.04], [S.endT - 0.15, 1.05], [S.endT + 0.4, 0.82]]);
       cam("C-cta", s, 540, 900);
       const pi = ent(t, S.cta, 0.45);
       $("cta-card").style.transform = `perspective(2600px) translateY(${(1 - pi) * 140}px) rotateX(${lerp(14, 3, pi)}deg)`;
       show("cta-t1", ent(t, S.c1), { y: 30 });
       show("cta-t2", ent(t, S.c2), { y: 30 });
       hl("cta-h", E.io(cl((t - S.ch) / 0.35)));
-      show("cta-sub", ent(t, S.ch + 0.2), { y: 16 });
+      words("cta-sub", t, S.ch + 0.2, 0.05, { y: 16 });
       const pr = t >= S.press && t < S.press + 0.14 ? 0.95 : 1;
       show("cta-btn", Math.min(ent(t, S.btn), ext(t, S.press + 0.25, 0.15)), { y: 30 });
       $("cta-btn").style.transform += ` scale(${pr})`;
@@ -532,9 +624,9 @@ window.seek = function (t) {
   {
     const p = layer("L-end", t, S.endT - 0.05, 99, 0.3);
     if (p > 0) {
-      cam("C-end", kf(t, [[S.endT, 1.04], [35, 1.0]], E.out), 540, 800);
+      cam("C-end", kf(t, [[S.endT, 1.06], [34, 1.0]], E.out), 540, 800);
       show("en-1", ent(t, S.endT), { y: -16 });
-      show("en-2", ent(t, S.endT + 0.12, 0.32), { y: 30 });
+      words("en-2", t, S.endT + 0.12, 0.09, { y: 34 });
       show("en-btn", ent(t, B(48), 0.3), { y: 40 });
       show("en-pill", ent(t, B(48.5)), { y: 20 });
       show("en-fine", ent(t, B(49)), { y: 0 });
@@ -547,7 +639,7 @@ window.seek = function (t) {
   $("bk1").style.transform = `translate(${-80 + Math.sin(t * 0.5) * 90}px, ${300 + Math.cos(t * 0.4) * 80}px)`;
   $("bk2").style.transform = `translate(${760 + Math.cos(t * 0.45) * 90}px, ${900 + Math.sin(t * 0.35) * 90}px)`;
   $("beam").style.transform = `rotate(${Math.sin(t * 0.8) * 6}deg)`;
-  const sunY = kf(t, [[S.st, 2050], [S.stOut, 1500]], E.out);
+  const sunY = kf(t, [[S.st, 2150], [S.stOut, 1380]], E.out);
   $("sun").style.top = sunY + "px"; $("rays").style.top = sunY + "px";
   $("rays").style.transform = `rotate(${t * 3}deg)`;
   for (let i = 0; i < 3; i++) {
@@ -604,6 +696,9 @@ window.seek = function (t) {
 };
 
 window.seek(0);
+// 폰트가 늦게 들어오면 줄바꿈이 바뀌므로 다시 측정
+window.remeasure = () => { M = null; };
+document.fonts.ready.then(() => { M = null; });
 </script>
 </body>
 </html>
