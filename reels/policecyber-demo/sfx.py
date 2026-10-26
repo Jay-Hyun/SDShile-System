@@ -53,8 +53,8 @@ for c in cues:
 fxpath = out + ".fx.wav"
 pcm = (np.clip(fx, -1, 1) * 32767).astype(np.int16)
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "s16le", "-ar", str(SR), "-ac", "1", "-i", "-", fxpath], input=pcm.tobytes(), check=True)
-# BGM은 1.3s 첫 강박에 배치. 효과음은 BGM 아래 살짝
+# BGM은 원곡 0s(스윕업)부터 영상 0s에 배치. 효과음은 BGM 아래 살짝
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "assets/bgm.mp3", "-i", fxpath, "-filter_complex",
-                f"[0]adelay=1300|1300,volume=0.9[m];[1]aformat=channel_layouts=stereo[f];[m][f]amix=inputs=2:normalize=0,atrim=0:{dur},loudnorm=I=-15:TP=-1.5:LRA=11,aresample=44100,alimiter=limit=0.74:level=false",
+                f"[0]volume=0.9[m];[1]aformat=channel_layouts=stereo[f];[m][f]amix=inputs=2:normalize=0,atrim=0:{dur},loudnorm=I=-15:TP=-1.5:LRA=11,aresample=44100,alimiter=limit=0.74:level=false",
                 "-ar", "44100", out], check=True)
 import os; os.remove(fxpath)
