@@ -41,11 +41,12 @@
     }
 
     #root { color: #ffffff; background: #0a1020; }
-    #tg-q { top: 700px; font-size: 170px; font-weight: 900; line-height: 1; }
-    #tg-line { top: 750px; font-size: 120px; font-weight: 900; white-space: nowrap; }
-    #tg-coin { display: inline-flex; width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff2c9, #e0c27e 45%, #9c7a3e 100%); color: #0b1a33; font-size: 64px; font-weight: 900; align-items: center; justify-content: center; vertical-align: -0.2em; margin: 0 16px; letter-spacing: -0.04em; }
+    #tg-q { top: 700px; font-size: 150px; font-weight: 900; line-height: 1; white-space: nowrap; color: rgba(255, 255, 255, 0.62); }
+    #tg-line { top: 880px; font-size: 150px; font-weight: 900; line-height: 1; white-space: nowrap; }
     #tg-yes { color: #f0d595; }
-    #tg-sub { top: 990px; font-size: 50px; font-weight: 800; color: rgba(255, 255, 255, 0.88); }
+    #tg-badge { top: 1100px; display: flex; justify-content: center; }
+    #tg-badge div { height: 92px; padding: 0 40px; border-radius: 999px; background: radial-gradient(circle at 30% 30%, #fff2c9, #e0c27e 50%, #b8955a 100%); color: #0b1a33; font-size: 46px; font-weight: 900; display: flex; align-items: center; letter-spacing: -0.03em; }
+    #tg-sub { top: 1220px; font-size: 48px; font-weight: 800; color: rgba(255, 255, 255, 0.88); }
     .chip { position: absolute; height: 84px; padding: 0 30px; border-radius: 22px; background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.22); font-size: 38px; font-weight: 800; display: flex; align-items: center; white-space: nowrap; letter-spacing: -0.03em; }
 
   </style>
@@ -53,14 +54,15 @@
     <div id="together-bg" class="bgl" data-layout-ignore></div>
     <div id="together-cam" class="cam" data-layout-allow-overlap>
       <div id="tg-q" class="stage">공부는 혼자,</div>
-      <div id="tg-line" class="stage" data-layout-allow-overlap><span class="w" id="tg-no">계획은</span><span id="tg-coin">1:1</span><span class="w" id="tg-yes">같이.</span></div>
-      <div id="tg-sub" class="stage">학습플래너가 내 일정에 맞춰 짜 줘요</div>
-      <div class="chip" id="tg-c0" style="left: 110px; top: 300px">퇴근 후 1시간</div>
-      <div class="chip" id="tg-c1" style="left: 620px; top: 250px">주말 집중 플랜</div>
-      <div class="chip" id="tg-c2" style="left: 90px; top: 1080px">진도 체크</div>
-      <div class="chip" id="tg-c3" style="left: 700px; top: 1120px">시험 대비</div>
-      <div class="chip" id="tg-c4" style="left: 130px; top: 1240px">과목 추천</div>
-      <div class="chip" id="tg-c5" style="left: 700px; top: 1250px">맞춤 일정</div>
+      <div id="tg-line" class="stage">계획은 <span id="tg-yes">같이.</span></div>
+      <div id="tg-badge" class="stage"><div>1:1 학습플래너</div></div>
+      <div id="tg-sub" class="stage">내 일정에 맞춰 짜 드려요</div>
+      <div class="chip" id="tg-c0" style="left: 110px; top: 250px">퇴근 후 1시간</div>
+      <div class="chip" id="tg-c1" style="left: 610px; top: 220px">주말 집중 플랜</div>
+      <div class="chip" id="tg-c2" style="left: 90px; top: 400px">진도 체크</div>
+      <div class="chip" id="tg-c3" style="left: 730px; top: 380px">시험 대비</div>
+      <div class="chip" id="tg-c4" style="left: 200px; top: 540px">과목 추천</div>
+      <div class="chip" id="tg-c5" style="left: 640px; top: 530px">맞춤 일정</div>
     </div>
   </div>
   <script>
@@ -85,17 +87,15 @@
     tl.fromTo(BG, { scale: 1.08 }, { scale: 1, duration: D, ease: "none" }, 0);
 
 
-    // B27 혼자? · B28 아니, · B29 1:1 코인 · B30 같이. · B31 플랜 칩 · B32 서브
+    // B27 공부는 혼자, · B28 계획은 같이. · B29 1:1 학습플래너 배지 · B30 서브 · B31 플랜 칩
     const rot = [-6, 5, 4, -5, -3, 4];
     IN("#tg-q", B[27], { scale: 1.1 });
-    OUT("#tg-q", B[28], { y: -120 });
-    IN("#tg-no", B[28], { y: 60 });
-    tl.fromTo("#tg-coin", { opacity: 0, rotationY: 180, filter: "blur(8px)" }, { opacity: 1, rotationY: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, B[29]);
-    IN("#tg-yes", B[30], { x: 60 });
+    IN("#tg-line", B[28], { y: 60 });
+    IN("#tg-badge div", B[29], { y: 30 });
+    IN("#tg-sub", B[30], { y: 30 });
     rot.forEach((r, i) => {
       tl.fromTo(`#tg-c${i}`, { opacity: 0, rotation: r, filter: "blur(8px)" }, { opacity: 1, rotation: r, filter: "blur(0px)", duration: 0.16, ease: "power3.out" }, B[31] + i * 0.03);
     });
-    IN("#tg-sub", B[31] + 0.1, { y: 30 });
     OUT(CAM, D, {});
 
     window.__timelines["together"] = tl;

@@ -78,7 +78,7 @@ def scene(cid, a, b, css, html, js, bg="", cam_tail=0.0):
 SLOTS = []
 
 # ---------- poster B0–B3 ----------
-# 질문으로 멈춰 세우고(왜 법학?), 답의 근거(왜 여기)를 같은 화면에 깔아 둔다.
+# 대비 2행(쓰는 사람 / 검토하는 사람) + 결론(법학 전공) + 왜 여기인지의 근거를 한 화면에.
 SLOTS.append(scene("poster", 0, 3, f"""
     #root {{ color: #ffffff; background: #0b1a33; }}
     #po-grid {{ position: absolute; inset: 0; }}
@@ -87,33 +87,33 @@ SLOTS.append(scene("poster", 0, 3, f"""
     #po-alert {{ top: 190px; display: flex; justify-content: center; }}
     #po-alert div {{ height: 70px; padding: 0 30px; border-radius: 999px; background: #ff5a4e; color: #fff; font-size: 36px; font-weight: 900; display: flex; align-items: center; gap: 14px; letter-spacing: -0.02em; }}
     #po-alert i {{ width: 14px; height: 14px; border-radius: 50%; background: #fff; }}
-    #po-kicker {{ top: 300px; font-size: 68px; font-weight: 900; }}
-    #po-q {{ top: 400px; font-size: 270px; font-weight: 900; line-height: 1; letter-spacing: -0.06em; white-space: nowrap; }}
-    #po-q b {{ color: #f0d595; }}
-    #po-ans {{ top: 720px; font-size: 56px; font-weight: 800; color: rgba(255, 255, 255, 0.92); }}
-    #po-only {{ top: 820px; display: flex; justify-content: center; }}
+    #po-l1 {{ top: 330px; font-size: 92px; font-weight: 900; color: rgba(255, 255, 255, 0.62); white-space: nowrap; }}
+    #po-l2 {{ top: 450px; font-size: 92px; font-weight: 900; white-space: nowrap; }}
+    #po-l2 b {{ color: #f0d595; }}
+    #po-ans {{ top: 600px; font-size: 60px; font-weight: 800; }}
+    #po-only {{ top: 720px; display: flex; justify-content: center; }}
     #po-only div {{ height: 112px; padding: 0 40px; border-radius: 28px; background: #fbf9f4; color: #0b1a33; font-size: 56px; font-weight: 900; display: flex; align-items: center; gap: 14px; letter-spacing: -0.04em; }}
     #po-only b {{ color: #2e5cbe; }}
     #po-only sup {{ font-size: 34px; color: #2e5cbe; align-self: flex-start; margin-top: 22px; }}
-    #po-pts {{ top: 960px; display: flex; justify-content: center; gap: 14px; }}
+    #po-pts {{ top: 860px; display: flex; justify-content: center; gap: 14px; }}
     .pt {{ height: 84px; padding: 0 26px; border-radius: 22px; background: rgba(255, 255, 255, 0.14); border: 2px solid rgba(255, 255, 255, 0.4); font-size: 38px; font-weight: 800; display: flex; align-items: center; gap: 10px; letter-spacing: -0.03em; white-space: nowrap; }}
     .pt img {{ width: 40px; height: 40px; }}
-    #po-cta {{ top: 1090px; font-size: 46px; font-weight: 900; color: #f0d595; }}
+    #po-cta {{ top: 990px; font-size: 46px; font-weight: 900; color: #f0d595; }}
     #po-fine {{ top: 1262px; font-size: 30px; font-weight: 500; line-height: 1.3; color: rgba(255, 255, 255, 0.78); letter-spacing: -0.02em; }}
 """, """      <svg id="po-grid" viewBox="0 0 1080 1920" data-layout-ignore>
         <line class="gl" x1="60" y1="0" x2="60" y2="1920" />
         <line class="gl" x1="1020" y1="0" x2="1020" y2="1920" />
-        <line class="gl" x1="0" y1="400" x2="1080" y2="400" />
-        <line class="gl" x1="0" y1="690" x2="1080" y2="690" />
-        <rect class="gh" x="52" y="392" width="16" height="16" />
-        <rect class="gh" x="1012" y="392" width="16" height="16" />
-        <rect class="gh" x="52" y="682" width="16" height="16" />
-        <rect class="gh" x="1012" y="682" width="16" height="16" />
+        <line class="gl" x1="0" y1="440" x2="1080" y2="440" />
+        <line class="gl" x1="0" y1="570" x2="1080" y2="570" />
+        <rect class="gh" x="52" y="432" width="16" height="16" />
+        <rect class="gh" x="1012" y="432" width="16" height="16" />
+        <rect class="gh" x="52" y="562" width="16" height="16" />
+        <rect class="gh" x="1012" y="562" width="16" height="16" />
       </svg>
       <div id="po-alert" class="stage"><div><i></i>11/10 접수 마감 · 11/4 개강</div></div>
-      <div id="po-kicker" class="stage">AI가 계약서를 쓰는 시대,</div>
-      <div id="po-q" class="stage">왜 <b>법학</b>?</div>
-      <div id="po-ans" class="stage">서명하는 손은 여전히 사람이니까</div>
+      <div id="po-l1" class="stage">AI를 쓰는 사람과</div>
+      <div id="po-l2" class="stage">AI를 <b>검토</b>하는 사람.</div>
+      <div id="po-ans" class="stage">검토하는 쪽, 법학 전공</div>
       <div id="po-only" class="stage"><div>평생교육원 중 법학 전공 <b>단 1곳</b><sup>*</sup></div></div>
       <div id="po-pts" class="stage">
         <div class="pt"><img src="assets/img/moe-emblem.svg" alt="" />교육부장관 명의 학사</div>
@@ -121,12 +121,12 @@ SLOTS.append(scene("poster", 0, 3, f"""
       </div>
       <div id="po-cta" class="stage">부담 없는 상담 · 070-4006-7128</div>
       <div id="po-fine" class="stage">* 전공필수(물권법·채권총칙) 개설 평생교육원 기준, 2026.10 조회<br />입학·합격·취업을 보장하지 않습니다.</div>""", """
-    // 첫 프레임 = 완성 포스터(썸네일). 카메라만 천천히, 마지막에 '법학' 속으로
-    tl.to(CAM, { scale: 3.2, opacity: 0, filter: "blur(16px)", duration: 0.3, ease: "power3.in", transformOrigin: "55% 28%" }, D - 0.3);
+    // 첫 프레임 = 완성 포스터(썸네일). 카메라만 천천히, 마지막에 '검토' 속으로
+    tl.to(CAM, { scale: 3.2, opacity: 0, filter: "blur(16px)", duration: 0.3, ease: "power3.in", transformOrigin: "42% 26%" }, D - 0.3);
 """, bg='<div class="mesh"></div>', cam_tail=0.3))
 
 # ---------- why B3–B9 ----------
-# 납득: AI가 대신 써줘도 판단과 책임은 사람에게 남는다 → 그 사람이 법을 아는 사람
+# 납득: 결과물은 AI가 내도 검토와 책임은 사람이 → 그 자리에 필요한 건 법학 전공
 SLOTS.append(scene("far", 3, 9, f"""
     #root {{ color: #0b1a33; background: #fbf9f4; }}
     .hero {{ top: {EYE}px; font-size: 220px; font-weight: 900; line-height: 1; white-space: nowrap; }}
@@ -138,10 +138,10 @@ SLOTS.append(scene("far", 3, 9, f"""
     .gh {{ fill: #ffffff; }}
     #fa-a1 {{ top: {EYE - 130}px; font-size: 110px; font-weight: 900; color: #ffffff; }}
     #fa-a2 {{ top: {EYE + 30}px; font-size: 200px; font-weight: 900; line-height: 1; color: #f0d595; }}
-""", f"""      <div id="fa-kick" class="stage">AI가 써 준 계약서,</div>
-      <div id="fa-w1" class="stage hero"><b>읽고</b></div>
-      <div id="fa-w2" class="stage hero" data-layout-allow-overlap><b>따지고</b></div>
-      <div id="fa-w3" class="stage hero" data-layout-allow-overlap style="font-size: 170px">서명은 사람이.</div>
+""", f"""      <div id="fa-kick" class="stage">결과물은 AI가</div>
+      <div id="fa-w1" class="stage hero"><b>검토</b>는</div>
+      <div id="fa-w2" class="stage hero" data-layout-allow-overlap><b>책임</b>은</div>
+      <div id="fa-w3" class="stage hero" data-layout-allow-overlap>사람이.</div>
       <div id="fa-mesh" class="mesh" data-layout-ignore></div>
       <svg id="fa-grid" viewBox="0 0 1080 1920" data-layout-ignore>
         <line class="gl" x1="0" y1="{EYE - 150}" x2="1080" y2="{EYE - 150}" />
@@ -153,9 +153,9 @@ SLOTS.append(scene("far", 3, 9, f"""
         <rect class="gh" x="112" y="{EYE + 242}" width="16" height="16" />
         <rect class="gh" x="952" y="{EYE + 242}" width="16" height="16" />
       </svg>
-      <div id="fa-a1" class="stage" data-layout-allow-overlap>법을 아는 사람이</div>
-      <div id="fa-a2" class="stage" data-layout-allow-overlap>한 수 위.</div>""", """
-    // B3 AI가 써 준 계약서, · B4 읽고 · B5 따지고 · B6 서명은 사람이. · B7 법을 아는 사람이 · B8 한 수 위.
+      <div id="fa-a1" class="stage" data-layout-allow-overlap>그 자리,</div>
+      <div id="fa-a2" class="stage" data-layout-allow-overlap>법학 전공.</div>""", """
+    // B3 결과물은 AI가 · B4 검토는 · B5 책임은 · B6 사람이. · B7 그 자리, · B8 법학 전공.
     IN("#fa-kick", B[3], { y: -20 }, 0.2);
     IN("#fa-w1", B[4], { scale: 1.3, filter: "blur(20px)" }, 0.2);
     OUT("#fa-w1", B[5], { y: -140 });
@@ -304,31 +304,31 @@ SLOTS.append(scene("degree", 21, 27, f'''
 '''))
 
 # ---------- together B27–B33 ----------
-chips = [("퇴근 후 1시간", 110, 300, -6), ("주말 집중 플랜", 620, 250, 5), ("진도 체크", 90, 1080, 4),
-         ("시험 대비", 700, 1120, -5), ("과목 추천", 130, 1240, -3), ("맞춤 일정", 700, 1250, 4)]
+chips = [("퇴근 후 1시간", 110, 250, -6), ("주말 집중 플랜", 610, 220, 5), ("진도 체크", 90, 400, 4),
+         ("시험 대비", 730, 380, -5), ("과목 추천", 200, 540, -3), ("맞춤 일정", 640, 530, 4)]
 SLOTS.append(scene("together", 27, 33, f'''
     #root {{ color: #ffffff; background: #0a1020; }}
-    #tg-q {{ top: {EYE}px; font-size: 170px; font-weight: 900; line-height: 1; }}
-    #tg-line {{ top: {EYE + 50}px; font-size: 120px; font-weight: 900; white-space: nowrap; }}
-    #tg-coin {{ display: inline-flex; width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff2c9, #e0c27e 45%, #9c7a3e 100%); color: #0b1a33; font-size: 64px; font-weight: 900; align-items: center; justify-content: center; vertical-align: -0.2em; margin: 0 16px; letter-spacing: -0.04em; }}
+    #tg-q {{ top: {EYE}px; font-size: 150px; font-weight: 900; line-height: 1; white-space: nowrap; color: rgba(255, 255, 255, 0.62); }}
+    #tg-line {{ top: {EYE + 180}px; font-size: 150px; font-weight: 900; line-height: 1; white-space: nowrap; }}
     #tg-yes {{ color: #f0d595; }}
-    #tg-sub {{ top: {EYE + 290}px; font-size: 50px; font-weight: 800; color: rgba(255, 255, 255, 0.88); }}
+    #tg-badge {{ top: {EYE + 400}px; display: flex; justify-content: center; }}
+    #tg-badge div {{ height: 92px; padding: 0 40px; border-radius: 999px; background: radial-gradient(circle at 30% 30%, #fff2c9, #e0c27e 50%, #b8955a 100%); color: #0b1a33; font-size: 46px; font-weight: 900; display: flex; align-items: center; letter-spacing: -0.03em; }}
+    #tg-sub {{ top: {EYE + 520}px; font-size: 48px; font-weight: 800; color: rgba(255, 255, 255, 0.88); }}
     .chip {{ position: absolute; height: 84px; padding: 0 30px; border-radius: 22px; background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.22); font-size: 38px; font-weight: 800; display: flex; align-items: center; white-space: nowrap; letter-spacing: -0.03em; }}
 ''', '''      <div id="tg-q" class="stage">공부는 혼자,</div>
-      <div id="tg-line" class="stage" data-layout-allow-overlap><span class="w" id="tg-no">계획은</span><span id="tg-coin">1:1</span><span class="w" id="tg-yes">같이.</span></div>
-      <div id="tg-sub" class="stage">학습플래너가 내 일정에 맞춰 짜 줘요</div>
+      <div id="tg-line" class="stage">계획은 <span id="tg-yes">같이.</span></div>
+      <div id="tg-badge" class="stage"><div>1:1 학습플래너</div></div>
+      <div id="tg-sub" class="stage">내 일정에 맞춰 짜 드려요</div>
 ''' + "\n".join(f'      <div class="chip" id="tg-c{i}" style="left: {x}px; top: {y}px">{t}</div>' for i, (t, x, y, r) in enumerate(chips)), '''
-    // B27 혼자? · B28 아니, · B29 1:1 코인 · B30 같이. · B31 플랜 칩 · B32 서브
+    // B27 공부는 혼자, · B28 계획은 같이. · B29 1:1 학습플래너 배지 · B30 서브 · B31 플랜 칩
     const rot = ''' + json.dumps([r for *_, r in chips]) + ''';
     IN("#tg-q", B[27], { scale: 1.1 });
-    OUT("#tg-q", B[28], { y: -120 });
-    IN("#tg-no", B[28], { y: 60 });
-    tl.fromTo("#tg-coin", { opacity: 0, rotationY: 180, filter: "blur(8px)" }, { opacity: 1, rotationY: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, B[29]);
-    IN("#tg-yes", B[30], { x: 60 });
+    IN("#tg-line", B[28], { y: 60 });
+    IN("#tg-badge div", B[29], { y: 30 });
+    IN("#tg-sub", B[30], { y: 30 });
     rot.forEach((r, i) => {
       tl.fromTo(`#tg-c${i}`, { opacity: 0, rotation: r, filter: "blur(8px)" }, { opacity: 1, rotation: r, filter: "blur(0px)", duration: 0.16, ease: "power3.out" }, B[31] + i * 0.03);
     });
-    IN("#tg-sub", B[31] + 0.1, { y: 30 });
     OUT(CAM, D, {});
 '''))
 
