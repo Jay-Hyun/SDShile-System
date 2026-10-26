@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "clara-muz": {
+      "source": {
+        "source": "github",
+        "repo": "Jay-Hyun/ClaraMuz"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "clara-muz@clara-muz": true
+  }
+}
