@@ -10,35 +10,8 @@
       inset: 0;
       overflow: hidden;
       font-family: "PretendardGOV", sans-serif;
-      color: #f3eee3;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.045em;
       word-break: keep-all;
-      background: #0b1a33;
-    }
-    #po-wrap {
-      position: absolute;
-      inset: 0;
-    }
-    #po-glow {
-      position: absolute;
-      left: -300px;
-      top: 80px;
-      width: 1700px;
-      height: 1300px;
-      background:
-        radial-gradient(40% 35% at 70% 30%, rgba(224, 194, 126, 0.42), rgba(224, 194, 126, 0) 70%),
-        radial-gradient(45% 40% at 25% 70%, rgba(46, 92, 190, 0.55), rgba(46, 92, 190, 0) 70%);
-    }
-    #po-grid {
-      position: absolute;
-      inset: 0;
-    }
-    .gl {
-      stroke: rgba(243, 238, 227, 0.22);
-      stroke-width: 2;
-    }
-    .gh {
-      fill: #f3eee3;
     }
     .stage {
       position: absolute;
@@ -46,157 +19,83 @@
       width: 920px;
       text-align: center;
     }
-    #po-tag {
-      top: 200px;
-      display: flex;
-      justify-content: center;
+    .w {
+      display: inline-block;
     }
-    #po-tag div {
-      height: 64px;
-      padding: 0 30px;
-      border-radius: 999px;
-      background: #e0c27e;
-      color: #0b1a33;
-      font-size: 32px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      letter-spacing: -0.02em;
-    }
-    #po-kicker {
-      top: 318px;
-      font-size: 64px;
-      font-weight: 700;
-      color: rgba(243, 238, 227, 0.85);
-    }
-    #po-only {
-      top: 392px;
-      font-size: 250px;
-      font-weight: 900;
-      line-height: 1;
-      color: #e0c27e;
-      letter-spacing: -0.06em;
-    }
-    #po-major {
-      top: 640px;
-      font-size: 196px;
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -0.06em;
-    }
-    #po-major sup {
-      font-size: 70px;
-      color: #e0c27e;
-      vertical-align: top;
-    }
-    #po-stats {
+    .cam {
       position: absolute;
-      left: 80px;
-      top: 880px;
-      width: 920px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border-top: 2px solid rgba(243, 238, 227, 0.25);
-      border-bottom: 2px solid rgba(243, 238, 227, 0.25);
+      inset: 0;
     }
-    .ps {
-      text-align: center;
-      padding: 26px 0 24px;
+    .mesh {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(55% 35% at 85% 85%, rgba(224, 194, 126, 0.95), rgba(224, 194, 126, 0) 100%),
+        radial-gradient(60% 40% at 10% 20%, rgba(11, 26, 51, 1), rgba(11, 26, 51, 0) 100%),
+        radial-gradient(70% 45% at 40% 60%, #2e5cbe, rgba(46, 92, 190, 0) 100%),
+        linear-gradient(160deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%);
     }
-    .ps + .ps {
-      border-left: 2px solid rgba(243, 238, 227, 0.25);
-    }
-    .ps b {
-      display: block;
-      font-size: 96px;
-      font-weight: 900;
-      line-height: 1.05;
-      color: #e0c27e;
-      letter-spacing: -0.05em;
-    }
-    .ps span {
-      display: block;
-      margin-top: 8px;
-      font-size: 32px;
-      font-weight: 700;
-      color: rgba(243, 238, 227, 0.88);
-    }
-    #po-sub {
-      top: 1098px;
-      font-size: 44px;
-      font-weight: 700;
-    }
-    #po-call {
-      top: 1170px;
-      display: flex;
-      justify-content: center;
-    }
-    #po-call div {
-      height: 72px;
-      padding: 0 36px;
-      border-radius: 999px;
-      border: 3px solid #e0c27e;
-      color: #e0c27e;
-      font-size: 36px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      letter-spacing: -0.01em;
-    }
-    #po-fine {
-      top: 1262px;
-      font-size: 28px;
-      font-weight: 500;
-      line-height: 1.3;
-      color: rgba(243, 238, 227, 0.6);
-      letter-spacing: -0.02em;
-    }
+
+    #root { color: #ffffff; background: #0b1a33; }
+    #po-grid { position: absolute; inset: 0; }
+    .gl { stroke: rgba(255, 255, 255, 0.35); stroke-width: 2; }
+    .gh { fill: #ffffff; }
+    #po-alert { top: 196px; display: flex; justify-content: center; }
+    #po-alert div { height: 72px; padding: 0 32px; border-radius: 999px; background: #ff5a4e; color: #fff; font-size: 38px; font-weight: 900; display: flex; align-items: center; gap: 14px; letter-spacing: -0.02em; box-shadow: 0 12px 30px rgba(255, 90, 78, 0.4); }
+    #po-alert i { width: 16px; height: 16px; border-radius: 50%; background: #fff; }
+    #po-kicker { top: 318px; font-size: 68px; font-weight: 800; }
+    #po-kicker b { color: #f0d595; }
+    #po-one { position: absolute; left: 0; width: 1080px; top: 400px; text-align: center; font-weight: 900; line-height: 1; letter-spacing: -0.06em; white-space: nowrap; }
+    #po-one .pre, #po-one .post { font-size: 160px; }
+    #po-one .n { font-size: 500px; color: #f0d595; text-shadow: 0 24px 80px rgba(11, 26, 51, 0.55); }
+    #po-one sup { font-size: 80px; color: #f0d595; vertical-align: 3em; }
+    #po-seal { position: absolute; left: 770px; top: 430px; width: 230px; height: 230px; border-radius: 50%; background: #fbf9f4; color: #0b1a33; border: 6px solid #b8955a; box-shadow: 0 0 0 6px #fbf9f4, 0 20px 50px rgba(0, 0, 0, 0.45); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: 900; line-height: 1.1; }
+    #po-seal img { width: 58px; height: 58px; margin-bottom: 6px; }
+    #po-seal span { font-size: 30px; letter-spacing: -0.04em; }
+    #po-seal b { font-size: 44px; color: #7d6233; }
+    #po-nos { top: 965px; display: flex; justify-content: center; gap: 16px; }
+    .no { height: 100px; padding: 0 30px; border-radius: 24px; background: rgba(255, 255, 255, 0.16); border: 2px solid rgba(255, 255, 255, 0.45); font-size: 46px; font-weight: 800; display: flex; align-items: center; gap: 12px; letter-spacing: -0.03em; }
+    .no svg { width: 46px; height: 46px; }
+    #po-sub { top: 1100px; font-size: 54px; font-weight: 900; }
+    #po-fine { top: 1262px; font-size: 30px; font-weight: 500; line-height: 1.3; color: rgba(255, 255, 255, 0.78); letter-spacing: -0.02em; }
+
   </style>
   <div id="root" data-composition-id="poster" data-width="1080" data-height="1920">
-    <div id="po-wrap" data-layout-allow-overlap>
-      <div id="po-glow" data-layout-ignore></div>
+    <div id="po-cam" class="cam" data-layout-allow-overlap>
+      <div class="mesh" data-layout-ignore></div>
       <svg id="po-grid" viewBox="0 0 1080 1920" data-layout-ignore>
         <line class="gl" x1="60" y1="0" x2="60" y2="1920" />
         <line class="gl" x1="1020" y1="0" x2="1020" y2="1920" />
-        <line class="gl" x1="0" y1="380" x2="1080" y2="380" />
-        <line class="gl" x1="0" y1="862" x2="1080" y2="862" />
-        <rect class="gh" x="52" y="372" width="16" height="16" />
-        <rect class="gh" x="1012" y="372" width="16" height="16" />
-        <rect class="gh" x="52" y="854" width="16" height="16" />
-        <rect class="gh" x="1012" y="854" width="16" height="16" />
+        <line class="gl" x1="0" y1="430" x2="1080" y2="430" />
+        <line class="gl" x1="0" y1="910" x2="1080" y2="910" />
+        <rect class="gh" x="52" y="422" width="16" height="16" />
+        <rect class="gh" x="1012" y="422" width="16" height="16" />
+        <rect class="gh" x="52" y="902" width="16" height="16" />
+        <rect class="gh" x="1012" y="902" width="16" height="16" />
       </svg>
-
-      <div id="po-tag" class="stage"><div>11월 4일 개강 · 모집 중</div></div>
-      <div id="po-kicker" class="stage">평생교육원 중</div>
-      <div id="po-only" class="stage">유일한</div>
-      <div id="po-major" class="stage">법학 전공<sup>*</sup></div>
-
-      <div id="po-stats">
-        <div class="ps"><b>0회</b><span>오프라인 수업</span></div>
-        <div class="ps"><b>학사</b><span>교육부장관 명의</span></div>
-        <div class="ps"><b>1:1</b><span>학습 설계</span></div>
+      <div id="po-alert" class="stage"><div><i></i>11/10 접수 마감 · 11/4 개강</div></div>
+      <div id="po-kicker" class="stage">평생교육원 중 <b>법학 전공</b>은</div>
+      <div id="po-one" data-layout-allow-overlap><span class="pre">단 </span><span class="n">1</span><span class="post">곳</span><sup>*</sup></div>
+      <div id="po-seal" data-layout-allow-overlap><img src="assets/img/moe-emblem.svg" alt="" /><span>교육부장관 명의</span><b>학사학위</b></div>
+      <div id="po-nos" class="stage">
+        <div class="no">퇴사<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="#ff5a4e" stroke-width="4" stroke-linecap="round" /></svg></div>
+        <div class="no">재입학<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="#ff5a4e" stroke-width="4" stroke-linecap="round" /></svg></div>
+        <div class="no">출석수업<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="#ff5a4e" stroke-width="4" stroke-linecap="round" /></svg></div>
       </div>
-
-      <div id="po-sub" class="stage">일하면서, 지금 학력 그대로.</div>
-      <div id="po-call" class="stage"><div>상담 070-4006-7128</div></div>
+      <div id="po-sub" class="stage">일하면서, 온라인으로 법학사</div>
       <div id="po-fine" class="stage">* 전공필수(물권법·채권총칙) 개설 평생교육원 기준, 2026.10 조회<br />입학·합격·취업을 보장하지 않습니다.</div>
     </div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
-
-    // 포스터는 첫 프레임부터 완성 상태. 움직임은 배경과 비트 강조만
-    tl.fromTo("#po-glow", { x: 0, y: 0 }, { x: -120, y: 40, duration: 3.27, ease: "none" }, 0);
-    tl.fromTo(".ps b", { scale: 1 }, { scale: 1, duration: 0.01 }, 0);
-    // 음악이 들어오는 비트마다 수치 하나씩 펀치
-    [1.69, 2.06, 2.44].forEach((t, i) => {
-      tl.fromTo(`.ps:nth-child(${i + 1}) b`, { scale: 1.18 }, { scale: 1, duration: 0.3, ease: "expo.out" }, t);
-    });
-
-    // 퇴장: '법학 전공' 쪽으로 빨려 들어가며 다음 씬으로
-    tl.to("#po-wrap", { scale: 1.35, opacity: 0, filter: "blur(14px)", duration: 0.26, ease: "power3.in", transformOrigin: "50% 40%" }, 3.0);
-
+    // 첫 프레임 = 완성 포스터(썸네일). 비트(0.37 / 0.81)에 펀치
+    tl.fromTo("#po-cam", { scale: 1.04 }, { scale: 1, duration: 0.95, ease: "none" }, 0);
+    tl.fromTo("#po-seal", { rotation: -12 }, { rotation: -12, duration: 0.01 }, 0);
+    tl.fromTo("#po-one .n", { scale: 1.14 }, { scale: 1, duration: 0.3, ease: "expo.out", immediateRender: false }, 0.37);
+    tl.fromTo("#po-seal", { scale: 1.25 }, { scale: 1, duration: 0.25, ease: "power4.out", immediateRender: false }, 0.37);
+    tl.fromTo(".no svg", { scale: 1.7 }, { scale: 1, duration: 0.25, ease: "power4.out", stagger: 0.05, immediateRender: false }, 0.81);
+    // 퇴장: '1' 속으로 줌
+    tl.to("#po-cam", { scale: 1.7, opacity: 0, filter: "blur(18px)", duration: 0.24, ease: "power3.in", transformOrigin: "50% 33%" }, 0.96);
     window.__timelines["poster"] = tl;
   </script>
 </template>

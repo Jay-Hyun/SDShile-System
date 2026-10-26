@@ -1,0 +1,82 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOVVariable.woff2") format("woff2");
+      font-weight: 100 900;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: "PretendardGOV", sans-serif;
+      letter-spacing: -0.045em;
+      word-break: keep-all;
+    }
+    .stage {
+      position: absolute;
+      left: 80px;
+      width: 920px;
+      text-align: center;
+    }
+    .w {
+      display: inline-block;
+    }
+    .cam {
+      position: absolute;
+      inset: 0;
+    }
+    .mesh {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(55% 35% at 85% 85%, rgba(224, 194, 126, 0.95), rgba(224, 194, 126, 0) 100%),
+        radial-gradient(60% 40% at 10% 20%, rgba(11, 26, 51, 1), rgba(11, 26, 51, 0) 100%),
+        radial-gradient(70% 45% at 40% 60%, #2e5cbe, rgba(46, 92, 190, 0) 100%),
+        linear-gradient(160deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%);
+    }
+
+    #root { color: #0b1a33; background: #fbf9f4; }
+    #wh-label { top: 430px; font-size: 60px; font-weight: 800; color: #6b6660; }
+    #wh-row { position: absolute; left: 0; width: 1080px; top: 640px; height: 384px; }
+    #wh-box { position: absolute; left: 170px; top: 140px; width: 104px; height: 104px; border-radius: 22px; background: #2e5cbe; display: flex; align-items: center; justify-content: center; }
+    #wh-box svg { width: 70px; height: 70px; }
+    #wh-list { position: absolute; left: 310px; top: 0; }
+    .wi { height: 128px; font-size: 100px; font-weight: 900; line-height: 128px; white-space: nowrap; }
+    #wh-sub { top: 1090px; font-size: 52px; font-weight: 800; }
+    #wh-sub b { color: #2e5cbe; }
+
+  </style>
+  <div id="root" data-composition-id="who" data-width="1080" data-height="1920">
+    <div id="wh-cam" class="cam">
+      <div id="wh-label" class="stage">이런 분도 시작해요</div>
+      <div id="wh-row" data-layout-allow-overflow data-layout-allow-overlap>
+        <div id="wh-box"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        <div id="wh-list"><div class="wi" id="wh-i0">직장인</div><div class="wi" id="wh-i1">비전공자</div><div class="wi" id="wh-i2">수험생</div><div class="wi" id="wh-i3">로스쿨 준비생</div></div>
+      </div>
+      <div id="wh-sub" class="stage">법을 처음 배워도 <b>OK</b></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // 로컬 비트: .46 .9 1.35 1.8 2.25 — 체크박스 옆 단어 롤 (레퍼런스 'Your ☑')
+    const LH = 128, beats = [0.0, 0.46, 0.9, 1.35];
+    tl.fromTo("#wh-cam", { scale: 1.06 }, { scale: 0.96, duration: 2.7, ease: "none" }, 0);
+    tl.fromTo("#wh-label", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0);
+    tl.fromTo("#wh-box", { scale: 0 }, { scale: 1, duration: 0.3, ease: "back.out(1.8)" }, 0.08);
+    tl.fromTo("#wh-box svg", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, 0.3);
+    tl.fromTo("#wh-list", { y: LH }, { y: LH, duration: 0.01 }, 0);
+    tl.fromTo(".wi", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+    tl.fromTo("#wh-i1", { opacity: 0 }, { opacity: 0.18, duration: 0.01 }, 0);
+    beats.forEach((t, i) => {
+      if (i > 0) tl.to("#wh-list", { y: LH - i * LH, duration: 0.2, ease: "expo.out" }, t);
+      tl.to(`#wh-i${i}`, { opacity: 1, duration: 0.12 }, t);
+      if (i > 0) tl.to(`#wh-i${i - 1}`, { opacity: 0.18, duration: 0.12 }, t);
+      if (i > 1) tl.to(`#wh-i${i - 2}`, { opacity: 0, duration: 0.12 }, t);
+      if (i < 3 && i > 0) tl.to(`#wh-i${i + 1}`, { opacity: 0.18, duration: 0.12 }, t);
+    });
+    tl.fromTo("#wh-sub", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.25, ease: "expo.out" }, 1.8);
+    tl.to("#wh-cam", { opacity: 0, filter: "blur(12px)", duration: 0.16, ease: "power3.in" }, 2.54);
+    window.__timelines["who"] = tl;
+  </script>
+</template>

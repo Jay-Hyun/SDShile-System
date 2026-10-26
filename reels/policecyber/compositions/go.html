@@ -1,0 +1,62 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOVVariable.woff2") format("woff2");
+      font-weight: 100 900;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: "PretendardGOV", sans-serif;
+      letter-spacing: -0.045em;
+      word-break: keep-all;
+    }
+    .stage {
+      position: absolute;
+      left: 80px;
+      width: 920px;
+      text-align: center;
+    }
+    .w {
+      display: inline-block;
+    }
+    .cam {
+      position: absolute;
+      inset: 0;
+    }
+    .mesh {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(55% 35% at 85% 85%, rgba(224, 194, 126, 0.95), rgba(224, 194, 126, 0) 100%),
+        radial-gradient(60% 40% at 10% 20%, rgba(11, 26, 51, 1), rgba(11, 26, 51, 0) 100%),
+        radial-gradient(70% 45% at 40% 60%, #2e5cbe, rgba(46, 92, 190, 0) 100%),
+        linear-gradient(160deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%);
+    }
+
+    #root { color: #ffffff; background: #0a1020; }
+    #go-mesh { position: absolute; inset: 0; }
+    #go-t { top: 760px; font-size: 170px; font-weight: 900; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 20px; }
+    #go-t svg { width: 140px; height: 140px; }
+
+  </style>
+  <div id="root" data-composition-id="go" data-width="1080" data-height="1920">
+    <div id="go-mesh" class="mesh" data-layout-ignore></div>
+    <div id="go-cam" class="cam" data-layout-allow-overlap>
+      <div id="go-t" class="stage"><span>상담 신청</span><svg id="go-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // 로컬 비트: .44 .89 1.35 — 거대 단어 줌아웃 + 화살표 (레퍼런스 'Get Started →')
+    tl.fromTo("#go-mesh", { clipPath: "circle(0% at 50% 45%)" }, { clipPath: "circle(120% at 50% 45%)", duration: 0.25, ease: "power2.inOut" }, 0);
+    tl.fromTo("#go-cam", { scale: 2.2, filter: "blur(10px)" }, { scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 0.05);
+    tl.fromTo("#go-cam", { scale: 1 }, { scale: 0.9, duration: 1.1, ease: "none", immediateRender: false }, 0.55);
+    tl.fromTo("#go-arrow", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.25, ease: "expo.out" }, 0.44);
+    tl.fromTo("#go-arrow", { x: 0 }, { x: 24, duration: 0.15, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 0.89);
+    tl.to("#go-cam", { opacity: 0, filter: "blur(12px)", duration: 0.15, ease: "power3.in" }, 1.65);
+    window.__timelines["go"] = tl;
+  </script>
+</template>

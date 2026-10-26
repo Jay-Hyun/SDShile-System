@@ -1,0 +1,35 @@
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOVVariable.woff2") format("woff2");
+      font-weight: 100 900;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: "PretendardGOV", sans-serif;
+      letter-spacing: -0.045em;
+      word-break: keep-all;
+    }
+    .stage {
+      position: absolute;
+      left: 80px;
+      width: 920px;
+      text-align: center;
+    }
+    .w {
+      display: inline-block;
+    }
+    .cam {
+      position: absolute;
+      inset: 0;
+    }
+    .mesh {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(55% 35% at 85% 85%, rgba(224, 194, 126, 0.95), rgba(224, 194, 126, 0) 100%),
+        radial-gradient(60% 40% at 10% 20%, rgba(11, 26, 51, 1), rgba(11, 26, 51, 0) 100%),
+        radial-gradient(70% 45% at 40% 60%, #2e5cbe, rgba(46, 92, 190, 0) 100%),
+        linear-gradient(160deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%);
+    }

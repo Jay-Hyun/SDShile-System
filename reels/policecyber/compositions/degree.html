@@ -10,15 +10,8 @@
       inset: 0;
       overflow: hidden;
       font-family: "PretendardGOV", sans-serif;
-      color: #f3eee3;
-      letter-spacing: -0.05em;
+      letter-spacing: -0.045em;
       word-break: keep-all;
-      background: #fbf9f4;
-    }
-    #dg-bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(90% 60% at 50% 45%, #1a3566 0%, #0b1a33 70%);
     }
     .stage {
       position: absolute;
@@ -26,129 +19,65 @@
       width: 920px;
       text-align: center;
     }
-    #dg-h {
-      top: 220px;
-      font-size: 140px;
-      font-weight: 900;
+    .w {
+      display: inline-block;
     }
-    #dg-h .g {
-      color: #e0c27e;
-    }
-    #dg-cert {
+    .cam {
       position: absolute;
-      left: 250px;
-      top: 430px;
-      width: 580px;
-      height: 700px;
-      background: #fffdf8;
-      color: #161616;
-      border: 3px solid #b8955a;
-      outline: 2px solid #b8955a;
-      outline-offset: -18px;
-      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.45);
-      padding: 60px 56px 0;
-      text-align: center;
-      letter-spacing: -0.03em;
+      inset: 0;
     }
-    .dc-no {
-      font-size: 28px;
-      color: #6b6660;
-      text-align: left;
-    }
-    .dc-title {
-      font-size: 72px;
-      font-weight: 800;
-      letter-spacing: 0.4em;
-      margin: 22px 0 32px 0.4em;
-    }
-    .dc-field {
-      font-size: 32px;
-      font-weight: 600;
-      text-align: left;
-      line-height: 1.75;
-    }
-    .dc-field b {
-      color: #7d6233;
-      font-weight: 800;
-    }
-    .dc-body {
-      margin-top: 20px;
-      font-size: 28px;
-      line-height: 1.55;
-      color: #3a3732;
-      text-align: left;
-    }
-    .dc-sign {
+    .mesh {
       position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 60px;
-      font-size: 40px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
+      inset: 0;
+      background:
+        radial-gradient(55% 35% at 85% 85%, rgba(224, 194, 126, 0.95), rgba(224, 194, 126, 0) 100%),
+        radial-gradient(60% 40% at 10% 20%, rgba(11, 26, 51, 1), rgba(11, 26, 51, 0) 100%),
+        radial-gradient(70% 45% at 40% 60%, #2e5cbe, rgba(46, 92, 190, 0) 100%),
+        linear-gradient(160deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%);
     }
-    #dg-stamp {
-      position: absolute;
-      right: 64px;
-      bottom: 42px;
-      width: 96px;
-      height: 96px;
-    }
-    #dg-mark {
-      position: absolute;
-      left: 50%;
-      top: 44%;
-      width: 360px;
-      margin-left: -180px;
-      text-align: center;
-      font-size: 120px;
-      font-weight: 900;
-      color: rgba(184, 149, 90, 0.16);
-      letter-spacing: 0.2em;
-      transform: rotate(-18deg);
-    }
-    #dg-sub {
-      top: 1180px;
-      font-size: 42px;
-      font-weight: 800;
-    }
-    #dg-sub b {
-      color: #e0c27e;
-    }
+
+    #root { color: #0b1a33; background: #fbf9f4; }
+    #dg-t { top: 250px; font-size: 140px; font-weight: 900; }
+    #dg-t .b { color: #2e5cbe; }
+    #dg-cert { position: absolute; left: 260px; top: 470px; width: 560px; height: 680px; background: #fffdf8; color: #161616; border: 3px solid #b8955a; outline: 2px solid #b8955a; outline-offset: -18px; box-shadow: 0 40px 90px rgba(11, 26, 51, 0.25); padding: 58px 52px 0; text-align: center; letter-spacing: -0.03em; }
+    .dc-no { font-size: 30px; color: #6b6660; text-align: left; }
+    .dc-title { font-size: 70px; font-weight: 800; letter-spacing: 0.4em; margin: 20px 0 30px 0.4em; }
+    .dc-field { font-size: 32px; font-weight: 600; text-align: left; line-height: 1.75; }
+    .dc-field b { color: #7d6233; font-weight: 800; }
+    .dc-body { margin-top: 18px; font-size: 30px; line-height: 1.55; color: #3a3732; text-align: left; }
+    .dc-sign { position: absolute; left: 0; right: 0; bottom: 58px; font-size: 40px; font-weight: 800; letter-spacing: 0.08em; }
+    #dg-stamp { position: absolute; right: 60px; bottom: 40px; width: 96px; height: 96px; }
+    #dg-mark { position: absolute; left: 50%; top: 44%; width: 360px; margin-left: -180px; text-align: center; font-size: 120px; font-weight: 900; color: rgba(184, 149, 90, 0.16); letter-spacing: 0.2em; transform: rotate(-18deg); }
+    #dg-sub { top: 1200px; font-size: 46px; font-weight: 800; }
+    #dg-sub b { color: #7d6233; }
+
   </style>
   <div id="root" data-composition-id="degree" data-width="1080" data-height="1920">
-    <div id="dg-bg"></div>
-    <div id="dg-h" class="stage">학위는 <span class="g">진짜.</span></div>
-
-    <div id="dg-cert" data-layout-allow-overlap>
-      <div class="dc-no">예시 · 제 2026-0000000 호</div>
-      <div class="dc-title">학위증</div>
-      <div class="dc-field">성&nbsp;&nbsp;&nbsp;명&nbsp;&nbsp;홍길동</div>
-      <div class="dc-field">전&nbsp;&nbsp;&nbsp;공&nbsp;&nbsp;<b>법학 전공(학사)</b></div>
-      <div class="dc-body">위 사람은 「학점인정 등에 관한 법률」 제9조에 따라 법학사의 학위를 수여합니다.</div>
-      <div class="dc-sign">교육부장관</div>
-      <img id="dg-stamp" src="assets/img/moe-emblem.svg" alt="" />
-      <div id="dg-mark">예시</div>
+    <div id="dg-cam" class="cam" data-layout-allow-overlap>
+      <div id="dg-t" class="stage"><span class="w">학위는</span> <span class="w b">진짜.</span></div>
+      <div id="dg-cert">
+        <div class="dc-no">예시 · 제 2026-0000000 호</div>
+        <div class="dc-title">학위증</div>
+        <div class="dc-field">성&nbsp;&nbsp;&nbsp;명&nbsp;&nbsp;홍길동</div>
+        <div class="dc-field">전&nbsp;&nbsp;&nbsp;공&nbsp;&nbsp;<b>법학 전공(학사)</b></div>
+        <div class="dc-body">위 사람은 「학점인정 등에 관한 법률」 제9조에 따라 법학사의 학위를 수여합니다.</div>
+        <div class="dc-sign">교육부장관</div>
+        <img id="dg-stamp" src="assets/img/moe-emblem.svg" alt="" />
+        <div id="dg-mark">예시</div>
+      </div>
+      <div id="dg-sub" class="stage"><b>교육부장관 명의</b> 법학사 · 로스쿨 지원 자격</div>
     </div>
-
-    <div id="dg-sub" class="stage"><b>교육부장관 명의</b> 법학사 · 로스쿨 지원 자격</div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
-    // 로컬 비트: 0, .45, .9, 1.35, 1.8, 2.25, 2.7, 3.15
-
-    // 크림 → 네이비: 아래에서 위로 덮음
-    tl.fromTo("#dg-bg", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.3, ease: "power2.inOut" }, 0);
-    tl.fromTo("#dg-h", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.2);
-
-    // 학위증: 기울어진 채 날아와 정면으로
-    tl.fromTo("#dg-cert", { opacity: 0, y: 500, rotation: -12, scale: 0.8 }, { opacity: 1, y: 0, rotation: 0, scale: 1, duration: 0.6, ease: "expo.out" }, 0.45);
-    tl.fromTo("#dg-stamp", { opacity: 0, scale: 2.2, rotation: -25 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.25, ease: "power4.out" }, 1.35);
-    tl.fromTo("#dg-cert", { scale: 1 }, { scale: 1.03, duration: 0.08, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 1.5);
-    tl.fromTo("#dg-sub", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "expo.out" }, 1.55);
-
-    tl.to(["#dg-h", "#dg-cert", "#dg-sub"], { opacity: 0, scale: 0.9, filter: "blur(10px)", duration: 0.18, ease: "power3.in" }, 2.94);
-
+    // 로컬 비트: .46 .91 1.35 1.74 2.11 — 거대 블러 단어 → 안착 (레퍼런스 'Boost')
+    tl.fromTo("#dg-cam", { scale: 1.05 }, { scale: 0.96, duration: 2.56, ease: "none" }, 0);
+    tl.fromTo("#dg-t .w:first-child", { opacity: 0.3, scale: 2.4, filter: "blur(26px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.36, ease: "expo.out" }, 0);
+    tl.fromTo("#dg-t .b", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.14, ease: "power3.out" }, 0.46);
+    tl.fromTo("#dg-cert", { opacity: 0, y: 520, rotation: -14, scale: 0.8 }, { opacity: 1, y: 0, rotation: 0, scale: 1, duration: 0.55, ease: "expo.out" }, 0.6);
+    tl.fromTo("#dg-stamp", { opacity: 0, scale: 2.4, rotation: -25 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.22, ease: "power4.out" }, 1.35);
+    tl.fromTo("#dg-sub", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.25, ease: "expo.out" }, 1.5);
+    tl.to("#dg-cam", { opacity: 0, filter: "blur(12px)", duration: 0.15, ease: "power3.in" }, 2.4);
     window.__timelines["degree"] = tl;
   </script>
 </template>

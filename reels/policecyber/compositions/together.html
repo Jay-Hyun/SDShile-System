@@ -1,0 +1,76 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOVVariable.woff2") format("woff2");
+      font-weight: 100 900;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: "PretendardGOV", sans-serif;
+      letter-spacing: -0.045em;
+      word-break: keep-all;
+    }
+    .stage {
+      position: absolute;
+      left: 80px;
+      width: 920px;
+      text-align: center;
+    }
+    .w {
+      display: inline-block;
+    }
+    .cam {
+      position: absolute;
+      inset: 0;
+    }
+    .mesh {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(55% 35% at 85% 85%, rgba(224, 194, 126, 0.95), rgba(224, 194, 126, 0) 100%),
+        radial-gradient(60% 40% at 10% 20%, rgba(11, 26, 51, 1), rgba(11, 26, 51, 0) 100%),
+        radial-gradient(70% 45% at 40% 60%, #2e5cbe, rgba(46, 92, 190, 0) 100%),
+        linear-gradient(160deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%);
+    }
+
+    #root { color: #ffffff; background: #0a1020; }
+    #tg-line { top: 600px; font-size: 130px; font-weight: 900; white-space: nowrap; }
+    #tg-coin { display: inline-flex; width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff2c9, #e0c27e 45%, #9c7a3e 100%); color: #0b1a33; font-size: 60px; font-weight: 900; align-items: center; justify-content: center; vertical-align: -0.18em; margin: 0 14px; box-shadow: 0 0 60px rgba(224, 194, 126, 0.55); letter-spacing: -0.04em; }
+    #tg-together { color: #f0d595; }
+    #tg-sub { top: 830px; font-size: 48px; font-weight: 800; color: rgba(255, 255, 255, 0.85); }
+    .chip { position: absolute; height: 82px; padding: 0 30px; border-radius: 22px; background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.22); font-size: 38px; font-weight: 800; display: flex; align-items: center; white-space: nowrap; letter-spacing: -0.03em; }
+
+  </style>
+  <div id="root" data-composition-id="together" data-width="1080" data-height="1920">
+    <div id="tg-cam" class="cam" data-layout-allow-overlap>
+      <div id="tg-line" class="stage"><span class="w" id="tg-w1">혼자</span> <span class="w" id="tg-w2">말고,</span><span id="tg-coin">1:1</span><span class="w" id="tg-together">같이.</span></div>
+      <div id="tg-sub" class="stage">학습플래너가 내 일정에 맞춰 설계해요</div>
+      <div class="chip" id="tg-c0" style="left: 110px; top: 300px">퇴근 후 1시간</div>
+      <div class="chip" id="tg-c1" style="left: 620px; top: 250px">주말 집중 플랜</div>
+      <div class="chip" id="tg-c2" style="left: 90px; top: 1080px">진도 체크</div>
+      <div class="chip" id="tg-c3" style="left: 700px; top: 1120px">시험 대비</div>
+      <div class="chip" id="tg-c4" style="left: 130px; top: 1240px">과목 추천</div>
+      <div class="chip" id="tg-c5" style="left: 700px; top: 1250px">맞춤 일정</div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // 로컬 비트: .45 .9 1.35 1.8 2.25 — 단어 사이 코인 (레퍼런스 'Convert 🪙 faster'), 떠다니는 칩 ('Trusted by')
+    const rot = [-6, 5, 4, -5, -3, 4];
+    tl.fromTo("#tg-cam", { scale: 1.06 }, { scale: 0.96, duration: 2.7, ease: "none" }, 0);
+    tl.fromTo("#tg-w1", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.12, ease: "power3.out" }, 0);
+    tl.fromTo("#tg-w2", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.12, ease: "power3.out" }, 0.45);
+    tl.fromTo("#tg-coin", { opacity: 0, scale: 0, rotationY: 180 }, { opacity: 1, scale: 1, rotationY: 0, duration: 0.4, ease: "back.out(1.6)" }, 0.9);
+    tl.fromTo("#tg-together", { opacity: 0, filter: "blur(10px)", x: 40 }, { opacity: 1, filter: "blur(0px)", x: 0, duration: 0.2, ease: "expo.out" }, 1.35);
+    tl.fromTo("#tg-sub", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 1.5);
+    rot.forEach((r, i) => {
+      tl.fromTo(`#tg-c${i}`, { opacity: 0, scale: 0.5, rotation: 0 }, { opacity: 1, scale: 1, rotation: r, duration: 0.35, ease: "back.out(1.6)" }, 1.0 + i * 0.12);
+      tl.fromTo(`#tg-c${i}`, { y: 0 }, { y: i % 2 ? -36 : 36, duration: 1.6, ease: "none", immediateRender: false }, 1.0 + i * 0.12);
+    });
+    tl.to("#tg-cam", { opacity: 0, filter: "blur(12px)", duration: 0.15, ease: "power3.in" }, 2.55);
+    window.__timelines["together"] = tl;
+  </script>
+</template>

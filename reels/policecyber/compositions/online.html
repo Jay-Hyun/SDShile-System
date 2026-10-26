@@ -10,10 +10,8 @@
       inset: 0;
       overflow: hidden;
       font-family: "PretendardGOV", sans-serif;
-      color: #f3eee3;
-      letter-spacing: -0.05em;
+      letter-spacing: -0.045em;
       word-break: keep-all;
-      background: #0b1a33;
     }
     .stage {
       position: absolute;
@@ -21,79 +19,64 @@
       width: 920px;
       text-align: center;
     }
-    #on-num {
+    .w {
+      display: inline-block;
+    }
+    .cam {
       position: absolute;
-      left: 0;
-      width: 1080px;
-      top: 330px;
-      text-align: center;
-      font-size: 640px;
-      font-weight: 900;
-      line-height: 1;
-      color: transparent;
-      -webkit-text-stroke: 6px #e0c27e;
-      letter-spacing: -0.06em;
+      inset: 0;
     }
-    #on-h {
-      top: 250px;
-      font-size: 120px;
-      font-weight: 900;
+    .mesh {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(55% 35% at 85% 85%, rgba(224, 194, 126, 0.95), rgba(224, 194, 126, 0) 100%),
+        radial-gradient(60% 40% at 10% 20%, rgba(11, 26, 51, 1), rgba(11, 26, 51, 0) 100%),
+        radial-gradient(70% 45% at 40% 60%, #2e5cbe, rgba(46, 92, 190, 0) 100%),
+        linear-gradient(160deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%);
     }
-    #on-label {
-      top: 930px;
-      font-size: 96px;
-      font-weight: 900;
-      color: #e0c27e;
-    }
-    #on-tags {
-      top: 1070px;
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-    }
-    .tag {
-      height: 76px;
-      padding: 0 30px;
-      border-radius: 999px;
-      background: #f3eee3;
-      color: #0b1a33;
-      font-size: 38px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      letter-spacing: -0.02em;
-    }
-    #on-sub {
-      top: 1176px;
-      font-size: 44px;
-      font-weight: 700;
-      color: rgba(243, 238, 227, 0.85);
-    }
+
+    #root { color: #ffffff; background: #fbf9f4; }
+    #on-mesh { position: absolute; inset: 0; }
+    #on-t1 { top: 380px; font-size: 130px; font-weight: 900; }
+    #on-t2 { top: 1050px; font-size: 130px; font-weight: 900; }
+    .oc { position: absolute; top: 590px; width: 340px; height: 420px; border-radius: 34px; background: #fbf9f4; color: #0b1a33; box-shadow: 0 30px 70px rgba(11, 26, 51, 0.45); padding: 34px 30px; letter-spacing: -0.03em; }
+    #on-c1 { left: 80px; }
+    #on-c2 { left: 370px; z-index: 2; }
+    #on-c3 { left: 660px; }
+    .oc small { display: block; font-size: 30px; font-weight: 700; color: #7d6233; }
+    .oc b { display: block; margin-top: 12px; font-size: 52px; font-weight: 900; line-height: 1.12; }
+    .oc .bar { position: absolute; left: 30px; right: 30px; bottom: 44px; height: 14px; border-radius: 7px; background: #e8e2d6; overflow: hidden; }
+    .oc .bar i { display: block; width: 100%; height: 100%; background: linear-gradient(90deg, #2e5cbe, #e0c27e); transform-origin: 0 50%; }
+    .oc .ic { position: absolute; left: 30px; bottom: 90px; font-size: 30px; font-weight: 800; color: #2e5cbe; }
+    #on-pill { top: 1235px; display: flex; justify-content: center; }
+    #on-pill div { height: 76px; padding: 0 36px; border-radius: 999px; background: #0b1a33; color: #f0d595; font-size: 40px; font-weight: 900; display: flex; align-items: center; letter-spacing: -0.02em; }
+
   </style>
   <div id="root" data-composition-id="online" data-width="1080" data-height="1920">
-    <div id="on-num" data-layout-allow-overflow data-layout-allow-overlap>0</div>
-    <div id="on-h" class="stage">일은 그대로.</div>
-    <div id="on-label" class="stage">오프라인 수업 0회</div>
-    <div id="on-tags" class="stage">
-      <div class="tag">퇴근 후</div>
-      <div class="tag">주말</div>
-      <div class="tag">이동 중</div>
+    <div id="on-mesh" class="mesh" data-layout-ignore></div>
+    <div id="on-cam" class="cam" data-layout-allow-overlap>
+      <div id="on-t1" class="stage">퇴근 후,</div>
+      <div id="on-c1" class="oc"><small>평일 밤</small><b>민법총칙<br />3주차</b><div class="ic">▶ 수강 중</div><div class="bar"><i id="on-b1"></i></div></div>
+      <div id="on-c2" class="oc"><small>주말</small><b>형법<br />몰아보기</b><div class="ic">▶ 2강 연속</div><div class="bar"><i id="on-b2"></i></div></div>
+      <div id="on-c3" class="oc"><small>이동 중</small><b>헌법<br />복습</b><div class="ic">▶ 모바일</div><div class="bar"><i id="on-b3"></i></div></div>
+      <div id="on-t2" class="stage">온라인으로.</div>
+      <div id="on-pill" class="stage"><div>오프라인 수업 0회</div></div>
     </div>
-    <div id="on-sub" class="stage">100% 온라인으로 수강해요</div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
-    // 로컬 비트: 0, .44, .91, 1.38, 1.81, 2.24
-
-    tl.fromTo("#on-h", { opacity: 0, x: -120, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0);
-    tl.fromTo("#on-num", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: "expo.out" }, 0.3);
-    tl.fromTo("#on-label", { opacity: 0, scale: 0.8, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.44);
-    tl.fromTo(".tag", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "expo.out", stagger: 0.12 }, 0.91);
-    tl.fromTo("#on-sub", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 1.3);
-
-    // 다음 씬(크림)으로: 왼쪽으로 휩
-    tl.to(["#on-h", "#on-num", "#on-label", "#on-tags", "#on-sub"], { x: -260, opacity: 0, filter: "blur(14px)", duration: 0.2, ease: "power3.in" }, 2.47);
-
+    // 로컬 비트: .44 .91 1.35 1.79 2.22 — 문장 사이로 카드가 끼어듦 (레퍼런스 'Show [photos] what matters')
+    tl.fromTo("#on-mesh", { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.25, ease: "power2.inOut" }, 0);
+    tl.fromTo("#on-cam", { scale: 1.05 }, { scale: 0.96, duration: 2.69, ease: "none" }, 0);
+    tl.fromTo("#on-t1", { opacity: 0, filter: "blur(10px)", y: 260 }, { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.3, ease: "expo.out" }, 0.1);
+    tl.fromTo("#on-t2", { opacity: 0, filter: "blur(10px)", y: -260 }, { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.3, ease: "expo.out" }, 0.1);
+    tl.fromTo("#on-c1", { opacity: 0, y: 200, rotation: -14 }, { opacity: 1, y: 30, rotation: -8, duration: 0.4, ease: "expo.out" }, 0.44);
+    tl.fromTo("#on-c2", { opacity: 0, y: 200, rotation: 0 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "expo.out" }, 0.56);
+    tl.fromTo("#on-c3", { opacity: 0, y: 200, rotation: 14 }, { opacity: 1, y: 30, rotation: 8, duration: 0.4, ease: "expo.out" }, 0.68);
+    tl.fromTo(["#on-b1", "#on-b2", "#on-b3"], { scaleX: 0.05 }, { scaleX: 0.7, duration: 1.2, ease: "power2.inOut", stagger: 0.1 }, 0.9);
+    tl.fromTo("#on-pill div", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 1.35);
+    tl.to("#on-cam", { opacity: 0, filter: "blur(12px)", duration: 0.16, ease: "power3.in" }, 2.52);
     window.__timelines["online"] = tl;
   </script>
 </template>
