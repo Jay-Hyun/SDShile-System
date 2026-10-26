@@ -6,6 +6,21 @@
       font-weight: 100 900;
     }
     #root {
+      /* 배경 토닝: 밝은 씬 = 옅은 괘선 + 블루/골드 토닝, 어두운 씬 = 도트 그리드 + 글로우. 전부 노이즈를 아주 약하게 */
+      --noise: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.09 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      --paper:
+        var(--noise),
+        radial-gradient(60% 38% at 0% 0%, rgba(46, 92, 190, 0.09), rgba(46, 92, 190, 0) 100%),
+        radial-gradient(60% 40% at 100% 100%, rgba(224, 194, 126, 0.22), rgba(224, 194, 126, 0) 100%),
+        repeating-linear-gradient(0deg, rgba(11, 26, 51, 0.045) 0 2px, rgba(11, 26, 51, 0) 2px 72px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0) 0 118px, rgba(184, 149, 90, 0.18) 118px 120px, rgba(0, 0, 0, 0) 120px),
+        #fbf9f4;
+      --ink:
+        var(--noise),
+        radial-gradient(70% 40% at 50% 35%, rgba(46, 92, 190, 0.3), rgba(46, 92, 190, 0) 100%),
+        radial-gradient(55% 35% at 95% 100%, rgba(224, 194, 126, 0.14), rgba(224, 194, 126, 0) 100%),
+        radial-gradient(circle, rgba(255, 255, 255, 0.07) 1.6px, rgba(255, 255, 255, 0) 1.8px) 0 0 / 40px 40px,
+        #0a1020;
       position: absolute;
       inset: 0;
       overflow: hidden;
@@ -35,12 +50,21 @@
         radial-gradient(70% 45% at 40% 60%, #2e5cbe, rgba(46, 92, 190, 0) 100%),
         linear-gradient(160deg, #12264a 0%, #2e5cbe 55%, #c9a666 100%);
     }
+    .mesh::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        var(--noise),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 2px, rgba(255, 255, 255, 0) 2px 120px),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 2px, rgba(255, 255, 255, 0) 2px 120px);
+    }
     .bgl {
       position: absolute;
       inset: 0;
     }
 
-    #root { color: #0b1a33; background: #fbf9f4; }
+    #root { color: #0b1a33; background: var(--paper); }
     #dg-t { top: 700px; font-size: 160px; font-weight: 900; }
     #dg-t .b { color: #2e5cbe; }
     #dg-cert { position: absolute; left: 260px; top: 470px; width: 560px; height: 680px; background: #fffdf8; color: #161616; border: 3px solid #b8955a; outline: 2px solid #b8955a; outline-offset: -18px; box-shadow: 0 40px 90px rgba(11, 26, 51, 0.25); padding: 58px 52px 0; text-align: center; letter-spacing: -0.03em; }
