@@ -40,7 +40,8 @@ def mark():  # 형광펜 긋는 소리
 
 for c in cues:
     k, t = c["kind"], c["t"]
-    if k == "type":
+    if k == "tick": add(t, tick(), 0.09)
+    elif k == "type":
         for j in range(6): add(t + j * 0.045, tick(), 0.1)
     elif k == "click": add(t, click(), 0.22)
     elif k == "swish": add(t - 0.2, noise_sweep(0.45), 0.16)
@@ -54,6 +55,6 @@ pcm = (np.clip(fx, -1, 1) * 32767).astype(np.int16)
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "s16le", "-ar", str(SR), "-ac", "1", "-i", "-", fxpath], input=pcm.tobytes(), check=True)
 # BGM은 1.3s 첫 강박에 배치. 효과음은 BGM 아래 살짝
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "assets/bgm.mp3", "-i", fxpath, "-filter_complex",
-                f"[0]adelay=1300|1300,volume=0.9[m];[1]aformat=channel_layouts=stereo[f];[m][f]amix=inputs=2:normalize=0,atrim=0:{dur},loudnorm=I=-15:TP=-1.5:LRA=11,aresample=44100,alimiter=limit=0.82:level=false",
+                f"[0]adelay=1300|1300,volume=0.9[m];[1]aformat=channel_layouts=stereo[f];[m][f]amix=inputs=2:normalize=0,atrim=0:{dur},loudnorm=I=-15:TP=-1.5:LRA=11,aresample=44100,alimiter=limit=0.74:level=false",
                 "-ar", "44100", out], check=True)
 import os; os.remove(fxpath)

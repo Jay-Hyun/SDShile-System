@@ -319,9 +319,10 @@ function layer(id, t, a, b, d = 0.3) {
 function cam(id, s, ox, oy, tx = 0, ty = 0) {
   const el = $(id);
   el.style.transformOrigin = `${ox}px ${oy}px`;
-  el.style.transform = `translate(${tx}px, ${ty}px) scale(${s}) rotate(${(Math.sin(NOW * 0.37 + ox * 0.01) * 0.35).toFixed(3)}deg)`;
+  el.style.transform = `translate(${tx}px, ${ty}px) scale(${s}) rotate(${ox === 0 && oy === 0 ? 0 : (Math.sin(NOW * 0.37 + ox * 0.01) * 0.35).toFixed(3)}deg)`;
 }
 let NOW = 0, SPLIT = false;
+const MEAS = { ctx: null };
 // 어절 단위 분할: data-w 요소의 텍스트를 span.wd로 감싼다
 function splitWords() {
   document.querySelectorAll("[data-w]").forEach((el) => {
@@ -370,16 +371,19 @@ const Q1 = ["전세 계약서,", " 이 특약", " 괜찮은", " 건가요?"];
 // 타이밍 (비트)
 const S = {
   q1: [B(1), B(2), B(3), B(4)], send1: B(5), a1: B(6), a1e: B(7.7), h1: B(8.2),
-  ty2: B(10), u2: B(11), a2: B(11.5), h2: B(12.2),
-  ty3: B(13), u3: B(14), a3: B(14.5), h3: B(15.2),
+  q1s: B(0.9), q1e: B(4.55), ty2: B(9.6), ty2e: B(10.75), u2: B(11), a2: B(11.5), h2: B(12.2),
+  ty3: B(12.75), ty3e: B(13.85), u3: B(14), a3: B(14.5), h3: B(15.2),
   dim: B(16), zoom: B(16.9), chatOut: B(17.62),
   turn: B(17.75), top: B(19), bot: B(20), pill: B(22), w: [B(23), B(24), B(25), B(26)], grow: B(27.4), turnOut: B(28.55),
   st: B(28), st1: B(28.4), st2: B(29), pl: B(30.5), play: B(32), s3a: B(33), s3b: B(34), phone: B(35.5), chips: B(37), stOut: B(40.2),
   cta: B(40), c1: B(41), c2: B(42), ch: B(42.8), btn: B(43.5), press: B(45), endT: B(47),
 };
 // 효과음 큐 등록
-S.q1.forEach((t) => cue(t, "type"));
-cue(S.send1, "click"); cue(S.ty2, "type"); cue(S.u2 - 0.05, "click"); cue(S.ty3, "type"); cue(S.u3 - 0.05, "click");
+// 타이핑: 글자마다 일정한 속도로 (끊김 없이)
+const Q1S = "전세 계약서, 이 특약 괜찮은 건가요?", Q2S = "해고 통보를 문자로 받았어요", Q3S = "사고 합의금, 이 정도면 적당한가요?";
+const TYPES = [[Q1S, S.q1s, S.q1e], [Q2S, S.ty2, S.ty2e], [Q3S, S.ty3, S.ty3e]];
+TYPES.forEach(([q, a, b]) => chars(q).forEach((ch, i) => ch.trim() && cue(a + ((i + 0.5) / chars(q).length) * (b - a), "tick")));
+cue(S.send1, "click"); cue(S.u2 - 0.05, "click"); cue(S.u3 - 0.05, "click");
 cue(S.play, "click"); cue(S.press, "click");
 cue(T0, "swish"); cue(S.turn, "hit"); cue(S.grow - 0.35, "rise"); cue(B(40) - 0.2, "whoosh"); cue(S.endT, "swish");
 [S.h1, S.h2, S.h3, S.ch].forEach((t) => cue(t, "mark"));
@@ -399,7 +403,13 @@ function measure() {
 window.seek = function (t) {
   NOW = t;
   if (!SPLIT) { splitWords(); SPLIT = true; }
-  if (!M) measure();
+  if (!M) {
+    measure();
+    const cs = getComputedStyle($("in-t"));
+    MEAS.ctx = document.createElement("canvas").getContext("2d");
+    MEAS.ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+    MEAS.ctx.letterSpacing = cs.letterSpacing;
+  }
   // 바탕 워시
   $("b1").style.transform = `translate(${-150 + Math.sin(t * 0.21) * 120}px, ${80 + Math.cos(t * 0.17) * 140}px)`;
   $("b2").style.transform = `translate(${620 + Math.cos(t * 0.19) * 140}px, ${1350 + Math.sin(t * 0.23) * 120}px)`;
@@ -436,10 +446,16 @@ window.seek = function (t) {
       $("ch-glow").style.opacity = 0.55 * pi;
 
       // 입력창
-      let it = "";
-      if (t < S.send1) it = Q1.map((w, i) => typed(w, t, S.q1[i], S.q1[i] + 0.2)).join("");
-      else if (t >= S.ty2 && t < S.u2) it = typed("해고 통보를 문자로 받았어요", t, S.ty2, S.ty2 + 0.4);
-      else if (t >= S.ty3 && t < S.u3) it = typed("사고 합의금, 이 정도면 적당한가요?", t, S.ty3, S.ty3 + 0.45);
+      // 지금 치고 있는 문장 (끝나면 전송 전까지 그대로)
+      let it = "", tw = null, tq = 0, tfrac = 0;
+      const ends = [S.send1, S.u2, S.u3];
+      TYPES.forEach(([q, a, b], i) => {
+        if (t >= a - 0.4 && t < ends[i]) {
+          const L = chars(q).length, x = cl((t - a) / (b - a)) * L;
+          it = chars(q).slice(0, Math.floor(x)).join(""); tfrac = x - Math.floor(x); tw = q; tq = i;
+          if (x >= L) tfrac = 0;
+        }
+      });
       $("in-t").textContent = it;
       $("in-ph").style.display = it ? "none" : "inline";
       $("in-c").style.opacity = Math.floor(t * 3) % 2 === 0 || it ? 1 : 0;
@@ -477,8 +493,29 @@ window.seek = function (t) {
       const a1hY = 250 + 104 + M.a1.bot - 50;
       const s = kf(t, [[T0, 1.0], [S.h1, 1.02], [S.h1 + 0.6, 1.5], [S.ty2 - 0.1, 1.53], [S.ty2 + 0.35, 1.0], [S.dim, 1.02], [S.dim + 0.6, 0.94]]);
       const pushY = kf(t, [[S.h1, 0], [S.h1 + 0.6, 840 - a1hY], [S.ty2 - 0.1, 840 - a1hY], [S.ty2 + 0.35, 0]]);
+      // 기본 카메라 → 아핀
+      let A = { sc: s, x: 540 - 540 * s, y: a1hY + pushY - a1hY * s };
+      // 타이핑 클로즈업: 입력창으로 들어가 커서를 따라간다
+      const tW = [[S.q1s - 0.45, S.q1e + 0.1, S.send1 + 0.3], [S.ty2 - 0.35, S.ty2e + 0.05, S.u2 + 0.2], [S.ty3 - 0.35, S.ty3e + 0.05, S.u3 + 0.2]];
+      let wT = 0;
+      tW.forEach(([a, b, c]) => { wT = Math.max(wT, Math.min(E.io(cl((t - a) / 0.4)), 1 - E.io(cl((t - b) / (c - b))))); });
+      if (wT > 0.001) {
+        $("C-chat").style.transform = "none";
+        const bar = $("in-t").parentElement.getBoundingClientRect();
+        const k = bar.width / $("in-t").parentElement.offsetWidth;
+        const x0 = bar.left + 34 * k, cy = bar.top + bar.height / 2;
+        const ctx2 = MEAS.ctx;
+        const done = tw ? ctx2.measureText(it).width : 0;
+        const nxt = tw ? ctx2.measureText(chars(tw)[chars(it).length] || "").width : 0;
+        const cx = x0 + k * (done + nxt * tfrac);
+        const Z = 1.7;
+        // 문장 시작은 화면 왼쪽 80px, 커서가 오른쪽 920px을 넘으면 그만큼 따라간다
+        const fx = Math.max(cx - 380 / Z, x0 + (540 - 80) / Z);
+        const T = { sc: Z, x: 540 - fx * Z, y: 780 - cy * Z };
+        A = { sc: lerp(A.sc, T.sc, wT), x: lerp(A.x, T.x, wT), y: lerp(A.y, T.y, wT) };
+      }
       // 매치 컷: 마지막 '전문가'로 파고든다 (가속, 1 → 4.2배)
-      let zs = s, ox = 540, oy = a1hY, tx = 0, ty = pushY;
+      let zs = A.sc, ox = 0, oy = 0, tx = A.x, ty = A.y;
       const zq = cl((t - S.zoom) / (S.chatOut + 0.1 - S.zoom));
       if (zq > 0) {
         $("C-chat").style.transform = "none";
@@ -488,15 +525,17 @@ window.seek = function (t) {
         const cx = rc.left + rc.width / 2, cy = rc.top + rc.height / 2;
         const z = zq * zq * zq;
         zs = lerp(0.94, 4.2, z); ox = cx; oy = cy; tx = (540 - cx) * E.io(zq); ty = (805 - cy) * E.io(zq);
+        // 원점 기준을 아핀으로 바꿈
+        tx = cx + tx - cx * zs; ty = cy + ty - cy * zs; ox = 0; oy = 0;
       }
-      cam("C-chat", zs, ox, oy, tx, ty);
+      cam("C-chat", zs, 0, 0, tx, ty);
       const rack = Math.max(kf(t, [[S.h1, 0], [S.h1 + 0.5, 1], [S.ty2 - 0.1, 1], [S.ty2 + 0.3, 0]]), zq);
       $("G-chat").style.filter = rack > 0.001 ? `blur(${(rack * 10).toFixed(2)}px)` : "none";
 
       // 커서 → 전송 버튼
-      if (t > S.q1[3] - 0.3 && t < S.send1 + 0.5) {
-        const k = E.io(cl((t - (S.q1[3] - 0.3)) / 0.75));
-        cur = { x: lerp(1000, 905, k), y: lerp(1500, 1268, k), o: ent(t, S.q1[3] - 0.3, 0.2) * ext(t, S.send1 + 0.3, 0.2), press: S.send1, scale: zs, ox, oy };
+      if (t > S.q1e - 0.15 && t < S.send1 + 0.5) {
+        const k = E.io(cl((t - (S.q1e - 0.15)) / (S.send1 - S.q1e + 0.1)));
+        cur = { x: lerp(1000, 905, k), y: lerp(1500, 1268, k), o: ent(t, S.q1e - 0.15, 0.15) * ext(t, S.send1 + 0.3, 0.2), press: S.send1, scale: zs, ox: 0, oy: 0, tx, ty };
       }
     }
   }
@@ -684,7 +723,7 @@ window.seek = function (t) {
   // 커서 + 눌림 + 리플 (장면 카메라 변환을 그대로 따름)
   const c = $("cursor"), r = $("ripple");
   if (cur && cur.o > 0.001) {
-    const X = cur.ox + (cur.x - cur.ox) * cur.scale, Y = cur.oy + (cur.y - cur.oy) * cur.scale;
+    const X = cur.ox + (cur.x - cur.ox) * cur.scale + (cur.tx || 0), Y = cur.oy + (cur.y - cur.oy) * cur.scale + (cur.ty || 0);
     const press = t >= cur.press && t < cur.press + 0.14 ? 0.82 : 1;
     c.style.opacity = cur.o;
     c.style.transform = `translate(${X - 8}px, ${Y - 6}px) scale(${press})`;
