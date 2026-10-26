@@ -41,37 +41,23 @@
     }
 
     #root { color: #0b1a33; background: #fbf9f4; }
-    .hero { top: 700px; font-size: 220px; font-weight: 900; line-height: 1; white-space: nowrap; }
-    .hero b { color: #2e5cbe; }
-    #fa-kick { top: 550px; font-size: 72px; font-weight: 800; color: #6b6660; }
+    .ta { top: 630px; font-size: 80px; font-weight: 800; color: #6b6660; white-space: nowrap; }
+    .tb { top: 750px; font-size: 112px; font-weight: 900; white-space: nowrap; }
     #fa-mesh { position: absolute; inset: 0; }
-    #fa-grid { position: absolute; inset: 0; }
-    .gl { stroke: rgba(255, 255, 255, 0.4); stroke-width: 2; }
-    .gh { fill: #ffffff; }
-    #fa-a1 { top: 570px; font-size: 110px; font-weight: 900; color: #ffffff; }
-    #fa-a2 { top: 730px; font-size: 200px; font-weight: 900; line-height: 1; color: #f0d595; }
+    #fa-a3 { color: rgba(255, 255, 255, 0.9); }
+    #fa-b3 { top: 740px; font-size: 200px; line-height: 1; color: #f0d595; }
 
   </style>
   <div id="root" data-composition-id="far" data-width="1080" data-height="1920">
     <div id="far-bg" class="bgl" data-layout-ignore></div>
     <div id="far-cam" class="cam" data-layout-allow-overlap>
-      <div id="fa-kick" class="stage">결과물은 AI가</div>
-      <div id="fa-w1" class="stage hero"><b>검토</b>는</div>
-      <div id="fa-w2" class="stage hero" data-layout-allow-overlap><b>책임</b>은</div>
-      <div id="fa-w3" class="stage hero" data-layout-allow-overlap>사람이.</div>
+      <div id="fa-a1" class="stage ta">계약서 한 장,</div>
+      <div id="fa-b1" class="stage tb">AI는 금방 씁니다.</div>
+      <div id="fa-a2" class="stage ta" data-layout-allow-overlap>그런데 서명하는 손은</div>
+      <div id="fa-b2" class="stage tb" data-layout-allow-overlap>여전히 망설이죠.</div>
       <div id="fa-mesh" class="mesh" data-layout-ignore></div>
-      <svg id="fa-grid" viewBox="0 0 1080 1920" data-layout-ignore>
-        <line class="gl" x1="0" y1="550" x2="1080" y2="550" />
-        <line class="gl" x1="0" y1="950" x2="1080" y2="950" />
-        <line class="gl" x1="120" y1="0" x2="120" y2="1920" />
-        <line class="gl" x1="960" y1="0" x2="960" y2="1920" />
-        <rect class="gh" x="112" y="542" width="16" height="16" />
-        <rect class="gh" x="952" y="542" width="16" height="16" />
-        <rect class="gh" x="112" y="942" width="16" height="16" />
-        <rect class="gh" x="952" y="942" width="16" height="16" />
-      </svg>
-      <div id="fa-a1" class="stage" data-layout-allow-overlap>그 자리,</div>
-      <div id="fa-a2" class="stage" data-layout-allow-overlap>법학 전공.</div>
+      <div id="fa-a3" class="stage ta" data-layout-allow-overlap>그 망설임을 확신으로,</div>
+      <div id="fa-b3" class="stage tb" data-layout-allow-overlap>법학 전공.</div>
     </div>
   </div>
   <script>
@@ -96,18 +82,17 @@
     tl.fromTo(BG, { scale: 1.08 }, { scale: 1, duration: D, ease: "none" }, 0);
 
 
-    // B3 결과물은 AI가 · B4 검토는 · B5 책임은 · B6 사람이. · B7 그 자리, · B8 법학 전공.
-    IN("#fa-kick", B[3], { y: -20 }, 0.2);
-    IN("#fa-w1", B[4], { scale: 1.3, filter: "blur(20px)" }, 0.2);
-    OUT("#fa-w1", B[5], { y: -140 });
-    IN("#fa-w2", B[5], { y: 140 }, 0.14);
-    OUT(["#fa-w2", "#fa-kick"], B[6], { y: -140 });
-    IN("#fa-w3", B[6], { y: 140 }, 0.14);
-    // B7: 그라데이션이 덮이며 답
+    // B3 계약서 한 장, · B4 AI는 금방 씁니다. · B5 그런데 서명하는 손은 · B6 여전히 망설이죠. · B7 그 망설임을 확신으로, · B8 법학 전공.
+    IN("#fa-a1", B[3], { y: 24 }, 0.2);
+    IN("#fa-b1", B[4], { y: 30 });
+    OUT(["#fa-a1", "#fa-b1"], B[5], { y: -60 });
+    IN("#fa-a2", B[5], { y: 24 }, 0.2);
+    IN("#fa-b2", B[6], { y: 30 });
+    // B7: 화면이 그라데이션으로 바뀌며 답
     tl.fromTo("#fa-mesh", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.16, ease: "power3.inOut" }, B[7] - 0.1);
-    tl.fromTo("#fa-grid", { opacity: 0 }, { opacity: 1, duration: 0.12 }, B[7]);
-    IN("#fa-a1", B[7], { y: 30 });
-    IN("#fa-a2", B[8], { scale: 1.15, filter: "blur(16px)" }, 0.2);
+    OUT(["#fa-a2", "#fa-b2"], B[7], { y: -60 });
+    IN("#fa-a3", B[7], { y: 24 }, 0.2);
+    IN("#fa-b3", B[8], { scale: 1.15, filter: "blur(16px)" }, 0.22);
     OUT(CAM, D, {});
 
     window.__timelines["far"] = tl;
