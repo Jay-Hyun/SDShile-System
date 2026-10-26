@@ -45,6 +45,7 @@ for c in cues:
         for j in range(6): add(t + j * 0.045, tick(), 0.1)
     elif k == "click": add(t, click(), 0.22)
     elif k == "swish": add(t - 0.2, noise_sweep(0.45), 0.16)
+    elif k == "sweep": add(t, noise_sweep(1.5) * np.linspace(0.3, 1, int(1.5 * SR)), 0.14)
     elif k == "whoosh": add(t, noise_sweep(0.5), 0.3)
     elif k == "hit": add(t, hit(), 0.55)
     elif k == "rise": add(t, rise(), 0.22)
@@ -53,8 +54,15 @@ for c in cues:
 fxpath = out + ".fx.wav"
 pcm = (np.clip(fx, -1, 1) * 32767).astype(np.int16)
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "s16le", "-ar", str(SR), "-ac", "1", "-i", "-", fxpath], input=pcm.tobytes(), check=True)
-# BGM은 원곡 0s(스윕업)부터 영상 0s에 배치. 효과음은 BGM 아래 살짝
+# 0–1.3s 포스터는 무음. BGM은 1.3s에 원곡 0s(스윕업)부터. 효과음은 BGM 아래 살짝
+mix = out + ".mix.wav"
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "assets/bgm.mp3", "-i", fxpath, "-filter_complex",
-                f"[0]volume=0.9[m];[1]aformat=channel_layouts=stereo[f];[m][f]amix=inputs=2:normalize=0,atrim=0:{dur},loudnorm=I=-15:TP=-1.5:LRA=11,aresample=44100,alimiter=limit=0.74:level=false",
+                f"[0]adelay=1300|1300,volume=0.9[m];[1]aformat=channel_layouts=stereo[f];[m][f]amix=inputs=2:normalize=0,atrim=0:{dur},apad=whole_dur={dur}",
+                "-ar", "44100", mix], check=True)
+# 정적 게인으로 약 -15 LUFS에 맞추고(펌핑 없음) 리미터로 피크 -1.5 dB 아래
+r = subprocess.run(["ffmpeg", "-nostats", "-i", mix, "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
+I = float([l for l in r.splitlines() if l.strip().startswith("I:")][-1].split()[1])
+gain = -15.0 - I
+subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", mix, "-af", f"volume={gain:.2f}dB,alimiter=limit=0.8:attack=3:release=60:level=false",
                 "-ar", "44100", out], check=True)
-import os; os.remove(fxpath)
+import os; os.remove(fxpath); os.remove(mix)

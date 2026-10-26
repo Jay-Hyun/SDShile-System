@@ -62,11 +62,11 @@
 
   /* 포스터 */
   #po-k { top: 300px; font-size: 34px; font-weight: 700; color: #2e5cbe; letter-spacing: -0.02em; }
-  #po-1 { top: 420px; font-size: 100px; font-weight: 800; line-height: 1.22; color: #3b4766; }
-  #po-q { top: 580px; font-size: 140px; font-weight: 900; line-height: 1.12; color: #0b1a33; letter-spacing: -0.06em; }
+  #po-1 { top: 410px; font-size: 100px; font-weight: 800; line-height: 1.22; color: #3b4766; }
+  #po-q { top: 560px; font-size: 140px; font-weight: 900; line-height: 1.12; color: #0b1a33; letter-spacing: -0.06em; }
   #po-q .hl { background-size: 100% 42%; }
-  #po-chips { top: 1000px; }
-  #po-chips2 { top: 1084px; }
+  #po-chips { top: 950px; }
+  #po-chips2 { top: 1034px; }
   #po-fine { top: 1262px; }
 
   /* 전환 / 자리 */
@@ -110,7 +110,7 @@
   #st-fine { top: 664px; }
 
   /* CTA */
-  #cta-card { left: 70px; top: 300px; width: 940px; height: 960px; }
+  #cta-card { left: 70px; top: 370px; width: 940px; height: 860px; }
   #cta-msg { position: absolute; left: 40px; right: 40px; top: 150px; display: flex; gap: 20px; }
   #cta-msg .ava { flex: none; width: 64px; height: 64px; background: #0b1a33; color: #fff; font-size: 30px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
   #cta-t { font-size: 96px; font-weight: 900; line-height: 1.18; letter-spacing: -0.06em; }
@@ -130,6 +130,8 @@
   /* 장면별 바탕 */
   #bg { display: none; }
   .sbg { position: absolute; inset: -120px; overflow: hidden; }
+  .sky { position: absolute; left: -60px; right: -60px; bottom: -40px; height: 1060px; transform-origin: 50% 100%; -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 22%, #000 45%); }
+  .sky svg { width: 100%; height: 100%; display: block; }
   #G-poster { background: radial-gradient(55% 35% at 15% 12%, rgba(120, 160, 255, 0.5), rgba(120, 160, 255, 0) 70%), radial-gradient(60% 40% at 88% 88%, rgba(242, 205, 140, 0.6), rgba(242, 205, 140, 0) 70%), #f7f6f2; }
   #G-poster .grid { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(11, 26, 51, 0.05) 0 2px, rgba(0, 0, 0, 0) 2px 90px), repeating-linear-gradient(90deg, rgba(11, 26, 51, 0.05) 0 2px, rgba(0, 0, 0, 0) 2px 90px); -webkit-mask-image: radial-gradient(60% 45% at 50% 42%, #000, rgba(0, 0, 0, 0)); }
   #G-chat { background: linear-gradient(180deg, #d9e3fb 0%, #eaf0fc 45%, #f7f8fd 100%); }
@@ -175,6 +177,7 @@
 <!-- 포스터 -->
 <div class="layer" id="L-poster">
   <div class="sbg" id="G-poster"><div class="grid"></div></div>
+  <div class="sky" id="sky-p"></div>
   <div class="cam" id="C-poster">
     <div class="abs c" id="po-k">경찰복지사이버평생교육원 · 법학 전공</div>
     <div class="abs c" id="po-1">법대 안 가도</div>
@@ -199,9 +202,9 @@
         <div class="r" id="r2"><div class="ava kk">경</div><p data-w><span class="hl" id="h2">헌법부터 차근차근.</span> 1:1 학습플래너가 일정도 같이 짜 드려요.</p></div>
         <div class="u" id="u3">끝나면 뭐가 남아요?</div>
         <div class="r" id="r3"><div class="ava kk">경</div><p data-w><span class="hl" id="h3">교육부장관 명의</span> 법학 학사 학위요.</p></div>
-        <div class="u" id="u4">요즘 AI가 법도 다 알려주잖아요?</div>
+        <div class="u" id="u4">요즘은 AI한테 물어보면 되지 않아요?</div>
+        <div class="r" id="r4"><div class="ava kk">경</div><p data-w>AI도 마지막엔 <span class="hl" id="h5">이렇게</span> 말해요.</p></div>
         <div class="a" id="a4"><div class="ava"></div><div><small class="ai">AI 답변</small><p><span class="mid" id="a4m"></span><span class="end" id="a4e"></span></p></div></div>
-        <div class="r" id="r4"><div class="ava kk">경</div><p data-w>AI도 마지막엔 <span class="hl" id="h5">사람</span>을 찾아요.</p></div>
       </div></div>
       <div class="inbar"><span id="in-t"></span><span class="caret" id="in-c"></span><span class="ph" id="in-ph">궁금한 걸 물어보세요</span><div class="send" id="send"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round" /></svg></div></div>
     </div>
@@ -216,7 +219,7 @@
     <div class="frag" id="fr1" style="left: 640px; top: 1110px"><h5>등기 신청서</h5><b>소유권이전등기</b><i style="width: 85%"></i><i style="width: 60%"></i></div>
     <div class="frag" id="fr2" style="left: 620px; top: 250px"><h5>노무 상담 기록</h5><b>해고 예고 수당 검토</b><i style="width: 80%"></i><i style="width: 65%"></i></div>
     <div class="frag" id="fr3" style="left: 40px; top: 1120px"><h5>검토 요청</h5><b>공급계약서 v3 · 법무 검토</b><i style="width: 88%"></i><i style="width: 55%"></i></div>
-    <div class="abs c" id="tu-top">AI가 결국 찾는 사람</div>
+    <div class="abs c" id="tu-top">AI가 찾는 그 전문가</div>
     <div class="abs c" id="tu-word">
       <div id="tu-pill"></div>
       <div id="tu-mask" style="position: absolute; left: 0; width: 940px; top: 0; height: 230px; overflow: hidden">
@@ -260,7 +263,7 @@
 <div class="layer" id="L-cta">
   <div class="sbg" id="G-cta"><div class="ring" id="rg0"></div><div class="ring" id="rg1"></div><div class="ring" id="rg2"></div></div>
   <div class="cam" id="C-cta">
-    <div class="glow" style="left: 66px; top: 296px; width: 948px; height: 968px"></div>
+    <div class="glow" style="left: 66px; top: 366px; width: 948px; height: 868px"></div>
     <div class="card" id="cta-card">
       <div class="chead"><div class="ava" style="background: #0b1a33"></div>경찰복지사이버평생교육원<span>상담</span></div>
       <div id="cta-msg"><div class="ava">경</div><div id="cta-t"><span id="cta-t1">이번엔,</span><br /><span id="cta-t2">저희와 <span class="hl" id="cta-h">상담하세요.</span></span></div></div>
@@ -275,6 +278,7 @@
 <!-- 엔드카드 -->
 <div class="layer" id="L-end">
   <div class="sbg" id="G-end"><div class="lines"></div></div>
+  <div class="sky" id="sky-e"></div>
   <div class="cam" id="C-end">
     <div class="abs c" id="en-1">경찰복지사이버평생교육원</div>
     <div class="abs c" id="en-2" data-w>법대 안 가도<br />법학 학위</div>
@@ -291,8 +295,8 @@
 
 <script>
 window.VIDEO = { w: 1080, h: 1920, duration: 35, fps: 30 };
-// 드럼 곡: 원곡 0s(스윕업)부터 재생, 1.5s에 첫 강박, 비트 0.643s
-const T0 = 1.5, P = 0.643, B = (k) => T0 + k * P;
+// 0–1.3s 포스터는 무음. 1.3s에 원곡 0s(스윕업)부터 재생 → 2.8s 첫 강박, 비트 0.643s
+const T0 = 2.8, P = 0.643, B = (k) => T0 + k * P;
 
 const $ = (id) => document.getElementById(id);
 const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -332,6 +336,33 @@ function cam(id, s, ox, oy, tx = 0, ty = 0) {
 }
 let NOW = 0, SPLIT = false;
 const MEAS = { ctx: null };
+// 도시 야경: 결정적 난수로 빌딩·창문을 그린다 (퇴근 후 불 켜진 도시)
+function skyline(id, pal) {
+  const W = 1200, H = 900;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg"><defs>
+    <linearGradient id="g${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${pal.glow}" stop-opacity="0"/><stop offset="1" stop-color="${pal.glow}" stop-opacity="0.85"/></linearGradient>
+    <linearGradient id="h${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${pal.haze}" stop-opacity="0"/><stop offset="1" stop-color="${pal.haze}" stop-opacity="0.6"/></linearGradient>
+    <filter id="b${id}"><feGaussianBlur stdDeviation="3"/></filter></defs>
+    <rect x="0" y="200" width="${W}" height="700" fill="url(#g${id})"/>`;
+  // 먼 빌딩(흐림) → 가까운 빌딩(선명, 창문)
+  [[pal.far, 0.45, 330, 30, 1, 60, 120], [pal.mid, 0.75, 420, 230, 0, 50, 95], [pal.front, 1, 300, 430, 0, 80, 150]].forEach(([col, op, hmax, seed, blur, wmin, wvar], L) => {
+    let x = -30, n = 0, g = `<g opacity="${op}"${blur ? ` filter="url(#b${id})"` : ""}>`;
+    while (x < W + 30) {
+      const w = wmin + rng(seed + n) * wvar, h = hmax * (0.35 + rng(seed + n + 50) * 0.65);
+      const y = H - h;
+      g += `<rect x="${x.toFixed(0)}" y="${y.toFixed(0)}" width="${w.toFixed(0)}" height="${h.toFixed(0)}" rx="2" fill="${col}"/>`;
+      if (rng(seed + n + 90) > 0.6) g += `<rect x="${(x + w / 2 - 2).toFixed(0)}" y="${(y - 28).toFixed(0)}" width="4" height="28" fill="${col}"/>`;
+      if (L > 0) for (let yy = y + 18; yy < H - 14; yy += L === 2 ? 26 : 20) for (let xx = x + 10; xx < x + w - 12; xx += L === 2 ? 16 : 13) {
+        const r = rng(xx * 7.13 + yy * 3.37 + L);
+        if (r > (L === 2 ? 0.7 : 0.78)) g += `<rect x="${xx.toFixed(0)}" y="${yy.toFixed(0)}" width="${L === 2 ? 7 : 5}" height="${L === 2 ? 11 : 8}" fill="${pal.win}" opacity="${(0.35 + r * 0.55).toFixed(2)}"/>`;
+      }
+      x += w + (L === 2 ? 6 : 3); n++;
+    }
+    svg += g + "</g>";
+    if (L < 2) svg += `<rect x="0" y="${H - hmax}" width="${W}" height="${hmax}" fill="url(#h${id})"/>`;
+  });
+  $(id).innerHTML = svg + "</svg>";
+}
 // 어절 단위 분할: data-w 요소의 텍스트를 span.wd로 감싼다
 function splitWords() {
   document.querySelectorAll("[data-w]").forEach((el) => {
@@ -373,7 +404,7 @@ const hl = (el, p) => ((typeof el === "string" ? $(el) : el).style.backgroundSiz
 window.CUES = [];
 const cue = (t, kind) => window.CUES.push({ t: +t.toFixed(3), kind });
 
-const A4M = "법 정보는 알려드릴 수 있어요. 다만 내 상황에 맞는 판단은 ";
+const A4M = "일반적인 법 정보는 알려드릴 수 있어요. 다만 내 상황에 맞는 판단은 ";
 const A4E = "전문가와 상담하세요.";
 
 // 타이밍 (비트)
@@ -381,26 +412,26 @@ const S = {
   q1s: B(0.5), q1e: B(2.5), send1: B(3), r1: B(3.6), h1: B(4.3),
   ty2: B(5.5), ty2e: B(6.8), u2: B(7.3), r2: B(7.9), h2: B(8.6),
   ty3: B(10), ty3e: B(10.9), u3: B(11.4), r3: B(12), h3: B(12.7),
-  ty4: B(14), ty4e: B(15.3), u4: B(15.8), a4: B(16.3), a4e: B(17.1), h4: B(17.6), r4: B(18.6), h5: B(19.2),
+  ty4: B(14), ty4e: B(15.4), u4: B(15.9), r4: B(16.5), h5: B(17.1), a4: B(17.4), a4e: B(18.3), h4: B(18.8),
   dim: B(19.6), zoom: B(20.2), chatOut: B(20.92),
   turn: B(21.05), top: B(21.8), bot: B(99), pill: B(22.5), w: [B(23), B(24), B(25), B(26)], grow: B(27.4), turnOut: B(28.55),
   st: B(28), st1: B(28.4), st2: B(29), pl: B(30), play: B(31.2), s3a: B(32), s3b: B(32.8), phone: B(33.3), chips: B(34.2), stOut: B(35.7), whip: B(35.5),
   cta: B(35.5), c1: B(36.3), c2: B(37.3), ch: B(38.2), btn: B(39.5), press: B(41), endT: B(43.5),
 };
 // 타이핑: 글자마다 일정한 속도로 (끊김 없이)
-const Q1S = "법대 안 가도 법학 학위, 진짜 받을 수 있어요?", Q2S = "법을 하나도 모르는데 괜찮을까요?", Q3S = "끝나면 뭐가 남아요?", Q4S = "요즘 AI가 법도 다 알려주잖아요?";
+const Q1S = "법대 안 가도 법학 학위, 진짜 받을 수 있어요?", Q2S = "법을 하나도 모르는데 괜찮을까요?", Q3S = "끝나면 뭐가 남아요?", Q4S = "요즘은 AI한테 물어보면 되지 않아요?";
 const TYPES = [[Q1S, S.q1s, S.q1e], [Q2S, S.ty2, S.ty2e], [Q3S, S.ty3, S.ty3e], [Q4S, S.ty4, S.ty4e]];
 const SENDS = [S.send1, S.u2, S.u3, S.u4];
 // 효과음 큐
 TYPES.forEach(([q, a, b]) => chars(q).forEach((ch, i) => ch.trim() && cue(a + ((i + 0.5) / chars(q).length) * (b - a), "tick")));
 SENDS.forEach((t) => cue(t - 0.05, "click"));
 cue(S.play, "click"); cue(S.press, "click");
-cue(T0, "swish"); cue(S.turn, "hit"); cue(S.grow - 0.35, "rise"); cue(S.whip - 0.2, "whoosh"); cue(S.endT, "swish");
+cue(T0 - 1.5, "sweep"); cue(S.turn, "hit"); cue(S.grow - 0.35, "rise"); cue(S.whip - 0.2, "whoosh"); cue(S.endT, "swish");
 [S.h1, S.h2, S.h3, S.h4, S.ch].forEach((t) => cue(t, "mark"));
 
 // 채팅 스크롤 위치 (초기 1회 측정)
 let M = null;
-const MSG = ["u1", "r1", "u2", "r2", "u3", "r3", "u4", "a4", "r4"];
+const MSG = ["u1", "r1", "u2", "r2", "u3", "r3", "u4", "r4", "a4"];
 function measure() {
   $("a4m").textContent = A4M; $("a4e").innerHTML = `<span class="hl" id="a4h">${A4E}</span>`;
   const g = (id) => ({ top: $(id).offsetTop, bot: $(id).offsetTop + $(id).offsetHeight });
@@ -412,7 +443,11 @@ function measure() {
 
 window.seek = function (t) {
   NOW = t;
-  if (!SPLIT) { splitWords(); SPLIT = true; }
+  if (!SPLIT) {
+    splitWords(); SPLIT = true;
+    skyline("sky-p", { far: "#b9c8e8", mid: "#7f97c8", front: "#2b4170", win: "#ffd88f", glow: "#f6c98f", haze: "#f3e9dc" });
+    skyline("sky-e", { far: "#2a4a94", mid: "#18306a", front: "#0a1530", win: "#f5c45c", glow: "#c9a666", haze: "#1a3a86" });
+  }
   if (!M) {
     measure();
     const cs = getComputedStyle($("in-t"));
@@ -432,7 +467,11 @@ window.seek = function (t) {
   {
     const p = layer("L-poster", t, -1, T0 + 0.12, 0.25);
     if (p > 0) {
-      cam("C-poster", kf(t, [[0, 1], [T0, 1.035]], E.lin), 540, 800);
+      const SW = T0 - 1.5; // 음악 시작(스윕업)
+      const pz = cl((t - SW) / (T0 - SW)), pin = pz * pz * pz;
+      cam("C-poster", lerp(1.0, 1.28, pin) + 0.01 * cl(t / SW), 540, 700);
+      $("sky-p").style.transform = `translateY(${(pin * 160).toFixed(1)}px) scale(${(1 + pin * 0.45).toFixed(3)})`;
+      $("sky-p").style.filter = pin > 0.3 ? `blur(${((pin - 0.3) * 12).toFixed(2)}px)` : "none";
       // 첫 강박: 따옴표 문장만 남고 나머지는 녹는다. 문장은 작아지며 채팅창 안쪽으로 빨려 들어감
       const q = E.io(cl((t - (T0 - 0.04)) / 0.36));
       ["po-k", "po-1", "po-chips", "po-chips2", "po-fine"].forEach((id) => show(id, 1 - ent(t, T0 - 0.06, 0.16), { y: -30, blur: 16 }));
@@ -484,14 +523,14 @@ window.seek = function (t) {
       // 마지막: AI의 '상담하세요'와 '사람'만 남기고 나머지는 어둡게
       const dim = E.io(cl((t - S.dim) / 0.4));
       if (dim > 0) {
-        ["u1", "r1", "u2", "r2", "u3", "r3", "u4"].forEach((id) => ($(id).style.opacity = Math.min(+$(id).style.opacity, 1 - dim * 0.85)));
+        ["u1", "r1", "u2", "r2", "u3", "r3", "u4", "r4"].forEach((id) => ($(id).style.opacity = Math.min(+$(id).style.opacity, 1 - dim * 0.85)));
         $("a4m").style.opacity = 1 - dim * 0.75; $("a4m").style.filter = `blur(${dim * 3}px)`;
       } else { $("a4m").style.opacity = 1; $("a4m").style.filter = "none"; }
 
       // 스크롤: 새 메시지가 뜰 때마다 아래로
       const keys = [[S.send1, 0]];
       let prev = 0;
-      [["u1", S.send1], ["r1", S.r1], ["u2", S.u2], ["r2", S.r2], ["u3", S.u3], ["r3", S.r3], ["u4", S.u4], ["a4", S.a4e], ["r4", S.r4]].forEach(([id, t0]) => {
+      [["u1", S.send1], ["r1", S.r1], ["u2", S.u2], ["r2", S.r2], ["u3", S.u3], ["r3", S.r3], ["u4", S.u4], ["r4", S.r4], ["a4", S.a4e]].forEach(([id, t0]) => {
         const v = Math.max(prev, M.sc(id));
         keys.push([t0 - 0.02, prev]); keys.push([t0 + 0.35, v]); prev = v;
       });
@@ -508,7 +547,7 @@ window.seek = function (t) {
       });
       // 답 클로즈업: 답이 뜨면 그 줄로 다가간다
       let wR = 0, rid = null;
-      [["r1", S.r1, S.ty2], ["r2", S.r2, S.ty3], ["r3", S.r3, S.ty4], ["a4", S.a4, S.r4]].forEach(([id, a, b]) => {
+      [["r1", S.r1, S.ty2], ["r2", S.r2, S.ty3], ["r3", S.r3, S.ty4], ["r4", S.r4, S.a4 + 0.3], ["a4", S.a4 + 0.2, S.dim + 0.5]].forEach(([id, a, b]) => {
         const w = Math.min(E.io(cl((t - a) / 0.45)), 1 - E.io(cl((t - (b - 0.5)) / 0.45)));
         if (w > wR) { wR = w; rid = id; }
       });
@@ -526,10 +565,10 @@ window.seek = function (t) {
         const done = tw ? MEAS.ctx.measureText(it).width : 0;
         const nxt = tw ? MEAS.ctx.measureText(chars(tw)[chars(it).length] || "").width : 0;
         const cx = x0 + k * (done + nxt * tfrac);
-        const Z = 1.7;
+        const Z = 1.55;
         // 문장 시작은 화면 왼쪽 80px, 커서가 오른쪽 920px을 넘으면 그만큼 따라간다
         const fx = Math.max(cx - 380 / Z, x0 + (540 - 80) / Z);
-        const T = { sc: Z, x: 540 - fx * Z, y: 780 - cy * Z };
+        const T = { sc: Z, x: 540 - fx * Z, y: 1040 - cy * Z };
         A = { sc: lerp(A.sc, T.sc, wT), x: lerp(A.x, T.x, wT), y: lerp(A.y, T.y, wT) };
       }
       // 매치 컷: AI 답의 '전문가'로 파고든다 (가속, → 4.2배)
@@ -685,6 +724,7 @@ window.seek = function (t) {
     const p = layer("L-end", t, S.endT - 0.05, 99, 0.3);
     if (p > 0) {
       cam("C-end", kf(t, [[S.endT, 1.06], [34, 1.0]], E.out), 540, 800);
+      $("sky-e").style.transform = `translateY(${(kf(t, [[S.endT, 140], [S.endT + 1.6, 0]], E.out)).toFixed(1)}px)`;
       show("en-1", ent(t, S.endT), { y: -16 });
       words("en-2", t, S.endT + 0.12, 0.09, { y: 34 });
       show("en-btn", ent(t, S.endT + 0.65, 0.3), { y: 40 });

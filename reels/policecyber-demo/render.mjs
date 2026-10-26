@@ -38,8 +38,8 @@ ff.stdin.end();
 await new Promise((r) => ff.on("close", r));
 await browser.close();
 
-// 오디오: 효과음 합성 + BGM(원곡 0s부터, 1.5s 첫 강박) 믹스 후 mux
+// 오디오: 효과음 합성 + BGM(1.3s에 원곡 0s 스윕업, 2.8s 첫 강박) 믹스 후 mux
 execFileSync("python3", ["sfx.py", "renders/_cues.json", "renders/_audio.wav", String(duration)], { stdio: "inherit" });
-execFileSync("ffmpeg", ["-v", "error", "-y", "-i", silent, "-i", "renders/_audio.wav", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest", out], { stdio: "inherit" });
+execFileSync("ffmpeg", ["-v", "error", "-y", "-i", silent, "-i", "renders/_audio.wav", "-c:v", "copy", "-c:a", "aac", "-b:a", "256k", "-shortest", out], { stdio: "inherit" });
 for (const f of [silent, "renders/_audio.wav", "renders/_cues.json"]) fs.rmSync(f, { force: true });
 console.log("done", out);
