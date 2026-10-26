@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>경찰복지사이버평생교육원 · 전문가와 상담하세요</title>
+<style>
+  @font-face { font-family: "P"; src: url("assets/font.woff2") format("woff2"); font-weight: 100 900; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #f6f7fb; }
+  body { font-family: "P", sans-serif; color: #0b1a33; letter-spacing: -0.04em; word-break: keep-all; }
+  .abs { position: absolute; }
+  .layer { position: absolute; inset: 0; will-change: opacity, filter; }
+  .cam { position: absolute; inset: 0; transform-origin: 540px 800px; }
+  .c { left: 70px; width: 940px; text-align: center; }
+
+  /* 바탕: 흰색 위 블루·골드 워시 */
+  #bg { position: absolute; inset: -200px; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(120px); }
+  #b1 { width: 900px; height: 900px; background: rgba(120, 160, 255, 0.42); }
+  #b2 { width: 760px; height: 760px; background: rgba(240, 210, 150, 0.45); }
+  #b3 { width: 700px; height: 700px; background: rgba(170, 190, 255, 0.35); }
+  #grain { position: absolute; inset: 0; opacity: 0.5; background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.07 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); }
+
+  /* 공통 UI */
+  .card { position: absolute; background: #fff; border-radius: 40px; box-shadow: 0 0 0 1.5px rgba(46, 92, 190, 0.12), 0 40px 90px rgba(20, 40, 90, 0.16); overflow: hidden; }
+  .glow { position: absolute; border-radius: 48px; background: linear-gradient(125deg, #8fb0ff, #f2d9a0 45%, #a9c0ff 80%); filter: blur(22px); opacity: 0.55; }
+  .chip { display: inline-flex; align-items: center; height: 64px; padding: 0 28px; border-radius: 999px; background: rgba(255, 255, 255, 0.85); box-shadow: 0 0 0 1.5px rgba(46, 92, 190, 0.18); font-size: 32px; font-weight: 700; color: #22324f; letter-spacing: -0.03em; margin: 0 6px; }
+  .chip b { color: #2e5cbe; font-weight: 900; margin-left: 8px; }
+  .chip.red { background: #ff5a4e; color: #fff; box-shadow: none; }
+  .hl { background: linear-gradient(rgba(245, 196, 92, 0.72), rgba(245, 196, 92, 0.72)) no-repeat 0 90% / 0% 46%; }
+  .fine { font-size: 25px; font-weight: 500; color: #6a7183; line-height: 1.45; letter-spacing: -0.02em; }
+
+  /* 채팅 */
+  .chead { position: absolute; left: 0; right: 0; top: 0; height: 104px; border-bottom: 1.5px solid #edf0f6; display: flex; align-items: center; padding: 0 40px; gap: 18px; font-size: 32px; font-weight: 800; }
+  .ava { width: 56px; height: 56px; border-radius: 50%; background: conic-gradient(from 200deg, #2e5cbe, #8fb0ff, #f2d9a0, #2e5cbe); }
+  .chead span { color: #9aa3b5; font-weight: 600; font-size: 28px; margin-left: auto; }
+  .view { position: absolute; left: 0; right: 0; top: 104px; bottom: 140px; overflow: hidden; }
+  .msgs { position: absolute; left: 0; right: 0; top: 0; padding: 36px 40px; display: flex; flex-direction: column; gap: 30px; }
+  .u { align-self: flex-end; max-width: 760px; background: #2e5cbe; color: #fff; padding: 24px 32px; border-radius: 36px 36px 10px 36px; font-size: 38px; font-weight: 700; line-height: 1.4; }
+  .a { align-self: flex-start; max-width: 800px; display: flex; gap: 18px; }
+  .a .ava { flex: none; width: 52px; height: 52px; margin-top: 4px; }
+  .a p { font-size: 37px; font-weight: 500; line-height: 1.55; color: #2a3550; }
+  .a p .mid { display: inline; }
+  .a p .end { font-weight: 800; color: #0b1a33; }
+  .dots { display: flex; gap: 10px; padding: 18px 0; }
+  .dots i { width: 14px; height: 14px; border-radius: 50%; background: #b7c3dc; display: block; }
+  .inbar { position: absolute; left: 32px; right: 32px; bottom: 30px; height: 84px; border-radius: 42px; background: #f3f5fa; box-shadow: inset 0 0 0 1.5px #e4e8f1; display: flex; align-items: center; padding: 0 16px 0 34px; font-size: 34px; font-weight: 600; color: #0b1a33; }
+  .inbar .ph { color: #a3abbd; }
+  .caret { display: inline-block; width: 3px; height: 40px; background: #2e5cbe; margin-left: 2px; vertical-align: -6px; }
+  .send { margin-left: auto; width: 60px; height: 60px; border-radius: 50%; background: #2e5cbe; display: flex; align-items: center; justify-content: center; }
+  .send svg { width: 30px; height: 30px; }
+
+  /* 커서 */
+  #cursor { position: absolute; left: 0; top: 0; width: 64px; height: 64px; z-index: 50; transform-origin: 8px 6px; }
+  #ripple { position: absolute; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; border: 4px solid rgba(46, 92, 190, 0.6); z-index: 49; opacity: 0; }
+
+  /* 포스터 */
+  #po-k { top: 300px; font-size: 34px; font-weight: 700; color: #2e5cbe; letter-spacing: -0.02em; }
+  #po-1 { top: 400px; font-size: 92px; font-weight: 800; line-height: 1.22; }
+  #po-q { top: 650px; font-size: 150px; font-weight: 900; line-height: 1.12; color: #0b1a33; letter-spacing: -0.06em; }
+  #po-q .hl { background-size: 100% 42%; }
+  #po-chips { top: 1060px; }
+  #po-chips2 { top: 1144px; }
+  #po-fine { top: 1262px; }
+
+  /* 전환 / 자리 */
+  #tu-top { top: 560px; font-size: 64px; font-weight: 800; color: #3b4766; }
+  #tu-word { top: 690px; height: 230px; }
+  #tu-pill { position: absolute; left: 470px; top: 0; height: 230px; border-radius: 999px; background: #2e5cbe; box-shadow: 0 30px 70px rgba(46, 92, 190, 0.35); }
+  .tw { position: absolute; left: 0; width: 940px; top: 0; height: 230px; line-height: 230px; font-size: 150px; font-weight: 900; letter-spacing: -0.06em; white-space: nowrap; }
+  #tu-bot { top: 960px; font-size: 96px; font-weight: 900; }
+  #tu-fine { top: 1240px; }
+  .frag { position: absolute; width: 400px; padding: 30px 34px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 1.5px rgba(46, 92, 190, 0.1), 0 26px 60px rgba(20, 40, 90, 0.12); }
+  .frag h5 { font-size: 26px; color: #2e5cbe; font-weight: 800; margin-bottom: 14px; letter-spacing: -0.02em; }
+  .frag b { display: block; font-size: 32px; font-weight: 800; margin-bottom: 18px; }
+  .frag i { display: block; height: 16px; border-radius: 8px; background: #e9edf5; margin-top: 12px; }
+
+  /* 시작 */
+  #st-1 { top: 250px; font-size: 64px; font-weight: 800; color: #3b4766; }
+  #st-2 { top: 330px; font-size: 210px; font-weight: 900; line-height: 1.05; color: #2e5cbe; letter-spacing: -0.07em; }
+  #st-chips { top: 590px; }
+  #player { left: 110px; top: 720px; width: 860px; height: 460px; }
+  .phead { height: 84px; display: flex; align-items: center; padding: 0 32px; gap: 14px; font-size: 28px; font-weight: 800; border-bottom: 1.5px solid #edf0f6; }
+  .phead em { font-style: normal; color: #2e5cbe; }
+  .phead span { margin-left: auto; color: #9aa3b5; font-weight: 600; font-size: 24px; }
+  .screen { position: absolute; left: 24px; right: 24px; top: 108px; bottom: 60px; border-radius: 22px; background: linear-gradient(150deg, #12264a, #2e5cbe 70%, #6f8fdc); color: #fff; padding: 40px 44px; overflow: hidden; }
+  .screen small { display: block; font-size: 24px; font-weight: 700; opacity: 0.7; letter-spacing: -0.01em; }
+  .screen h4 { font-size: 48px; font-weight: 900; margin-top: 12px; line-height: 1.2; }
+  .screen ul { list-style: none; margin-top: 26px; font-size: 26px; font-weight: 600; opacity: 0.85; line-height: 1.7; }
+  .play { position: absolute; right: 50px; bottom: 44px; width: 110px; height: 110px; border-radius: 50%; background: rgba(255, 255, 255, 0.95); display: flex; align-items: center; justify-content: center; }
+  .play svg { width: 46px; height: 46px; margin-left: 8px; }
+  .prog { position: absolute; left: 24px; right: 24px; bottom: 26px; height: 10px; border-radius: 5px; background: #e6eaf3; }
+  .prog i { display: block; height: 100%; width: 0; border-radius: 5px; background: #2e5cbe; }
+  #phone { left: 690px; top: 690px; width: 300px; height: 520px; border-radius: 56px; background: #0b1a33; padding: 16px; box-shadow: 0 40px 90px rgba(20, 40, 90, 0.3); }
+  #phone .in { position: absolute; inset: 16px; border-radius: 42px; background: #fff; overflow: hidden; }
+  #phone .screen { left: 16px; right: 16px; top: 90px; bottom: auto; height: 230px; padding: 24px; border-radius: 18px; }
+  #phone .screen h4 { font-size: 30px; }
+  #phone .screen small { font-size: 17px; }
+  #phone .phead { height: 70px; font-size: 22px; padding: 0 22px; }
+  #phone .prog { top: 340px; bottom: auto; left: 16px; right: 16px; height: 8px; }
+  #phone .row { margin: 370px 22px 0; }
+  #phone .row div { height: 54px; border-radius: 14px; background: #f3f5fa; margin-bottom: 12px; font-size: 20px; font-weight: 700; display: flex; align-items: center; padding: 0 18px; color: #3b4766; }
+  #st-3 { top: 1218px; font-size: 46px; font-weight: 800; line-height: 1.3; }
+  #st-fine { top: 664px; }
+
+  /* CTA */
+  #cta-card { left: 70px; top: 300px; width: 940px; height: 960px; }
+  #cta-msg { position: absolute; left: 40px; right: 40px; top: 150px; display: flex; gap: 20px; }
+  #cta-msg .ava { flex: none; width: 64px; height: 64px; background: #0b1a33; color: #fff; font-size: 30px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+  #cta-t { font-size: 96px; font-weight: 900; line-height: 1.18; letter-spacing: -0.06em; }
+  #cta-sub { position: absolute; left: 124px; top: 440px; font-size: 34px; font-weight: 600; color: #5a6480; line-height: 1.5; }
+  #cta-btn { position: absolute; left: 124px; top: 590px; height: 120px; width: 520px; border-radius: 999px; background: #2e5cbe; color: #fff; font-size: 48px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 14px; box-shadow: 0 24px 50px rgba(46, 92, 190, 0.35); }
+  #cta-done { position: absolute; left: 124px; top: 590px; height: 120px; width: 520px; border-radius: 999px; background: #1f9d55; color: #fff; font-size: 48px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 14px; }
+  #cta-ok { position: absolute; left: 124px; top: 750px; font-size: 32px; font-weight: 700; color: #1f9d55; }
+
+  /* 엔드카드 */
+  #en-1 { top: 420px; font-size: 40px; font-weight: 800; color: #2e5cbe; letter-spacing: -0.02em; }
+  #en-2 { top: 490px; font-size: 120px; font-weight: 900; line-height: 1.12; letter-spacing: -0.06em; }
+  #en-btn { left: 130px; top: 790px; width: 820px; height: 150px; border-radius: 999px; background: #0b1a33; color: #fff; display: flex; align-items: center; justify-content: center; gap: 22px; font-size: 76px; font-weight: 900; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  #en-btn svg { width: 58px; height: 58px; }
+  #en-pill { top: 990px; }
+  #en-fine { top: 1110px; }
+</style>
+</head>
+<body>
+<div id="bg"><div class="blob" id="b1"></div><div class="blob" id="b2"></div><div class="blob" id="b3"></div><div id="grain"></div></div>
+
+<!-- 포스터 -->
+<div class="layer" id="L-poster">
+  <div class="cam" id="C-poster">
+    <div class="abs c" id="po-k">경찰복지사이버평생교육원 · 법학 전공</div>
+    <div class="abs c" id="po-1">AI의 답은 늘<br />이렇게 끝납니다.</div>
+    <div class="abs c" id="po-q">“전문가와<br /><span class="hl">상담하세요.</span>”</div>
+    <div class="abs c" id="po-chips"><span class="chip">평생교육원 중 법학 전공<b>단 1곳*</b></span></div>
+    <div class="abs c" id="po-chips2"><span class="chip">100% 온라인</span><span class="chip red">11/10 접수 마감</span></div>
+    <div class="abs c fine" id="po-fine">* 전공필수(물권법·채권총칙) 개설 평생교육원 기준, 2026.10 조회</div>
+  </div>
+</div>
+
+<!-- 채팅 (질문 1 + 쌓임) -->
+<div class="layer" id="L-chat">
+  <div class="cam" id="C-chat">
+    <div class="glow" id="ch-glow" style="left: 66px; top: 246px; width: 948px; height: 1108px"></div>
+    <div class="card" id="ch-card" style="left: 70px; top: 250px; width: 940px; height: 1100px">
+      <div class="chead"><div class="ava"></div>AI<span>새 대화</span></div>
+      <div class="view"><div id="hello" class="abs c" style="left: 0; width: 940px; top: 300px; font-size: 64px; font-weight: 800; color: #b9c3d8; line-height: 1.3">무엇을<br />도와드릴까요?</div><div class="msgs" id="msgs">
+        <div class="u" id="u1">전세 계약서, 이 특약 괜찮은 건가요?</div>
+        <div class="a" id="a1"><div class="ava"></div><div><div class="dots" id="d1"><i></i><i></i><i></i></div><p><span class="mid" id="a1m"></span><span class="end" id="a1e"></span></p></div></div>
+        <div class="u" id="u2">해고 통보를 문자로 받았어요</div>
+        <div class="a" id="a2"><div class="ava"></div><p><span class="mid" id="a2m">해고는 사유와 절차를 서면으로 알려야 효력이 생겨요. 상황에 따라 다툴 여지가 있으니 </span><span class="end"><span class="hl" id="a2h">전문가와 상담하세요.</span></span></p></div>
+        <div class="u" id="u3">사고 합의금, 이 정도면 적당한가요?</div>
+        <div class="a" id="a3"><div class="ava"></div><p><span class="mid" id="a3m">과실 비율과 치료 기간에 따라 금액이 크게 달라져요. 서명하기 전에 꼭 </span><span class="end"><span class="hl" id="a3h">전문가와 상담하세요.</span></span></p></div>
+      </div></div>
+      <div class="inbar"><span id="in-t"></span><span class="caret" id="in-c"></span><span class="ph" id="in-ph">무엇이든 물어보세요</span><div class="send" id="send"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round" /></svg></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 반전 + 자리 -->
+<div class="layer" id="L-turn">
+  <div class="cam" id="C-turn">
+    <div class="frag" id="fr0" style="left: 40px; top: 230px"><h5>사건 목록</h5><b>2026가합 1234 · 손해배상</b><i style="width: 90%"></i><i style="width: 70%"></i></div>
+    <div class="frag" id="fr1" style="left: 640px; top: 1110px"><h5>등기 신청서</h5><b>소유권이전등기</b><i style="width: 85%"></i><i style="width: 60%"></i></div>
+    <div class="frag" id="fr2" style="left: 620px; top: 250px"><h5>노무 상담 기록</h5><b>해고 예고 수당 검토</b><i style="width: 80%"></i><i style="width: 65%"></i></div>
+    <div class="frag" id="fr3" style="left: 40px; top: 1120px"><h5>검토 요청</h5><b>공급계약서 v3 · 법무 검토</b><i style="width: 88%"></i><i style="width: 55%"></i></div>
+    <div class="abs c" id="tu-top">AI도 결국</div>
+    <div class="abs c" id="tu-word">
+      <div id="tu-pill"></div>
+      <div class="tw" id="tw0"><span class="hl" id="tw0h">전문가</span></div>
+      <div class="tw" id="tw1"><span>변호사</span></div>
+      <div class="tw" id="tw2"><span>법무사</span></div>
+      <div class="tw" id="tw3"><span>노무사</span></div>
+      <div class="tw" id="tw4"><span>기업 법무팀</span></div>
+    </div>
+    <div class="abs c" id="tu-bot">사람을 찾습니다.</div>
+    <div class="abs c fine" id="tu-fine">※ 변호사는 로스쿨 졸업·변호사시험 합격, 법무사·노무사는 각 자격시험 합격이<br />별도로 필요합니다. 화면 속 AI 대화는 연출된 예시입니다.</div>
+  </div>
+</div>
+
+<!-- 시작 -->
+<div class="layer" id="L-start">
+  <div class="cam" id="C-start">
+    <div class="abs c" id="st-1">그 사람들의 시작,</div>
+    <div class="abs c" id="st-2">법학.</div>
+    <div class="abs c" id="st-chips"><span class="chip" id="stc1">1:1 학습플래너</span><span class="chip" id="stc2">평생교육원 중 법학 전공<b>단 1곳*</b></span></div>
+    <div class="glow" id="pl-glow" style="left: 106px; top: 716px; width: 868px; height: 468px"></div>
+    <div class="card" id="player" style="position: absolute">
+      <div class="phead"><em>헌법</em> 1주차<span>법학 전공 · 온라인 강의</span></div>
+      <div class="screen"><small>제1강</small><h4>헌법이란<br />무엇인가</h4><ul><li>· 국가와 국민의 약속</li><li>· 기본권의 뜻</li></ul><div class="play" id="pl-play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#2e5cbe" /></svg></div></div>
+      <div class="prog"><i id="pl-prog"></i></div>
+    </div>
+    <div class="abs" id="phone"><div class="in">
+      <div class="phead"><em>헌법</em> 1주차</div>
+      <div class="screen"><small>제1강</small><h4>헌법이란<br />무엇인가</h4></div>
+      <div class="prog"><i id="ph-prog"></i></div>
+      <div class="row"><div>제2강 · 기본권의 주체</div><div>제3강 · 국가의 구조</div><div>민법총칙 · 1주차</div></div>
+    </div></div>
+    <div class="abs c" id="st-3"><span id="st-3a">법을 몰라도 헌법부터,</span><br /><span id="st-3b">퇴근 후 온라인으로.</span></div>
+    <div class="abs c fine" id="st-fine">* 전공필수(물권법·채권총칙) 개설 평생교육원 기준, 2026.10 조회</div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="layer" id="L-cta">
+  <div class="cam" id="C-cta">
+    <div class="glow" style="left: 66px; top: 296px; width: 948px; height: 968px"></div>
+    <div class="card" id="cta-card">
+      <div class="chead"><div class="ava" style="background: #0b1a33"></div>경찰복지사이버평생교육원<span>상담</span></div>
+      <div id="cta-msg"><div class="ava">경</div><div id="cta-t"><span id="cta-t1">이번엔,</span><br /><span id="cta-t2">저희와 <span class="hl" id="cta-h">상담하세요.</span></span></div></div>
+      <div id="cta-sub">법을 몰라도 괜찮아요.<br />내 상황에 맞는 시작부터 같이 봐요.</div>
+      <div id="cta-btn">상담 신청 <span style="font-size: 44px">→</span></div>
+      <div id="cta-done">✓ 신청 완료</div>
+      <div id="cta-ok">평일 10~18시에 먼저 연락드려요</div>
+    </div>
+  </div>
+</div>
+
+<!-- 엔드카드 -->
+<div class="layer" id="L-end">
+  <div class="cam" id="C-end">
+    <div class="abs c" id="en-1">경찰복지사이버평생교육원</div>
+    <div class="abs c" id="en-2">법학 전공<br />상담 신청</div>
+    <div class="abs" id="en-btn"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="#fff" /></svg>070-4006-7128</div>
+    <div class="abs c" id="en-pill"><span class="chip red">11/10 접수 마감 · 11/4 개강</span><span class="chip">100% 온라인</span></div>
+    <div class="abs c fine" id="en-fine">※ 변호사는 로스쿨 졸업·변호사시험 합격, 법무사·노무사는 각 자격시험 합격이 별도로 필요하며,<br />이 과정은 입학·합격·취업을 보장하지 않습니다. 화면 속 AI 대화는 연출된 예시입니다.<br />* 전공필수(물권법·채권총칙) 개설 평생교육원 기준, 2026.10 조회</div>
+  </div>
+</div>
+
+<div id="ripple"></div>
+<svg id="cursor" viewBox="0 0 24 24"><path d="M5 3l14 7-6.2 1.8L10.8 18z" fill="#0b1a33" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round" /></svg>
+
+<script>
+window.VIDEO = { w: 1080, h: 1920, duration: 35, fps: 30 };
+// 드럼 곡: 영상 1.3s에 첫 강박, 비트 0.643s
+const T0 = 1.3, P = 0.643, B = (k) => T0 + k * P;
+
+const $ = (id) => document.getElementById(id);
+const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, p) => a + (b - a) * p;
+const E = { out: (p) => 1 - Math.pow(1 - p, 3), io: (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2), lin: (p) => p };
+// 키프레임 보간 [[t, v], ...]
+function kf(t, keys, e = E.io) {
+  if (t <= keys[0][0]) return keys[0][1];
+  for (let i = 1; i < keys.length; i++) {
+    const [t1, v1] = keys[i], [t0, v0] = keys[i - 1];
+    if (t <= t1) return lerp(v0, v1, e(cl((t - t0) / (t1 - t0 || 1))));
+  }
+  return keys[keys.length - 1][1];
+}
+const ent = (t, t0, d = 0.28) => E.out(cl((t - t0) / d));
+const ext = (t, t1, d = 0.18) => 1 - E.io(cl((t - t1) / d));
+// 블러 → 선명 등장 (오버슈트 없음)
+function show(el, p, o = {}) {
+  if (typeof el === "string") el = $(el);
+  const { y = 24, x = 0, s = 0, blur = 12 } = o;
+  el.style.opacity = p;
+  el.style.filter = p < 0.999 ? `blur(${((1 - p) * blur).toFixed(2)}px)` : "none";
+  el.style.transform = `translate(${(1 - p) * x}px, ${(1 - p) * y}px) scale(${1 + (1 - p) * s})`;
+}
+function layer(id, t, a, b, d = 0.3) {
+  const p = Math.min(ent(t, a, d), ext(t, b, d));
+  const el = $(id);
+  el.style.opacity = p;
+  el.style.filter = p < 0.999 ? `blur(${((1 - p) * 18).toFixed(2)}px)` : "none";
+  el.style.visibility = p <= 0.001 ? "hidden" : "visible";
+  return p;
+}
+function cam(id, s, ox, oy, tx = 0, ty = 0) {
+  const el = $(id);
+  el.style.transformOrigin = `${ox}px ${oy}px`;
+  el.style.transform = `translate(${tx}px, ${ty}px) scale(${s})`;
+}
+const chars = (s) => Array.from(s);
+const typed = (s, t, t0, t1) => chars(s).slice(0, Math.round(chars(s).length * cl((t - t0) / (t1 - t0)))).join("");
+const hl = (el, p) => ((typeof el === "string" ? $(el) : el).style.backgroundSize = `${(p * 100).toFixed(1)}% 42%`);
+
+// 효과음 큐 (render.mjs가 읽어 합성)
+window.CUES = [];
+const cue = (t, kind) => window.CUES.push({ t: +t.toFixed(3), kind });
+
+const A1M = "일반적으로 특약은 두 사람이 합의하면 효력이 생겨요. 다만 내용에 따라 무효가 될 수도 있으니, 보증금 반환과 수리 책임 조항은 꼭 확인해 보세요. ";
+const A1E = "정확한 판단은 법률 전문가와 상담하세요.";
+const Q1 = ["전세 계약서,", " 이 특약", " 괜찮은", " 건가요?"];
+
+// 타이밍 (비트)
+const S = {
+  q1: [B(1), B(2), B(3), B(4)], send1: B(5), a1: B(6), a1e: B(7.7), h1: B(8.2),
+  ty2: B(10), u2: B(11), a2: B(11.5), h2: B(12.2),
+  ty3: B(13), u3: B(14), a3: B(14.5), h3: B(15.2),
+  dim: B(16), chatOut: B(17.6),
+  turn: B(18), top: B(19), bot: B(20), pill: B(22), w: [B(23), B(24), B(25), B(26)], turnOut: B(28),
+  st: B(28), st2: B(29), pl: B(30.5), play: B(32), s3a: B(33), s3b: B(34), phone: B(35.5), chips: B(37), stOut: B(40),
+  cta: B(40), c1: B(41), c2: B(42), ch: B(42.8), btn: B(43.5), press: B(45), endT: B(47),
+};
+// 효과음 큐 등록
+S.q1.forEach((t) => cue(t, "type"));
+cue(S.send1, "click"); cue(S.ty2, "type"); cue(S.u2 - 0.05, "click"); cue(S.ty3, "type"); cue(S.u3 - 0.05, "click");
+cue(S.play, "click"); cue(S.press, "click");
+
+// 채팅 스크롤 위치 (초기 1회 측정)
+let M = null;
+function measure() {
+  const g = (id) => ({ top: $(id).offsetTop, bot: $(id).offsetTop + $(id).offsetHeight });
+  const viewH = 1100 - 104 - 140;
+  const pad = 36;
+  M = { viewH, u1: g("u1"), a1: g("a1"), u2: g("u2"), a2: g("a2"), u3: g("u3"), a3: g("a3") };
+  M.sc = (id) => Math.max(0, M[id].bot + pad - viewH);
+}
+
+window.seek = function (t) {
+  if (!M) measure();
+  // 바탕 워시
+  $("b1").style.transform = `translate(${-150 + Math.sin(t * 0.21) * 120}px, ${80 + Math.cos(t * 0.17) * 140}px)`;
+  $("b2").style.transform = `translate(${620 + Math.cos(t * 0.19) * 140}px, ${1350 + Math.sin(t * 0.23) * 120}px)`;
+  $("b3").style.transform = `translate(${560 + Math.sin(t * 0.15 + 1) * 160}px, ${500 + Math.cos(t * 0.2) * 160}px)`;
+
+  // 커서 경로 (보이는 구간만)
+  let cur = null;
+
+  // ── 포스터 0–B0
+  {
+    const p = layer("L-poster", t, -1, T0 - 0.02, 0.3);
+    if (p > 0) cam("C-poster", kf(t, [[0, 1], [T0, 1.04]], E.lin), 540, 800);
+  }
+
+  // ── 채팅 B0–B17.6
+  {
+    const p = layer("L-chat", t, T0 - 0.05, S.chatOut, 0.32);
+    if (p > 0) {
+      // 카드: 기울어진 채 떠올라 점점 정면으로
+      const pi = ent(t, T0 - 0.05, 0.5);
+      const rx = kf(t, [[T0, 16], [B(4), 7], [B(9), 4], [B(16), 2]]);
+      const ry = kf(t, [[T0, -12], [B(4), -6], [B(9), -3], [B(16), -2]]);
+      const tr = `perspective(2600px) translateY(${(1 - pi) * 160}px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      $("ch-card").style.transform = tr; $("ch-glow").style.transform = tr;
+      $("ch-glow").style.opacity = 0.55 * pi;
+
+      // 입력창
+      let it = "";
+      if (t < S.send1) it = Q1.map((w, i) => typed(w, t, S.q1[i], S.q1[i] + 0.2)).join("");
+      else if (t >= S.ty2 && t < S.u2) it = typed("해고 통보를 문자로 받았어요", t, S.ty2, S.ty2 + 0.4);
+      else if (t >= S.ty3 && t < S.u3) it = typed("사고 합의금, 이 정도면 적당한가요?", t, S.ty3, S.ty3 + 0.45);
+      $("in-t").textContent = it;
+      $("in-ph").style.display = it ? "none" : "inline";
+      $("in-c").style.opacity = Math.floor(t * 3) % 2 === 0 || it ? 1 : 0;
+
+      // 메시지
+      show("hello", Math.min(ent(t, T0 + 0.1, 0.4), ext(t, S.send1 - 0.1, 0.2)), { y: 20 });
+      show("u1", ent(t, S.send1, 0.25), { y: 40 });
+      show("a1", ent(t, S.send1 + 0.25, 0.2), { y: 20 });
+      $("d1").style.display = t < S.a1 ? "flex" : "none";
+      [...$("d1").children].forEach((d, i) => (d.style.opacity = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * 10 - i))));
+      $("a1m").textContent = typed(A1M, t, S.a1, S.a1e - 0.1);
+      const a1e = typed(A1E, t, S.a1e, S.a1e + 0.35);
+      $("a1e").innerHTML = a1e.replace("법률 전문가와 상담하세요.", '<span class="hl" id="a1h">법률 전문가와 상담하세요.</span>');
+      if ($("a1h")) hl("a1h", E.io(cl((t - S.h1) / 0.35)));
+      show("u2", ent(t, S.u2, 0.25), { y: 40 });
+      show("a2", ent(t, S.a2, 0.25), { y: 20 });
+      show("u3", ent(t, S.u3, 0.25), { y: 40 });
+      show("a3", ent(t, S.a3, 0.25), { y: 20 });
+      // 쌓이는 답: 중간 문장은 흐리게, 끝 문장만 선명
+      const blurMid = (id, t0) => { const q = ent(t, t0 + 0.35, 0.3); $(id).style.filter = `blur(${(q * 3.5).toFixed(2)}px)`; $(id).style.opacity = 1 - q * 0.55; };
+      blurMid("a2m", S.a2); blurMid("a3m", S.a3);
+      hl("a2h", E.io(cl((t - S.h2) / 0.3)));
+      hl("a3h", E.io(cl((t - S.h3) / 0.3)));
+      // 마지막: 하이라이트 줄만 남기고 나머지는 어둡게
+      const dim = E.io(cl((t - S.dim) / 0.4));
+      ["u1", "u2", "u3"].forEach((id) => ($(id).style.opacity = Math.min(+$(id).style.opacity, 1 - dim * 0.8)));
+      $("a1m").style.opacity = 1 - dim * 0.8; $("a1m").style.filter = `blur(${dim * 3}px)`;
+      ["a2m", "a3m"].forEach((id) => ($(id).style.opacity = Math.min(+$(id).style.opacity, 1 - dim * 0.8)));
+
+      // 스크롤
+      const sc = kf(t, [[S.send1, 0], [S.a1e, 0], [S.a1e + 0.4, M.sc("a1")], [S.u2, M.sc("a1")], [S.u2 + 0.35, M.sc("u2")], [S.a2, M.sc("u2")], [S.a2 + 0.35, M.sc("a2")], [S.u3, M.sc("a2")], [S.u3 + 0.35, M.sc("u3")], [S.a3, M.sc("u3")], [S.a3 + 0.35, M.sc("a3")]]);
+      $("msgs").style.transform = `translateY(${-sc}px)`;
+
+      // 카메라: 첫 '상담하세요'로 밀고 들어갔다가 돌아옴, 마지막엔 살짝 빠짐
+      const a1hY = 250 + 104 + M.a1.bot - 50;
+      const s = kf(t, [[T0, 1.0], [S.h1, 1.02], [S.h1 + 0.6, 1.5], [S.ty2 - 0.1, 1.53], [S.ty2 + 0.35, 1.0], [S.dim, 1.02], [S.dim + 0.6, 0.94]]);
+      const pushY = kf(t, [[S.h1, 0], [S.h1 + 0.6, 840 - a1hY], [S.ty2 - 0.1, 840 - a1hY], [S.ty2 + 0.35, 0]]);
+      cam("C-chat", s, 540, a1hY, 0, pushY);
+
+      // 커서 → 전송 버튼
+      if (t > S.q1[3] - 0.3 && t < S.send1 + 0.5) {
+        const k = E.io(cl((t - (S.q1[3] - 0.3)) / 0.75));
+        cur = { x: lerp(1000, 905, k), y: lerp(1500, 1268, k), o: ent(t, S.q1[3] - 0.3, 0.2) * ext(t, S.send1 + 0.3, 0.2), press: S.send1, scale: s, ox: 540, oy: a1hY };
+      }
+    }
+  }
+
+  // ── 반전 + 자리 B18–B28
+  {
+    const p = layer("L-turn", t, S.turn - 0.1, S.turnOut, 0.3);
+    if (p > 0) {
+      cam("C-turn", kf(t, [[S.turn, 1.08], [S.pill, 1.0], [S.turnOut + 0.3, 1.03]]), 540, 800);
+      show("tu-top", Math.min(ent(t, S.top), 1), { y: -20 });
+      show("tu-bot", Math.min(ent(t, S.bot), ext(t, S.pill - 0.1, 0.2)), { y: 30 });
+      // 단어: 전문가 → 변호사 → 법무사 → 노무사 → 기업 법무팀
+      const ws = [S.turn, ...S.w];
+      let cur_i = 0;
+      ws.forEach((w, i) => { if (t >= w) cur_i = i; });
+      ws.forEach((w, i) => {
+        const inP = i === 0 ? ent(t, S.turn, 0.4) : ent(t, w, 0.16);
+        const outP = i < ws.length - 1 ? ext(t, ws[i + 1] - 0.02, 0.1) : 1;
+        show("tw" + i, Math.min(inP, outP), i === 0 ? { y: 0, s: 0.35, blur: 24 } : { y: 40, blur: 10 });
+      });
+      hl("tw0h", E.io(cl((t - S.turn - 0.3) / 0.3)));
+      // 알약: '전문가'를 감싸며 생겨나고, 단어 폭에 맞춰 늘고 줄어듦
+      const widths = ws.map((_, i) => $("tw" + i).firstElementChild.offsetWidth + 120);
+      const wk = [[S.pill, widths[0]]]; S.w.forEach((w, i) => { wk.push([w - 0.02, widths[i]]); wk.push([w + 0.16, widths[i + 1]]); });
+      const pw = kf(t, wk);
+      const pp = E.io(cl((t - S.pill) / 0.25));
+      const pill = $("tu-pill");
+      pill.style.width = pw + "px"; pill.style.marginLeft = -pw / 2 + "px";
+      pill.style.transform = `scaleX(${lerp(0.6, 1, pp)})`; pill.style.opacity = pp;
+      ws.forEach((_, i) => ($("tw" + i).style.color = pp > 0.5 ? "#fff" : "#0b1a33"));
+      if (pp > 0.5) $("tw0h").style.backgroundSize = "0% 42%";
+      // 뒤에 지나가는 각 자리의 화면 조각
+      S.w.forEach((w, i) => {
+        const q = Math.min(ent(t, w, 0.25), i < 3 ? ext(t, S.w[i + 1] + 0.3, 0.3) : ext(t, S.turnOut, 0.3));
+        const fr = $("fr" + i);
+        fr.style.opacity = q * 0.9; fr.style.filter = `blur(${(1 - q) * 10 + 1.2}px)`;
+        fr.style.transform = `translateY(${(1 - q) * 50 - (t - w) * 18}px) rotate(${[-4, 3, 4, -3][i]}deg)`;
+      });
+      show("tu-fine", ent(t, S.w[0], 0.3), { y: 10 });
+    }
+  }
+
+  // ── 시작 B28–B40
+  {
+    const p = layer("L-start", t, S.st - 0.05, S.stOut, 0.3);
+    if (p > 0) {
+      const s = kf(t, [[S.st, 1.06], [S.pl, 1.0], [S.stOut, 1.02]]);
+      cam("C-start", s, 540, 700);
+      show("st-1", ent(t, S.st), { y: -20 });
+      show("st-2", ent(t, S.st2, 0.32), { s: 0.4, y: 0, blur: 24 });
+      const pi = ent(t, S.pl, 0.5);
+      const rx = kf(t, [[S.pl, 18], [S.play, 6], [S.stOut, 3]]);
+      const pshift = E.io(cl((t - S.phone) / 0.5));
+      const tr = `perspective(2600px) translate(${-pshift * 120}px, ${(1 - pi) * 160}px) scale(${1 - pshift * 0.12}) rotateX(${rx}deg) rotateY(${lerp(10, 4, pi)}deg)`;
+      $("player").style.transform = tr; $("pl-glow").style.transform = tr;
+      $("player").style.opacity = pi; $("pl-glow").style.opacity = 0.55 * pi;
+      const playing = t >= S.play + 0.08;
+      $("pl-play").style.opacity = playing ? 1 - cl((t - S.play - 0.08) / 0.2) : 1;
+      $("pl-prog").style.width = (playing ? cl((t - S.play) / 14) * 100 : 0) + "%";
+      $("ph-prog").style.width = (playing ? cl((t - S.play) / 14) * 100 : 0) + "%";
+      show("phone", ent(t, S.phone, 0.4), { x: 160, y: 60, blur: 14 });
+      show("st-3a", ent(t, S.s3a), { y: 24 });
+      show("st-3b", ent(t, S.s3b), { y: 24 });
+      show("stc1", ent(t, S.chips), { y: 20 });
+      show("stc2", ent(t, S.chips + 0.15), { y: 20 });
+      show("st-fine", ent(t, S.chips + 0.15), { y: 0 });
+      // 커서 → 재생 버튼
+      if (t > S.pl + 0.3 && t < S.play + 0.5) {
+        const k = E.io(cl((t - (S.pl + 0.3)) / 0.6));
+        cur = { x: lerp(1010, 850, k), y: lerp(1320, 1035, k), o: ent(t, S.pl + 0.3, 0.2) * ext(t, S.play + 0.3, 0.2), press: S.play, scale: s, ox: 540, oy: 700 };
+      }
+    }
+  }
+
+  // ── CTA B40–B47
+  {
+    const p = layer("L-cta", t, S.cta - 0.05, S.endT, 0.3);
+    if (p > 0) {
+      const s = kf(t, [[S.cta, 1.05], [S.c2, 1.0], [S.btn, 1.0], [S.press + 0.5, 1.04]]);
+      cam("C-cta", s, 540, 900);
+      const pi = ent(t, S.cta, 0.45);
+      $("cta-card").style.transform = `perspective(2600px) translateY(${(1 - pi) * 140}px) rotateX(${lerp(14, 3, pi)}deg)`;
+      show("cta-t1", ent(t, S.c1), { y: 30 });
+      show("cta-t2", ent(t, S.c2), { y: 30 });
+      hl("cta-h", E.io(cl((t - S.ch) / 0.35)));
+      show("cta-sub", ent(t, S.ch + 0.2), { y: 16 });
+      const pr = t >= S.press && t < S.press + 0.14 ? 0.95 : 1;
+      show("cta-btn", Math.min(ent(t, S.btn), ext(t, S.press + 0.25, 0.15)), { y: 30 });
+      $("cta-btn").style.transform += ` scale(${pr})`;
+      show("cta-done", ent(t, S.press + 0.25, 0.2), { y: 0, s: 0.05 });
+      show("cta-ok", ent(t, S.press + 0.45), { y: 14 });
+      if (t > S.btn + 0.2 && t < S.press + 0.5) {
+        const k = E.io(cl((t - (S.btn + 0.2)) / 0.65));
+        cur = { x: lerp(1000, 560, k), y: lerp(1420, 1000, k), o: ent(t, S.btn + 0.2, 0.2) * ext(t, S.press + 0.35, 0.2), press: S.press, scale: s, ox: 540, oy: 900 };
+      }
+    }
+  }
+
+  // ── 엔드카드 B47–
+  {
+    const p = layer("L-end", t, S.endT - 0.05, 99, 0.3);
+    if (p > 0) {
+      cam("C-end", kf(t, [[S.endT, 1.04], [35, 1.0]], E.out), 540, 800);
+      show("en-1", ent(t, S.endT), { y: -16 });
+      show("en-2", ent(t, S.endT + 0.12, 0.32), { y: 30 });
+      show("en-btn", ent(t, B(48), 0.3), { y: 40 });
+      show("en-pill", ent(t, B(48.5)), { y: 20 });
+      show("en-fine", ent(t, B(49)), { y: 0 });
+    }
+  }
+
+  // 커서 + 눌림 + 리플 (장면 카메라 변환을 그대로 따름)
+  const c = $("cursor"), r = $("ripple");
+  if (cur && cur.o > 0.001) {
+    const X = cur.ox + (cur.x - cur.ox) * cur.scale, Y = cur.oy + (cur.y - cur.oy) * cur.scale;
+    const press = t >= cur.press && t < cur.press + 0.14 ? 0.82 : 1;
+    c.style.opacity = cur.o;
+    c.style.transform = `translate(${X - 8}px, ${Y - 6}px) scale(${press})`;
+    const rp = cl((t - cur.press) / 0.45);
+    r.style.opacity = t >= cur.press ? (1 - rp) * 0.9 : 0;
+    r.style.left = X + "px"; r.style.top = Y + "px";
+    r.style.transform = `scale(${0.3 + rp * 1.1})`;
+  } else { c.style.opacity = 0; r.style.opacity = 0; }
+};
+
+window.seek(0);
+</script>
+</body>
+</html>
