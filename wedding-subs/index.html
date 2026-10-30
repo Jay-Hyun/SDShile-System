@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>결혼식 자막</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script src="assets/js/subs.js"></script>
+    <script src="assets/js/calligraphy.js"></script>
+    <style>
+      @font-face { font-family: "Pretendard"; font-weight: 400; src: url("assets/fonts/Pretendard-Regular.woff2"); }
+      @font-face { font-family: "Pretendard"; font-weight: 500; src: url("assets/fonts/Pretendard-Medium.woff2"); }
+      @font-face { font-family: "Pretendard"; font-weight: 700; src: url("assets/fonts/Pretendard-Bold.woff2"); }
+      @font-face { font-family: "Pretendard"; font-weight: 800; src: url("assets/fonts/Pretendard-ExtraBold.woff2"); }
+      @font-face { font-family: "Noto Serif KR"; font-weight: 200 900; src: url("assets/fonts/NotoSerifKR-VF.ttf"); }
+      @font-face { font-family: "Cormorant"; font-style: italic; src: url("assets/fonts/CormorantGaramond-Italic.ttf"); }
+      @font-face { font-family: "Great Vibes"; src: url("assets/fonts/GreatVibes-Regular.ttf"); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      .layer { position: absolute; inset: 0; pointer-events: none; }
+      .off { visibility: hidden; }
+
+      /* basic subtitle: Korean line, English under it; no motion */
+      .sub { position: absolute; left: 0; right: 0; bottom: 64px; text-align: center; z-index: 40; }
+      .sub .ko { font: 700 40px/1.25 "Pretendard"; color: #fff; letter-spacing: -0.01em;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.55), 0 2px 3px rgba(0, 0, 0, 0.65); }
+      .sub .en { margin-top: 6px; font: italic 500 30px/1.2 "Cormorant"; color: #ecd08f; letter-spacing: 0.01em;
+        text-shadow: 0 0 8px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.7); }
+
+      /* background style subtitle: the sung words, large, placed word by word */
+      .bg { position: absolute; z-index: 30; color: #fffdf8; opacity: 0.93;
+        text-shadow: 0 4px 26px rgba(0, 0, 0, 0.38), 0 1px 3px rgba(0, 0, 0, 0.3); }
+      .bg .row { display: block; white-space: nowrap; font-family: "Noto Serif KR"; line-height: 1.12; }
+      .bg .w { margin-right: 0.22em; }
+
+      /* reels UI over the vertical clips */
+      .reels { position: absolute; top: 0; height: 1080px; z-index: 35; font-family: "Pretendard"; color: #fff; }
+      .reels .shade { position: absolute; inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,.28) 0, rgba(0,0,0,0) 14%, rgba(0,0,0,0) 52%, rgba(0,0,0,.5) 86%); }
+      .reels .head { position: absolute; left: 26px; right: 26px; top: 30px; display: flex; justify-content: space-between;
+        align-items: center; font: 800 32px "Pretendard"; text-shadow: 0 1px 4px rgba(0,0,0,.4); }
+      .reels .side { position: absolute; right: 18px; top: 470px; width: 76px; display: flex; flex-direction: column;
+        align-items: center; gap: 26px; font: 600 21px "Pretendard"; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+      .reels .side div { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+      .reels .side svg { width: 46px; height: 46px; filter: drop-shadow(0 1px 3px rgba(0,0,0,.45)); }
+      .reels .acct { position: absolute; left: 24px; top: 720px; display: flex; align-items: center; gap: 14px;
+        font: 700 26px "Pretendard"; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+      .reels .avatar { width: 58px; height: 58px; border-radius: 50%; padding: 3px;
+        background: conic-gradient(#f9ce34, #ee2a7b, #6228d7, #f9ce34); }
+      .reels .avatar span { display: flex; width: 100%; height: 100%; border-radius: 50%; border: 3px solid #000;
+        background: #f3e7da; color: #7a4b3a; font: 800 24px "Pretendard"; color: #e0607e; align-items: center; justify-content: center; }
+      .reels .follow { border: 2px solid rgba(255,255,255,.9); border-radius: 10px; padding: 3px 14px; font: 700 21px "Pretendard"; }
+      .reels .cap { position: absolute; left: 24px; top: 796px; font: 500 24px "Pretendard"; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+      .reels .music { position: absolute; left: 24px; top: 836px; font: 500 21px "Pretendard"; opacity: .95;
+        text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+      .reels .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255,255,255,.3); }
+      .reels .bar i { display: block; height: 100%; width: 100%; background: #fff; transform-origin: 0 50%; }
+
+      /* friends' messages: a white box with a name tag; no motion */
+      .msg { position: absolute; left: 0; right: 0; bottom: 70px; display: flex; flex-direction: column; align-items: center;
+        z-index: 40; }
+      .msg .tag { align-self: center; margin-bottom: 12px; padding: 7px 22px; border-radius: 999px; background: #c9a86e;
+        color: #fff; font: 700 26px "Pretendard"; letter-spacing: 0.02em; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+      .msg .box { padding: 20px 44px 22px; border-radius: 22px; background: rgba(255, 255, 255, 0.94);
+        color: #1e1c22; font: 600 42px/1.3 "Pretendard"; letter-spacing: -0.01em; text-align: center;
+        box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28); }
+      .msg.group .box { border: 3px solid #c9a86e; font-size: 50px; font-weight: 800; padding: 22px 52px 24px; }
+      .msg.group .tag { background: #b8865b; }
+
+      /* outro */
+      .outro { position: absolute; inset: 0; z-index: 50; }
+      .outro .pen { position: absolute; left: 260px; top: 300px; width: 1400px; height: 224px;
+        filter: drop-shadow(0 0 16px rgba(255, 214, 150, 0.35)); }
+      .outro .rule { position: absolute; left: 810px; top: 600px; width: 300px; height: 1px; background: #c9a86e; }
+      .outro .names { position: absolute; left: 0; right: 0; top: 628px; text-align: center; color: #f5eee2;
+        font: 500 40px "Noto Serif KR"; letter-spacing: 0.08em; }
+      .outro .date { position: absolute; left: 0; right: 0; top: 694px; text-align: center; color: #c9a86e;
+        font: 400 28px "Noto Serif KR"; letter-spacing: 0.22em; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="229.333" data-width="1920" data-height="1080">
+      <video id="draft" class="clip" data-start="0" data-duration="229.333" data-track-index="0" data-has-audio="true"
+        src="assets/raw/draft.mp4" playsinline style="position:absolute;inset:0;width:1920px;height:1080px;object-fit:cover"></video>
+      <div id="overlay" class="layer clip" data-start="0" data-duration="229.333" data-track-index="1" data-layout-ignore></div>
+    </div>
+    <script src="assets/js/film.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = window.FILM_TL;
+    </script>
+  </body>
+</html>

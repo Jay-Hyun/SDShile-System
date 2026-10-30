@@ -1,0 +1,11 @@
+# media and work files are downloaded / derived by scripts (see README)
+assets/raw/
+assets/audio/
+assets/fonts/
+work/
+renders/
+.hyperframes/
+node_modules/
+*.log
+__pycache__/
+review/
