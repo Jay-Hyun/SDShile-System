@@ -27,39 +27,34 @@
     floor.style.cssText = "position:absolute;left:0;right:0;bottom:0;height:300px;z-index:20;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.42))";
     span(floor, S.lyrics[0].s, S.lyrics[S.lyrics.length - 1].e);
   }
-  S.lyrics.forEach((l, k) => {
-    const sub = el("div", "sub", root, `<div class="ko">${esc(l.ko)}</div><div class="en">${esc(l.en)}</div>`);
-    span(sub, l.s, l.e);
+  // inside a Reels span the lyric moves up top (the account and caption sit at the bottom there)
+  const inReels = (t) => S.reels.some((r) => t >= r.s && t < r.e);
+  const cuts = (s, e) => {
+    const pts = [s, ...S.reels.flatMap((r) => [r.s, r.e]).filter((t) => t > s && t < e), e];
+    return pts.slice(0, -1).map((t, i) => [t, pts[i + 1]]);
+  };
+  S.lyrics.forEach((l) => {
+    cuts(l.s, l.e).forEach(([a, b]) => {
+      const sub = el("div", "sub" + (inReels((a + b) / 2) ? " top" : ""), root, `<div class="ko">${esc(l.ko)}</div><div class="en">${esc(l.en)}</div>`);
+      span(sub, a, b);
+    });
 
-    const [x0, y0, x1] = l.box;
-    const bar = l.zone[0] === "B";
+    // background: one English keyword, set into the picture (thin italic serif, soft-light blend), no motion
+    if (!l.kw) return;
+    const [x0, y0, x1, y1] = l.box;
     const right = l.zone.endsWith("R");
-    const bg = el("div", "bg", root);
+    const bar = l.zone[0] === "B";
+    const bg = el("div", "bg" + (bar ? " bar" : ""), root, esc(l.kw));
     bg.style.left = x0 + "px";
-    bg.style.top = y0 + "px";
     bg.style.width = x1 - x0 + "px";
-    bg.style.textAlign = right ? "right" : "left";
-    // rows: two words (bars: one word), at most ~7 syllables; light and bold rows alternate, indented by turns
-    const rows = [];
-    l.words.forEach((w) => {
-      const r = rows[rows.length - 1];
-      const len = r ? r.reduce((n, x) => n + x.t.length, 0) : 99;
-      if (!r || r.length >= (bar ? 1 : 2) || len + w.t.length > (bar ? 6 : 7)) rows.push([w]);
-      else r.push(w);
-    });
-    rows.forEach((r, i) => {
-      const row = el("span", "row", bg);
-      const big = i % 2 === 0;
-      const size = bar ? (big ? 88 : 72) : big ? 112 : 92;
-      row.style.fontSize = size + "px";
-      row.style.fontWeight = big ? 300 : 600;
-      row.style[right ? "paddingRight" : "paddingLeft"] = (i % 2) * (bar ? 34 : 84) + "px";
-      r.forEach((w) => {
-        const s = el("span", "w", row, esc(w.t));
-        span(s, w.s - 0.04, null);
-      });
-    });
-    span(bg, l.s, l.e);
+    bg.style.top = (bar ? y0 + 140 : y0 + 10) + "px";
+    bg.style.textAlign = bar ? "center" : right ? "right" : "left";
+    const n = l.kw.length;
+    // fit the zone: Playfair italic averages ~0.46 em a character
+    const width = x1 - x0;
+    bg.style.fontSize = Math.round(bar ? Math.min(140, width / 0.46 / Math.max(...l.kw.split(" ").map((w) => w.length), 4))
+                                       : Math.min(170, width / 0.46 / Math.max(n, 5))) + "px";
+    span(bg, l.words[0].s - 0.04, l.e);
   });
 
   // ---- Reels UI on the vertical clips ----------------------------------------------------------------------------
@@ -94,7 +89,7 @@
   // ---- friends' messages ------------------------------------------------------------------------------------------
   S.msgs.forEach((m) => {
     const box = el("div", "msg" + (m.group ? " group" : ""), root,
-      `<div class="tag">${esc(m.who)}</div><div class="box">${esc(m.ko)}</div>`);
+      `<div class="bar"><div class="tag">${esc(m.who)}</div><div class="box">${esc(m.ko)}</div></div>`);
     span(box, m.s, m.e);
   });
 
