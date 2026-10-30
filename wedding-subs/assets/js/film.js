@@ -35,7 +35,18 @@
   };
   S.lyrics.forEach((l) => {
     cuts(l.s, l.e).forEach(([a, b]) => {
-      const sub = el("div", "sub" + (inReels((a + b) / 2) ? " top" : ""), root, `<div class="ko">${esc(l.ko)}</div><div class="en">${esc(l.en)}</div>`);
+      const r = S.reels.find((x) => (a + b) / 2 >= x.s && (a + b) / 2 < x.e);
+      if (r && r.side) {
+        // the photo-booth reel: Korean in the left bar, English in the right bar
+        const ko = el("div", "flank", root, `<div class="ko">${esc(l.ko)}</div>`);
+        const en = el("div", "flank", root, `<div class="en">${esc(l.en)}</div>`);
+        ko.style.cssText = `left:40px;width:${r.x0 - 80}px`;
+        en.style.cssText = `left:${r.x0 + r.w + 40}px;width:${1920 - r.x0 - r.w - 80}px`;
+        span(ko, a, b);
+        span(en, a, b);
+        return;
+      }
+      const sub = el("div", "sub" + (r ? " top" : ""), root, `<div class="ko">${esc(l.ko)}</div><div class="en">${esc(l.en)}</div>`);
       span(sub, a, b);
     });
   });
@@ -117,7 +128,8 @@
     const black = el("div", "", card);
     black.style.cssText = "position:absolute;inset:0;background:#000";
     tl.set(black, { opacity: 0 }, 0);
-    tl.fromTo(black, { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "sine.in", immediateRender: false }, S.dur - 0.6);
+    // let it linger: the card holds after the music, then dims slowly
+    tl.fromTo(black, { opacity: 0 }, { opacity: 1, duration: 3.2, ease: "sine.inOut", immediateRender: false }, S.dur - 3.4);
   }
 
   tl.set({}, {}, S.dur);
