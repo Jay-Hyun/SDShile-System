@@ -77,9 +77,15 @@
   });
 
   // ---- friends' messages ------------------------------------------------------------------------------------------
+  // each friend's name tag in their own colour (muted tones, white text stays readable)
+  const TAG = {
+    유진: "#6E8FB5", 주은: "#C77B86", 선화: "#7FA08A", 은비: "#B58A4C", "정안열 부장님": "#7E6FAE", 하리: "#C08345",
+    하은: "#4F948B", 한별: "#A06C93", 다영: "#6F9259", "이호창 목사님": "#55657F", "로뎀청년회 일동": "#8C6A45",
+  };
   S.msgs.forEach((m) => {
     const box = el("div", "msg" + (m.group ? " group" : ""), root,
       `<div class="bar"><div class="tag">${esc(m.who)}</div><div class="box">${esc(m.ko)}</div></div>`);
+    if (TAG[m.who]) box.querySelector(".tag").style.background = TAG[m.who];
     span(box, m.s, m.e);
   });
 

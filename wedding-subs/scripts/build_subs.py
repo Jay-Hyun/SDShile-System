@@ -22,13 +22,14 @@ W, H = 1920, 1080
 lines = json.load(open("data/lyrics.json"))
 # the old edit's word times, as a stream of syllables (spaces and punctuation in the display text don't matter)
 old = [w for e in json.load(open("../wedding-video/data/edit_lyrics.json")) for w in e["words"]]
+SAME = {"네": "니"}  # display spelling -> the sung (and aligned) syllable
 syl = [(ch, w["start"] + OFFSET, w["end"] + OFFSET, j == 0) for w in old for j, ch in enumerate(w["t"])]
 k = 0
 for l in lines:
     l["words"] = []
     for t in l["ko"].split():
         chars = [c for c in t if "\uac00" <= c <= "\ud7a3"]
-        while not (syl[k][0] == chars[0]):
+        while not (syl[k][0] == SAME.get(chars[0], chars[0])):
             k += 1
         s0, e0 = syl[k][1], syl[k][2]
         k += len(chars)
@@ -107,6 +108,25 @@ for key, sec in M.items():
         e = min(nxt, l["end"] + 1.0)
         msgs.append({"sec": key, "who": l.get("who", sec["name"]), "ko": l["ko"], "group": bool(l.get("group")),
                      "s": round(s, 3), "e": round(e, 3)})
+# A subtitle that starts close to a shot change comes in with the new shot (never over the outgoing one or over
+# black before a picture), then the previous one ends there. Cuts: scripts/detect_cuts.py.
+CUTS = json.load(open("work/cuts.json"))
+
+
+def snap(items):
+    for it in items:
+        near = [c for c in CUTS if -0.6 <= c - it["s"] <= 0.5]
+        if near:
+            it["s"] = round(min(near, key=lambda c: abs(c - it["s"])), 3)
+    for a, b in zip(items, items[1:]):
+        a["e"] = round(min(a["e"], b["s"]), 3)
+        a["s"] = min(a["s"], a["e"] - 0.4)
+
+
+snap(lines)
+for key in M:
+    snap([m for m in msgs if m["sec"] == key])
+
 reels = [{"s": s["t0"], "e": s["t1"], "x0": s["x0"], "w": s["w"]} for s in layout
          if s["kind"] == "pillar" and s["w"] < 900 and s["mot"] > 1.0 and s["t1"] - s["t0"] > 3]
 
