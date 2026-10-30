@@ -47,6 +47,11 @@
         return;
       }
       const sub = el("div", "sub" + (r ? " top" : ""), root, `<div class="ko">${esc(l.ko)}</div><div class="en">${esc(l.en)}</div>`);
+      if (r) {
+        // on a vertical clip the lyric wraps inside the clip
+        sub.style.left = r.x0 + 40 + "px";
+        sub.style.right = 1920 - r.x0 - r.w + 40 + "px";
+      }
       span(sub, a, b);
     });
   });
