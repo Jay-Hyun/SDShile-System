@@ -111,7 +111,9 @@ reels = [{"s": s["t0"], "e": s["t1"], "x0": s["x0"], "w": s["w"]} for s in layou
          if s["kind"] == "pillar" and s["w"] < 900 and s["mot"] > 1.0 and s["t1"] - s["t0"] > 3]
 
 for r in reels:
-    r["side"] = r["w"] > 700  # the photo-booth reel: lyrics go in the side bars (the umbrella reel keeps them on top)
+    # the photo-booth reel keeps the lyric at the bottom like the rest of the film, with the account lifted above it;
+    # the umbrella reel puts the lyric at the top
+    r["low"] = r["w"] > 700
 END = 233.5  # the draft runs to 229.33; the card lingers 4 s longer on silence
 SUBS = {"dur": END, "lyrics": lines, "msgs": msgs, "reels": reels, "outro": {"s": 224.3, "e": END}}
 with open("assets/js/subs.js", "w") as f:

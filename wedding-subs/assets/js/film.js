@@ -36,19 +36,10 @@
   S.lyrics.forEach((l) => {
     cuts(l.s, l.e).forEach(([a, b]) => {
       const r = S.reels.find((x) => (a + b) / 2 >= x.s && (a + b) / 2 < x.e);
-      if (r && r.side) {
-        // the photo-booth reel: Korean in the left bar, English in the right bar
-        const ko = el("div", "flank", root, `<div class="ko">${esc(l.ko)}</div>`);
-        const en = el("div", "flank", root, `<div class="en">${esc(l.en)}</div>`);
-        ko.style.cssText = `left:40px;width:${r.x0 - 80}px`;
-        en.style.cssText = `left:${r.x0 + r.w + 40}px;width:${1920 - r.x0 - r.w - 80}px`;
-        span(ko, a, b);
-        span(en, a, b);
-        return;
-      }
-      const sub = el("div", "sub" + (r ? " top" : ""), root, `<div class="ko">${esc(l.ko)}</div><div class="en">${esc(l.en)}</div>`);
-      if (r) {
-        // on a vertical clip the lyric wraps inside the clip
+      const top = r && !r.low;
+      const sub = el("div", "sub" + (top ? " top" : ""), root, `<div class="ko">${esc(l.ko)}</div><div class="en">${esc(l.en)}</div>`);
+      if (top) {
+        // on a vertical clip the lyric sits inside the clip
         sub.style.left = r.x0 + 40 + "px";
         sub.style.right = 1920 - r.x0 - r.w + 40 + "px";
       }
@@ -66,7 +57,7 @@
     cam: '<svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#fff" stroke-width="1.9" stroke-linejoin="round"><path d="M3 8h4l2-3h6l2 3h4v12H3z"/><circle cx="12" cy="13.5" r="3.8"/></svg>',
   };
   S.reels.forEach((r, i) => {
-    const box = el("div", "reels", root);
+    const box = el("div", "reels" + (r.low ? " low" : ""), root);
     box.style.left = r.x0 + "px";
     box.style.width = r.w + "px";
     box.innerHTML = `<div class="shade"></div>
