@@ -1,4 +1,4 @@
-/* The overlay: basic lyric subtitles (Korean + English), large background words, Reels UI on the vertical clips,
+/* The overlay: basic lyric subtitles (Korean + English), Reels UI on the vertical clips,
  * boxed messages, and the handwritten outro card. Data: window.SUBS (scripts/build_subs.py), window.CALLI
  * (scripts/calligraphy.py). One paused GSAP timeline; text cuts in and out with no motion (only the pen writes). */
 (function () {
@@ -20,7 +20,7 @@
   };
   const esc = (t) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
 
-  // ---- lyrics: basic subtitle + background words --------------------------------------------------------------
+  // ---- lyrics: basic subtitle --------------------------------------------------------------
   {
     // a faint dark floor under the lyrics so the gold English reads on bright footage
     const floor = el("div", "", root);
@@ -38,23 +38,6 @@
       const sub = el("div", "sub" + (inReels((a + b) / 2) ? " top" : ""), root, `<div class="ko">${esc(l.ko)}</div><div class="en">${esc(l.en)}</div>`);
       span(sub, a, b);
     });
-
-    // background: one English keyword, set into the picture (thin italic serif, soft-light blend), no motion
-    if (!l.kw) return;
-    const [x0, y0, x1, y1] = l.box;
-    const right = l.zone.endsWith("R");
-    const bar = l.zone[0] === "B";
-    const bg = el("div", "bg" + (bar ? " bar" : ""), root, esc(l.kw));
-    bg.style.left = x0 + "px";
-    bg.style.width = x1 - x0 + "px";
-    bg.style.top = (bar ? y0 + 140 : y0 + 10) + "px";
-    bg.style.textAlign = bar ? "center" : right ? "right" : "left";
-    const n = l.kw.length;
-    // fit the zone: Playfair italic averages ~0.46 em a character
-    const width = x1 - x0;
-    bg.style.fontSize = Math.round(bar ? Math.min(140, width / 0.46 / Math.max(...l.kw.split(" ").map((w) => w.length), 4))
-                                       : Math.min(170, width / 0.46 / Math.max(n, 5))) + "px";
-    span(bg, l.words[0].s - 0.04, l.e);
   });
 
   // ---- Reels UI on the vertical clips ----------------------------------------------------------------------------
