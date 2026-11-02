@@ -11,6 +11,8 @@ real cut a sharp spike; wipes, glides and entrances spread over many frames and 
 Every detected cut is matched to the nearest beat and the nearest DOWNBEAT of the excerpt
 (beats/source.json); the planned cuts (beats/cuts*.json) are listed with the measured frame.
 
+Pixel scan: the rendered frames are scanned for the largest empty row run (see "rendered-pixel whitespace scan").
+
 Centring: at 4 frames per cut the DOM text boxes are measured by tools/measure.cjs (same seek), the
 same frames are decoded from the MP4 at full size, and inside each line's box the glyph ink is found
 against the local ground: the table reports the DOM box centre and the ink centre against x=540.
@@ -97,6 +99,43 @@ for c in planned:
     pl.append(dict(c, detected=m, detected_off=(m - f) if m is not None else None, beat_off=round(float(d), 2)))
     print(f"  {c['label']:<20s} t={c['t']:6.3f} f{f:<4d} B{k:<3d} {'downbeat' if k in down_idx else 'beat    '} detected f{m} ({(m - f) if m is not None else 'n/a':+})")
 
+# ------------------------------------------------------------------ rendered-pixel whitespace scan
+# The DOM measures (tools/measure.cjs) can disagree with what is actually rendered, so the MP4 itself is
+# scanned: 4 fps, 270x480, a row is EMPTY when >= 99.5% of its pixels are within 10 of the row's median
+# colour; the largest empty run between y 240 and y 1560 (1920 scale) must be <= 200 px at every sample,
+# except within +-0.4 s of a hard cut or a planned move (cuts*.json "moves": glides, wipes, entrances).
+SCAN_FPS, SCAN_W, SCAN_H, SCAN_LIMIT, EXCUSE = 4, 270, 480, 200, 0.4
+plan = json.load(open(os.path.join(ROOT, "beats", "cuts.json" if V == "30" else "cuts-15s.json")))
+events = [c["t"] for c in plan["cuts"]] + [m["t"] for m in plan.get("moves", [])]
+raw_s = subprocess.run(["ffmpeg", "-v", "error", "-i", mp4, "-vf", f"fps={SCAN_FPS},scale={SCAN_W}:{SCAN_H}", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
+                       capture_output=True, check=True).stdout
+sc = np.frombuffer(raw_s, np.uint8).reshape(-1, SCAN_H, SCAN_W, 3).astype(int)
+lo_y, hi_y = int(SCAN_H * 0.125), int(SCAN_H * 0.8125)
+scan = []
+for i, img in enumerate(sc):
+    med = np.median(img, axis=1)
+    flat = (np.abs(img - med[:, None, :]).max(axis=2) <= 10).mean(axis=1) >= 0.995
+    best, cur = 0, 0
+    for y in range(lo_y, hi_y):
+        cur = cur + 1 if flat[y] else 0
+        best = max(best, cur)
+    t = i / SCAN_FPS
+    near = min(events, key=lambda e: abs(e - t))
+    scan.append(dict(t=t, run_px=best * 4, near_event=round(near, 3), dt=round(t - near, 2), excused=abs(t - near) <= EXCUSE))
+over = [x for x in scan if x["run_px"] > SCAN_LIMIT]
+fails = [x for x in over if not x["excused"]]
+print(f"\npixel scan ({SCAN_FPS} fps, y 240-1560, limit {SCAN_LIMIT}px, excused within +-{EXCUSE}s of a cut or move): "
+      f"worst {max(x['run_px'] for x in scan)}px, samples over {len(over)}, NOT excused {len(fails)}  -> {'PASS' if not fails else 'FAIL'}")
+groups = []
+for x in over:
+    if groups and x["t"] - groups[-1][-1]["t"] <= 1 / SCAN_FPS + 1e-6 and x["excused"] == groups[-1][-1]["excused"]:
+        groups[-1].append(x)
+    else:
+        groups.append([x])
+for g in groups:
+    print(f"  {'excused' if g[0]['excused'] else 'NOT EXCUSED':11s} t={g[0]['t']:.2f}-{g[-1]['t']:.2f}s ({len(g) / SCAN_FPS:.2f}s of samples)  largest run {max(x['run_px'] for x in g)}px  "
+          f"(nearest event {g[0]['near_event']}s, dt {g[0]['dt']:+.2f})")
+
 # ------------------------------------------------------------------ centring on decoded frames
 tmpd = tempfile.mkdtemp(prefix="verify-")
 times = ",".join(f"{f / FPS:.6f}" for f in CENTRE_FRAMES)
@@ -134,6 +173,7 @@ json.dump(dict(probe=dict(width=vs["width"], height=vs["height"], r=vs["r_frame_
                           duration=probe["format"]["duration"], audio=[a["codec_name"] for a in aus]),
                loudness=dict(I=I, LRA=LRA, TP=TP), detected=rows, planned=pl,
                within2_pct=round(100 * ok / max(1, len(cuts)), 1), on_downbeat=okd,
+               pixel_scan=dict(limit_px=SCAN_LIMIT, worst_px=max(x["run_px"] for x in scan), not_excused=len(fails), samples=scan),
                centring=dict(frames=CENTRE_FRAMES, max_dom_dx=worst_dom, max_ink_dx=round(worst_ink, 1), lines=centring)),
           open(os.path.join(ROOT, "renders", f"verify-{V}s.json"), "w"), indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
 

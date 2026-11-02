@@ -416,11 +416,11 @@ def build_quiet(T, c1, c2, c3=None, c4=None, bridge=None):
 # signature "You" (one continuous stroke, 4px) is written INSIDE the field (createDrawable, in-out);
 # "이 칸의 이름, 당신." rises under it. On the next downbeat the field (cropped to 420 high) and the
 # sentence glide up (450 ms in-out), the label leaves, and the step / USP / lockup rise below.
-FIELD_TOP, FIELD_H = 380, 920
+FIELD_TOP, FIELD_H = 420, 950
 YOU_SCALE = 1.2
-CROP = 250                       # px cut from the top and the bottom of the field at the glide
-G_FIELD = 215 - (FIELD_TOP + CROP)   # field group: visible top 630 -> 215 (40px under the 연출 badge)
-SENT_T, SENT_POST = 1340, 657        # the sentence under the field, before / after the glide
+CROP = 265                       # px cut from the top and the bottom of the field at the glide (950 -> 420)
+G_FIELD = 215 - (FIELD_TOP + CROP)   # field group: visible top 685 -> 215 (40px under the 연출 badge)
+SENT_T, SENT_POST = 1398, 657        # the sentence under the field, before / after the glide
 
 
 def build_sign(T, compact=False):
@@ -437,7 +437,7 @@ def build_sign(T, compact=False):
     html = f'''    <div id="s-ground" class="field" data-layout-ignore></div>
     {dock()}
     <div id="s-cam" class="cam" data-layout-allow-overflow>
-      {text("s-lab", "body", 290, [SIG], "m-d", tx=True)}
+      {text("s-lab", "body", 330, [SIG], "m-d", tx=True)}
       <div id="s-fg">
         <div id="s-field"></div>
         {rule("s-r", rule_y, 720, "", "color:#43578a")}
@@ -498,7 +498,7 @@ def build_cta(T):
         {text("c-h", "head", 660, ["서명하는 쪽으로", "넘어오세요."], "on-paper", rise=True)}
       </div>
       {text("c-b", "head", 1000, ["서명하는 쪽"], "au", rise=True)}
-      <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore>{you_g("c-you", 1.0, 540, 1280)}</svg>
+      <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore>{you_g("c-you", 1.0, 540, 1280, style="opacity:1")}</svg>
       {lockup("e-lock", 282, "later")}
       {text("e-slo", "head", 394, ["책임지는 자리로,", "지금 있는 자리에서."], "on-ink", rise=True)}
       <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore><path id="e-ul" d="{underline}" stroke="#b8955a" stroke-width="5" stroke-linecap="round" fill="none" style="opacity:0"/></svg>
@@ -519,7 +519,6 @@ def build_cta(T):
     PUSH(T.c0, T.end, "#c-cam");
     RISE(T.head, ["#c-h-0", "#c-h-1"]);
     RISE(T.label, ["#c-b-0"]);
-    A(T.you, "#c-you", {{ opacity: [0, 1] }}, 0.5, UI);
     // S2 on the bar line: the signature gives way to the button
     A(T.btn - 0.05, "#c-you", {{ opacity: [1, 0] }}, 0.3, EXIT);
     ENTER(T.btn, "#c-btn");
@@ -539,26 +538,33 @@ def build_cta(T):
 
 
 # ============================================================ END (C8') — Navy, 15s only
-# The lockup and the full-width button are on the frame from the cut (a Navy-to-Navy cut needs something
-# that lands at once); the slogan rises, the underline draws, the phone settles. Blocks are spread evenly
-# over y 300-1280 (the spec's compressed end card has no USP repeat).
+# The 30s end card without its 30s-only note: lockup -> slogan + gold underline -> the USP block (already
+# read in C6', re-used: the spec leaves a USP line in C8' as an open option) -> button -> phone. The lockup,
+# USP block and full-width button are on the frame from the cut (a Navy-to-Navy cut needs something that
+# lands at once); the slogan rises, the underline draws, the phone settles. Gaps <= 130px, 124px to the
+# disclaimers.
 def build_end(T):
     css = """
     #e-ground { background: var(--navy); }
     .sv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
 """
-    ul_y = 688
+    ul_y = 622
     underline = f"M120 {ul_y} C 360 {ul_y + 3}, 640 {ul_y - 1}, 840 {ul_y - 7} S 945 {ul_y - 13}, 960 {ul_y - 15}"
     html = f'''    <div id="e-ground" class="field" data-layout-ignore></div>
     {dock()}
     <div id="e-cam" class="cam" data-layout-allow-overflow>
       {lockup("e-lock", 282)}
-      {text("e-slo", "head", 460, ["책임지는 자리로,", "지금 있는 자리에서."], "on-ink", rise=True)}
+      {text("e-slo", "head", 394, ["책임지는 자리로,", "지금 있는 자리에서."], "on-ink", rise=True)}
       <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore><path id="e-ul" d="{underline}" stroke="#b8955a" stroke-width="5" stroke-linecap="round" fill="none" style="opacity:0"/></svg>
-      {pill("e-btn", 826, 840, "무료 상담 신청", "var(--paper)", "var(--ink)", tx=True)}
+      <div id="e-info">
+        {text("e-ug", "body", 684, ["국내 유일*"], "au")}
+        {text("e-uh", "head", 746, ["100% 온라인 법학사"], "on-ink")}
+        {text("e-u3", "small", 854, ["교육부장관 명의 · '법학 전공' 표기"], "m-d")}
+      </div>
+      {pill("e-btn", 960, 840, "무료 상담 신청", "var(--paper)", "var(--ink)", tx=True)}
       <div id="e-tel" class="later" data-tx>
-        {text("e-tn", "head", 1074, ["070-4006-7128"], "on-ink")}
-        {text("e-th", "body", 1184, ["(평일 10–18시)"], "m-d")}
+        {text("e-tn", "head", 1200, ["070-4006-7128"], "on-ink")}
+        {text("e-th", "body", 1310, ["(평일 10–18시)"], "m-d")}
       </div>
     </div>'''
     js = f"""
@@ -599,9 +605,9 @@ if VARIANT == "30":
     T_b = dict(c0=C["blank"], cap=C["blank"] + 0.05, btn=7.30, presses=[7.62, 7.92, 8.20, 8.46], toast=8.58, end=C["quiet"])
     T_q = dict(c0=C["quiet"], c1=C["quiet"] + 0.08, c2=12.12, c5=B(32), ext=B(32) + 0.08, c3=B(32) + 0.40, c4=15.50,
                br=None, end=C["sign"])
-    T_s = dict(c0=C["sign"], hit=B(44), draw=1.1, you=20.30, glide=B(48), step=B(48) + 0.30, usp=B(48) + 0.42,
+    T_s = dict(c0=C["sign"], hit=B(44), draw=1.1, you=20.30, glide=B(48), step=B(48) + 0.26, usp=B(48) + 0.34,
                brand=21.75, end=C["cta"])
-    T_c = dict(c0=C["cta"], head=C["cta"] + 0.05, label=C["cta"] + 0.15, you=24.85, btn=B(60), sub=B(60) + 0.09, e=27.20,
+    T_c = dict(c0=C["cta"], head=C["cta"] + 0.05, label=C["cta"] + 0.06, you=C["cta"] + 0.08, btn=B(60), sub=B(60) + 0.09, e=27.20,
                lock=27.70, slo=27.60, ul=28.00, info=27.50, tel=27.74, end=C["fin"])
     SCENE_SPECS = [
         ("hook", C["hook"], C["tease"], build_hook(T_h)),
@@ -617,15 +623,16 @@ if VARIANT == "30":
     DISC = T_s["glide"]      # L1·L2 on the USP downbeat (spec f630)
     LIGHT_FROM = None        # the disclaimers always sit on a dark field (Navy under C6, C7, C8)
     CUTS = [(C["tease"], "C1 S2"), (C["fill"], "C2"), (C["blank"], "C3"), (C["quiet"], "C4"), (C["sign"], "C6"), (C["cta"], "C7")]
-    MOVES = [(T_b["toast"] + 0.3, "C3 S3 toast (entrance)"), (T_q["c5"], "C5 line draws out (in shot)"),
-             (T_s["hit"], "C6 S2 signature stroke"), (T_s["usp"], "C6 S3 USP stack"), (T_c["btn"], "C7 S2 button"),
-             (T_c["e"], "C8 end card (in shot)")]
+    MOVES = [(T_b["btn"], "C3 button"), (T_b["toast"] + 0.3, "C3 S3 toast (entrance)"),
+             (T_q["c2"], "C4 statement + panel glide"), (T_q["c5"], "C5 line draws out (in shot)"), (T_q["c4"], "C5 statement + panel glide"),
+             (T_s["hit"], "C6 S2 signature stroke"), (T_s["you"], "C6 sentence"), (T_s["glide"], "C6 glide"), (T_s["usp"], "C6 S3 USP stack"),
+             (T_c["btn"], "C7 S2 button"), (T_c["e"], "C8 wipe + end card (in shot)")]
 else:
     C = dict(hook=0, tease=B(3), quiet=B(11), sign=B(23), end=B(28), fin=15.0)  # C8' on B28 (lead: USP >= 1.3 s)
     T_h = dict(c0=C["hook"], end=C["tease"])
     T_t = dict(c0=C["tease"], cap=C["tease"] + 0.05, btn=B(5), presses=[2.40, 2.64, 2.88], toast=2.98, end=C["quiet"])
     T_q = dict(c0=C["quiet"], c1=C["quiet"] + 0.08, c2=6.40, c5=None, br=B(19), brIn=B(19) + 0.3, gold=9.207, end=C["sign"])
-    T_s = dict(c0=C["sign"], hit=C["sign"], draw=0.60, you=10.20, glide=10.45, step=10.78, usp=10.84,
+    T_s = dict(c0=C["sign"], hit=C["sign"], draw=0.60, you=10.20, glide=10.45, step=10.71, usp=10.79,
                brand=11.20, end=C["end"])
     T_e = dict(c0=C["end"], slo=C["end"] + 0.05, tel=C["end"] + 0.15, ul=C["end"] + 0.60, end=C["fin"])
     SCENE_SPECS = [
@@ -640,8 +647,8 @@ else:
     DISC = 10.70             # L1·L2 at spec f321 (10.7), with the USP moment
     LIGHT_FROM = None
     CUTS = [(C["tease"], "C1' S2"), (C["quiet"], "C4'"), (C["sign"], "C6' (signature)"), (C["end"], "C8'")]
-    MOVES = [(T_t["btn"], "C3' button"), (T_t["toast"] + 0.3, "C3' toast"), (T_q["br"], "C4' S3 bridge"),
-             (T_s["usp"], "C6' S3 USP")]
+    MOVES = [(T_t["toast"] + 0.3, "C3' toast"), (T_q["c2"], "C4' statement + panel glide"), (T_q["br"], "C4' S3 bridge"),
+             (T_s["you"], "C6' sentence"), (T_s["glide"], "C6' glide"), (T_s["usp"], "C6' S3 USP")]
 
 # sound on exactly two visible actions (client round 4: fewer, cleaner effects): the error toast and the
 # pen touch of the signature. No clicks, ticks, whips or swipes.

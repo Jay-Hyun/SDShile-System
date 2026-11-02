@@ -34,19 +34,27 @@
  ],
  "moves": [
   {
-   "t": 2.195,
-   "label": "C3' button"
-  },
-  {
    "t": 3.28,
    "label": "C3' toast"
+  },
+  {
+   "t": 6.4,
+   "label": "C4' statement + panel glide"
   },
   {
    "t": 8.325,
    "label": "C4' S3 bridge"
   },
   {
-   "t": 10.84,
+   "t": 10.2,
+   "label": "C6' sentence"
+  },
+  {
+   "t": 10.45,
+   "label": "C6' glide"
+  },
+  {
+   "t": 10.79,
    "label": "C6' S3 USP"
   }
  ],

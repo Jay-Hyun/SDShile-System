@@ -74,7 +74,7 @@
 
     #s-ground { background: var(--navy); }
     #s-fg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
-    #s-field { position: absolute; left: 120px; top: 380px; width: 840px; height: 920px; background: #15284a; }
+    #s-field { position: absolute; left: 120px; top: 420px; width: 840px; height: 950px; background: #15284a; }
     #s-svg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
 
   </style>
@@ -82,14 +82,14 @@
     <div id="s-ground" class="field" data-layout-ignore></div>
     <div class="dock" data-fill data-layout-ignore></div>
     <div id="s-cam" class="cam" data-layout-allow-overflow>
-      <div id="s-lab" class="row t-body m-d" data-tx style="top:290px;"><span class="ln"><span id="s-lab-0" class="li">법률 검토·책임자 서명</span></span></div>
+      <div id="s-lab" class="row t-body m-d" data-tx style="top:330px;"><span class="ln"><span id="s-lab-0" class="li">법률 검토·책임자 서명</span></span></div>
       <div id="s-fg">
         <div id="s-field"></div>
-        <div id="s-r" class="rule " style="left:180px;top:881px;width:720px;color:#43578a"></div>
-        <div id="s-c" class="caret au" style="left:180px;top:797px;height:80px;opacity:0"></div>
-        <svg id="s-svg" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate(-169.20 462.00) scale(1.2)"><path id="s-ink" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke="#b8955a" stroke-width="3.333" stroke-linecap="round" stroke-linejoin="round" fill="none" style="opacity:0"/></g></svg>
+        <div id="s-r" class="rule " style="left:180px;top:936px;width:720px;color:#43578a"></div>
+        <div id="s-c" class="caret au" style="left:180px;top:852px;height:80px;opacity:0"></div>
+        <svg id="s-svg" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate(-169.20 517.00) scale(1.2)"><path id="s-ink" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke="#b8955a" stroke-width="3.333" stroke-linecap="round" stroke-linejoin="round" fill="none" style="opacity:0"/></g></svg>
       </div>
-      <div id="s-you2" class="row t-head on-ink rise" style="top:1340px;"><span class="ln"><span id="s-you2-0" class="li">이 칸의 이름, <span class="au">당신.</span></span></span></div>
+      <div id="s-you2" class="row t-head on-ink rise" style="top:1398px;"><span class="ln"><span id="s-you2-0" class="li">이 칸의 이름, <span class="au">당신.</span></span></span></div>
       <div id="s-nl" class="row t-body on-ink rise" style="top:796px;"><span class="ln"><span id="s-nl-0" class="li">그 칸으로 가는 <span class="au">첫 계단</span></span></span></div>
       <div id="s-u1" class="row t-body au rise" style="top:902px;"><span class="ln"><span id="s-u1-0" class="li">국내 유일*</span></span></div>
       <div id="s-u2" class="row t-display on-ink rise" style="top:970px;"><span class="ln"><span id="s-u2-0" class="li">100% 온라인</span></span><span class="ln"><span id="s-u2-1" class="li">법학사</span></span></div>
@@ -129,16 +129,16 @@
     }
 
 
-    const T = {"c0": 10.066, "hit": 10.066, "draw": 0.6, "you": 10.2, "glide": 10.45, "step": 10.78, "usp": 10.84, "brand": 11.2, "end": 12.261};
+    const T = {"c0": 10.066, "hit": 10.066, "draw": 0.6, "you": 10.2, "glide": 10.45, "step": 10.71, "usp": 10.79, "brand": 11.2, "end": 12.261};
     PUSH(T.c0, T.end, "#s-cam");
     CARET("#s-c", T.c0, T.hit);
     S(T.hit, "#s-c", { opacity: 0 });
     DRAW(T.c0, T.hit, "#s-ink", T.draw);
     RISE(T.you, ["#s-you2-0"]);
     // glide: the field crops to 420 high while the group and the sentence move up (450 ms in-out)
-    A(T.glide, "#s-fg", { translateY: [0, -415] }, 0.45, INOUT);
-    A(T.glide, "#s-field", { clipPath: ["inset(0px 0px 0px 0px)", "inset(250px 0px 250px 0px)"] }, 0.45, INOUT);
-    A(T.glide, "#s-you2", { translateY: [0, -683] }, 0.45, INOUT);
+    A(T.glide, "#s-fg", { translateY: [0, -470] }, 0.45, INOUT);
+    A(T.glide, "#s-field", { clipPath: ["inset(0px 0px 0px 0px)", "inset(265px 0px 265px 0px)"] }, 0.45, INOUT);
+    A(T.glide, "#s-you2", { translateY: [0, -741] }, 0.45, INOUT);
     LEAVE(T.glide, ["#s-lab-0"]);
     RISE(T.step, ["#s-nl-0"]);
     RISE(T.usp, ["#s-u1-0", "#s-u2-0", "#s-u2-1", "#s-u3-0"]);

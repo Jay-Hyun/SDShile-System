@@ -48,19 +48,39 @@
  ],
  "moves": [
   {
+   "t": 7.3,
+   "label": "C3 button"
+  },
+  {
    "t": 8.88,
    "label": "C3 S3 toast (entrance)"
+  },
+  {
+   "t": 12.12,
+   "label": "C4 statement + panel glide"
   },
   {
    "t": 14.02,
    "label": "C5 line draws out (in shot)"
   },
   {
+   "t": 15.5,
+   "label": "C5 statement + panel glide"
+  },
+  {
    "t": 19.261,
    "label": "C6 S2 signature stroke"
   },
   {
-   "t": 21.434,
+   "t": 20.3,
+   "label": "C6 sentence"
+  },
+  {
+   "t": 21.014,
+   "label": "C6 glide"
+  },
+  {
+   "t": 21.354,
    "label": "C6 S3 USP stack"
   },
   {
@@ -69,7 +89,7 @@
   },
   {
    "t": 27.2,
-   "label": "C8 end card (in shot)"
+   "label": "C8 wipe + end card (in shot)"
   }
  ],
  "sfx": [

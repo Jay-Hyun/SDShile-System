@@ -87,7 +87,7 @@
         <div id="c-h" class="row t-head on-paper rise" style="top:660px;"><span class="ln"><span id="c-h-0" class="li">서명하는 쪽으로</span></span><span class="ln"><span id="c-h-1" class="li">넘어오세요.</span></span></div>
       </div>
       <div id="c-b" class="row t-head au rise" style="top:1000px;"><span class="ln"><span id="c-b-0" class="li">서명하는 쪽</span></span></div>
-      <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate(-51.00 965.00) scale(1.0)"><path id="c-you" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke="#b8955a" stroke-width="4.000" stroke-linecap="round" stroke-linejoin="round" fill="none" style="opacity:0"/></g></svg>
+      <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate(-51.00 965.00) scale(1.0)"><path id="c-you" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke="#b8955a" stroke-width="4.000" stroke-linecap="round" stroke-linejoin="round" fill="none" style="opacity:1"/></g></svg>
       <div id="e-lock" class="row lock later" style="top:282px"><div class="lockrow" data-lockup><span class="lmark"></span><span>경찰복지사이버평생교육원</span></div></div>
       <div id="e-slo" class="row t-head on-ink rise" style="top:394px;"><span class="ln"><span id="e-slo-0" class="li">책임지는 자리로,</span></span><span class="ln"><span id="e-slo-1" class="li">지금 있는 자리에서.</span></span></div>
       <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore><path id="e-ul" d="M120 622 C 360 625, 640 621, 840 615 S 945 609, 960 607" stroke="#b8955a" stroke-width="5" stroke-linecap="round" fill="none" style="opacity:0"/></svg>
@@ -136,11 +136,10 @@
     }
 
 
-    const T = {"c0": 24.521, "head": 24.571, "label": 24.671, "you": 24.85, "btn": 26.274, "sub": 26.364, "e": 27.2, "lock": 27.7, "slo": 27.6, "ul": 28.0, "info": 27.5, "tel": 27.74, "end": 30.0};
+    const T = {"c0": 24.521, "head": 24.571, "label": 24.581, "you": 24.601, "btn": 26.274, "sub": 26.364, "e": 27.2, "lock": 27.7, "slo": 27.6, "ul": 28.0, "info": 27.5, "tel": 27.74, "end": 30.0};
     PUSH(T.c0, T.end, "#c-cam");
     RISE(T.head, ["#c-h-0", "#c-h-1"]);
     RISE(T.label, ["#c-b-0"]);
-    A(T.you, "#c-you", { opacity: [0, 1] }, 0.5, UI);
     // S2 on the bar line: the signature gives way to the button
     A(T.btn - 0.05, "#c-you", { opacity: [1, 0] }, 0.3, EXIT);
     ENTER(T.btn, "#c-btn");
