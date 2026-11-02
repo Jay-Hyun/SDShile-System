@@ -30,7 +30,8 @@
     .hd .lnH > span { padding-right: 0.03em; }
     /* Body 44 / 500 / −0.01em / 1.4 */
     .bd { font-size: 44px; line-height: 62px; font-weight: 500; letter-spacing: -0.01em; }
-    .bd .lnB > span { padding-right: 0.01em; }
+    .bd .lnB > span, #note-1 { padding-right: 0.01em; }
+    #note-1 { display: inline-block; }
     .g { font-style: normal; color: var(--color-gold, #b8955a); }
     .sec { color: var(--color-sec, #9aa0a6); }
 
@@ -44,9 +45,18 @@
     #br-usp { top: 561px; }
     #br-q { top: 959px; }
     #br-ans { top: 1045px; }
-    #br-cta { top: 580px; }
-    #br-slo { top: 580px; }
-    #br-sub { top: 830px; }
+    /* 엔드 시퀀스 (30s 22.3–30.0 한 덩어리, 15s 12.34–15.0): 로고 → 문장 Head(3행 자리) → 증거 리스트 → CTA 유도 → 버튼 → 안내·전화.
+       버튼·전화는 끝까지 같은 자리. y 260–1440 을 고르게 채운다 */
+    #br-end { transform-origin: 540px 706px; }
+    #br-cta { top: 426px; }
+    #br-slo { top: 476px; } /* 3행 자리(426–729) 가운데에 2행 */
+    #br-list { top: 785px; }
+    #br-list-blk { display: inline-block; text-align: left; }
+    #br-list .lnB { margin-bottom: 8px; }
+    #br-one { top: 742px; }
+    .chk { display: inline-block; width: 34px; height: 34px; vertical-align: -4px; margin-right: 16px; }
+    #br-push { top: 1059px; }
+    #br-note { top: 1289px; }
 
     /* 0 → 60 숫자 롤 (자리마다 한 번, 700ms ease-out) */
     .roll { display: inline-block; color: var(--color-gold, #b8955a); font-variant-numeric: tabular-nums; }
@@ -55,9 +65,9 @@
     .strip > b { display: block; height: 1.15em; font-weight: inherit; text-align: center; }
 
     /* CTA 버튼: 컬럼 전폭 골드 면 + Navy 글자 (840×112 = 화면의 4.5%) */
-    #br-btn { position: absolute; left: 120px; top: 1110px; width: 840px; height: 112px; border-radius: 56px; background: var(--color-gold, #b8955a); color: var(--color-navy, #0b1a33); display: flex; align-items: center; justify-content: center; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; }
+    #br-btn { position: absolute; left: 120px; top: 1149px; width: 840px; height: 112px; border-radius: 56px; background: var(--color-gold, #b8955a); color: var(--color-navy, #0b1a33); display: flex; align-items: center; justify-content: center; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; }
     #br-btn span { padding-right: 0.01em; }
-    #br-tel { top: 1270px; height: 62px; display: flex; align-items: center; justify-content: center; }
+    #br-tel { top: 1351px; height: 62px; display: flex; align-items: center; justify-content: center; }
     #br-tel-row { display: flex; align-items: center; gap: 14px; }
     #br-tel svg { width: 40px; height: 40px; display: block; }
 
@@ -86,32 +96,40 @@
         </div>
       </div>
 
-      <!-- C9 CTA (Head 88 로 2행에 담으면 840px 을 넘어 자연스러운 끊김 3행) -->
-      <div id="br-p2" class="push">
+      <!-- 엔드 시퀀스: 문장(CTA → 슬로건)과 증거 리스트. 이 묶음만 1.00→1.03 푸시 -->
+      <div id="br-end" class="push">
+        <!-- C9 CTA (Head 88 로 2행이면 2행이 936px → 자연스러운 끊김 3행) -->
         <div id="br-cta" class="row hd">
           <div class="lnH"><span id="cta-1" data-m="c">AI도 넘긴 질문,</span></div>
           <div class="lnH"><span id="cta-2" data-m="c">사람이 <em class="g">1:1</em>로</span></div>
           <div class="lnH"><span id="cta-3" data-m="c">답해드려요.</span></div>
         </div>
-      </div>
-
-      <!-- C10 슬로건 (Display 144 로는 1행이 840px 을 넘어 Head 88) -->
-      <div id="br-p3" class="push">
+        <!-- C10 슬로건 (Display 144 로는 1행이 840px 을 넘어 Head 88) -->
         <div id="br-slo" class="row hd">
           <div class="lnH"><span id="slo-1" data-m="c">책임지는 자리로,</span></div>
           <div class="lnH"><span id="slo-2" data-m="c">지금 있는 자리에서.</span></div>
         </div>
-        <div id="br-sub" class="row bd"><div class="lnB"><span id="sub-1" data-m="c">교육부장관 명의 법학사</span></div></div>
+        <!-- 증거 리스트: 골드 체크 + 글, 묶음 가운데·줄 왼쪽 맞춤 (체크가 한 세로줄). 카드·박스 없음 -->
+        <div id="br-list" class="row bd"><div id="br-list-blk" data-m="c">
+          <div class="lnB"><span id="ls-1"><svg class="chk" viewBox="0 0 24 24"><path d="M4.5 12.5l4.8 4.6L19.5 7" fill="none" stroke="#b8955a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>100% 온라인, 출석 없이</span></div>
+          <div class="lnB"><span id="ls-2"><svg class="chk" viewBox="0 0 24 24"><path d="M4.5 12.5l4.8 4.6L19.5 7" fill="none" stroke="#b8955a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>교육부장관 명의 법학사</span></div>
+          <div class="lnB"><span id="ls-3"><svg class="chk" viewBox="0 0 24 24"><path d="M4.5 12.5l4.8 4.6L19.5 7" fill="none" stroke="#b8955a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>전문대 졸업이면 60학점부터</span></div>
+        </div></div>
+        <!-- 15초: 리스트를 한 줄로 -->
+        <div id="br-one" class="row bd"><div class="lnB"><span id="one-1" data-m="c">100% 온라인 · 교육부장관 명의 법학사</span></div></div>
       </div>
 
+      <!-- CTA 유도 (골드 44) → 버튼 → 안내 → 전화: 엔드 시퀀스 내내 고정 -->
+      <div id="br-push" class="row bd"><div class="lnB"><span id="push-1" class="g" data-m="c">내 학력으로 몇 학기? 1:1로 확인하세요</span></div></div>
       <div id="br-btn" data-m="c"><span>무료 상담 신청</span></div>
+      <div id="br-note" class="row bd sec"><span id="note-1" data-m="c">상담만 받아도 돼요.</span></div>
       <div id="br-tel" class="row bd"><div id="br-tel-row" data-m="c"><svg viewBox="0 0 24 24"><path d="M6.6 3.5h2.7l1.4 4.1-2 1.5a12 12 0 0 0 6.2 6.2l1.5-2 4.1 1.4v2.7a2 2 0 0 1-2 2A16.6 16.6 0 0 1 4.6 5.5a2 2 0 0 1 2-2z" fill="none" stroke="#f7f6f2" stroke-width="1.6" stroke-linejoin="round" /></svg><span>070-4006-7128 (평일 10–18시)</span></div></div>
     </div>
   </div>
   <script>
     (function () {
       const CUT = 30; // tools/build_15s.py 가 v15에서 15로 바꾼다
-      const { P, BAR, ms, E, D, timeline, rise, ui, push } = window.HF;
+      const { P, BAR, ms, E, D, timeline, rise, riseOut, ui, push } = window.HF;
       const $ = (q) => document.querySelector(q);
       const tl = timeline();
       // 음악 B 구간 다운비트 (R = 음악 복귀): 30s 14.637 + 1마디·k / 15s 6.580 + 1마디·k
@@ -126,8 +144,17 @@
         $("#ans-1").textContent = "첫 계단,";
         $("#br-q").remove(); // 15초판은 인용 없이 답만 (05 §3)
         $("#br-ans").style.top = "959px";
-        $("#br-p2").remove(); // CTA 카피 없이 버튼이 CTA
-        $("#br-sub").remove(); // 서브라인 없음
+        // 15초 엔드카드(2.66s): 슬로건 + 한 줄 + CTA 유도 + 버튼·전화 (CTA 문장·리스트·안내 줄 없음)
+        ["#br-cta", "#br-list", "#br-note"].forEach((q) => $(q).remove());
+        // 전화는 브랜드 진입(C5)부터 y 1270 에 있으므로 15초 엔드카드는 그 위로 쌓는다
+        $("#br-tel").style.top = "1270px";
+        $("#br-btn").style.top = "1130px";
+        $("#br-push").style.top = "1040px";
+        // 슬로건 2행 + 한 줄(202 + 40 + 62)을 로고(아래 362)와 CTA 유도(위 1040) 사이 가운데에
+        $("#br-slo").style.top = "549px";
+        $("#br-one").style.top = "791px";
+      } else {
+        $("#br-one").remove();
       }
       // 숫자 롤: 십의 자리 0→6, 일의 자리 0→9→0 (한 바퀴)
       $("#roll-t").innerHTML = [0, 1, 2, 3, 4, 5, 6].map((d) => "<b>" + d + "</b>").join("");
@@ -142,6 +169,7 @@
       const lines = Array.from(document.querySelectorAll(".lnD > span, .lnH > span, .lnB > span"));
       tl.set(lines, { translateY: "105%" }, 0);
       tl.set(["#br-logo-row", "#br-btn", "#br-tel-row"], { opacity: 0 }, 0);
+      if (CUT === 30) tl.set("#note-1", { opacity: 0 }, 0);
       tl.set(["#roll-t", "#roll-o"], { translateY: "0em" }, 0);
       // C7 에서는 USP 묶음(국내 유일 + 2행, y 452–863)을 안전 영역 가운데(중심 850)에 둔다
       const USP_LIFT = Math.round(850 - (452 + 863) / 2);
@@ -164,28 +192,26 @@
       const tCut1 = EB(CUT === 30 ? 4 : 3); // 30s C9 / 15s C6
       push(tl, "#br-p1", WIN, tCut1);
 
+      tl.set("#br-p1", { opacity: 0 }, ms(tCut1));
       if (CUT === 30) {
-        // ===== C9 하드컷 (다운비트): CTA =====
-        tl.set("#br-p1", { opacity: 0 }, ms(tCut1));
+        // ===== 엔드 시퀀스 22.315 (하드컷, 다운비트) – 30.0: 버튼·전화는 끝까지 고정 =====
         rise(tl, ["#cta-1", "#cta-2", "#cta-3"], tCut1);
-        ui(tl, "#br-btn", tCut1 + 0.8);
-        ui(tl, "#br-tel-row", tCut1 + 0.9);
-        const tPress = tCut1 + 2.9;
-        tl.add("#br-btn", { scale: [1, 0.985], duration: D.press / 2, ease: E.ui }, ms(tPress));
-        tl.add("#br-btn", { scale: [0.985, 1], duration: D.press / 2, ease: E.ui }, ms(tPress + D.press / 2000));
-        const tC10 = EB(6); // 원곡 다운비트 스플라이스
-        push(tl, "#br-p2", tCut1, tC10);
-        // ===== C10 하드컷 (다운비트): 슬로건. 서브라인은 마지막 크래시에 =====
-        tl.set("#br-p2", { opacity: 0 }, ms(tC10));
-        rise(tl, ["#slo-1", "#slo-2"], tC10);
-        rise(tl, "#sub-1", EB(7));
-        push(tl, "#br-p3", tC10, END);
+        rise(tl, "#push-1", tCut1 + 0.3);
+        ui(tl, "#br-btn", tCut1 + 0.35);
+        ui(tl, ["#note-1", "#br-tel-row"], tCut1 + 0.42);
+        // 24.234 다운비트: 증거 리스트가 한 줄씩 (90ms)
+        rise(tl, ["#ls-1", "#ls-2", "#ls-3"], EB(5));
+        // 26.154 다운비트: 문장이 슬로건으로 바뀐다 (CTA 3행 퇴장 300ms → 슬로건 상승). 리스트는 남는다
+        const tSlo = EB(6);
+        ["#cta-1", "#cta-2", "#cta-3"].forEach((q) => riseOut(tl, q, tSlo - 0.3));
+        rise(tl, ["#slo-1", "#slo-2"], tSlo);
+        push(tl, "#br-end", tCut1, END);
       } else {
-        // ===== 15초 C6 하드컷 (마지막 크래시): 슬로건 + 버튼 =====
-        tl.set("#br-p1", { opacity: 0 }, ms(tCut1));
-        rise(tl, ["#slo-1", "#slo-2"], tCut1);
-        ui(tl, "#br-btn", tCut1 + 0.5);
-        push(tl, "#br-p3", tCut1, END);
+        // ===== 15초 C6 하드컷 (마지막 크래시): 슬로건 + 한 줄 + CTA 유도 + 버튼 (전화는 브랜드 진입부터) =====
+        rise(tl, ["#slo-1", "#slo-2", "#one-1"], tCut1);
+        rise(tl, "#push-1", tCut1 + 0.3);
+        ui(tl, "#br-btn", tCut1 + 0.35);
+        push(tl, "#br-end", tCut1, END);
       }
       tl.set({ v: 0 }, { v: 1 }, ms(END));
       tl.seek(0);

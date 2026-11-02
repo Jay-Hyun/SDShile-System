@@ -60,7 +60,7 @@
    "label": "C6 S2 signature stroke"
   },
   {
-   "t": 21.014,
+   "t": 21.514,
    "label": "C6 S3 USP stack"
   },
   {
@@ -74,32 +74,12 @@
  ],
  "sfx": [
   {
-   "t": 7.62,
-   "kind": "click"
-  },
-  {
-   "t": 7.92,
-   "kind": "click"
-  },
-  {
-   "t": 8.2,
-   "kind": "click"
-  },
-  {
-   "t": 8.46,
-   "kind": "click"
-  },
-  {
    "t": 8.88,
    "kind": "error"
   },
   {
    "t": 19.261,
    "kind": "pen"
-  },
-  {
-   "t": 26.274,
-   "kind": "tick"
   }
  ],
  "scenes": [

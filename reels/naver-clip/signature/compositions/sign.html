@@ -66,26 +66,28 @@
 
 
     #s-ground { background: var(--navy); }
-    #s-panel { position: absolute; left: 120px; top: 790px; width: 840px; height: 460px; background: #15284a; }
+    #s-field { position: absolute; left: 120px; top: 735px; width: 840px; height: 400px; background: #15284a; }
     #s-svg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
-    .mark { position: absolute; left: 518.4px; width: 43.2px; height: 48px; }
 
   </style>
   <div id="root" data-composition-id="sign" data-width="1080" data-height="1920">
     <div id="s-ground" class="field" data-layout-ignore></div>
     <div id="s-cam" class="cam" data-layout-allow-overflow>
-      <div id="s-panel"></div>
-      <div id="s-u1" class="row t-body au rise" style="top:280px;"><span class="ln"><span id="s-u1-0" class="li">국내 유일*</span></span></div>
-      <div id="s-u2" class="row t-display on-ink rise" style="top:352px;"><span class="ln"><span id="s-u2-0" class="li">100% 온라인</span></span><span class="ln"><span id="s-u2-1" class="li">법학사</span></span></div>
-      <div id="s-u3" class="row t-body m-d rise" style="top:668px;"><span class="ln"><span id="s-u3-0" class="li">교육부장관 명의 · '법학 전공' 표기</span></span></div>
-      <div id="s-sg" class="row t-body m-d" style="top:1080px;"><span class="ln"><span id="s-sg-0" class="li">법률 검토·책임자 서명</span></span></div>
-      <div id="s-nl" class="row t-head on-ink rise" style="top:1062px;"><span class="ln"><span id="s-nl-0" class="li">그 칸으로 가는 <span class="au">첫 계단</span></span></span></div>
-      <div id="s-r" class="rule m-d" style="left:180px;top:990px;width:720px;"></div>
-      <div id="s-c" class="caret au" style="left:180px;top:910px;height:72px;opacity:0"></div>
-      <svg id="s-svg" viewBox="0 0 1080 1920" data-layout-ignore>
-        <path id="s-ink" d="M70 1004 C 300 1010, 600 1002, 820 988 S 980 970, 1010 962" stroke="#b8955a" stroke-width="8" stroke-linecap="round" fill="none" style="opacity:0"/>
-      </svg>
-      <div id="s-br" class="later"><img class="mark" style="top:1290px" src="assets/img/mark.svg" alt=""><div id="s-bn" class="row t-body on-ink" style="top:1346px;"><span class="ln"><span id="s-bn-0" class="li">경찰복지사이버평생교육원</span></span></div></div>
+      <div id="s-you">
+        <div id="s-lab" class="row t-small m-d" style="top:687px;"><span class="ln"><span id="s-lab-0" class="li">법률 검토·책임자 서명</span></span></div>
+        <div id="s-field"></div>
+        <svg id="s-svg" viewBox="0 0 1080 1920" data-layout-ignore>
+          <g transform="translate(-139.65 572.75) scale(1.15)">
+            <path id="s-ink" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke="#b8955a" stroke-width="3.48" stroke-linecap="round" stroke-linejoin="round" fill="none" style="opacity:0"/>
+          </g>
+        </svg>
+        <div id="s-you2" class="row t-head on-ink rise" style="top:1153px;"><span class="ln"><span id="s-you2-0" class="li">이 칸의 이름, <span class="au">당신.</span></span></span></div>
+      </div>
+      <div id="s-nl" class="row t-body on-ink rise" style="top:806px;"><span class="ln"><span id="s-nl-0" class="li">그 칸으로 가는 <span class="au">첫 계단</span></span></span></div>
+      <div id="s-u1" class="row t-body au rise" style="top:892px;"><span class="ln"><span id="s-u1-0" class="li">국내 유일*</span></span></div>
+      <div id="s-u2" class="row t-display on-ink rise" style="top:962px;"><span class="ln"><span id="s-u2-0" class="li">100% 온라인</span></span><span class="ln"><span id="s-u2-1" class="li">법학사</span></span></div>
+      <div id="s-u3" class="row t-small m-d rise" style="top:1292px;"><span class="ln"><span id="s-u3-0" class="li">교육부장관 명의 · '법학 전공' 표기</span></span></div>
+      <div id="s-bn" class="row t-body on-ink later" style="top:1354px;"><span class="ln"><span id="s-bn-0" class="li">경찰복지사이버평생교육원</span></span></div>
     </div>
   </div>
   <script>
@@ -120,16 +122,15 @@
     }
 
 
-    const T = {"c0": 17.52, "caret": 17.8, "hit": 19.261, "oldOut": 19.811, "newIn": 19.910999999999998, "usp": 21.014, "brand": 21.9, "end": 24.521};
+    const T = {"c0": 17.52, "hit": 19.261, "draw": 1.1, "you": 20.4, "glide": 21.014, "step": 21.413999999999998, "usp": 21.514, "brand": 21.95, "end": 24.521};
     PUSH(T.c0, T.end, "#s-cam");
-    if (T.caret != null) CARET("#s-c", T.caret, T.hit);
-    S(T.hit, "#s-c", { opacity: 0 });
-    DRAW(T.c0, T.hit, "#s-ink", 1.1);
-    A(T.hit, "#s-r", { opacity: [1, 0] }, 1.1, INOUT);  // the blank gives way to the signature
-    LEAVE(T.oldOut, ["#s-sg-0"]);
-    RISE(T.newIn, ["#s-nl-0"]);
+    DRAW(T.c0, T.hit, "#s-ink", T.draw);
+    RISE(T.you, ["#s-you2-0"]);
+    A(T.glide, "#s-you", { translateY: [0, -481] }, 0.45, INOUT);
+    LEAVE(T.glide, ["#s-lab-0"]);  // the label has done its job; the step line below carries it on
+    RISE(T.step, ["#s-nl-0"]);
     RISE(T.usp, ["#s-u1-0", "#s-u2-0", "#s-u2-1", "#s-u3-0"]);
-    ENTER(T.brand, "#s-br");
+    ENTER(T.brand, "#s-bn");
 
     window.__hfAnime = window.__hfAnime || [];
     window.__hfAnime.push(tl);

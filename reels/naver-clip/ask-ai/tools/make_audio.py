@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""「AI에게 물었다」 오디오: 제공 BGM 편집 + 장면 동작에 맞춘 SFX + 마스터.
+"""「AI에게 물었다」 오디오: 제공 BGM 편집 + 효과음 2개(질문 전송·[상담사 연결] 누름) + 마스터.
 
 Usage: python3 tools/make_audio.py [--cut 15]
   assets/music/source.mp3 (grand_project, Pixabay 505611) 를 잘라 붙인다. 합성 음악은 없다.
   → assets/audio/bgm.wav, sfx.wav (30s) / bgm-15s.wav, sfx-15s.wav (15s)
   두 스템에 같은 게인·리미터를 걸어 합이 −15 LUFS(±0.3), 트루피크 ≤ −1 dBTP.
   편집 구간·챕터·컷은 beats/cuts-30.json / cuts-15.json 으로도 저장(HTML 타이밍과 같은 수식).
-  아트 디렉션 v3: 컷·챕터는 다운비트(1마디 = 4P)에만, 장면 안의 SFX 는 화면 동작에 붙인다(비트에 치지 않는다).
+  아트 디렉션 v3: 컷·챕터는 다운비트(1마디 = 4P)에만. 먹먹해지는 처리(LPF·피치 다운) 없음, 합성 효과음은 부드러운 탭 2개뿐(음악보다 −20dB).
 
 음악 편집 (P = 1비트 = 60/125.03 s, 소스 다운비트 1.007 + 4P·k):
-  30s  A  src 1.007→  v 0.000–12.477 (26P)   → 12.477 테이프 스톱 0.5s (로딩 개그, 음악 멈춤)
+  30s  A  src 1.007→  v 0.000–12.477 (26P)   → 12.477 클린 스톱: 비트에서 80ms 페이드 후 완전 무음 (로딩 개그)
        —  무음 12.98–14.637 (초침 틱만)
        B  src 12.524→ v 14.637–26.154 (24P)  14.637 다운비트 슬램(🙂 말풍선), 18.476 = src 16.363 B섹션 크래시(브랜드)
        C  src 29.800→ v 26.154–30.000          28.073 = src 31.719 마지막 크래시, 29.65–30.0 페이드
-  15s  A  src 1.007→  v 0.000–5.759 (12P)    → 5.759 테이프 스톱
+  15s  A  src 1.007→  v 0.000–5.759 (12P)    → 5.759 클린 스톱 (다운비트, 80ms 페이드 → 무음)
        B  src 14.443→ v 6.580–10.420 (8P)      6.580 슬램, 8.500 = src 16.363 크래시(브랜드)
        C  src 29.800→ v 10.420–15.000          12.339 = src 31.719 크래시(슬로건), 14.6–15.0 페이드
 """
@@ -54,9 +54,10 @@ def cues(cut):
             "dur": 30.0, "R": R, "brand": R + 2 * BAR, "win": WIN,
             "chapters": {"C1": 0.0, "C2": 2 * BAR, "C3": 4 * BAR, "C4": 5 * BAR, "C5": B(26), "C6": R,
                          "C7": R + 2 * BAR, "C8": R + 3 * BAR, "C9": R + 4 * BAR, "C10": R + 6 * BAR, "end": 30.0},
-            "cuts": {"open_mid": WIN + 0.6, "C9": R + 4 * BAR, "C10": R + 6 * BAR},
+            # C10 은 엔드 시퀀스 안의 문장 교체(퇴장 300ms → 다운비트에 상승)라 하드컷이 아니다
+            "cuts": {"open_mid": WIN + 0.6, "C9": R + 4 * BAR},
             "music": [
-                {"v0": 0.0, "v1": B(26), "src": DB0, "tail": "tapestop"},
+                {"v0": 0.0, "v1": B(26), "src": DB0, "tail": "stop"},
                 {"v0": R, "v1": R + 24 * P, "src": src_downbeat(12.524)},
                 {"v0": R + 24 * P, "v1": 30.0, "src": src_downbeat(29.8), "fade": 0.35},
             ],
@@ -71,7 +72,7 @@ def cues(cut):
                          "C5b": R + 2 * BAR, "C6": R + 3 * BAR, "end": 15.0},
             "cuts": {"open_mid": WIN + 0.6, "C6": R + 3 * BAR},
             "music": [
-                {"v0": 0.0, "v1": B(12), "src": DB0, "tail": "tapestop"},
+                {"v0": 0.0, "v1": B(12), "src": DB0, "tail": "stop"},
                 {"v0": R, "v1": 8.5 + 4 * P, "src": src_downbeat(14.443)},
                 {"v0": 8.5 + 4 * P, "v1": 15.0, "src": src_downbeat(29.8), "fade": 0.4},
             ],
@@ -103,6 +104,9 @@ def measure(path):
 
 
 # ------------------------------------------------------------------ 음악 편집
+STOP_FADE = 0.08  # 클린 스톱: 정지 지점(비트)부터 80ms 페이드아웃, 그 뒤 완전 무음. 필터·피치 변화 없음
+
+
 def build_music(c, src):
     N = int(round(c["dur"] * SR))
     out = np.zeros((N, 2))
@@ -110,36 +114,24 @@ def build_music(c, src):
     for seg in c["music"]:
         i0, i1 = int(round(seg["v0"] * SR)), int(round(seg["v1"] * SR))
         s0 = int(round(seg["src"] * SR))
-        piece = src[s0 : s0 + (i1 - i0)].copy()
+        n = i1 - i0
+        if seg.get("tail") == "stop":
+            n += int(STOP_FADE * SR)
+        piece = src[s0 : s0 + n].copy()
         piece[:xf] *= np.linspace(0, 1, xf)[:, None]
         if seg.get("fade"):
             nf = int(seg["fade"] * SR)
             piece[-nf:] *= (np.linspace(1, 0, nf) ** 1.5)[:, None]
-        elif not seg.get("tail"):
+        elif seg.get("tail") == "stop":
+            nf = int(STOP_FADE * SR)
+            piece[-nf:] *= (0.5 + 0.5 * np.cos(np.linspace(0, np.pi, nf)))[:, None]
+        else:
             piece[-xf:] *= np.linspace(1, 0, xf)[:, None]
-        out[i0 : i0 + len(piece)] += piece
-        if seg.get("tail") == "tapestop":
-            # 테이프 스톱: 재생 속도 1→0 (0.5s), 피치가 같이 내려간다. 원곡을 늦춘 것뿐, 새 음은 없다.
-            T = 0.5
-            n = int(T * SR)
-            tau = np.arange(n) / SR
-            pos = seg["src"] + (seg["v1"] - seg["v0"]) + tau - tau ** 2 / (2 * T)
-            idx = pos * SR
-            base = np.arange(len(src))
-            ts = np.stack([np.interp(idx, base, src[:, ch]) for ch in range(2)], axis=1)
-            ts *= (1 - tau / T)[:, None] ** 0.6
-            # 끝으로 갈수록 고역을 깎아 '늘어지는' 느낌 (1-pole LPF, 계수 스윕)
-            y = np.zeros_like(ts)
-            prev = np.zeros(2)
-            for k in range(n):
-                a = 0.9 - 0.85 * (k / n)
-                prev = prev + a * (ts[k] - prev)
-                y[k] = prev
-            out[i1 : i1 + n] = y[: N - i1]
+        out[i0 : i0 + len(piece)] += piece[: N - i0]
     return out
 
 
-# ------------------------------------------------------------------ SFX (원 make_audio.py의 SFX 함수, 음악 없음)
+# ------------------------------------------------------------------ 효과음: 부드러운 탭 2개뿐
 def t_arr(d):
     return np.arange(int(SR * d)) / SR
 
@@ -161,149 +153,43 @@ def env(n, a=0.005, d=0.2):
     return np.clip(t / max(a, 1e-4), 0, 1) * np.exp(-t / d)
 
 
-def noise(d):
-    return rng.standard_normal(int(SR * d))
-
-
-def key_click(heavy=False):
-    d = 0.05
+def soft_tap():
+    """손끝으로 누르는 부드러운 탭: 낮은 몸통(170Hz, 14ms 감쇠) + 2.5kHz 아래로 깎은 짧은 클릭. 피크 1로 정규화."""
+    d = 0.07
     t = t_arr(d)
-    c = fft_filter(noise(d), lo=1800 if not heavy else 900, hi=6500) * env(len(t), 0.0003, 0.006 if not heavy else 0.012)
-    body = np.sin(2 * np.pi * (240 if not heavy else 160) * t) * env(len(t), 0.0005, 0.012)
-    return 0.7 * c + 0.4 * body
+    body = np.sin(2 * np.pi * 170 * t) * env(len(t), 0.0015, 0.014)
+    click = fft_filter(rng.standard_normal(len(t)), lo=300, hi=2500) * env(len(t), 0.0008, 0.004)
+    x = 0.9 * body + 0.35 * click
+    return x / np.max(np.abs(x))
 
 
-def whoosh(d=0.45, up=True, lo=400, hi=5000):
-    t = t_arr(d)
-    nz = noise(d)
-    a, b = fft_filter(nz, lo=lo, hi=lo * 3), fft_filter(nz, lo=hi / 3, hi=hi)
-    x = t / d if up else 1 - t / d
-    return (a * (1 - x) + b * x) * np.sin(np.pi * np.clip(t / d, 0, 1)) ** 2
+REL_DB = -20.0  # 탭 RMS(첫 40ms) = 주변 음악 RMS(±0.5s) − 20dB
 
 
-def pop(f0=900, f1=420, d=0.09):
-    t = t_arr(d)
-    f = f1 + (f0 - f1) * np.exp(-t / 0.02)
-    return np.sin(2 * np.pi * np.cumsum(f) / SR) * env(len(t), 0.001, 0.035)
-
-
-def boing():
-    d = 0.22
-    t = t_arr(d)
-    f = 480 + 1100 * (1 - np.exp(-t / 0.05))
-    s = np.sin(2 * np.pi * np.cumsum(f) / SR) + 0.3 * np.sin(4 * np.pi * np.cumsum(f) / SR)
-    return s * env(len(t), 0.002, 0.08)
-
-
-def tap():
-    d = 0.08
-    t = t_arr(d)
-    return (np.sin(2 * np.pi * 1150 * t) * 0.6 + np.sin(2 * np.pi * 620 * t) * 0.5) * env(len(t), 0.0005, 0.018) + 0.2 * fft_filter(noise(d), lo=2500) * env(len(t), 0.0003, 0.004)
-
-
-def marker():
-    d = 0.22
-    t = t_arr(d)
-    return fft_filter(noise(d), lo=2500, hi=9000) * np.sin(np.pi * t / d) ** 1.5 * (1 + 0.5 * np.sin(2 * np.pi * 38 * t))
-
-
-def clock_tick(hi=True):
-    d = 0.05
-    t = t_arr(d)
-    return (np.sin(2 * np.pi * (2300 if hi else 1700) * t) + 0.4 * fft_filter(noise(d), lo=3000)) * env(len(t), 0.0003, 0.007)
-
-
-def cricket():
-    out = np.zeros(int(SR * 0.6))
-    for k in range(2):
-        for j in range(3):
-            d = 0.035
-            t = t_arr(d)
-            s = np.sin(2 * np.pi * 4600 * t) * np.sin(np.pi * t / d) ** 2
-            i = int(SR * (k * 0.28 + j * 0.05))
-            out[i : i + len(s)] += s
-    return out
-
-
-def sweep_shine():
-    s = whoosh(0.6, up=True, lo=1500, hi=12000)
-    t = t_arr(0.6)
-    return s + 0.1 * sum(np.sin(2 * np.pi * f * t) for f in (2637, 3136, 3951)) / 3 * np.sin(np.pi * t / 0.6) ** 2
-
-
-def chime():
-    t = t_arr(1.2)
-    s = sum(np.sin(2 * np.pi * f * t) * np.exp(-t / 0.5) + 0.2 * np.sin(2 * np.pi * f * 2.76 * t) * np.exp(-t / 0.15) for f in (1318.5, 1975.5))
-    return s / 2 * env(len(t), 0.003, 5)
-
-
-def build_sfx(c):
+def build_sfx(c, music):
     N = int(round(c["dur"] * SR))
     buf = np.zeros((N, 2))
+    cue_list = []
 
-    def place(sig, t, gain=1.0, pan=0.0):
-        # 소리는 그림보다 1프레임 늦게 (sound.md)
-        i = int(round((t + 1 / 30) * SR))
-        if i >= N:
-            return
-        sig = sig[: N - i]
-        buf[i : i + len(sig), 0] += sig * gain * np.cos((pan + 1) * np.pi / 4) * np.sqrt(2)
-        buf[i : i + len(sig), 1] += sig * gain * np.sin((pan + 1) * np.pi / 4) * np.sqrt(2)
+    def place_rel(t, name):
+        sig = soft_tap()
+        i = int(round((t + 1 / 30) * SR))  # 소리는 그림보다 1프레임 늦게 (sound.md)
+        a, b = max(0, i - SR // 2), min(N, i + SR // 2)
+        m_rms = float(np.sqrt(np.mean(music[a:b] ** 2)))
+        s_rms = float(np.sqrt(np.mean(sig[: int(0.04 * SR)] ** 2)))
+        gain = m_rms * 10 ** (REL_DB / 20) / s_rms
+        sig = sig[: N - i] * gain
+        buf[i : i + len(sig)] += sig[:, None]
+        cue_list.append({"t": round(t, 3), "sfx": name, "rel_db": REL_DB, "music_rms_dbfs": round(20 * np.log10(m_rms), 1)})
 
-    B = lambda k: k * P
     BAR = 4 * P
-    R = c["R"]
-    WIN = c["win"]
-    clicks = lambda ts, g=0.2: [place(key_click(), t, g, float(rng.uniform(-0.3, 0.3))) for t in ts]
     if c["dur"] == 30.0:
-        place(pop(1100, 600), BAR, 0.25)                     # 타이핑 점 등장 (다운비트)
-        place(pop(900, 520), 2 * BAR + 0.05, 0.22)           # AI 답 말풍선이 열린다
-        place(marker(), 4 * BAR, 0.16, -0.2)                 # 골드 언더라인 ×2 (선 드로잉)
-        place(marker(), 4 * BAR + 0.09, 0.16, 0.2)
-        place(pop(800, 500), 4 * BAR + 1.0, 0.18)            # 예시 줄
-        # C4 입력: 단어 덩어리마다 짧은 타건, 망설임 백스페이스 2회
-        k1 = 5 * BAR + 0.25  # 아래 입력창에 덩어리로 들어간다 (chat.html C4)
-        clicks([k1 - 0.18, k1 - 0.12, k1 - 0.06, k1])
-        k2 = k1 + 0.6
-        place(key_click(True), k2 - 0.03, 0.3)
-        place(key_click(True), k2 + 0.06, 0.3)
-        k3 = k2 + 0.25
-        clicks([k3 - 0.12, k3 - 0.06, k3])
-        k4 = k3 + 0.5
-        clicks([k4 - 0.13, k4 - 0.07, k4, k4 + 0.06])
-        kSend = k4 + 0.7
-        place(tap(), kSend, 0.4)                             # 전송: 질문이 대화로 올라간다
-        place(whoosh(0.35, True, 500, 5000), kSend + 0.08, 0.22)
-        # C5 정적: 초침 틱(무음 그리드 유지) + 귀뚜라미
-        for k, hi in ((27, True), (28, False), (29, True)):
-            place(clock_tick(hi), B(k), 0.5)
-        place(cricket(), B(29.6), 0.18, 0.4)
-        place(pop(950, 520), R, 0.28)                        # 🙂 답 (음악 복귀 다운비트)
-        place(pop(700, 450), R + 1.55, 0.15)                 # [상담사 연결] 등장
-        place(tap(), WIN - 0.42, 0.45)                       # 누름
-        place(sweep_shine(), WIN + 0.08, 0.22)               # 오프닝 윈도우 (크래시로 빨려 들어간다)
-        place(chime(), c["brand"] + 0.12, 0.18)              # 로고·USP
-        place(pop(900, 480), R + 3 * BAR, 0.2)               # 사람의 답
-        place(pop(700, 450), R + 4 * BAR + 0.8, 0.15)        # 무료 상담 신청 등장
-        place(tap(), R + 4 * BAR + 2.9, 0.35)                # 누름
+        kSend = 5 * BAR + 0.25 + 0.6 + 0.25 + 0.5 + 0.7  # chat.html C4: 아래 입력창 전송
+        place_rel(kSend, "질문 전송 탭")
     else:
-        place(pop(1100, 600), BAR, 0.25)
-        place(pop(900, 520), 3.05, 0.22)
-        place(marker(), 2 * BAR, 0.16, -0.2)
-        place(marker(), 2 * BAR + 0.09, 0.16, 0.2)
-        place(pop(800, 500), 4.35, 0.18)
-        place(tap(), 4.86, 0.35)                             # 다시 묻는 말풍선 (전송)
-        place(whoosh(0.35, True, 500, 5000), 4.88, 0.22)
-        place(clock_tick(True), B(12.5), 0.5)
-        place(clock_tick(False), B(13), 0.5)
-        place(pop(950, 520), R, 0.28)
-        place(pop(700, 450), R + 0.6, 0.15)
-        place(tap(), WIN - 0.42, 0.45)
-        place(sweep_shine(), WIN + 0.08, 0.22)
-        place(chime(), 8.5 + 0.12, 0.18)
-        place(pop(900, 480), R + 2 * BAR, 0.2)
-        place(pop(700, 450), R + 3 * BAR + 0.5, 0.15)
-    return buf
+        place_rel(4.9, "질문 전송 탭")  # 15s: 다시 묻는 말풍선
+    place_rel(c["win"] - 0.42, "[상담사 연결] 누름 탭")
+    return buf, cue_list
 
 
 def limiter_gain(mix, ceiling, w=240):
@@ -324,7 +210,7 @@ def main():
     c = cues(cut)
     src = load_src()
     music = build_music(c, src)
-    sfx = build_sfx(c)
+    sfx, sfx_cues = build_sfx(c, music)
     out = os.path.join(ROOT, "assets", "audio")
     os.makedirs(out, exist_ok=True)
     suffix = "-15s" if cut == 15 else ""
@@ -349,6 +235,7 @@ def main():
            "win": round(c["win"], 4),
            "chapters": {k: round(v, 4) for k, v in c["chapters"].items()},
            "cuts": {k: round(v, 4) for k, v in c["cuts"].items()},
+           "sfx": sfx_cues,
            "music_segments": [{k: (round(v, 4) if isinstance(v, float) else v) for k, v in s.items()} for s in c["music"]],
            "mix": {"integrated_lufs": i_lufs, "true_peak_dbtp": tp, "gain": round(float(gain), 4),
                    "max_gain_reduction_db": round(float(20 * np.log10(np.min(g))), 2)}}

@@ -368,45 +368,62 @@ def build_quiet(T, c1, c2, c3=None, c4=None, bridge=None):
 
 
 # ============================================================ SIGN (C6 / C6') — Navy (brand field)
-# THE signature moment, in the big signature field (the '칸', one tone step up from Navy): a gold
-# stroke wider than the field (940px) draws across it near the frame centre (1100 ms in-out) while
-# the blank line gives way. The caption under the line becomes '그 칸으로 가는 첫 계단' (88px), then the
-# USP stack (144px) rises above the field and the brand settles under it.
+# Client round 4 ("첫 계단을 YOU로"): one big blank signature field in the middle of the frame (Navy one
+# tone lighter, 840x400) under its Small label. On the music's biggest hit a gold monoline hand
+# signature "You" (one continuous stroke, capital Y) is written INSIDE the field (createDrawable,
+# 1.1 s in-out; nothing crosses the field's edges); "이 칸의 이름, 당신." rises under it. On the next
+# downbeat the field and the sentence glide up (450 ms in-out) and the step / USP / brand rise below.
+YOU_PATH = ("M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 "
+            "C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 "
+            "C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 "
+            "C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 "
+            "C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 "
+            "C 800 342, 850 316, 886 266")
+YOU_BOX = (296, 176, 886, 454)   # path bbox (drawn in a 1080-wide sketch frame)
+YOU_SCALE = 1.15
+FIELD_TOP, FIELD_H = 735, 400    # before the glide; the field's centre sits near the frame centre
+GLIDE = -481                     # label 687 -> 206
+
+
 def build_sign(T, compact=False):
-    css = """
-    #s-ground { background: var(--navy); }
-    #s-panel { position: absolute; left: 120px; top: 790px; width: 840px; height: 460px; background: #15284a; }
-    #s-svg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
-    .mark { position: absolute; left: 518.4px; width: 43.2px; height: 48px; }
+    fcx, fcy = 540, FIELD_TOP + FIELD_H / 2
+    bx, by = (YOU_BOX[0] + YOU_BOX[2]) / 2, (YOU_BOX[1] + YOU_BOX[3]) / 2
+    tx, ty = fcx - bx * YOU_SCALE, fcy - by * YOU_SCALE
+    css = f"""
+    #s-ground {{ background: var(--navy); }}
+    #s-field {{ position: absolute; left: 120px; top: {FIELD_TOP}px; width: 840px; height: {FIELD_H}px; background: #15284a; }}
+    #s-svg {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }}
 """
     u3 = "교육부장관 명의" if compact else "교육부장관 명의 · '법학 전공' 표기"
-    stroke = "M70 1004 C 300 1010, 600 1002, 820 988 S 980 970, 1010 962"
+    y_step = FIELD_TOP + GLIDE + FIELD_H + 18 + 101 + 33     # under the glided sentence
     html = f'''    <div id="s-ground" class="field" data-layout-ignore></div>
     <div id="s-cam" class="cam" data-layout-allow-overflow>
-      <div id="s-panel"></div>
-      {text("s-u1", "body", 280, ["국내 유일*"], "au", rise=True)}
-      {text("s-u2", "display", 352, ["100% 온라인", "법학사"], "on-ink", rise=True)}
-      {text("s-u3", "body", 668, [u3], "m-d", rise=True)}
-      {text("s-sg", "body", 1080, [SIG], "m-d")}
-      {text("s-nl", "head", 1062, [NEW], "on-ink", rise=True)}
-      {rule("s-r", 990, 720, "m-d")}
-      {caret("s-c", 180, 910, 72, "au")}
-      <svg id="s-svg" viewBox="0 0 1080 1920" data-layout-ignore>
-        <path id="s-ink" d="{stroke}" stroke="#b8955a" stroke-width="8" stroke-linecap="round" fill="none" style="opacity:0"/>
-      </svg>
-      <div id="s-br" class="later">{MARK.replace('class="mark"', 'class="mark" style="top:1290px"')}{text("s-bn", "body", 1346, [BRAND], "on-ink")}</div>
+      <div id="s-you">
+        {text("s-lab", "small", FIELD_TOP - 48, [SIG], "m-d")}
+        <div id="s-field"></div>
+        <svg id="s-svg" viewBox="0 0 1080 1920" data-layout-ignore>
+          <g transform="translate({tx:.2f} {ty:.2f}) scale({YOU_SCALE})">
+            <path id="s-ink" d="{YOU_PATH}" stroke="#b8955a" stroke-width="{4 / YOU_SCALE:.2f}" stroke-linecap="round" stroke-linejoin="round" fill="none" style="opacity:0"/>
+          </g>
+        </svg>
+        {text("s-you2", "head", FIELD_TOP + FIELD_H + 18, ['이 칸의 이름, <span class="au">당신.</span>'], "on-ink", rise=True)}
+      </div>
+      {text("s-nl", "body", y_step, [NEW], "on-ink", rise=True)}
+      {text("s-u1", "body", y_step + 86, ["국내 유일*"], "au", rise=True)}
+      {text("s-u2", "display", y_step + 156, ["100% 온라인", "법학사"], "on-ink", rise=True)}
+      {text("s-u3", "small", y_step + 486, [u3], "m-d", rise=True)}
+      {text("s-bn", "body", y_step + 548, [BRAND], "on-ink", cls="later")}
     </div>'''
     js = f"""
     const T = {J(T)};
     PUSH(T.c0, T.end, "#s-cam");
-    if (T.caret != null) CARET("#s-c", T.caret, T.hit);
-    S(T.hit, "#s-c", {{ opacity: 0 }});
-    DRAW(T.c0, T.hit, "#s-ink", 1.1);
-    A(T.hit, "#s-r", {{ opacity: [1, 0] }}, 1.1, INOUT);  // the blank gives way to the signature
-    LEAVE(T.oldOut, ["#s-sg-0"]);
-    RISE(T.newIn, ["#s-nl-0"]);
+    DRAW(T.c0, T.hit, "#s-ink", T.draw);
+    RISE(T.you, ["#s-you2-0"]);
+    A(T.glide, "#s-you", {{ translateY: [0, {GLIDE}] }}, 0.45, INOUT);
+    LEAVE(T.glide, ["#s-lab-0"]);  // the label has done its job; the step line below carries it on
+    RISE(T.step, ["#s-nl-0"]);
     RISE(T.usp, ["#s-u1-0", "#s-u2-0", "#s-u2-1", "#s-u3-0"]);
-    ENTER(T.brand, "#s-br");
+    ENTER(T.brand, "#s-bn");
 """
     return css, html, js
 
@@ -528,8 +545,8 @@ if VARIANT == "30":
     T_b = dict(c0=C["blank"], cap=C["blank"] + 0.05, btn=7.30, presses=[7.62, 7.92, 8.20, 8.46], toast=8.58, end=C["quiet"])
     T_q = dict(c0=C["quiet"], c1=C["quiet"] + 0.08, c2=12.12, c5=B(32), ext=B(32) + 0.08, c3=14.42, c4=15.50,
                br=None, end=C["sign"])
-    T_s = dict(c0=C["sign"], caret=C["sign"] + 0.28, hit=B(44), oldOut=B(44) + 0.55, newIn=B(44) + 0.65,
-               usp=B(48), brand=21.90, end=C["cta"])
+    T_s = dict(c0=C["sign"], hit=B(44), draw=1.1, you=20.40, glide=B(48), step=B(48) + 0.40, usp=B(48) + 0.50,
+               brand=21.95, end=C["cta"])
     T_c = dict(c0=C["cta"], head=C["cta"] + 0.05, btn=B(60), sub=B(60) + 0.09, e=27.20, slo=27.75,
                info=27.85, end=C["fin"])
     SCENE_SPECS = [
@@ -543,7 +560,7 @@ if VARIANT == "30":
         ("cta", C["cta"], C["fin"], build_cta(T_c)),
     ]
     TAG = (15.5, C["cta"])   # 연출: spec f465–f719 (15.5–24.0), held to the end of the shot
-    DISC = T_s["usp"]        # L1·L2 with the USP (spec f630)
+    DISC = T_s["glide"]      # L1·L2 on the USP downbeat (spec f630)
     LIGHT_FROM = None        # the disclaimers always sit on a dark field (Navy under C6, C7, C8)
     CUTS = [(C["tease"], "C1 S2"), (C["fill"], "C2"), (C["blank"], "C3"), (C["quiet"], "C4"), (C["sign"], "C6"), (C["cta"], "C7")]
     MOVES = [(T_b["toast"] + 0.3, "C3 S3 toast (entrance)"), (T_q["c5"], "C5 line draws out (in shot)"),
@@ -554,8 +571,8 @@ else:
     T_h = dict(c0=C["hook"], end=C["tease"])
     T_t = dict(c0=C["tease"], cap=C["tease"] + 0.05, btn=B(5), presses=[2.40, 2.64, 2.88], toast=2.98, end=C["quiet"])
     T_q = dict(c0=C["quiet"], c1=C["quiet"] + 0.08, c2=6.40, c5=None, br=B(19), brIn=B(19) + 0.3, gold=9.207, end=C["sign"])
-    T_s = dict(c0=C["sign"], caret=None, hit=C["sign"], oldOut=C["sign"] + 0.06, newIn=C["sign"] + 0.14,
-               usp=10.70, brand=11.17, end=C["end"])
+    T_s = dict(c0=C["sign"], hit=C["sign"], draw=0.75, you=10.25, glide=10.45, step=10.78, usp=10.84,
+               brand=11.20, end=C["end"])
     T_e = dict(c0=C["end"], slo=C["end"] + 0.05, info=C["end"] + 0.5, btn=C["end"], ul=C["end"] + 0.75, end=C["fin"])
     SCENE_SPECS = [
         ("hook", C["hook"], C["tease"], build_hook(T_h)),
@@ -566,18 +583,18 @@ else:
         ("end", C["end"], C["fin"], build_end(T_e)),
     ]
     TAG = (9.0, C["end"])    # 연출: spec f270–f359 (9.0–12.0), held to the end of the staged shot
-    DISC = T_s["usp"]        # spec f321 (10.7)
+    DISC = 10.70             # L1·L2 at spec f321 (10.7), with the USP moment
     LIGHT_FROM = None
     CUTS = [(C["tease"], "C1' S2"), (C["quiet"], "C4'"), (C["sign"], "C6' (signature)"), (C["end"], "C8'")]
     MOVES = [(T_t["btn"], "C3' button (music returns)"), (T_t["toast"] + 0.3, "C3' toast"), (T_q["br"], "C4' S3 bridge"),
              (T_s["usp"], "C6' S3 USP")]
 
-# sound on the few visible actions (art direction v3: restraint): generate presses, the error toast,
-# the pen touch of the signature, a soft tick when the consult button arrives. No whips or swipes.
+# sound on exactly two visible actions (client round 4: fewer, cleaner effects): the error toast and the
+# pen touch of the signature. No clicks, ticks, whips or swipes.
 if VARIANT == "30":
-    SFX = ([(t, "click") for t in T_b["presses"]] + [(T_b["toast"] + 0.3, "error"), (T_s["hit"], "pen"), (T_c["btn"], "tick")])
+    SFX = [(T_b["toast"] + 0.3, "error"), (T_s["hit"], "pen")]
 else:
-    SFX = ([(t, "click") for t in T_t["presses"]] + [(T_t["toast"] + 0.3, "error"), (T_s["hit"], "pen"), (T_e["btn"], "tick")])
+    SFX = [(T_t["toast"] + 0.3, "error"), (T_s["hit"], "pen")]
 
 SLOTS = []
 for cid, t0, t1, (css, html, js) in SCENE_SPECS:

@@ -46,23 +46,11 @@
    "label": "C4' S3 bridge"
   },
   {
-   "t": 10.7,
+   "t": 10.84,
    "label": "C6' S3 USP"
   }
  ],
  "sfx": [
-  {
-   "t": 2.4,
-   "kind": "click"
-  },
-  {
-   "t": 2.64,
-   "kind": "click"
-  },
-  {
-   "t": 2.88,
-   "kind": "click"
-  },
   {
    "t": 3.28,
    "kind": "error"
@@ -70,10 +58,6 @@
   {
    "t": 10.066,
    "kind": "pen"
-  },
-  {
-   "t": 12.261,
-   "kind": "tick"
   }
  ],
  "scenes": [

@@ -1,14 +1,18 @@
-"""BGM excerpt + beat-synced SFX for 「마지막 서명」 (no synthesized music).
+"""BGM excerpt + two quiet SFX for 「마지막 서명」 (no synthesized music).
 
 Usage (project root; numpy + ffmpeg):
   python3 tools/make_audio.py              -> assets/audio/mix-30s.mp3
   python3 tools/make_audio.py --variant 15 -> assets/audio/mix-15s.mp3 (+ copy in v15/assets/audio/)
 
 Music: assets/music/source.mp3 = "Breaking News Intro" by kornevmusic (Pixabay 527939), user supplied.
-The excerpt starts on a beat (beats/source.json); automation below is volume and a low-pass
-sweep only (the track has no break where the story needs silence). SFX are short noise/transient
-effects (click, error "뚱", pen "톡", tick) placed at the picture's cue times (beats/cuts*.json "sfx",
-written by tools/build.py — run the builder first). No whips or swipes; no tonal music is generated. Master: -15 LUFS integrated target, true peak <= -1 dBTP.
+The excerpt starts on a beat (beats/source.json) and plays at its natural level and tone: no filter,
+no ducking (client round 4: "먹먹해지는 효과는 빼줘"). The only automation is the hook's short stop
+(the story's beat) and the fade into the end. The quiet of C4/C5 is carried by the track's own
+drumless build.
+SFX (client: "조잡한 효과음도 줄여봐"): exactly two per cut, both clean tones without noise — the error
+toast (one sine, -20 dB under the music around it) and the pen touch of the signature (a soft wood
+tone, -18 dB, riding the music's biggest hit). Cue times come from the picture (beats/cuts*.json
+"sfx", written by tools/build.py — run the builder first). Master: -15 LUFS, true peak <= -1 dBTP.
 """
 import json
 import os
@@ -25,7 +29,6 @@ VARIANT = sys.argv[sys.argv.index("--variant") + 1] if "--variant" in sys.argv e
 DUR = 15.0 if VARIANT == "15" else 30.0
 OFFSET = {"30": 1.776, "15": 10.971}[VARIANT]
 N = int(SR * DUR)
-rng = np.random.default_rng(1102)
 
 BEATS = json.load(open(os.path.join(ROOT, "beats", "source.json")))
 _i0 = min(range(len(BEATS["beats"])), key=lambda k: abs(BEATS["beats"][k] - OFFSET))
@@ -37,7 +40,7 @@ def B(k):
     return GRID[k0] + (k - k0) * (GRID[k0 + 1] - GRID[k0])
 
 
-# ------------------------------------------------------------------ music excerpt
+# ------------------------------------------------------------------ music excerpt (natural level and tone)
 raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{OFFSET:.4f}", "-t", f"{DUR + 0.5:.3f}",
                       "-i", os.path.join(ROOT, "assets/music/source.mp3"), "-ac", "2", "-ar", str(SR), "-f", "f32le", "-"],
                      capture_output=True, check=True).stdout
@@ -47,134 +50,59 @@ if len(mus) < N:
 t = np.arange(N) / SR
 
 
-def lowpass(x, fc):
-    S = np.fft.rfft(x, axis=0)
-    f = np.fft.rfftfreq(len(x), 1 / SR)
-    return np.fft.irfft(S * (1 / (1 + (f / fc) ** 4))[:, None], len(x), axis=0)
-
-
-def curve(points, kind="lin"):
-    """piecewise curve over t from [(time, value), ...]"""
+def curve(points):
+    """piecewise-linear dB curve over t from [(time, dB), ...]"""
     xs, ys = zip(*points)
     return np.interp(t, xs, ys)
 
 
-# low-pass sweep = crossfade along a ladder of low-passed copies by log cutoff
-LADDER = [250.0, 600.0, 1500.0, 4000.0, 20000.0]
-copies = [lowpass(mus, fc) for fc in LADDER[:-1]] + [mus]
-
-
-def sweep(fc_curve):
-    lf = np.log(np.clip(fc_curve, LADDER[0], LADDER[-1]))
-    ll = np.log(LADDER)
-    out = np.zeros_like(mus)
-    for i in range(len(LADDER) - 1):
-        w = np.clip((lf - ll[i]) / (ll[i + 1] - ll[i]), 0, 1)
-        inside = (lf >= ll[i]) & (lf <= ll[i + 1])
-        out[inside] = (copies[i][inside] * (1 - w[inside, None]) + copies[i + 1][inside] * w[inside, None])
-    out[lf <= ll[0]] = copies[0][lf <= ll[0]]
-    out[lf >= ll[-1]] = copies[-1][lf >= ll[-1]]
-    return out
-
-
 db = lambda v: 10 ** (v / 20)
 if VARIANT == "30":
-    # 2.70–3.05 short stop (spec C1 "2.8s 짧은 스톱"), slam back on the C2 cut (beat 7)
-    # C3 toast → C4: low-pass sweep 20k→250 Hz and duck -13 dB (spec "리버스 스윕 → 무음", C4 정적)
-    # C5: the track's own drumless build; filter opens and level returns into the pen hit (B44 = 19.26 s)
-    # end: lands on the downbeat hit B68 (29.78 s), 0.2 s fade to 30.0
-    fc = curve([(0, 20000), (B(21), 20000), (B(23), 250), (B(32), 250), (B(39), 4000), (B(43.5), 20000), (DUR, 20000)])
-    g = curve([(0, 0), (2.69, 0), (2.70, -40), (B(7) - 0.012, -40), (B(7), 0), (B(21), 0), (B(23), -13), (B(32), -13),
-               (B(40), -4), (B(43.5), 0), (B(68), 0), (DUR, -40)])
+    # 2.70–3.05 short stop (spec C1 "2.8s 짧은 스톱"), back on the C2 cut (B7); lands on the downbeat
+    # hit B68 (29.78 s), 0.2 s fade to 30.0
+    g = curve([(0, 0), (2.69, 0), (2.70, -40), (B(7) - 0.012, -40), (B(7), 0), (B(68), 0), (DUR, -40)])
 else:
-    # hook glitch stop, toast → C4' sweep down + duck (falls into the track's drumless build), open into the hit B23
-    fc = curve([(0, 20000), (B(8), 20000), (B(11), 300), (B(16), 500), (B(21), 4000), (B(22.5), 20000), (DUR, 20000)])
-    g = curve([(0, 0), (B(4.75), 0), (B(4.75) + 0.01, -40), (B(5) - 0.012, -40), (B(5), 0), (B(8), 0), (B(11), -11),
-               (B(18), -8), (B(22.5), 0), (B(34), 0), (DUR, -40)])
-music = sweep(fc) * db(g)[:, None]
+    # hook stop B4.75–B5 (back on C3'), lands on the accent hit B34 (14.90 s), fade to 15.0
+    g = curve([(0, 0), (B(4.75), 0), (B(4.75) + 0.01, -40), (B(5) - 0.012, -40), (B(5), 0), (B(34), 0), (DUR, -40)])
+music = mus * db(g)[:, None]
 
 
-# ------------------------------------------------------------------ SFX (reused from the first draft, noise/transient based)
+# ------------------------------------------------------------------ SFX: two clean tones
 def t_arr(d):
     return np.arange(int(d * SR)) / SR
 
 
-def band(sig, lo, hi):
-    n = len(sig)
-    S = np.fft.rfft(sig)
-    f = np.fft.rfftfreq(n, 1 / SR)
-    m = np.ones_like(f)
-    if lo > 0:
-        m *= 1 / (1 + (lo / np.maximum(f, 1)) ** 4)
-    if hi < SR / 2:
-        m *= 1 / (1 + (f / hi) ** 4)
-    return np.fft.irfft(S * m, n)
+def toast_tone():
+    """the error toast: one sine (330 Hz), 6 ms attack, short exponential decay — no square, no noise"""
+    tt = t_arr(0.28)
+    return np.sin(2 * np.pi * 330 * tt) * np.minimum(1, tt / 0.006) * np.exp(-tt / 0.09)
 
 
-def norm(x):
-    p = np.max(np.abs(x))
-    return x / p if p > 0 else x
+def pen_wood():
+    """the pen touch: a soft wood tone (two decaying partials), 2 ms attack, no click noise, no thump"""
+    tt = t_arr(0.35)
+    wood = np.sin(2 * np.pi * 1050 * tt) * np.exp(-tt / 0.02) + 0.6 * np.sin(2 * np.pi * 620 * tt) * np.exp(-tt / 0.035)
+    return wood * np.minimum(1, tt / 0.002)
 
 
-def tick(level=0.3, f=3200):
-    n = int(0.02 * SR)
-    tt = np.arange(n) / SR
-    return (np.sin(2 * np.pi * f * tt) * np.exp(-tt / 0.003) + band(rng.standard_normal(n), 2000, 8000) * np.exp(-tt / 0.002) * 0.4) * level
-
-
-def click(level=0.5):
-    n = int(0.05 * SR)
-    tt = np.arange(n) / SR
-    a = band(rng.standard_normal(n), 1500, 7000) * np.exp(-tt / 0.003)
-    b = np.zeros(n)
-    i = int(0.018 * SR)
-    b[i:] = band(rng.standard_normal(n - i), 1000, 5000) * np.exp(-np.arange(n - i) / SR / 0.004) * 0.6
-    return norm(a + b) * level
-
-
-def error_tone(level=0.55):
-    tt = t_arr(0.26)
-    f = 190 - 40 * tt / 0.26
-    ph = 2 * np.pi * np.cumsum(f) / SR
-    x = np.sign(np.sin(ph)) * 0.35 + np.sin(ph) + 0.4 * np.sin(2 * ph)
-    x = band(x, 0, 1800)
-    return norm(x) * np.minimum(1, tt / 0.005) * np.exp(-tt / 0.12) * level
-
-
-def pen_tok(level=1.0):
-    tt = t_arr(0.5)
-    wood = np.sin(2 * np.pi * 1050 * tt) * np.exp(-tt / 0.018) + 0.6 * np.sin(2 * np.pi * 620 * tt) * np.exp(-tt / 0.03)
-    thump = np.sin(2 * np.pi * (90 + 60 * np.exp(-tt / 0.02)) * tt) * np.exp(-tt / 0.09) * 0.9
-    cl = band(rng.standard_normal(len(tt)), 2500, 9000) * np.exp(-tt / 0.002) * 0.6
-    return (wood + thump + cl) * level
-
-
+REL_DB = {"error": -20.0, "pen": -18.0}   # level of the tone's first 80 ms against the music's RMS around it
+SOUND = {"error": toast_tone, "pen": pen_wood}
 sfx = np.zeros(N)
-
-
-def place(sig, at, gain=1.0):
-    at += 1 / 30  # sound lands one frame after its picture
-    i = int(round(at * SR))
-    j = min(N, i + len(sig))
-    if i < N:
-        sfx[i:j] += sig[: j - i] * gain
-
-
-# SFX cues come from the picture (tools/build.py writes them into beats/cuts*.json), so sound and
-# picture cannot drift apart. Art direction v3: restraint — only what the story needs, kept quiet:
-# the generate presses, the error toast (one tone), the pen touch of the signature (on the music's
-# biggest hit, so it rides the hit rather than towering over it), a soft tick when the button arrives.
 CUES = json.load(open(os.path.join(ROOT, "beats", "cuts.json" if VARIANT == "30" else "cuts-15s.json")))["sfx"]
-SOUND = {
-    "click": lambda: click(0.32),
-    "error": lambda: error_tone(0.38),
-    "pen": lambda: pen_tok(0.62),
-    "tick": lambda: tick(0.16, 1900),
-}
+assert len(CUES) == 2 and {c["kind"] for c in CUES} == {"error", "pen"}, CUES
 for cue in CUES:
-    place(SOUND[cue["kind"]](), cue["t"], 1.0)
+    sig = SOUND[cue["kind"]]()
+    at = cue["t"] + 1 / 30                       # sound lands one frame after its picture
+    i = int(round(at * SR))
+    w0, w1 = max(0, i - int(0.3 * SR)), min(N, i + int(0.5 * SR))
+    mrms = np.sqrt(np.mean(music[w0:w1] ** 2))
+    srms = np.sqrt(np.mean(sig[: int(0.08 * SR)] ** 2))
+    sig = sig * (mrms / srms) * db(REL_DB[cue["kind"]])
+    j = min(N, i + len(sig))
+    sfx[i:j] += sig[: j - i]
+    print(f"  sfx {cue['kind']:<5s} t={cue['t']:.3f}s  {REL_DB[cue['kind']]:+.0f} dB vs music RMS {20 * np.log10(mrms):.1f} dBFS")
 
-mix = music + sfx[:, None] * 0.5
+mix = music + sfx[:, None]
 
 
 def write_wav(path, x):
