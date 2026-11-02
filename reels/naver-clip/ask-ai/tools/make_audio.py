@@ -1,6 +1,7 @@
 """Synthesize the draft sound bed for 「AI에게 물었다」 30s (no VO).
 
-Usage: python3 tools/make_audio.py      (run from the project root; needs numpy + ffmpeg)
+Usage: python3 tools/make_audio.py [--cut 15]   (run from the project root; needs numpy + ffmpeg)
+  --cut 15 writes bgm-15s.wav / sfx-15s.wav (15s cues, §3) instead of the 30s stems.
 Writes assets/audio/bgm.wav (music stem) and assets/audio/sfx.wav (effects stem),
 48 kHz stereo 16-bit, both exactly 30.0 s. The two stems are scaled by one shared gain
 so their sum measures about -16 LUFS integrated with true peak <= -1 dBTP (ffmpeg ebur128).
@@ -387,6 +388,101 @@ def build_sfx():
     return s
 
 
+def build_music15():
+    """15s cues (§3): 1.5 pulse · 3.0 lo-fi · 6.0 BGM cut · 8.5 acoustic upbeat · 12.5 resolve."""
+    m = np.zeros((N, 2))
+    t = t_arr(0.9)
+    pulse = (np.sin(2 * np.pi * 220 * t) + 0.5 * np.sin(2 * np.pi * 330 * t) + 0.3 * np.sin(2 * np.pi * 440.5 * t)) * env(len(t), 0.01, 0.28)
+    place(m, fft_filter(pulse, hi=2500), 1.5, 0.35)
+    beat = 60 / 90
+    chords = [[53, 57, 60, 64], [52, 55, 59, 62]]
+    roots = [41, 40]
+    lofi = np.zeros((N, 2))
+    for b in range(8):
+        tb = 3.0 + b * beat
+        if tb >= 6.0:
+            break
+        bar, pos = divmod(b, 4)
+        if pos == 0:
+            for k, note in enumerate(chords[bar % 2]):
+                place(lofi, rhodes(note, d=beat * 4 + 0.3, vel=0.22), tb + 0.012 * k, 1.0, pan=-0.25 + 0.17 * k)
+        if pos in (0, 2):
+            place(lofi, kick(), tb, 0.75)
+            place(lofi, bass(roots[bar % 2], d=beat * 1.6), tb, 0.35)
+        if pos in (1, 3):
+            place(lofi, snare(), tb, 0.32, pan=0.05)
+        for e in range(2):
+            place(lofi, hat(), tb + e * beat * 0.58, 0.18 if e == 0 else 0.11, pan=0.3)
+    for c in range(2):
+        lofi[:, c] = fft_filter(lofi[:, c], hi=5200, order=2)
+    cut, ramp = int(6.0 * SR), int(0.012 * SR)
+    lofi[cut - ramp : cut] *= np.linspace(1, 0, ramp)[:, None]
+    lofi[cut:] = 0
+    a = int(3.0 * SR)
+    lofi[a : a + int(0.2 * SR)] *= np.linspace(0, 1, int(0.2 * SR))[:, None]
+    m += lofi
+    up = np.zeros((N, 2))
+    prog = [(8.5, [48, 55, 60, 64, 67], 36, [76, 79]), (10.5, [45, 52, 57, 60, 64], 33, [72, 76])]
+    for (ts, ch, root, mel) in prog:
+        for p in [0, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75]:
+            tb = ts + p
+            down = (p * 2) % 1 == 0
+            for k, note in enumerate(ch if down else ch[2:]):
+                place(up, pluck(note, d=0.9, vel=0.30 if down else 0.2, bright=0.55), tb + (0.009 * k if down else 0.006 * (4 - k)), 1.0, pan=-0.35)
+        for p in [0, 1.0]:
+            place(up, kick(), ts + p, 0.55)
+            place(up, bass(root, d=0.9), ts + p, 0.32)
+        for p in [0.5, 1.5]:
+            place(up, snare(0.2) * 0.6, ts + p, 0.3, pan=0.1)
+        for e in range(8):
+            place(up, hat(0.05), ts + e * 0.25, 0.1 if e % 2 else 0.14, pan=0.35)
+        for j, note in enumerate(mel):
+            place(up, piano(note, d=1.8, vel=0.32), ts + j * 1.0, 1.0, pan=0.25)
+    # 12.5 해결 코드 (F → C), ring out, fade 14.0–15.0
+    for k, note in enumerate([41, 48, 53, 57, 60]):
+        place(up, pluck(note, d=0.6, vel=0.26, bright=0.4), 12.0 + 0.01 * k, 1.0, pan=-0.3)
+    for k, note in enumerate([48, 55, 60, 64, 67, 72]):
+        place(up, pluck(note, d=2.5, vel=0.32, bright=0.4), 12.5 + 0.012 * k, 1.0, pan=-0.3)
+    for note in [60, 64, 67, 71, 74]:
+        place(up, piano(note, d=2.5, vel=0.2), 12.5, 1.0, pan=0.2)
+    place(up, kick(), 12.5, 0.6)
+    place(up, bass(36, d=2.0), 12.5, 0.35)
+    a = int(14.0 * SR)
+    up[a:] *= np.linspace(1, 0, N - a)[:, None] ** 1.5
+    m += up
+    return m
+
+
+def build_sfx15():
+    s = np.zeros((N, 2))
+    place(s, tail_whoosh(), 0.0, 0.25)
+    place(s, tick(1900), 1.5, 0.35)
+    for k in range(3):
+        place(s, tick(2400, 0.02), 1.65 + k * 0.24, 0.12)
+    for tt in np.linspace(3.15, 4.15, 7):                      # C2 타이핑
+        place(s, key_click(), tt + rng.uniform(-0.02, 0.02), 0.17, pan=rng.uniform(-0.2, 0.2))
+    place(s, marker(), 4.3, 0.4, pan=-0.1)                     # 마커 "쓱"
+    place(s, pop(), 4.5, 0.3)                                  # 칩
+    for tt in np.linspace(4.6, 4.92, 6):                       # C3 키보드 → 전송
+        place(s, key_click(), tt, 0.18, pan=rng.uniform(-0.25, 0.25))
+    place(s, whoosh(0.35, up=True, lo=500, hi=7000), 4.95, 0.45)
+    for k, tt in enumerate(np.arange(6.05, 6.8, 0.35)):        # 초침 틱 (BGM 컷)
+        place(s, clock_tick(k % 2 == 0), tt, 0.3)
+    place(s, pop(700, 380, 0.08), 6.85, 0.22)
+    place(s, boing(), 7.45, 0.4)                               # 🙂 "뿅"
+    place(s, tap(), 8.2, 0.42)                                 # 탭
+    place(s, sweep_shine(), 8.45, 0.45)                        # 스윕
+    place(s, bell([1046.5, 1318.5, 1568.0], d=1.8), 8.95, 0.22)  # 차임
+    place(s, pop(820, 400), 10.7, 0.3)                         # 상담사 말풍선
+    for v in range(10, 61, 10):
+        p = 1 - np.sqrt(1 - v / 60)
+        place(s, tick(2600, 0.025), 10.85 + 0.65 * p, 0.2)
+    place(s, thump(), 12.52, 0.6)                              # 착지 "둥"
+    place(s, tap(), 12.55, 0.25)                               # 버튼 팝
+    place(s, thump(), 13.12, 0.55)
+    return s
+
+
 def write_wav(path, x):
     x = np.clip(x, -1, 1)
     pcm = (x * 32767).astype("<i2")
@@ -420,10 +516,18 @@ def limiter_gain(mix, ceiling, w=480):
 
 
 def main():
+    global DUR, N
+    import sys
+    cut15 = "--cut" in sys.argv and sys.argv[sys.argv.index("--cut") + 1] == "15"
     out = os.path.join(ROOT, "assets", "audio")
     os.makedirs(out, exist_ok=True)
-    music = build_music()
-    sfx = build_sfx()
+    if cut15:
+        DUR, N = 15.0, int(SR * 15.0)
+        music, sfx = build_music15(), build_sfx15()
+    else:
+        music = build_music()
+        sfx = build_sfx()
+    suffix = "-15s" if cut15 else ""
     music *= 0.55  # bed sits a few dB under the effects
     tmp = os.path.join(out, "_mix_tmp.wav")
     target, ceiling = -16.0, 10 ** (-2.6 / 20)  # sample-peak ceiling leaves room for true peak + AAC
@@ -441,8 +545,8 @@ def main():
     write_wav(tmp, (raw_m + raw_s) * g)
     i_lufs, tp = measure(tmp)
     os.remove(tmp)
-    write_wav(os.path.join(out, "bgm.wav"), raw_m * g)
-    write_wav(os.path.join(out, "sfx.wav"), raw_s * g)
+    write_wav(os.path.join(out, "bgm" + suffix + ".wav"), raw_m * g)
+    write_wav(os.path.join(out, "sfx" + suffix + ".wav"), raw_s * g)
     info = {"integrated_lufs": i_lufs, "true_peak_dbtp": tp, "gain": round(float(gain), 4),
             "max_gain_reduction_db": round(float(20 * np.log10(np.min(g))), 2)}
     print(json.dumps(info))

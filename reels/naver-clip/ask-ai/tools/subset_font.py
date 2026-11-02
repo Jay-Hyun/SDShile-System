@@ -2,7 +2,7 @@
 
 Usage: python3 tools/subset_font.py [path/to/PretendardGOVVariable.woff2]
   (default source: $PRETENDARD_GOV or ../_shared/fonts/PretendardGOVVariable.woff2)
-Collects every character in index.html and compositions/*.html (copy, code, digits for
+Collects every character in index.html, compositions/*.html and v15/compositions/*.html (copy, code, digits for
 the 0→60 counter) and writes assets/fonts/PretendardGOV-subset.woff2 with the wght axis kept.
 The emoji 🙂 is drawn as inline SVG, so it is not in the font.
 Re-run after changing any on-screen copy.
@@ -15,7 +15,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src = (sys.argv[1] if len(sys.argv) > 1 else os.environ.get("PRETENDARD_GOV")
        or os.path.join(ROOT, "..", "_shared", "fonts", "PretendardGOVVariable.woff2"))
-files = [os.path.join(ROOT, "index.html")] + sorted(glob.glob(os.path.join(ROOT, "compositions", "*.html")))
+files = [os.path.join(ROOT, "index.html")] + sorted(glob.glob(os.path.join(ROOT, "compositions", "*.html"))) + sorted(glob.glob(os.path.join(ROOT, "v15", "compositions", "*.html")))
 chars = set()
 for f in files:
     chars |= set(open(f, encoding="utf-8").read())

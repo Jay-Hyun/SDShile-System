@@ -35,3 +35,10 @@ npm run render        # → renders/ask-ai-30s.mp4
 
 ## 남은 일
 - 15초 버전(사양 §3), VO 녹음·믹스, 실기기에서 네이버 클립 오버레이 가림 영역 재측정.
+
+## 15초 버전 (`v15/`)
+- 사양 §3: C1 3.0 / C2 2.0 / C3 1.8 / C4 1.7 / C5 4.0 / C6 2.5. 렌더: `renders/ask-ai-15s.mp4`.
+- `python3 tools/build_15s.py` 가 `v15/`(index.html + compositions)를 생성한다. 30초 씬의 `<style>`을 그대로 가져오고 15초 전용 위치만 덮어쓴다. `v15/assets`는 `../assets` 심볼릭 링크. v15 파일은 직접 고치지 말고 생성기를 고친다.
+- 오디오: `python3 tools/make_audio.py --cut 15` → `bgm-15s.wav`, `sfx-15s.wav` (6.0초 BGM 컷, 8.5 어쿠스틱, 12.5 해결 코드, −16 LUFS).
+- 폰트 서브셋은 30초·15초 문구를 모두 포함한다(`tools/subset_font.py`가 v15도 스캔).
+- 검사·렌더: `cd v15 && npx --yes hyperframes@0.8.200 check` / `render --quality delivery -o ../renders/ask-ai-15s.mp4`.
