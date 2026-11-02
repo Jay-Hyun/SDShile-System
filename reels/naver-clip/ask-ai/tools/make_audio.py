@@ -1,49 +1,140 @@
-"""Synthesize the draft sound bed for 「AI에게 물었다」 30s (no VO).
+#!/usr/bin/env python3
+"""「AI에게 물었다」 오디오: 제공 BGM 편집 + 비트 맞춤 SFX + 마스터.
 
-Usage: python3 tools/make_audio.py [--cut 15]   (run from the project root; needs numpy + ffmpeg)
-  --cut 15 writes bgm-15s.wav / sfx-15s.wav (15s cues, §3) instead of the 30s stems.
-Writes assets/audio/bgm.wav (music stem) and assets/audio/sfx.wav (effects stem),
-48 kHz stereo 16-bit, both exactly 30.0 s. The two stems are scaled by one shared gain
-so their sum measures about -16 LUFS integrated with true peak <= -1 dBTP (ffmpeg ebur128).
+Usage: python3 tools/make_audio.py [--cut 15]
+  assets/music/source.mp3 (grand_project, Pixabay 505611) 를 잘라 붙인다. 합성 음악은 없다.
+  → assets/audio/bgm.wav, sfx.wav (30s) / bgm-15s.wav, sfx-15s.wav (15s)
+  두 스템에 같은 게인·리미터를 걸어 합이 −15 LUFS(±0.3), 트루피크 ≤ −1 dBTP.
+  편집 구간·큐는 beats/cuts-30.json / cuts-15.json 으로도 저장(HTML 타이밍과 같은 수식).
 
-Cues follow docs/ads/naver-clip/05-ask-ai.md §2 (30s):
-  1.5 synth pulse (with typing dots) · 3.0–12.5 lo-fi beat 90 BPM · 12.5 hard BGM cut (silence is the joke)
-  18.0 acoustic + piano upbeat (120 BPM) · 23.5–27 build · 27.0 resolve · 28.2 last chime, fade to 30.0
-All randomness is seeded, so the files are reproducible.
+음악 편집 (P = 1비트 = 60/125.03 s, 소스 다운비트 1.007 + 4P·k):
+  30s  A  src 1.007→  v 0.000–12.477 (26P)   → 12.477 테이프 스톱 0.5s (로딩 개그, 음악 멈춤)
+       —  무음 12.98–14.637 (초침 틱만)
+       B  src 12.524→ v 14.637–26.154 (24P)  14.637 다운비트 슬램(🙂 말풍선), 18.476 = src 16.363 B섹션 크래시(브랜드)
+       C  src 29.800→ v 26.154–30.000          28.073 = src 31.719 마지막 크래시, 29.65–30.0 페이드
+  15s  A  src 1.007→  v 0.000–5.759 (12P)    → 5.759 테이프 스톱
+       B  src 14.443→ v 6.580–10.420 (8P)      6.580 슬램, 8.500 = src 16.363 크래시(브랜드)
+       C  src 29.800→ v 10.420–15.000          12.339 = src 31.719 크래시(슬로건), 14.6–15.0 페이드
 """
 import json
 import os
 import re
 import subprocess
+import sys
 import wave
 
 import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SR = 48000
-DUR = 30.0
-N = int(SR * DUR)
+BEATS = json.load(open(os.path.join(ROOT, "beats", "source.json")))
+P = 60.0 / BEATS["bpm"]
+DB0 = 1.007  # 소스 첫 다운비트 (beats/source.json downbeats[0])
 rng = np.random.default_rng(5)
 
 
+def src_downbeat(t):
+    """가장 가까운 소스 다운비트 (분석 그리드)"""
+    d = np.array(BEATS["downbeats"])
+    return float(d[np.argmin(np.abs(d - t))])
+
+
+# ------------------------------------------------------------------ 큐 (HTML과 같은 수식)
+def cues(cut):
+    B = lambda k: k * P
+    if cut == 30:
+        R = B(30.5)
+        T7 = R + 8 * P
+        c = {
+            "dur": 30.0, "R": R, "brand": T7,
+            "cuts": {"C1": 0.0, "C2": B(6), "C3": B(14), "C4": B(20), "C5": B(26), "C6": R,
+                     "C7": T7, "C8": T7 + 6 * P, "C9": T7 + 11 * P, "C10": R + 26 * P, "end": 30.0},
+            "music": [
+                {"v0": 0.0, "v1": B(26), "src": DB0, "tail": "tapestop"},
+                {"v0": R, "v1": R + 24 * P, "src": src_downbeat(12.524)},
+                {"v0": R + 24 * P, "v1": 30.0, "src": src_downbeat(29.8), "fade": 0.35},
+            ],
+        }
+    else:
+        R = 8.5 - 4 * P
+        c = {
+            "dur": 15.0, "R": R, "brand": 8.5,
+            "cuts": {"C1": 0.0, "C2": B(6), "C3": B(10), "gag": B(12), "C4": R, "C5": 8.5, "C6": 8.5 + 8 * P, "end": 15.0},
+            "music": [
+                {"v0": 0.0, "v1": B(12), "src": DB0, "tail": "tapestop"},
+                {"v0": R, "v1": 8.5 + 4 * P, "src": src_downbeat(14.443)},
+                {"v0": 8.5 + 4 * P, "v1": 15.0, "src": src_downbeat(29.8), "fade": 0.4},
+            ],
+        }
+    return c
+
+
+# ------------------------------------------------------------------ 입출력
+def load_src():
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, "assets/music/source.mp3"),
+                          "-ac", "2", "-ar", str(SR), "-f", "f32le", "-"], check=True, capture_output=True).stdout
+    return np.frombuffer(raw, dtype=np.float32).reshape(-1, 2).astype(np.float64)
+
+
+def write_wav(path, x):
+    pcm = (np.clip(x, -1, 1) * 32767).astype("<i2")
+    with wave.open(path, "wb") as w:
+        w.setnchannels(2)
+        w.setsampwidth(2)
+        w.setframerate(SR)
+        w.writeframes(pcm.tobytes())
+
+
+def measure(path):
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", path, "-af", "ebur128=peak=true", "-f", "null", "-"],
+                       capture_output=True, text=True)
+    tail = r.stderr[r.stderr.rfind("Summary:"):]
+    return float(re.search(r"I:\s+(-?[\d.]+) LUFS", tail).group(1)), float(re.search(r"Peak:\s+(-?[\d.]+) dBFS", tail).group(1))
+
+
+# ------------------------------------------------------------------ 음악 편집
+def build_music(c, src):
+    N = int(round(c["dur"] * SR))
+    out = np.zeros((N, 2))
+    xf = int(0.006 * SR)
+    for seg in c["music"]:
+        i0, i1 = int(round(seg["v0"] * SR)), int(round(seg["v1"] * SR))
+        s0 = int(round(seg["src"] * SR))
+        piece = src[s0 : s0 + (i1 - i0)].copy()
+        piece[:xf] *= np.linspace(0, 1, xf)[:, None]
+        if seg.get("fade"):
+            nf = int(seg["fade"] * SR)
+            piece[-nf:] *= (np.linspace(1, 0, nf) ** 1.5)[:, None]
+        elif not seg.get("tail"):
+            piece[-xf:] *= np.linspace(1, 0, xf)[:, None]
+        out[i0 : i0 + len(piece)] += piece
+        if seg.get("tail") == "tapestop":
+            # 테이프 스톱: 재생 속도 1→0 (0.5s), 피치가 같이 내려간다. 원곡을 늦춘 것뿐, 새 음은 없다.
+            T = 0.5
+            n = int(T * SR)
+            tau = np.arange(n) / SR
+            pos = seg["src"] + (seg["v1"] - seg["v0"]) + tau - tau ** 2 / (2 * T)
+            idx = pos * SR
+            base = np.arange(len(src))
+            ts = np.stack([np.interp(idx, base, src[:, ch]) for ch in range(2)], axis=1)
+            ts *= (1 - tau / T)[:, None] ** 0.6
+            # 끝으로 갈수록 고역을 깎아 '늘어지는' 느낌 (1-pole LPF, 계수 스윕)
+            y = np.zeros_like(ts)
+            prev = np.zeros(2)
+            for k in range(n):
+                a = 0.9 - 0.85 * (k / n)
+                prev = prev + a * (ts[k] - prev)
+                y[k] = prev
+            out[i1 : i1 + n] = y[: N - i1]
+    return out
+
+
+# ------------------------------------------------------------------ SFX (원 make_audio.py의 SFX 함수, 음악 없음)
 def t_arr(d):
     return np.arange(int(SR * d)) / SR
 
 
-def place(buf, sig, t, gain=1.0, pan=0.0):
-    """Add mono sig into stereo buf at time t (s)."""
-    i = int(round(t * SR))
-    if i >= N:
-        return
-    sig = sig[: N - i]
-    l = np.cos((pan + 1) * np.pi / 4) * np.sqrt(2)
-    r = np.sin((pan + 1) * np.pi / 4) * np.sqrt(2)
-    buf[i : i + len(sig), 0] += sig * gain * l
-    buf[i : i + len(sig), 1] += sig * gain * r
-
-
 def fft_filter(x, lo=None, hi=None, order=2):
-    """Zero-phase Butterworth-shaped magnitude filter in the frequency domain."""
     n = len(x)
     X = np.fft.rfft(x)
     f = np.fft.rfftfreq(n, 1 / SR)
@@ -55,98 +146,15 @@ def fft_filter(x, lo=None, hi=None, order=2):
     return np.fft.irfft(X * g, n)
 
 
-def env(n, a=0.005, d=0.2, shape="exp"):
+def env(n, a=0.005, d=0.2):
     t = np.arange(n) / SR
-    att = np.clip(t / max(a, 1e-4), 0, 1)
-    dec = np.exp(-t / d) if shape == "exp" else np.clip(1 - t / d, 0, 1)
-    return att * dec
+    return np.clip(t / max(a, 1e-4), 0, 1) * np.exp(-t / d)
 
 
 def noise(d):
     return rng.standard_normal(int(SR * d))
 
 
-def midi(m):
-    return 440.0 * 2 ** ((m - 69) / 12)
-
-
-# ---------------------------------------------------------------- instruments
-def kick(d=0.35):
-    t = t_arr(d)
-    f = 50 + 70 * np.exp(-t / 0.04)
-    ph = 2 * np.pi * np.cumsum(f) / SR
-    return np.sin(ph) * env(len(t), 0.002, 0.16) + 0.3 * fft_filter(noise(d), lo=1500) * env(len(t), 0.0005, 0.006)
-
-
-def snare(d=0.25):
-    t = t_arr(d)
-    body = np.sin(2 * np.pi * 190 * t) * env(len(t), 0.001, 0.05)
-    nz = fft_filter(noise(d), lo=1200, hi=7000) * env(len(t), 0.001, 0.09)
-    return 0.5 * body + 0.6 * nz
-
-
-def rim(d=0.12):
-    t = t_arr(d)
-    return (np.sin(2 * np.pi * 1700 * t) * 0.5 + fft_filter(noise(d), lo=2000, hi=6000) * 0.5) * env(len(t), 0.0005, 0.02)
-
-
-def hat(d=0.06, open_=False):
-    t = t_arr(0.2 if open_ else d)
-    return fft_filter(noise(len(t) / SR), lo=7000) * env(len(t), 0.0005, 0.06 if open_ else 0.014)
-
-
-def rhodes(m, d=2.6, vel=1.0):
-    t = t_arr(d)
-    f = midi(m)
-    trem = 1 + 0.1 * np.sin(2 * np.pi * 4.2 * t)
-    s = np.sin(2 * np.pi * f * t) + 0.28 * np.sin(2 * np.pi * 2 * f * t) * np.exp(-t / 0.4) + 0.08 * np.sin(2 * np.pi * 3.01 * f * t) * np.exp(-t / 0.2)
-    return s * env(len(t), 0.008, 1.4) * trem * vel
-
-
-def bass(m, d=0.6, vel=1.0):
-    t = t_arr(d)
-    f = midi(m)
-    s = np.sin(2 * np.pi * f * t) + 0.25 * np.sin(2 * np.pi * 2 * f * t)
-    return s * env(len(t), 0.01, 0.35) * vel
-
-
-def piano(m, d=2.0, vel=1.0):
-    t = t_arr(d)
-    f = midi(m)
-    s = np.zeros_like(t)
-    for k in range(1, 7):
-        fk = f * k * (1 + 0.0004 * k * k)
-        s += np.sin(2 * np.pi * fk * t) * np.exp(-t * (1.2 + 0.9 * k)) / k
-    return s * env(len(t), 0.003, 3.0) * vel
-
-
-def pluck(m, d=1.2, vel=1.0, bright=0.5):
-    """Karplus-Strong, vectorised one delay-line block at a time."""
-    f = midi(m)
-    p = int(SR / f)
-    n = int(SR * d)
-    out = np.zeros(n + p + 1)
-    out[: p + 1] = fft_filter(rng.uniform(-1, 1, p + 1), hi=2000 + 6000 * bright)
-    decay = 0.996
-    i = p + 1
-    while i < len(out):
-        j = min(i + p, len(out))
-        prev = out[i - p - 1 : j - p - 1]
-        prev2 = out[i - p : j - p]
-        out[i:j] = decay * 0.5 * (prev + prev2)
-        i = j
-    return out[p + 1 : p + 1 + n] * vel * env(n, 0.001, 10.0)
-
-
-def bell(freqs, d=1.6, vel=1.0):
-    t = t_arr(d)
-    s = np.zeros_like(t)
-    for f in freqs:
-        s += np.sin(2 * np.pi * f * t) * np.exp(-t / 0.9) + 0.25 * np.sin(2 * np.pi * f * 2.76 * t) * np.exp(-t / 0.25)
-    return s / len(freqs) * env(len(t), 0.004, 5) * vel
-
-
-# ---------------------------------------------------------------- sfx
 def key_click(heavy=False):
     d = 0.05
     t = t_arr(d)
@@ -156,26 +164,11 @@ def key_click(heavy=False):
 
 
 def whoosh(d=0.45, up=True, lo=400, hi=5000):
-    n = int(SR * d)
-    t = np.arange(n) / SR
-    nz = noise(d)
-    # sweep: crossfade a low- and a high-band version
-    a = fft_filter(nz, lo=lo, hi=lo * 3)
-    b = fft_filter(nz, lo=hi / 3, hi=hi)
-    x = t / d if up else 1 - t / d
-    s = a * (1 - x) + b * x
-    shape = np.sin(np.pi * np.clip(t / d, 0, 1)) ** 2
-    return s * shape
-
-
-def tail_whoosh():
-    s = whoosh(0.5, up=True, lo=600, hi=6000)
-    return s[len(s) // 2 :] * np.linspace(1, 0, len(s) - len(s) // 2)
-
-
-def tick(f=2000, d=0.03):
     t = t_arr(d)
-    return np.sin(2 * np.pi * f * t) * env(len(t), 0.0005, 0.006)
+    nz = noise(d)
+    a, b = fft_filter(nz, lo=lo, hi=lo * 3), fft_filter(nz, lo=hi / 3, hi=hi)
+    x = t / d if up else 1 - t / d
+    return (a * (1 - x) + b * x) * np.sin(np.pi * np.clip(t / d, 0, 1)) ** 2
 
 
 def pop(f0=900, f1=420, d=0.09):
@@ -185,7 +178,6 @@ def pop(f0=900, f1=420, d=0.09):
 
 
 def boing():
-    # 🙂 "뿅": quick upward glide
     d = 0.22
     t = t_arr(d)
     f = 480 + 1100 * (1 - np.exp(-t / 0.05))
@@ -200,19 +192,15 @@ def tap():
 
 
 def marker():
-    d = 0.24
+    d = 0.22
     t = t_arr(d)
-    s = fft_filter(noise(d), lo=2500, hi=9000)
-    shape = np.sin(np.pi * t / d) ** 1.5
-    grain = 1 + 0.5 * np.sin(2 * np.pi * 38 * t)
-    return s * shape * grain
+    return fft_filter(noise(d), lo=2500, hi=9000) * np.sin(np.pi * t / d) ** 1.5 * (1 + 0.5 * np.sin(2 * np.pi * 38 * t))
 
 
 def clock_tick(hi=True):
     d = 0.05
     t = t_arr(d)
-    f = 2300 if hi else 1700
-    return (np.sin(2 * np.pi * f * t) + 0.4 * fft_filter(noise(d), lo=3000)) * env(len(t), 0.0003, 0.007)
+    return (np.sin(2 * np.pi * (2300 if hi else 1700) * t) + 0.4 * fft_filter(noise(d), lo=3000)) * env(len(t), 0.0003, 0.007)
 
 
 def cricket():
@@ -227,283 +215,81 @@ def cricket():
     return out
 
 
-def thump():
-    d = 0.5
-    t = t_arr(d)
-    f = 48 + 60 * np.exp(-t / 0.05)
-    return np.sin(2 * np.pi * np.cumsum(f) / SR) * env(len(t), 0.002, 0.18) + 0.25 * np.sin(2 * np.pi * 220 * t) * env(len(t), 0.001, 0.04)
-
-
 def sweep_shine():
-    s = whoosh(0.7, up=True, lo=1500, hi=12000)
-    t = t_arr(0.7)
-    shimmer = sum(np.sin(2 * np.pi * f * t) for f in (2637, 3136, 3951)) / 3 * np.sin(np.pi * t / 0.7) ** 2
-    return s + 0.12 * shimmer
+    s = whoosh(0.6, up=True, lo=1500, hi=12000)
+    t = t_arr(0.6)
+    return s + 0.1 * sum(np.sin(2 * np.pi * f * t) for f in (2637, 3136, 3951)) / 3 * np.sin(np.pi * t / 0.6) ** 2
 
 
-# ---------------------------------------------------------------- music
-def build_music():
-    m = np.zeros((N, 2))
-    # 1.5 s: minimal synth pulse, once (with the typing dots)
-    t = t_arr(0.9)
-    pulse = (np.sin(2 * np.pi * 220 * t) + 0.5 * np.sin(2 * np.pi * 330 * t) + 0.3 * np.sin(2 * np.pi * 440.5 * t)) * env(len(t), 0.01, 0.28)
-    place(m, fft_filter(pulse, hi=2500), 1.5, 0.35)
-
-    # 3.0–12.5: lo-fi beat, 90 BPM, plain
-    beat = 60 / 90
-    chords = [[53, 57, 60, 64], [52, 55, 59, 62], [50, 53, 57, 60], [48, 52, 55, 59]]  # Fmaj7 Em7 Dm7 Cmaj7
-    roots = [41, 40, 38, 36]
-    t0 = 3.0
-    lofi = np.zeros((N, 2))
-    nbeats = int((12.5 - t0) / beat) + 1
-    for b in range(nbeats):
-        tb = t0 + b * beat
-        if tb >= 12.5:
-            break
-        bar, pos = divmod(b, 4)
-        if pos == 0:
-            for k, note in enumerate(chords[bar % 4]):
-                place(lofi, rhodes(note, d=beat * 4 + 0.3, vel=0.22), tb + 0.012 * k, 1.0, pan=-0.25 + 0.17 * k)
-        if pos in (0, 2):
-            place(lofi, kick(), tb, 0.75)
-            place(lofi, bass(roots[bar % 4], d=beat * 1.6), tb, 0.35)
-        if pos in (1, 3):
-            place(lofi, snare(), tb, 0.32, pan=0.05)
-        if pos == 3 and bar % 2 == 1:
-            place(lofi, kick(), tb + beat * 0.5, 0.45)
-        for e in range(2):  # swung eighth hats
-            place(lofi, hat(), tb + e * beat * 0.58, 0.18 if e == 0 else 0.11, pan=0.3)
-    # crackle
-    cr = np.zeros(N)
-    idx = rng.integers(int(3.0 * SR), int(12.5 * SR), 420)
-    cr[idx] = rng.uniform(-1, 1, len(idx))
-    cr = fft_filter(cr, lo=1500, hi=8000) * 0.6
-    lofi[:, 0] += cr
-    lofi[:, 1] += cr
-    for c in range(2):
-        lofi[:, c] = fft_filter(lofi[:, c], hi=5200, order=2)  # soften = lo-fi
-    # 12.5: hard cut (12 ms ramp only to avoid a click)
-    cut = int(12.5 * SR)
-    ramp = int(0.012 * SR)
-    lofi[cut - ramp : cut] *= np.linspace(1, 0, ramp)[:, None]
-    lofi[cut:] = 0
-    # fade in over the first bar
-    a = int(3.0 * SR)
-    lofi[a : a + int(0.3 * SR)] *= np.linspace(0, 1, int(0.3 * SR))[:, None]
-    m += lofi
-
-    # 18.0–30.0: acoustic guitar + piano upbeat, 120 BPM (beat 0.5 s, bar 2 s)
-    up = np.zeros((N, 2))
-    prog = [  # (start, chord midi notes for guitar, root, piano top melody notes)
-        (18.0, [48, 55, 60, 64, 67], 36, [76, 79]),  # C
-        (20.0, [43, 50, 55, 59, 62], 31, [74, 79]),  # G
-        (22.0, [45, 52, 57, 60, 64], 33, [72, 76]),  # Am
-        (24.0, [41, 48, 53, 57, 60], 29, [72, 77]),  # F
-        (26.0, [43, 50, 55, 59, 62], 31, [74, 71]),  # G (build)
-    ]
-    for (ts, ch, root, mel) in prog:
-        build = ts >= 24.0
-        pattern = [0, 0.75, 1.0, 1.5, 1.75] if not build else [0, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
-        length = 2.0 if ts < 26.0 else 1.0
-        for p in pattern:
-            if p >= length:
-                continue
-            tb = ts + p
-            down = (p * 2) % 1 == 0
-            for k, note in enumerate(ch if down else ch[2:]):
-                place(up, pluck(note, d=0.9, vel=0.30 if down else 0.2, bright=0.55), tb + (0.009 * k if down else 0.006 * (4 - k)), 1.0, pan=-0.35)
-        for p in [0, 1.0] if length == 2.0 else [0, 0.5]:
-            place(up, kick(), ts + p, 0.55)
-            place(up, bass(root, d=0.9), ts + p, 0.32)
-        for p in [0.5, 1.5] if length == 2.0 else [0.5]:
-            place(up, snare(0.2) * 0.6, ts + p, 0.3, pan=0.1)
-            place(up, rim() * 0.4, ts + p, 0.3, pan=0.1)
-        for e in range(int(length * 4)):
-            place(up, hat(0.05), ts + e * 0.25, 0.1 if e % 2 else 0.14, pan=0.35)
-        for j, note in enumerate(mel):
-            place(up, piano(note, d=1.8, vel=0.32), ts + j * 1.0 + (0.5 if build else 0), 1.0, pan=0.25)
-    # 27.0: resolve on C — strum + piano chord; 28.2 last chime + sustained Cmaj9
-    for k, note in enumerate([48, 55, 60, 64, 67, 72]):
-        place(up, pluck(note, d=2.5, vel=0.32, bright=0.4), 27.0 + 0.012 * k, 1.0, pan=-0.3)
-    for note in [60, 64, 67, 71, 74]:
-        place(up, piano(note, d=3.0, vel=0.2), 27.0, 1.0, pan=0.2)
-    place(up, kick(), 27.0, 0.6)
-    place(up, bass(36, d=2.5), 27.0, 0.35)
-    for note in [48, 55, 62, 64, 71]:
-        place(up, rhodes(note, d=1.9, vel=0.16), 28.2, 1.0)
-    # fade out the tail 29.0–30.0
-    a = int(29.0 * SR)
-    up[a:] *= np.linspace(1, 0, N - a)[:, None] ** 1.5
-    m += up
-    return m
+def chime():
+    t = t_arr(1.2)
+    s = sum(np.sin(2 * np.pi * f * t) * np.exp(-t / 0.5) + 0.2 * np.sin(2 * np.pi * f * 2.76 * t) * np.exp(-t / 0.15) for f in (1318.5, 1975.5))
+    return s / 2 * env(len(t), 0.003, 5)
 
 
-def build_sfx():
-    s = np.zeros((N, 2))
-    place(s, tail_whoosh(), 0.0, 0.25)                         # C1 전송 "슝" 꼬리
-    place(s, tick(1900), 1.5, 0.35)                            # 타이핑 점 틱
-    for k in range(3):
-        place(s, tick(2400, 0.02), 1.65 + k * 0.24, 0.12)
-    place(s, whoosh(0.5, up=False, lo=300, hi=4000), 2.95, 0.35)  # C2 스크롤 휙
-    # C2 타이핑 틱 (글자마다 하나씩은 과하니 2글자에 1번)
-    for k, tt in enumerate(np.linspace(3.6, 6.35, 17)):
-        place(s, key_click(), tt + rng.uniform(-0.02, 0.02), 0.16 + 0.04 * rng.random(), pan=rng.uniform(-0.2, 0.2))
-    place(s, bell([392.0, 588.0], d=1.2), 6.47, 0.28)          # 저음 "띵"
-    place(s, marker(), 7.0, 0.4, pan=-0.15)                    # 마커 "쓱" ×2
-    place(s, marker(), 7.28, 0.36, pan=0.15)
-    for tt in np.linspace(8.15, 8.9, 7):
-        place(s, key_click(), tt, 0.16, pan=rng.uniform(-0.2, 0.2))
-    place(s, pop(), 9.0, 0.35)                                 # 팝
-    # C4 키보드 · 백스페이스 2회 · 전송 "슝"
-    place(s, key_click(True), 10.3, 0.3)
-    place(s, key_click(True), 10.42, 0.3)
-    for tt in np.linspace(10.55, 11.1, 12):
-        place(s, key_click(), tt + rng.uniform(-0.01, 0.01), 0.22, pan=rng.uniform(-0.25, 0.25))
-    place(s, tap(), 11.18, 0.25)
-    place(s, whoosh(0.4, up=True, lo=500, hi=7000), 11.22, 0.5)
-    # C5 초침 틱 (BGM 없음) + 귀뚜라미 1회
-    for k, tt in enumerate(np.arange(12.6, 14.9, 0.5)):
-        place(s, clock_tick(k % 2 == 0), tt, 0.3)
-    place(s, cricket(), 14.4, 0.12, pan=0.3)
-    # C6 말풍선 팝 · 🙂 "뿅" · 탭 "톡"
-    place(s, pop(700, 380, 0.08), 15.08, 0.22)
-    place(s, boing(), 16.28, 0.4)
-    place(s, tap(), 17.62, 0.42)
-    # C7 화이트 스윕 "샤악" · 따뜻한 차임
-    place(s, sweep_shine(), 17.95, 0.45)
-    place(s, bell([1046.5, 1318.5, 1568.0], d=1.8), 18.6, 0.22)
-    # C8 팝 · 말풍선 팝 · 카운트 틱
-    place(s, pop(), 21.0, 0.25)
-    place(s, pop(820, 400), 21.65, 0.3)
-    for v in range(10, 61, 10):  # count 0→60 power2.out over 0.7 s from 21.8
-        p = 1 - np.sqrt(1 - v / 60)
-        place(s, tick(2600, 0.025), 21.8 + 0.7 * p, 0.2)
-    # C9 버튼 "톡" (바운스 · 탭 루프)
-    place(s, tap(), 24.92, 0.32)
-    place(s, tap(), 26.1, 0.38)
-    # C10 착지 "둥" ×2 · 마지막 차임
-    place(s, thump(), 27.15, 0.6)
-    place(s, thump(), 27.75, 0.55)
-    place(s, bell([1318.5, 1568.0, 2093.0], d=1.8), 28.2, 0.2)
-    return s
+def build_sfx(c):
+    N = int(round(c["dur"] * SR))
+    buf = np.zeros((N, 2))
+
+    def place(sig, t, gain=1.0, pan=0.0):
+        # 소리는 그림보다 1프레임 늦게 (sound.md)
+        i = int(round((t + 1 / 30) * SR))
+        if i >= N:
+            return
+        sig = sig[: N - i]
+        buf[i : i + len(sig), 0] += sig * gain * np.cos((pan + 1) * np.pi / 4) * np.sqrt(2)
+        buf[i : i + len(sig), 1] += sig * gain * np.sin((pan + 1) * np.pi / 4) * np.sqrt(2)
+
+    B = lambda k: k * P
+    R = c["R"]
+    if c["dur"] == 30.0:
+        place(pop(1100, 600), B(3), 0.35)                    # 타이핑 점 등장
+        place(whoosh(0.3, True, 600, 6000), B(6) - 0.1, 0.22)  # 스크롤
+        place(marker(), B(14), 0.28, -0.2)                   # 형광펜 ×2
+        place(marker(), B(15), 0.28, 0.2)
+        place(pop(800, 500), B(16), 0.3)                     # 예시 줄
+        # C4 입력: 백스페이스 2회(32분) + 타이핑(32분)
+        place(key_click(True), B(21), 0.4)
+        place(key_click(True), B(21.5), 0.4)
+        for k in range(16):
+            place(key_click(), B(22) + k * P / 4, 0.26, float(rng.uniform(-0.3, 0.3)))
+        place(tap(), B(24) - 0.05, 0.45)                     # 전송 버튼
+        place(whoosh(0.35, True, 500, 5000), B(24), 0.3)     # 전송 '슝'
+        # C5 정적: 초침 틱(무음 그리드 유지) + 귀뚜라미
+        for k, hi in ((27, True), (28, False), (29, True)):
+            place(clock_tick(hi), B(k), 0.5)
+        place(cricket(), B(29.6), 0.18, 0.4)
+        place(pop(950, 520), R, 0.3)                         # 🙂 말풍선 (음악 슬램과 함께)
+        place(boing(), R + 4 * P, 0.42)                      # 🙂 히트
+        place(tap(), R + 7 * P, 0.5)                         # 상담사 연결 탭
+        T7 = c["brand"]
+        place(sweep_shine(), T7 - 0.08, 0.3)                 # 원형 전환
+        place(chime(), T7 + P, 0.22)                         # 로고 차임
+        place(pop(900, 480), T7 + 7 * P, 0.3)                # 상담사 말풍선
+        for k in range(8):                                   # 0→60 카운트 틱(8분)
+            place(clock_tick(k % 2 == 0), T7 + 7.5 * P + k * P / 4, 0.14)
+        place(tap(), R + 24 * P, 0.4)                        # 무료 상담 신청 탭
+    else:
+        place(pop(1100, 600), B(3), 0.35)
+        place(whoosh(0.3, True, 600, 6000), B(6) - 0.1, 0.22)
+        place(marker(), B(8), 0.28, -0.2)
+        place(marker(), B(8.5), 0.28, 0.2)
+        place(pop(800, 500), B(9), 0.3)
+        place(whoosh(0.35, True, 500, 5000), B(10) - 0.05, 0.3)  # 질문 전송
+        place(clock_tick(True), B(13), 0.5)
+        place(clock_tick(False), B(13) + 0.36, 0.5)
+        place(pop(950, 520), R, 0.3)
+        place(boing(), R + 2 * P, 0.42)
+        place(tap(), R + 3.5 * P, 0.5)
+        place(sweep_shine(), 8.5 - 0.08, 0.3)
+        place(chime(), 8.5 + 0.5 * P, 0.22)
+        place(pop(900, 480), 8.5 + 4 * P, 0.3)
+        for k in range(8):
+            place(clock_tick(k % 2 == 0), 8.5 + 4.5 * P + k * P / 4, 0.14)
+    return buf
 
 
-def build_music15():
-    """15s cues (§3): 1.5 pulse · 3.0 lo-fi · 6.0 BGM cut · 8.5 acoustic upbeat · 12.5 resolve."""
-    m = np.zeros((N, 2))
-    t = t_arr(0.9)
-    pulse = (np.sin(2 * np.pi * 220 * t) + 0.5 * np.sin(2 * np.pi * 330 * t) + 0.3 * np.sin(2 * np.pi * 440.5 * t)) * env(len(t), 0.01, 0.28)
-    place(m, fft_filter(pulse, hi=2500), 1.5, 0.35)
-    beat = 60 / 90
-    chords = [[53, 57, 60, 64], [52, 55, 59, 62]]
-    roots = [41, 40]
-    lofi = np.zeros((N, 2))
-    for b in range(8):
-        tb = 3.0 + b * beat
-        if tb >= 6.0:
-            break
-        bar, pos = divmod(b, 4)
-        if pos == 0:
-            for k, note in enumerate(chords[bar % 2]):
-                place(lofi, rhodes(note, d=beat * 4 + 0.3, vel=0.22), tb + 0.012 * k, 1.0, pan=-0.25 + 0.17 * k)
-        if pos in (0, 2):
-            place(lofi, kick(), tb, 0.75)
-            place(lofi, bass(roots[bar % 2], d=beat * 1.6), tb, 0.35)
-        if pos in (1, 3):
-            place(lofi, snare(), tb, 0.32, pan=0.05)
-        for e in range(2):
-            place(lofi, hat(), tb + e * beat * 0.58, 0.18 if e == 0 else 0.11, pan=0.3)
-    for c in range(2):
-        lofi[:, c] = fft_filter(lofi[:, c], hi=5200, order=2)
-    cut, ramp = int(6.0 * SR), int(0.012 * SR)
-    lofi[cut - ramp : cut] *= np.linspace(1, 0, ramp)[:, None]
-    lofi[cut:] = 0
-    a = int(3.0 * SR)
-    lofi[a : a + int(0.2 * SR)] *= np.linspace(0, 1, int(0.2 * SR))[:, None]
-    m += lofi
-    up = np.zeros((N, 2))
-    prog = [(8.5, [48, 55, 60, 64, 67], 36, [76, 79]), (10.5, [45, 52, 57, 60, 64], 33, [72, 76])]
-    for (ts, ch, root, mel) in prog:
-        for p in [0, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75]:
-            tb = ts + p
-            down = (p * 2) % 1 == 0
-            for k, note in enumerate(ch if down else ch[2:]):
-                place(up, pluck(note, d=0.9, vel=0.30 if down else 0.2, bright=0.55), tb + (0.009 * k if down else 0.006 * (4 - k)), 1.0, pan=-0.35)
-        for p in [0, 1.0]:
-            place(up, kick(), ts + p, 0.55)
-            place(up, bass(root, d=0.9), ts + p, 0.32)
-        for p in [0.5, 1.5]:
-            place(up, snare(0.2) * 0.6, ts + p, 0.3, pan=0.1)
-        for e in range(8):
-            place(up, hat(0.05), ts + e * 0.25, 0.1 if e % 2 else 0.14, pan=0.35)
-        for j, note in enumerate(mel):
-            place(up, piano(note, d=1.8, vel=0.32), ts + j * 1.0, 1.0, pan=0.25)
-    # 12.5 해결 코드 (F → C), ring out, fade 14.0–15.0
-    for k, note in enumerate([41, 48, 53, 57, 60]):
-        place(up, pluck(note, d=0.6, vel=0.26, bright=0.4), 12.0 + 0.01 * k, 1.0, pan=-0.3)
-    for k, note in enumerate([48, 55, 60, 64, 67, 72]):
-        place(up, pluck(note, d=2.5, vel=0.32, bright=0.4), 12.5 + 0.012 * k, 1.0, pan=-0.3)
-    for note in [60, 64, 67, 71, 74]:
-        place(up, piano(note, d=2.5, vel=0.2), 12.5, 1.0, pan=0.2)
-    place(up, kick(), 12.5, 0.6)
-    place(up, bass(36, d=2.0), 12.5, 0.35)
-    a = int(14.0 * SR)
-    up[a:] *= np.linspace(1, 0, N - a)[:, None] ** 1.5
-    m += up
-    return m
-
-
-def build_sfx15():
-    s = np.zeros((N, 2))
-    place(s, tail_whoosh(), 0.0, 0.25)
-    place(s, tick(1900), 1.5, 0.35)
-    for k in range(3):
-        place(s, tick(2400, 0.02), 1.65 + k * 0.24, 0.12)
-    for tt in np.linspace(3.15, 4.15, 7):                      # C2 타이핑
-        place(s, key_click(), tt + rng.uniform(-0.02, 0.02), 0.17, pan=rng.uniform(-0.2, 0.2))
-    place(s, marker(), 4.3, 0.4, pan=-0.1)                     # 마커 "쓱"
-    place(s, pop(), 4.5, 0.3)                                  # 칩
-    for tt in np.linspace(4.6, 4.92, 6):                       # C3 키보드 → 전송
-        place(s, key_click(), tt, 0.18, pan=rng.uniform(-0.25, 0.25))
-    place(s, whoosh(0.35, up=True, lo=500, hi=7000), 4.95, 0.45)
-    for k, tt in enumerate(np.arange(6.05, 6.8, 0.35)):        # 초침 틱 (BGM 컷)
-        place(s, clock_tick(k % 2 == 0), tt, 0.3)
-    place(s, pop(700, 380, 0.08), 6.85, 0.22)
-    place(s, boing(), 7.45, 0.4)                               # 🙂 "뿅"
-    place(s, tap(), 8.2, 0.42)                                 # 탭
-    place(s, sweep_shine(), 8.45, 0.45)                        # 스윕
-    place(s, bell([1046.5, 1318.5, 1568.0], d=1.8), 8.95, 0.22)  # 차임
-    place(s, pop(820, 400), 10.7, 0.3)                         # 상담사 말풍선
-    for v in range(10, 61, 10):
-        p = 1 - np.sqrt(1 - v / 60)
-        place(s, tick(2600, 0.025), 10.85 + 0.65 * p, 0.2)
-    place(s, thump(), 12.52, 0.6)                              # 착지 "둥"
-    place(s, tap(), 12.55, 0.25)                               # 버튼 팝
-    place(s, thump(), 13.12, 0.55)
-    return s
-
-
-def write_wav(path, x):
-    x = np.clip(x, -1, 1)
-    pcm = (x * 32767).astype("<i2")
-    with wave.open(path, "wb") as w:
-        w.setnchannels(2)
-        w.setsampwidth(2)
-        w.setframerate(SR)
-        w.writeframes(pcm.tobytes())
-
-
-def measure(path):
-    r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", path, "-af", "ebur128=peak=true", "-f", "null", "-"],
-                       capture_output=True, text=True)
-    tail = r.stderr[r.stderr.rfind("Summary:"):]
-    i_lufs = float(re.search(r"I:\s+(-?[\d.]+) LUFS", tail).group(1))
-    tp = float(re.search(r"Peak:\s+(-?[\d.]+) dBFS", tail).group(1))
-    return i_lufs, tp
-
-
-def limiter_gain(mix, ceiling, w=480):
-    """Look-ahead peak limiter as a gain envelope (same envelope goes on both stems)."""
+def limiter_gain(mix, ceiling, w=240):
     a = np.max(np.abs(mix), axis=1)
     req = np.minimum(1.0, ceiling / np.maximum(a, 1e-9))
     pad = (-len(req)) % w
@@ -512,44 +298,43 @@ def limiter_gain(mix, ceiling, w=480):
     g = np.repeat(r, w)[: len(req)]
     k = np.hanning(2 * w)
     k /= k.sum()
-    return np.convolve(g, k, mode="same")[:, None]
+    gp = np.concatenate([np.full(w, g[0]), g, np.full(w, g[-1])])
+    return np.convolve(gp, k, mode="same")[w:-w][:, None]
 
 
 def main():
-    global DUR, N
-    import sys
-    cut15 = "--cut" in sys.argv and sys.argv[sys.argv.index("--cut") + 1] == "15"
+    cut = 15 if "--cut" in sys.argv and sys.argv[sys.argv.index("--cut") + 1] == "15" else 30
+    c = cues(cut)
+    src = load_src()
+    music = build_music(c, src)
+    sfx = build_sfx(c)
     out = os.path.join(ROOT, "assets", "audio")
     os.makedirs(out, exist_ok=True)
-    if cut15:
-        DUR, N = 15.0, int(SR * 15.0)
-        music, sfx = build_music15(), build_sfx15()
-    else:
-        music = build_music()
-        sfx = build_sfx()
-    suffix = "-15s" if cut15 else ""
-    music *= 0.55  # bed sits a few dB under the effects
+    suffix = "-15s" if cut == 15 else ""
     tmp = os.path.join(out, "_mix_tmp.wav")
-    target, ceiling = -16.0, 10 ** (-2.6 / 20)  # sample-peak ceiling leaves room for true peak + AAC
-    gain = 1.0
-    for _ in range(8):
+    target, ceiling = -15.0, 10 ** (-1.7 / 20)
+    gain = 0.6
+    for _ in range(10):
         raw = (music + sfx) * gain
         g = limiter_gain(raw, ceiling)
         write_wav(tmp, raw * g)
         i_lufs, tp = measure(tmp)
-        if abs(i_lufs - target) < 0.15:
+        if abs(i_lufs - target) < 0.1:
             break
         gain *= 10 ** ((target - i_lufs) / 20)
-    raw_m, raw_s = music * gain, sfx * gain
-    g = limiter_gain(raw_m + raw_s, ceiling)
-    write_wav(tmp, (raw_m + raw_s) * g)
+    g = limiter_gain((music + sfx) * gain, ceiling)
+    write_wav(os.path.join(out, "bgm" + suffix + ".wav"), music * gain * g)
+    write_wav(os.path.join(out, "sfx" + suffix + ".wav"), sfx * gain * g)
+    write_wav(tmp, (music + sfx) * gain * g)
     i_lufs, tp = measure(tmp)
     os.remove(tmp)
-    write_wav(os.path.join(out, "bgm" + suffix + ".wav"), raw_m * g)
-    write_wav(os.path.join(out, "sfx" + suffix + ".wav"), raw_s * g)
-    info = {"integrated_lufs": i_lufs, "true_peak_dbtp": tp, "gain": round(float(gain), 4),
-            "max_gain_reduction_db": round(float(20 * np.log10(np.min(g))), 2)}
-    print(json.dumps(info))
+    rec = {"cut": cut, "bpm": BEATS["bpm"], "beat_period": P, "R_slam": round(c["R"], 4), "brand": round(c["brand"], 4),
+           "cuts": {k: round(v, 4) for k, v in c["cuts"].items()},
+           "music_segments": [{k: (round(v, 4) if isinstance(v, float) else v) for k, v in s.items()} for s in c["music"]],
+           "mix": {"integrated_lufs": i_lufs, "true_peak_dbtp": tp, "gain": round(float(gain), 4),
+                   "max_gain_reduction_db": round(float(20 * np.log10(np.min(g))), 2)}}
+    json.dump(rec, open(os.path.join(ROOT, "beats", f"cuts-{cut}.json"), "w"), ensure_ascii=False, indent=1)
+    print(json.dumps(rec, ensure_ascii=False))
 
 
 if __name__ == "__main__":

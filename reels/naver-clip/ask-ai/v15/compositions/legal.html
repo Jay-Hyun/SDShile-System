@@ -22,15 +22,20 @@
     #lg-warn { top: 1440px; }
   </style>
   <div id="root" data-composition-id="legal" data-width="1080" data-height="1920">
+    <!-- 배지 교체·각주·고지 = 브랜드 진입(15초 8.5 = 원곡 크래시, 사양 8.5 ±0.5) -->
     <div id="lg-badge1" class="clip" data-start="0" data-duration="8.5" data-track-index="1"><div class="badge">가상 챗봇 화면 · 연출</div></div>
     <div id="lg-badge2" class="clip" data-start="8.5" data-duration="6.5" data-track-index="1"><div class="badge">연출</div></div>
     <div id="lg-foot-c" class="clip" data-start="8.5" data-duration="6.5" data-track-index="2"><div id="lg-foot" class="bar">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</div></div>
     <div id="lg-warn-c" class="clip" data-start="8.5" data-duration="6.5" data-track-index="3"><div id="lg-warn" class="bar">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</div></div>
   </div>
   <script>
-    const tl = gsap.timeline({ paused: true });
-    tl.fromTo(["#lg-foot", "#lg-warn"], { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "expo.out", stagger: 0.05 }, 8.6);
-    tl.set({}, {}, 15);
-    window.__timelines["legal"] = tl;
+    (function () {
+      const { ms, timeline } = window.HF;
+      const tl = timeline();
+      const T = 8.5; // 브랜드 진입 (build_15s.py 가 8.5로 바꾼다)
+      tl.set(["#lg-foot", "#lg-warn"], { opacity: 0 }, 0);
+      tl.add(["#lg-foot", "#lg-warn"], { opacity: [0, 1], translateY: [30, 0], duration: 350, ease: "outExpo", delay: window.HF.A.stagger(50) }, ms(T + 0.15));
+      tl.seek(0);
+    })();
   </script>
 </template>

@@ -14,7 +14,7 @@
       letter-spacing: -0.04em;
       word-break: keep-all;
     }
-    #br-wrap { position: absolute; inset: 0; clip-path: circle(0px at 410px 1200px); }
+    #br-wrap { position: absolute; inset: 0; clip-path: circle(0px at 410px 1230px); }
     #br-ground {
       position: absolute;
       inset: 0;
@@ -37,6 +37,8 @@
 
     #br-h1 { top: 520px; font-size: 96px; font-weight: 900; line-height: 1.1; color: var(--color-gold-light, #e0c27e); }
     #br-h2 { top: 640px; font-size: 88px; font-weight: 900; line-height: 1.1; }
+    #br-h2 .w { display: inline-block; }
+    #br-h1 { transform-origin: 50% 60%; }
     #br-h2 sup { font-size: 56px; color: var(--color-gold-light, #e0c27e); vertical-align: 26px; margin-left: 4px; }
 
     #br-chip { position: absolute; left: 196px; top: 790px; height: 52px; padding: 0 22px; border-radius: 26px; background: rgba(255, 255, 255, 0.14); border: 2px solid rgba(255, 255, 255, 0.28); display: flex; align-items: center; gap: 10px; font-size: 30px; font-weight: 600; color: rgba(255, 255, 255, 0.86); letter-spacing: -0.02em; white-space: nowrap; }
@@ -47,38 +49,37 @@
     .cd { width: 16px; height: 16px; border-radius: 50%; background: var(--color-gold, #b8955a); }
     #br-bub { position: absolute; left: 196px; top: 864px; width: 664px; padding: 28px 40px 30px; border-radius: 48px 48px 48px 14px; background: var(--color-paper, #fbf9f4); color: var(--color-navy, #0b1a33); font-size: 56px; line-height: 76px; font-weight: 800; letter-spacing: -0.035em; white-space: nowrap; }
     #br-bub .stair { display: inline-block; width: 52px; height: 52px; vertical-align: -6px; margin-right: 10px; }
-    #br-num { position: relative; display: inline-block; min-width: 1.15em; text-align: center; font-variant-numeric: tabular-nums; color: var(--color-gold, #b8955a); font-weight: 900; }
-    #br-num i { position: absolute; left: 0; right: 0; bottom: 4px; height: 7px; border-radius: 4px; background: var(--color-gold, #b8955a); transform-origin: 0 50%; }
+    #br-num { position: relative; display: inline-block; height: 76px; vertical-align: top; overflow: visible; color: var(--color-gold, #b8955a); font-weight: 900; font-variant-numeric: tabular-nums; }
+    #br-num .odo { display: inline-block; height: 76px; overflow: hidden; vertical-align: top; }
+    #br-num .strip { display: block; }
+    #br-num .strip b { display: block; height: 76px; line-height: 76px; font-weight: 900; text-align: center; }
+    #br-num svg { position: absolute; left: -10px; bottom: -12px; width: 96px; height: 22px; overflow: visible; }
 
     .line { position: absolute; left: 80px; width: 840px; height: 104px; overflow: hidden; text-align: center; white-space: nowrap; }
     .line > div { font-size: 80px; line-height: 104px; font-weight: 900; }
     #br-cta1 { top: 700px; }
     #br-cta2 { top: 812px; }
-    #br-cta2 em { font-style: normal; color: var(--color-gold-light, #e0c27e); }
+    #br-cta2 em { display: inline-block; font-style: normal; color: var(--color-gold-light, #e0c27e); }
 
     #br-btn { position: absolute; left: 120px; top: 1150px; width: 760px; height: 120px; border-radius: 60px; background: var(--color-gold-light, #e0c27e); color: var(--color-navy, #0b1a33); display: flex; align-items: center; justify-content: center; gap: 16px; font-size: 54px; font-weight: 900; letter-spacing: -0.03em; box-shadow: 0 20px 50px rgba(224, 194, 126, 0.28); }
     #br-btn svg { width: 46px; height: 46px; }
+    #br-ring { position: absolute; left: 120px; top: 1150px; width: 760px; height: 120px; border-radius: 60px; border: 8px solid rgba(224, 194, 126, 0.6); }
     #br-tel { top: 1290px; height: 40px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 32px; font-weight: 700; letter-spacing: -0.01em; }
     #br-tel svg { width: 32px; height: 32px; }
     #br-hand { position: absolute; left: 560px; top: 1186px; width: 130px; height: 130px; transform-origin: 44% 18%; }
 
+    #br-flash { position: absolute; inset: 0; background: #ffffff; }
+    #br-shake { position: absolute; inset: 0; }
     .slo { position: absolute; left: 80px; width: 840px; text-align: center; white-space: nowrap; font-size: 92px; line-height: 110px; font-weight: 900; letter-spacing: -0.045em; text-shadow: 0 6px 30px rgba(5, 10, 25, 0.55); }
     #br-s1 { top: 790px; }
     #br-s2 { top: 910px; }
     #br-sub { top: 1066px; font-size: 44px; line-height: 56px; font-weight: 800; color: var(--color-gold-light, #e0c27e); letter-spacing: -0.02em; text-shadow: 0 4px 20px rgba(5, 10, 25, 0.6); }
-    /* ---- 15s overrides ---- */
-    #br-cs { top: 844px; }
-    #br-bub { top: 840px; }
-    #br-num { color: #7d6233; }
-    #br-s1 { top: 760px; }
-    #br-s2 { top: 880px; }
-
   </style>
   <div id="root" data-composition-id="brand" data-width="1080" data-height="1920">
     <div id="br-wrap" data-layout-allow-overlap data-layout-allow-overflow>
       <div id="br-ground" data-layout-ignore></div>
       <div id="br-grid" data-layout-ignore></div>
-      <!-- C6 배경: 저녁 책상 벡터 일러스트(스톡 대체, 블러). "연출" 배지 15.0까지 유지 -->
+      <!-- C10 배경: 저녁 사무실 책상 (스톡 대신 벡터 일러스트, 블러. "연출" 배지 적용) -->
       <svg id="br-desk" viewBox="0 0 1080 1920" data-layout-ignore>
         <defs>
           <radialGradient id="dk-sky" cx="50%" cy="58%" r="70%">
@@ -125,63 +126,161 @@
       </svg>
       <div id="br-sweep" data-layout-ignore></div>
 
-      <div id="br-cam" class="cam" data-layout-allow-overlap>
+      <div id="br-cam" class="cam" data-layout-allow-overlap><div id="br-shake" data-layout-allow-overlap>
         <div id="br-logo" class="stage"><img src="assets/img/mark-gold.svg" alt="" />경찰복지사이버평생교육원</div>
+        <div id="br-logo-s"><img src="assets/img/mark-gold.svg" alt="" />경찰복지사이버평생교육원</div>
 
         <div id="br-h1" class="stage">국내 유일</div>
-        <div id="br-h2" class="stage">100% 온라인 법학사<sup>*</sup></div>
+        <div id="br-h2" class="stage"><span class="w">100%</span> <span class="w">온라인</span> <span class="w">법학사<sup>*</sup></span></div>
 
+        <div id="br-chip"><svg viewBox="0 0 24 24"><path d="M5 17h4l2-4V7H5v6h3zm8 0h4l2-4V7h-6v6h3z" fill="rgba(255,255,255,0.8)" /></svg>나 전문대 나왔고…</div>
         <div id="br-cs" data-layout-ignore>
           <!-- 얼굴 없는 상담사 라인 아이콘 (헤드셋) -->
           <svg viewBox="0 0 108 108"><circle cx="54" cy="54" r="52" fill="#16294a" stroke="#e0c27e" stroke-width="3" /><circle cx="54" cy="44" r="15" fill="none" stroke="#fbf9f4" stroke-width="4" /><path d="M27 86c3-14 13-22 27-22s24 8 27 22" fill="none" stroke="#fbf9f4" stroke-width="4" stroke-linecap="round" /><path d="M33 47v-4a21 21 0 0 1 42 0v4" fill="none" stroke="#e0c27e" stroke-width="4" stroke-linecap="round" /><rect x="29" y="44" width="8" height="13" rx="3" fill="#e0c27e" /><rect x="71" y="44" width="8" height="13" rx="3" fill="#e0c27e" /><path d="M75 57c0 6-5 9-12 9" fill="none" stroke="#e0c27e" stroke-width="3" stroke-linecap="round" /></svg>
         </div>
-        <div id="br-bub"><svg class="stair" viewBox="0 0 24 24"><path d="M3 20h6v-5h5v-5h5V5h2" fill="none" stroke="#b8955a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>첫 계단,<br />전문대면 <span id="br-num"><b id="br-cnt">60</b><i id="br-numul"></i></span>학점부터</div>
+        <div id="br-cdots"><span class="cd"></span><span class="cd"></span><span class="cd"></span></div>
+        <div id="br-bub"><svg class="stair" viewBox="0 0 24 24"><path d="M3 20h6v-5h5v-5h5V5h2" fill="none" stroke="#b8955a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>첫 계단은,<br />전문대면 <span id="br-num"><span class="odo"><span id="odo-t" class="strip"></span></span><span class="odo"><span id="odo-o" class="strip"></span></span><svg viewBox="0 0 96 22"><path id="br-numul" d="M4 12 C 30 4, 60 18, 92 8" fill="none" stroke="#b8955a" stroke-width="7" stroke-linecap="round" /></svg></span>학점부터</div>
+
+        <div id="br-cta1" class="line"><div id="br-cta1-t">AI도 넘긴 질문,</div></div>
+        <div id="br-cta2" class="line"><div id="br-cta2-t">사람이 <em id="br-11">1:1</em>로 답해드려요.</div></div>
 
         <div id="br-s1" class="slo">책임지는 자리로,</div>
         <div id="br-s2" class="slo">지금 있는 자리에서.</div>
+        <div id="br-sub" class="stage">교육부장관 명의 법학사</div>
 
         <div id="br-btn">무료 상담 신청<svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="#0b1a33" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
         <div id="br-tel" class="stage"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="#ffffff" /></svg>070-4006-7128 (평일 10–18시)</div>
+        <div id="br-ring"></div>
+        <svg id="br-hand" viewBox="0 0 24 24" data-layout-ignore><path d="M10 7.5c0-.83.67-1.5 1.5-1.5S13 6.67 13 7.5v6h1.76c.19 0 .37.04.54.11l4.54 2.26c.53.22.91.76.91 1.38 0 .06-.01.13-.02.2l-.75 5.27c-.11.73-.69 1.28-1.44 1.28h-6.79c-.41 0-.79-.17-1.06-.44l-4.94-4.94.79-.8c.2-.2.48-.33.79-.33.09 0 .16.02.24.03l3.43.72z" fill="#ffffff" stroke="#0b1a33" stroke-width="1.1" stroke-linejoin="round" /></svg>
+      </div>
       </div>
     </div>
+    <div id="br-flash" data-layout-ignore></div>
   </div>
   <script>
-    const tl = gsap.timeline({ paused: true });
-    // 로컬 시간 = 전체 시간 − 8.5
-    function IN(sel, t, from, dur, ease) {
-      const f = Object.assign({ opacity: 0, filter: "blur(8px)" }, from || {});
-      const to = { opacity: 1, filter: "blur(0px)", duration: dur || 0.3, ease: ease || "expo.out" };
-      for (const k in f) if (!(k in to)) to[k] = k.startsWith("scale") ? 1 : 0;
-      tl.fromTo(sel, f, to, t);
-    }
-    function OUT(sel, t, to, dur) {
-      tl.to(sel, Object.assign({ opacity: 0, filter: "blur(8px)", duration: dur || 0.2, ease: "power2.in" }, to || {}), t);
-    }
+    (function () {
+      const CUT = 15; // tools/build_15s.py 가 v15에서 15로 바꾼다
+      const { A, P, ms, timeline, shake, flash } = window.HF;
+      const $ = (q) => document.querySelector(q);
+      const tl = timeline();
+      // 브랜드 진입 = 버튼 탭 다음 비트 = 원곡 B섹션 크래시 (src 16.363)
+      const T = CUT === 30 ? 30.5 * P + 8 * P : 8.5;
+      const at = (k) => ms(T + k * P); // 브랜드 진입 기준 k비트
 
-    // ===== C5 반전·브랜드 + 사람의 답 8.5–12.5 =====
-    tl.fromTo("#br-wrap", { clipPath: "circle(0px at 410px 1200px)" }, { clipPath: "circle(2300px at 410px 1200px)", duration: 0.4, ease: "power2.out" }, 0);
-    tl.fromTo("#br-sweep", { x: 0, rotation: 18 }, { x: 2700, rotation: 18, duration: 0.55, ease: "power2.inOut" }, 0.2);
-    tl.fromTo("#br-desk", { opacity: 0, scale: 1.06 }, { opacity: 0, scale: 1.06, duration: 0.01 }, 0);
-    IN("#br-logo", 0.4, { y: -16 }, 0.3);
-    IN("#br-h1", 0.9, { y: 70, filter: "blur(10px)" }, 0.45);
-    IN("#br-h2", 1.05, { y: 70, filter: "blur(10px)" }, 0.45);
-    IN("#br-tel", 0.5, { y: 16 }, 0.3);
-    IN("#br-cs", 2.0, { scale: 0.6 }, 0.3, "back.out(2)");
-    tl.fromTo("#br-bub", { opacity: 0, scale: 0.85, transformOrigin: "0% 100%" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.6)" }, 2.2);
-    const cnt = { v: 0 };
-    tl.fromTo(cnt, { v: 0 }, { v: 60, duration: 0.65, ease: "power2.out", onUpdate: () => { document.querySelector("#br-cnt").textContent = String(Math.round(cnt.v)); } }, 2.35);
-    tl.fromTo("#br-numul", { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power2.out" }, 3.0);
-    tl.fromTo("#br-cam", { scale: 1 }, { scale: 1.03, duration: 1.6, ease: "power1.inOut" }, 2.2);
+      if (CUT === 15) {
+        $("#br-bub").innerHTML = $("#br-bub").innerHTML.replace("첫 계단은,", "첫 계단,");
+        ["#br-chip", "#br-cta1", "#br-cta2", "#br-sub"].forEach((q) => $(q).remove());
+        $("#br-cs").style.top = "800px"; $("#br-bub").style.top = "800px"; $("#br-cdots").style.top = "808px";
+      }
+      // 오도미터 숫자 (0→60): 십의 자리 0–6, 일의 자리 0–9 ×6 + 0
+      const H = 76;
+      $("#odo-t").innerHTML = [0, 1, 2, 3, 4, 5, 6].map((d) => "<b>" + d + "</b>").join("");
+      let ones = "";
+      for (let i = 0; i <= 60; i++) ones += "<b>" + (i % 10) + "</b>";
+      $("#odo-o").innerHTML = ones;
 
-    // ===== C6 엔드카드 12.5–15.0: 1행 착지와 동시에 버튼 팝 → 13.1 2행 → 홀드 =====
-    OUT(["#br-h1", "#br-h2", "#br-cs", "#br-bub"], 3.8, { y: -50 });
-    tl.to("#br-cam", { scale: 1, duration: 0.3, ease: "power2.inOut" }, 3.8);
-    tl.fromTo("#br-desk", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out", immediateRender: false }, 3.85);
-    tl.fromTo("#br-desk", { scale: 1.06 }, { scale: 1, duration: 2.65, ease: "power1.out", immediateRender: false }, 3.85);
-    IN("#br-s1", 4.0, { y: -110, filter: "blur(4px)" }, 0.45, "back.out(1.5)");
-    tl.fromTo("#br-btn", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2)" }, 4.0);
-    IN("#br-s2", 4.6, { y: -110, filter: "blur(4px)" }, 0.45, "back.out(1.5)");
+      const IN = (q, k, from, dur, ease) => {
+        const p = Object.assign({ opacity: [0, 1], filter: ["blur(10px)", "blur(0px)"] }, from || {});
+        tl.add(q, Object.assign(p, { duration: (dur || 0.3) * 1000, ease: ease || "outExpo" }), at(k));
+      };
+      const OUT = (q, k, to, dur) => tl.add(q, Object.assign({ opacity: 0, filter: "blur(8px)", duration: (dur || 0.2) * 1000, ease: "inQuad" }, to || {}), at(k));
+      const SPRING = (b, d) => A.spring({ bounce: b, duration: d });
 
-    window.__timelines["brand"] = tl;
+      // ---- 시작 상태 ----
+      const hidden = ["#br-logo", "#br-logo-s", "#br-h1", "#br-h2 .w", "#br-cs", "#br-cdots", "#br-bub", "#br-btn", "#br-tel", "#br-hand", "#br-ring", "#br-s1", "#br-s2", "#br-desk", "#br-flash"];
+      if (CUT === 30) hidden.push("#br-chip", "#br-sub");
+      tl.set(hidden, { opacity: 0 }, 0);
+      if (CUT === 30) tl.set(["#br-cta1-t", "#br-cta2-t"], { translateY: "105%" }, 0);
+      tl.set("#br-wrap", { clipPath: "circle(0px at 440px 1290px)" }, 0);
+      const numUl = A.svg.createDrawable("#br-numul");
+      tl.set(numUl, { draw: "0 0" }, 0);
+      tl.set(["#odo-t", "#odo-o"], { translateY: 0 }, 0);
+
+      // ===== C7 반전·브랜드: 탭한 버튼에서 원형 전환 =====
+      tl.add("#br-wrap", { clipPath: ["circle(0px at 440px 1290px)", "circle(2300px at 440px 1290px)"], duration: 170, ease: "inOutQuad" }, at(0));
+      tl.add("#br-sweep", { translateX: [0, 2700], rotate: [18, 18], duration: 600, ease: "inOutQuad" }, at(0.3));
+      shake(tl, "#br-shake", T + 0.17, 10, 6, 41);
+      IN("#br-logo", CUT === 30 ? 1 : 0.5, { translateY: [-20, 0] }, 0.35);
+      const hK = CUT === 30 ? 2 : 1;
+      IN("#br-h1", hK, { scale: [1.7, 1], filter: ["blur(14px)", "blur(0px)"] }, 0.28);
+      shake(tl, "#br-shake", T + hK * P + 0.12, 12, 6, 42);
+      document.querySelectorAll("#br-h2 .w").forEach((w, i) => IN(w, hK + (CUT === 30 ? 1 : 0.5) + i * 0.5, { translateY: [40, 0] }, 0.22));
+      if (CUT === 30) shake(tl, "#br-shake", T + 4 * P, 8, 5, 43);
+      tl.add("#br-cam", { scale: [1, 1.03], duration: (CUT === 30 ? 6 : 8) * P * 1000, ease: "inOutSine" }, at(0.5));
+
+      // ===== C8 사람의 답 · 첫 계단 =====
+      const c8 = CUT === 30 ? 6 : 3; // 30: T+6P, 15: 같은 화면 안
+      if (CUT === 30) {
+        flash(tl, "#br-flash", T + 6 * P, 0.45);
+        IN("#br-chip", 6, { translateX: [-260, 0], filter: ["blur(6px)", "blur(0px)"] }, 0.35, "outQuart");
+      }
+      IN("#br-cs", c8 + 0.5, { scale: [0.5, 1] }, 0.35, "outBack(2)");
+      tl.add("#br-cdots", { opacity: [{ to: 1, duration: 60 }, { to: 1, duration: P * 400 }, { to: 0, duration: 60 }], ease: "linear" }, at(c8 + 0.5));
+      const bubK = c8 + 1;
+      tl.add("#br-bub", { opacity: [0, 1], scale: [0.7, 1], ease: SPRING(0.45, 420) }, at(bubK));
+      shake(tl, "#br-shake", T + bubK * P, 7, 5, 44);
+      // 0→60 카운트 (2비트)
+      tl.add("#odo-t", { translateY: [0, -6 * H], duration: 2 * P * 1000, ease: "outQuart" }, at(bubK + 0.5));
+      tl.add("#odo-o", { translateY: [0, -60 * H], duration: 2 * P * 1000, ease: "outQuart" }, at(bubK + 0.5));
+      tl.add(numUl, { draw: ["0 0", "0 1"], duration: 260, ease: "outQuart" }, at(bubK + 2.5));
+      tl.add("#br-num", { scale: [{ to: 1.2, duration: 80 }, { to: 1, duration: 300, ease: "outBack(3)" }] }, at(bubK + 2.5));
+      shake(tl, "#br-shake", T + (bubK + 2.5) * P, 6, 4, 45);
+
+      if (CUT === 30) {
+        // ===== C9 엔드카드 A (CTA) T+11P =====
+        flash(tl, "#br-flash", T + 11 * P, 0.45);
+        OUT(["#br-h1", "#br-h2", "#br-chip", "#br-cs", "#br-bub"], 11, { translateY: -60 }, 0.1);
+        tl.add("#br-cam", { scale: 1, duration: 300, ease: "outExpo" }, at(11));
+        tl.add("#br-cta1-t", { translateY: ["105%", "0%"], duration: 400 }, at(11.25));
+        tl.add("#br-cta2-t", { translateY: ["105%", "0%"], duration: 400 }, at(12));
+        shake(tl, "#br-shake", T + 12 * P, 9, 5, 46);
+        tl.add("#br-11", { scale: [{ to: 1.3, duration: 90 }, { to: 1, duration: 320, ease: "outBack(3)" }] }, at(12.5));
+        tl.add("#br-btn", { opacity: [0, 1], scale: [0.6, 1], ease: SPRING(0.5, 420) }, at(13));
+        IN("#br-tel", 13.5, { translateY: [16, 0] }, 0.3);
+        tl.add("#br-hand", { opacity: [0, 1], translateX: [150, 0], translateY: [170, 0], duration: 320 }, at(15));
+        tl.add("#br-hand", { scale: [{ to: 0.84, duration: 70 }, { to: 1, duration: 140 }], ease: "outQuad" }, at(16));
+        tl.add("#br-btn", { scale: [{ to: 0.94, duration: 70 }, { to: 1, duration: 160 }], ease: "outQuad" }, at(16));
+        tl.add("#br-ring", { opacity: [0.9, 0], scale: [1, 1.15], duration: 380, ease: "outQuad" }, at(16));
+        tl.add("#br-hand", { opacity: 0, translateX: 90, translateY: 100, duration: 220, ease: "inQuad" }, at(17));
+        tl.add("#br-cam", { scale: [1, 1.025], duration: 3.5 * P * 1000, ease: "inOutSine" }, at(14));
+
+        // ===== C10 엔드카드 B (슬로건) T+18.5P = 원곡 비트 / 마지막 크래시 T+19.5P =====
+        const s1 = 30.5 * P + 26 * P - T; // 슬로건 시작 (비트 단위 아님 → 초)
+        const k10 = s1 / P;
+        flash(tl, "#br-flash", T + k10 * P, 0.4);
+        tl.add(["#br-cta1-t", "#br-cta2-t"], { translateY: "-105%", duration: 110, ease: "inQuad" }, at(k10));
+        tl.add("#br-cam", { scale: 1, duration: 300 }, at(k10));
+        tl.add("#br-desk", { opacity: [0, 1], duration: 400, ease: "outQuad" }, at(k10));
+        tl.add("#br-desk", { scale: [1.1, 1], duration: (30 - (T + k10 * P)) * 1000, ease: "outSine" }, at(k10));
+        OUT("#br-logo", k10, { translateY: -10 }, 0.15);
+        IN("#br-logo-s", k10 + 0.25, { translateX: [-16, 0] }, 0.3);
+        tl.add("#br-s1", { opacity: [0, 1], translateY: [-140, 0], ease: SPRING(0.35, 420) }, at(k10 + 0.25));
+        tl.add("#br-s2", { opacity: [0, 1], translateY: [-140, 0], ease: SPRING(0.35, 420) }, at(k10 + 1));
+        // 마지막 크래시 (원곡 src 31.719)
+        flash(tl, "#br-flash", T + (k10 + 2) * P, 0.55);
+        shake(tl, "#br-shake", T + (k10 + 2) * P, 14, 7, 47);
+        IN("#br-sub", k10 + 2, { translateY: [24, 0] }, 0.35, "outQuart");
+        tl.add("#br-btn", { scale: [{ to: 1.06, duration: 90 }, { to: 1, duration: 320, ease: "outBack(3)" }] }, at(k10 + 2));
+        tl.add("#br-cam", { scale: [1, 1.02], duration: (30 - (T + (k10 + 2) * P)) * 1000, ease: "outSine" }, at(k10 + 2.2));
+      } else {
+        // 15초: 전화는 브랜드 진입부터
+        IN("#br-tel", 1, { translateY: [16, 0] }, 0.3);
+        // ===== C6 엔드카드 T+8P = 원곡 마지막 크래시 (슬로건 착지) =====
+        flash(tl, "#br-flash", T + 8 * P, 0.6);
+        shake(tl, "#br-shake", T + 8 * P, 14, 7, 47);
+        OUT(["#br-h1", "#br-h2", "#br-cs", "#br-bub"], 7.85, { translateY: -60 }, 0.15);
+        tl.add("#br-cam", { scale: 1, duration: 300 }, at(8));
+        tl.add("#br-desk", { opacity: [0, 1], duration: 350, ease: "outQuad" }, at(8));
+        tl.add("#br-desk", { scale: [1.1, 1], duration: (15 - (T + 8 * P)) * 1000, ease: "outSine" }, at(8));
+        OUT("#br-logo", 8, { translateY: -10 }, 0.15);
+        IN("#br-logo-s", 8.25, { translateX: [-16, 0] }, 0.3);
+        tl.add("#br-s1", { opacity: [0, 1], translateY: [-140, 0], ease: SPRING(0.35, 420) }, at(8));
+        tl.add("#br-btn", { opacity: [0, 1], scale: [0.6, 1], ease: SPRING(0.5, 420) }, at(8));
+        tl.add("#br-s2", { opacity: [0, 1], translateY: [-140, 0], ease: SPRING(0.35, 420) }, at(9));
+        tl.add("#br-cam", { scale: [1, 1.02], duration: (15 - (T + 9.3 * P)) * 1000, ease: "outSine" }, at(9.3));
+      }
+      tl.set({ v: 0 }, { v: 1 }, ms(CUT === 30 ? 30 : 15));
+      tl.seek(0);
+    })();
   </script>
 </template>

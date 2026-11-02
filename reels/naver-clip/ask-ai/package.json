@@ -3,11 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "beats": "python3 tools/analyze_beats.py",
     "font": "python3 tools/subset_font.py",
-    "audio": "python3 tools/make_audio.py",
+    "audio": "python3 tools/make_audio.py && python3 tools/make_audio.py --cut 15",
+    "build15": "python3 tools/build_15s.py",
     "dev": "npx --yes hyperframes@0.8.200 preview",
     "check": "npx --yes hyperframes@0.8.200 check",
-    "snapshot": "npx --yes hyperframes@0.8.200 snapshot --at 0.5,2.5,6,9,12,14,16.5,19.5,22,25,29",
-    "render": "npx --yes hyperframes@0.8.200 render --quality delivery -o renders/ask-ai-30s.mp4"
+    "snapshot": "npx --yes hyperframes@0.8.200 snapshot --at 0,1.6,3.3,6.9,9.3,11.0,13.6,15.2,17.0,18.6,20.6,22.9,24.6,27.5,29.9",
+    "render": "npx --yes hyperframes@0.8.200 render --quality delivery -o renders/ask-ai-30s.mp4",
+    "render15": "cd v15 && npx --yes hyperframes@0.8.200 render --quality delivery -o ../renders/ask-ai-15s.mp4",
+    "verify": "python3 tools/verify_cuts.py 30 && python3 tools/verify_cuts.py 15"
   }
 }
