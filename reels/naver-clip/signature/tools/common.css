@@ -30,6 +30,8 @@
     /* 키 텍스트 컬럼: 좌 60 ~ 우 920 (우측 160px 아이콘 레일 회피), 중심 x=490 */
     .col { position: absolute; left: 60px; width: 860px; text-align: center; }
     .cap { font-weight: 900; line-height: 1.18; letter-spacing: -0.045em; }
+    /* 문서 위 자막 판: 종이색 플레이트로 바쁜 배경과 분리 */
+    .plate { display: inline-block; padding: 14px 40px 22px; border-radius: 28px; background: rgba(251, 249, 244, 0.97); box-shadow: 0 0 0 10px rgba(251, 249, 244, 0.45), 0 22px 60px rgba(34, 38, 43, 0.28); }
     .ch { display: inline-block; white-space: pre; }
     /* 가상 문서 도우미 UI */
     .ui-head { position: absolute; left: 60px; top: 232px; height: 56px; display: flex; align-items: center; gap: 16px; }

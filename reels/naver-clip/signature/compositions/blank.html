@@ -32,6 +32,8 @@
     /* 키 텍스트 컬럼: 좌 60 ~ 우 920 (우측 160px 아이콘 레일 회피), 중심 x=490 */
     .col { position: absolute; left: 60px; width: 860px; text-align: center; }
     .cap { font-weight: 900; line-height: 1.18; letter-spacing: -0.045em; }
+    /* 문서 위 자막 판: 종이색 플레이트로 바쁜 배경과 분리 */
+    .plate { display: inline-block; padding: 14px 40px 22px; border-radius: 28px; background: rgba(251, 249, 244, 0.97); box-shadow: 0 0 0 10px rgba(251, 249, 244, 0.45), 0 22px 60px rgba(34, 38, 43, 0.28); }
     .ch { display: inline-block; white-space: pre; }
     /* 가상 문서 도우미 UI */
     .ui-head { position: absolute; left: 60px; top: 232px; height: 56px; display: flex; align-items: center; gap: 16px; }
@@ -97,7 +99,7 @@
       </div>
     </div>
     <div id="b-vig" class="full" data-layout-ignore></div>
-    <div id="b-cap" class="col cap"><span id="b-cap1"><span class="w" style="display:inline-block">딱</span> <span class="w" style="display:inline-block">한</span> <span class="w" style="display:inline-block">칸만</span></span> <span id="b-cap2" class="w" style="display:inline-block">빼고.</span></div>
+    <div id="b-cap" class="col cap"><span id="b-plate" class="plate"><span id="b-cap1"><span class="w" style="display:inline-block">딱</span> <span class="w" style="display:inline-block">한</span> <span class="w" style="display:inline-block">칸만</span></span> <span id="b-cap2" class="w" style="display:inline-block">빼고.</span></span></div>
     <div id="b-btn">생성</div>
     <div id="b-toast"><i>!</i>이 항목은 생성할 수 없습니다.</div>
     <div id="b-ptr" data-layout-ignore><svg viewBox="0 0 100 120"><path d="M38 8c6 0 10 4 10 10v34l4-1c2-8 16-8 18 1 4-6 16-4 17 4 5-3 13 0 13 8v24c0 16-12 28-28 28H54c-9 0-16-4-21-11L10 74c-4-6 0-14 8-13 4 0 7 3 10 6V18c0-6 4-10 10-10z" fill="#ffffff" stroke="#161616" stroke-width="5" stroke-linejoin="round"/></svg></div>
@@ -140,6 +142,7 @@
     tl.fromTo("#b-cam", { y: 0 }, { y: -505, duration: 1.0, ease: "power3.inOut" }, 0);
     tl.fromTo(["#b-s0", "#b-s1", "#b-s2"], { backgroundColor: "#eeece6" }, { backgroundColor: "#e1ebe3", duration: 0.4 }, 0.5);
     ["#b-c0", "#b-c1", "#b-c2"].forEach((c) => BLINK(c, F(196), F(300)));
+    tl.fromTo("#b-plate", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power3.out" }, F(188));
     tl.fromTo("#b-cap1 .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.14, ease: "power3.out", stagger: 0.067 }, F(189));
     // S2 f210–f254: '빼고.' 추가, 생성 버튼 + 손가락 커서, 4연타
     IN("#b-cap2", F(210), {}, 0.14);
@@ -160,7 +163,6 @@
     tl.fromTo("#b-cam", { scale: 1, transformOrigin: "490px 1385px" }, { scale: 2.4, duration: 0.9, ease: "power3.inOut", immediateRender: false }, F(268));
     tl.to("#b-toast", { y: 168, duration: 0.9, ease: "power3.inOut" }, F(268));
     tl.fromTo("#b-vig", { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "power2.inOut" }, F(268));
-    tl.fromTo("#b-cap", { color: "#22262B" }, { color: "#FBF9F4", duration: 0.5, ease: "power2.inOut" }, F(272));
 
     window.__timelines["blank"] = tl;
   </script>

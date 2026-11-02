@@ -32,6 +32,8 @@
     /* 키 텍스트 컬럼: 좌 60 ~ 우 920 (우측 160px 아이콘 레일 회피), 중심 x=490 */
     .col { position: absolute; left: 60px; width: 860px; text-align: center; }
     .cap { font-weight: 900; line-height: 1.18; letter-spacing: -0.045em; }
+    /* 문서 위 자막 판: 종이색 플레이트로 바쁜 배경과 분리 */
+    .plate { display: inline-block; padding: 14px 40px 22px; border-radius: 28px; background: rgba(251, 249, 244, 0.97); box-shadow: 0 0 0 10px rgba(251, 249, 244, 0.45), 0 22px 60px rgba(34, 38, 43, 0.28); }
     .ch { display: inline-block; white-space: pre; }
     /* 가상 문서 도우미 UI */
     .ui-head { position: absolute; left: 60px; top: 232px; height: 56px; display: flex; align-items: center; gap: 16px; }
@@ -132,7 +134,7 @@
       </div>
       <div id="h-head" class="col cap"><span class="w" style="display:inline-block">AI가</span> <span class="w" style="display:inline-block">다</span> <span class="w" style="display:inline-block">써줍니다.</span></div>
     </div>
-    <div id="h-cap" class="col cap"><span class="w" style="display:inline-block">딱</span> <span class="w" style="display:inline-block">한</span> <span class="w" style="display:inline-block">칸만</span> <span class="w" style="display:inline-block">빼고.</span></div>
+    <div id="h-cap" class="col cap"><span id="h-plate" class="plate"><span class="w" style="display:inline-block">딱</span> <span class="w" style="display:inline-block">한</span> <span class="w" style="display:inline-block">칸만</span> <span class="w" style="display:inline-block">빼고.</span></span></div>
     <div id="h-gl" class="full" style="opacity:0;pointer-events:none" data-layout-ignore>
       <div class="glitch" style="top:420px;height:46px;background:rgba(255,40,90,0.35)"></div>
       <div class="glitch" style="top:880px;height:22px;background:rgba(0,200,230,0.4)"></div>
@@ -178,6 +180,7 @@
     tl.fromTo("#h-world", { y: 0 }, { y: -2100, duration: 0.42, ease: "expo.inOut" }, F(45));
     tl.fromTo("#h-world", { filter: "blur(0px)" }, { filter: "blur(14px)", duration: 0.25, ease: "power2.in" }, F(46));
     tl.to("#h-world", { filter: "blur(0px)", duration: 0.25, ease: "power2.out" }, F(46) + 0.25);
+    tl.fromTo("#h-plate", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power3.out" }, F(47));
     tl.fromTo("#h-cap .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.14, ease: "power3.out", stagger: 0.067 }, F(48));
     // 서명란 강조 + 커서 깜박임
     tl.fromTo(["#h-s0", "#h-s1", "#h-s2"], { backgroundColor: "#eeece6" }, { backgroundColor: "#e1ebe3", duration: 0.3 }, F(62));

@@ -32,6 +32,8 @@
     /* 키 텍스트 컬럼: 좌 60 ~ 우 920 (우측 160px 아이콘 레일 회피), 중심 x=490 */
     .col { position: absolute; left: 60px; width: 860px; text-align: center; }
     .cap { font-weight: 900; line-height: 1.18; letter-spacing: -0.045em; }
+    /* 문서 위 자막 판: 종이색 플레이트로 바쁜 배경과 분리 */
+    .plate { display: inline-block; padding: 14px 40px 22px; border-radius: 28px; background: rgba(251, 249, 244, 0.97); box-shadow: 0 0 0 10px rgba(251, 249, 244, 0.45), 0 22px 60px rgba(34, 38, 43, 0.28); }
     .ch { display: inline-block; white-space: pre; }
     /* 가상 문서 도우미 UI */
     .ui-head { position: absolute; left: 60px; top: 232px; height: 56px; display: flex; align-items: center; gap: 16px; }
@@ -83,21 +85,26 @@
       <div id="s-paper" class="full" data-layout-ignore></div>
       <div id="s-ul" data-layout-ignore></div>
       <div id="s-ink" data-layout-ignore></div>
-      <div id="s-pen" data-layout-ignore><svg viewBox="0 0 640 640" width="640" height="640">
+      <div id="s-pen" data-layout-ignore><svg viewBox="0 0 640 640" width="640" height="640" style="overflow:visible">
   <defs>
-    <linearGradient id="s-pb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3a3a"/><stop offset="0.5" stop-color="#0e0e0e"/><stop offset="1" stop-color="#262626"/></linearGradient>
-    <linearGradient id="s-sk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1d2b8"/><stop offset="1" stop-color="#d9ab8a"/></linearGradient>
+    <linearGradient id="s-lq" x1="0" y1="-22" x2="0" y2="22" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4a4f58"/><stop offset="0.28" stop-color="#15171b"/><stop offset="0.7" stop-color="#050506"/><stop offset="1" stop-color="#2a2d33"/></linearGradient>
+    <linearGradient id="s-gd" x1="0" y1="-18" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f3dfae"/><stop offset="0.45" stop-color="#c9a666"/><stop offset="1" stop-color="#8a6a33"/></linearGradient>
+    <radialGradient id="s-gl"><stop offset="0" stop-color="#fff4d6" stop-opacity="1"/><stop offset="0.35" stop-color="#e0c27e" stop-opacity="0.7"/><stop offset="1" stop-color="#e0c27e" stop-opacity="0"/></radialGradient>
+    <filter id="s-sh" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
   </defs>
-  <path d="M470 120 L700 -110 L800 0 L570 230 Z" fill="#0B1A33"/>
-  <path d="M470 120 L570 230" stroke="#16294a" stroke-width="10"/>
-  <path d="M300 250 C340 190 420 130 480 125 C540 150 575 200 565 235 C520 300 450 360 380 380 C330 390 290 330 300 250 Z" fill="url(#s-sk)"/>
-  <line x1="40" y1="560" x2="560" y2="40" stroke="url(#s-pb)" stroke-width="36" stroke-linecap="round"/>
-  <line x1="470" y1="130" x2="492" y2="108" stroke="#B8955A" stroke-width="38"/>
-  <path d="M30 548 L52 570 L14 586 Z" fill="#C9A666"/>
-  <path d="M40 560 L22 578" stroke="#7d6233" stroke-width="2"/>
-  <path d="M215 330 C250 300 300 290 330 300 C350 310 345 335 320 345 C290 352 250 360 222 362 C200 360 198 342 215 330 Z" fill="url(#s-sk)" stroke="#c99a78" stroke-width="2"/>
-  <path d="M250 372 C285 350 330 345 352 352 C368 360 360 382 336 388 C306 394 270 400 252 398 C236 394 236 380 250 372 Z" fill="url(#s-sk)" stroke="#c99a78" stroke-width="2"/>
-  <path d="M232 268 C262 236 300 222 330 226 C352 232 352 252 330 262 C300 274 268 286 246 292 C226 294 220 280 232 268 Z" fill="url(#s-sk)" stroke="#c99a78" stroke-width="2"/>
+  <g transform="translate(14 586) rotate(-45)">
+    <rect id="s-shadow" x="60" y="34" width="1500" height="30" rx="15" fill="rgba(60,40,15,0.28)" filter="url(#s-sh)"/>
+    <rect x="118" y="-21" width="1500" height="42" rx="21" fill="url(#s-lq)"/>
+    <rect x="118" y="-21" width="1500" height="9" rx="4" fill="rgba(255,255,255,0.16)"/>
+    <rect x="96" y="-17" width="30" height="34" rx="6" fill="url(#s-gd)"/>
+    <rect x="72" y="-15" width="28" height="30" rx="4" fill="#0d0e10"/>
+    <rect x="430" y="-22" width="16" height="44" fill="url(#s-gd)"/>
+    <rect x="452" y="-22" width="5" height="44" fill="url(#s-gd)"/>
+    <path d="M0 0 C18 -4 40 -13 74 -15 L74 15 C40 13 18 4 0 0 Z" fill="url(#s-gd)"/>
+    <path d="M4 0 L56 0" stroke="#5a4320" stroke-width="1.6"/>
+    <circle cx="56" cy="0" r="3.2" fill="#5a4320"/>
+  </g>
+  <circle id="s-tip" cx="14" cy="586" r="46" fill="url(#s-gl)" opacity="0"/>
 </svg></div>
     </div>
     <div id="s-lb" class="col"><span id="s-o0" class="ch">법</span><span id="s-o1" class="ch">률</span><span id="s-o2" class="ch"> </span><span id="s-o3" class="ch">검</span><span id="s-o4" class="ch">토</span><span id="s-o5" class="ch">·</span><span id="s-o6" class="ch">책</span><span id="s-o7" class="ch">임</span><span id="s-o8" class="ch">자</span><span id="s-o9" class="ch"> </span><span id="s-o10" class="ch">서</span><span id="s-o11" class="ch">명</span></div>
@@ -140,7 +147,11 @@
 
     const OLDN = 12, NEWN = 13;
     // S1 f540–f584: 매크로. 펜촉이 서명란 위 1cm에서 → 접촉 0.3초 슬로모 → f584 화이트 플래시
-    tl.fromTo("#s-pen", { x: 0, y: -46 }, { y: -10, duration: F(575), ease: "power2.out" }, 0);
+    tl.fromTo("#s-pen", { x: 170, y: -240, opacity: 0 }, { x: 0, y: -46, opacity: 1, duration: 0.7, ease: "power3.out" }, 0);
+    tl.to("#s-pen", { y: -10, duration: F(575) - 0.7, ease: "power1.inOut" }, 0.7);
+    tl.fromTo("#s-tip", { opacity: 0, scale: 0.4, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1.25, duration: 0.12, ease: "power2.out" }, F(584));
+    tl.to("#s-tip", { scale: 0.9, opacity: 0.85, duration: 0.3, ease: "power2.out" }, F(588));
+    tl.to("#s-tip", { opacity: 0, duration: 0.25 }, F(626));
     tl.to("#s-pen", { y: 0, duration: F(584) - F(575), ease: "sine.inOut" }, F(575));
     tl.fromTo("#s-world", { scale: 1.0, transformOrigin: "200px 1000px" }, { scale: 1.05, duration: F(584), ease: "none" }, 0);
     tl.fromTo("#s-flash", { opacity: 0 }, { opacity: 0.95, duration: 2 / 30, ease: "none" }, F(582));

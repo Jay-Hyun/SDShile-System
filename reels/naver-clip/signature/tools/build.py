@@ -27,21 +27,26 @@ PEN_ICON = ('<svg viewBox="0 0 120 120"><g transform="rotate(45 60 60)"><rect x=
             '<rect x="49" y="20" width="22" height="6" fill="#B8955A"/><path d="M49 72h22l-11 34z" fill="#B8955A"/>'
             '<path d="M60 80v18" stroke="#161616" stroke-width="2.4"/></g></svg>')
 # 매크로 펜 + 손 (가상 일러스트). 펜촉 끝 = viewBox (14, 586)
-PEN_HAND = '''<svg viewBox="0 0 640 640" width="640" height="640">
+PEN_HAND = '''<svg viewBox="0 0 640 640" width="640" height="640" style="overflow:visible">
   <defs>
-    <linearGradient id="@@-pb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3a3a"/><stop offset="0.5" stop-color="#0e0e0e"/><stop offset="1" stop-color="#262626"/></linearGradient>
-    <linearGradient id="@@-sk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1d2b8"/><stop offset="1" stop-color="#d9ab8a"/></linearGradient>
+    <linearGradient id="@@-lq" x1="0" y1="-22" x2="0" y2="22" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4a4f58"/><stop offset="0.28" stop-color="#15171b"/><stop offset="0.7" stop-color="#050506"/><stop offset="1" stop-color="#2a2d33"/></linearGradient>
+    <linearGradient id="@@-gd" x1="0" y1="-18" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f3dfae"/><stop offset="0.45" stop-color="#c9a666"/><stop offset="1" stop-color="#8a6a33"/></linearGradient>
+    <radialGradient id="@@-gl"><stop offset="0" stop-color="#fff4d6" stop-opacity="1"/><stop offset="0.35" stop-color="#e0c27e" stop-opacity="0.7"/><stop offset="1" stop-color="#e0c27e" stop-opacity="0"/></radialGradient>
+    <filter id="@@-sh" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
   </defs>
-  <path d="M470 120 L700 -110 L800 0 L570 230 Z" fill="#0B1A33"/>
-  <path d="M470 120 L570 230" stroke="#16294a" stroke-width="10"/>
-  <path d="M300 250 C340 190 420 130 480 125 C540 150 575 200 565 235 C520 300 450 360 380 380 C330 390 290 330 300 250 Z" fill="url(#@@-sk)"/>
-  <line x1="40" y1="560" x2="560" y2="40" stroke="url(#@@-pb)" stroke-width="36" stroke-linecap="round"/>
-  <line x1="470" y1="130" x2="492" y2="108" stroke="#B8955A" stroke-width="38"/>
-  <path d="M30 548 L52 570 L14 586 Z" fill="#C9A666"/>
-  <path d="M40 560 L22 578" stroke="#7d6233" stroke-width="2"/>
-  <path d="M215 330 C250 300 300 290 330 300 C350 310 345 335 320 345 C290 352 250 360 222 362 C200 360 198 342 215 330 Z" fill="url(#@@-sk)" stroke="#c99a78" stroke-width="2"/>
-  <path d="M250 372 C285 350 330 345 352 352 C368 360 360 382 336 388 C306 394 270 400 252 398 C236 394 236 380 250 372 Z" fill="url(#@@-sk)" stroke="#c99a78" stroke-width="2"/>
-  <path d="M232 268 C262 236 300 222 330 226 C352 232 352 252 330 262 C300 274 268 286 246 292 C226 294 220 280 232 268 Z" fill="url(#@@-sk)" stroke="#c99a78" stroke-width="2"/>
+  <g transform="translate(14 586) rotate(-45)">
+    <rect id="@@-shadow" x="60" y="34" width="1500" height="30" rx="15" fill="rgba(60,40,15,0.28)" filter="url(#@@-sh)"/>
+    <rect x="118" y="-21" width="1500" height="42" rx="21" fill="url(#@@-lq)"/>
+    <rect x="118" y="-21" width="1500" height="9" rx="4" fill="rgba(255,255,255,0.16)"/>
+    <rect x="96" y="-17" width="30" height="34" rx="6" fill="url(#@@-gd)"/>
+    <rect x="72" y="-15" width="28" height="30" rx="4" fill="#0d0e10"/>
+    <rect x="430" y="-22" width="16" height="44" fill="url(#@@-gd)"/>
+    <rect x="452" y="-22" width="5" height="44" fill="url(#@@-gd)"/>
+    <path d="M0 0 C18 -4 40 -13 74 -15 L74 15 C40 13 18 4 0 0 Z" fill="url(#@@-gd)"/>
+    <path d="M4 0 L56 0" stroke="#5a4320" stroke-width="1.6"/>
+    <circle cx="56" cy="0" r="3.2" fill="#5a4320"/>
+  </g>
+  <circle id="@@-tip" cx="14" cy="586" r="46" fill="url(#@@-gl)" opacity="0"/>
 </svg>'''
 
 DOCS = [
@@ -219,7 +224,7 @@ hook_html = f'''    <div id="h-bg" class="full" data-layout-ignore></div>
       </div>
       <div id="h-head" class="col cap">{words("AI가 다 써줍니다.")}</div>
     </div>
-    <div id="h-cap" class="col cap">{words("딱 한 칸만 빼고.")}</div>
+    <div id="h-cap" class="col cap"><span id="h-plate" class="plate">{words("딱 한 칸만 빼고.")}</span></div>
     {GL.replace("@@", "h")}
     <div id="h-flash" class="full" data-layout-ignore></div>'''
 hook_js = """
@@ -232,6 +237,7 @@ hook_js = """
     tl.fromTo("#h-world", { y: 0 }, { y: -2100, duration: 0.42, ease: "expo.inOut" }, F(45));
     tl.fromTo("#h-world", { filter: "blur(0px)" }, { filter: "blur(14px)", duration: 0.25, ease: "power2.in" }, F(46));
     tl.to("#h-world", { filter: "blur(0px)", duration: 0.25, ease: "power2.out" }, F(46) + 0.25);
+    tl.fromTo("#h-plate", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power3.out" }, F(47));
     tl.fromTo("#h-cap .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.14, ease: "power3.out", stagger: 0.067 }, F(48));
     // 서명란 강조 + 커서 깜박임
     tl.fromTo(["#h-s0", "#h-s1", "#h-s2"], { backgroundColor: "#eeece6" }, { backgroundColor: "#e1ebe3", duration: 0.3 }, F(62));
@@ -293,7 +299,7 @@ blank_html = f'''    <div id="b-bg" class="full" data-layout-ignore></div>
       {doc(0, "b", last_variants=True)}{doc(1, "b", last_variants=True)}{doc(2, "b", last_variants=True)}
     </div>
     <div id="b-vig" class="full" data-layout-ignore></div>
-    <div id="b-cap" class="col cap"><span id="b-cap1">{words("딱 한 칸만")}</span> <span id="b-cap2" class="w" style="display:inline-block">빼고.</span></div>
+    <div id="b-cap" class="col cap"><span id="b-plate" class="plate"><span id="b-cap1">{words("딱 한 칸만")}</span> <span id="b-cap2" class="w" style="display:inline-block">빼고.</span></span></div>
     <div id="b-btn">생성</div>
     <div id="b-toast"><i>!</i>이 항목은 생성할 수 없습니다.</div>
     <div id="b-ptr" data-layout-ignore>{HAND_PTR}</div>
@@ -303,6 +309,7 @@ blank_js = """
     tl.fromTo("#b-cam", { y: 0 }, { y: -505, duration: 1.0, ease: "power3.inOut" }, 0);
     tl.fromTo(["#b-s0", "#b-s1", "#b-s2"], { backgroundColor: "#eeece6" }, { backgroundColor: "#e1ebe3", duration: 0.4 }, 0.5);
     ["#b-c0", "#b-c1", "#b-c2"].forEach((c) => BLINK(c, F(196), F(300)));
+    tl.fromTo("#b-plate", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power3.out" }, F(188));
     tl.fromTo("#b-cap1 .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.14, ease: "power3.out", stagger: 0.067 }, F(189));
     // S2 f210–f254: '빼고.' 추가, 생성 버튼 + 손가락 커서, 4연타
     IN("#b-cap2", F(210), {}, 0.14);
@@ -323,7 +330,6 @@ blank_js = """
     tl.fromTo("#b-cam", { scale: 1, transformOrigin: "490px 1385px" }, { scale: 2.4, duration: 0.9, ease: "power3.inOut", immediateRender: false }, F(268));
     tl.to("#b-toast", { y: 168, duration: 0.9, ease: "power3.inOut" }, F(268));
     tl.fromTo("#b-vig", { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "power2.inOut" }, F(268));
-    tl.fromTo("#b-cap", { color: "#22262B" }, { color: "#FBF9F4", duration: 0.5, ease: "power2.inOut" }, F(272));
 """
 SLOTS.append(scene("blank", 180, 299, blank_css, blank_html, blank_js))
 
@@ -520,7 +526,11 @@ sign_html = f'''    <div id="s-world" class="full" data-layout-allow-overlap>
 sign_js = """
     const OLDN = __OLDN__, NEWN = __NEWN__;
     // S1 f540–f584: 매크로. 펜촉이 서명란 위 1cm에서 → 접촉 0.3초 슬로모 → f584 화이트 플래시
-    tl.fromTo("#s-pen", { x: 0, y: -46 }, { y: -10, duration: F(575), ease: "power2.out" }, 0);
+    tl.fromTo("#s-pen", { x: 170, y: -240, opacity: 0 }, { x: 0, y: -46, opacity: 1, duration: 0.7, ease: "power3.out" }, 0);
+    tl.to("#s-pen", { y: -10, duration: F(575) - 0.7, ease: "power1.inOut" }, 0.7);
+    tl.fromTo("#s-tip", { opacity: 0, scale: 0.4, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1.25, duration: 0.12, ease: "power2.out" }, F(584));
+    tl.to("#s-tip", { scale: 0.9, opacity: 0.85, duration: 0.3, ease: "power2.out" }, F(588));
+    tl.to("#s-tip", { opacity: 0, duration: 0.25 }, F(626));
     tl.to("#s-pen", { y: 0, duration: F(584) - F(575), ease: "sine.inOut" }, F(575));
     tl.fromTo("#s-world", { scale: 1.0, transformOrigin: "200px 1000px" }, { scale: 1.05, duration: F(584), ease: "none" }, 0);
     tl.fromTo("#s-flash", { opacity: 0 }, { opacity: 0.95, duration: 2 / 30, ease: "none" }, F(582));
@@ -654,7 +664,7 @@ end_html = f'''    <div id="e-bg" class="full" data-layout-ignore></div>
     <div id="e-m4" class="col"><img src="assets/img/mark-gold.svg" alt="">경찰복지사이버평생교육원</div>
     <div id="e-cap" class="col cap">서명하는 쪽으로<br>넘어오세요.</div>
     <div id="e-pen" data-layout-ignore>{PEN_ICON}</div>
-    <div id="e-slo" class="col cap">「책임지는 자리로,<br>지금 있는 자리에서.」</div>
+    <div id="e-slo" class="col cap">책임지는 자리로,<br>지금 있는 자리에서.</div>
     <div id="e-ul" data-layout-ignore></div>
     <div id="e-u1" class="col"><b>국내 유일*</b> 100% 온라인 법학사</div>
     <div id="e-u3" class="col">교육부장관 명의 · '법학 전공' 표기</div>
