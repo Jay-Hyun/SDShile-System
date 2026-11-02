@@ -3,7 +3,10 @@
  *   - 가운데 정렬 요소(data-m="c"): 박스 중심 x 와 540 의 차 (|Δx| ≤ 2px 이 기준)
  *   - 말풍선 컬럼(data-m="col"): 좌우 여백 (대칭이면 중심 = 540)
  *   - 계산된 font-size 집합 (4종 이하가 기준)
- *   - 빈 띠: 글자·오브제 픽셀이 하나도 없는 가장 긴 연속 행 묶음 (프레임 높이 1920 의 %, §7-1 기준 ≤ 35%)
+ *   - 블록 사이 최대 틈: 보이는 블록(data-m 글자·말풍선·버튼, data-fill 입력 독·풋터 필드)을 위에서 아래로 놓고 이웃한 두 블록 사이의
+ *     세로 틈의 최댓값 (§7-2 기준 ≤ 140px). 독·풋터는 위 가장자리까지의 틈을 재므로 보수적이다
+ *   - 빈 띠: 글자·오브제 픽셀이 하나도 없는 가장 긴 연속 행 묶음 (프레임 높이 1920 의 %, §7-2 기준 ≤ 15%).
+ *     바탕색과 다른 전체 폭 필드(입력 독·풋터)는 채움으로 센다
  * 을 표로 낸다. 어느 쪽에도 속하지 않는 보이는 텍스트는 "unannotated" 로 따로 보고한다.
  *
  * Usage:
@@ -39,27 +42,31 @@ function collect() {
     if (op < 0.05) return null;
     let r = el.getBoundingClientRect();
     let box = { l: r.left, t: r.top, r: r.right, b: r.bottom };
-    // 조상의 overflow 마스크(줄 마스크 등)로 잘리면 그만큼만 보인다
+    const inset = (n) => {
+      // clip-path: inset(t r b l ...) — 오프닝 윈도우, 말풍선 줄 단위 공개, 입력창이 위로 자라는 모양
+      const m = /inset\(([-\d.]+)px(?: ([-\d.]+)px)?(?: ([-\d.]+)px)?(?: ([-\d.]+)px)?/.exec(getComputedStyle(n).clipPath || "");
+      if (!m) return;
+      const it = +m[1], ir = m[2] != null ? +m[2] : it, ib = m[3] != null ? +m[3] : it, il = m[4] != null ? +m[4] : ir;
+      const pr = n.getBoundingClientRect();
+      const sx = pr.width / (n.offsetWidth || pr.width), sy = pr.height / (n.offsetHeight || pr.height);
+      box = { l: Math.max(box.l, pr.left + il * sx), t: Math.max(box.t, pr.top + it * sy), r: Math.min(box.r, pr.right - ir * sx), b: Math.min(box.b, pr.bottom - ib * sy) };
+    };
+    inset(el); // 자기 자신의 clip-path
+    const own = { ...box }; // 자기 clip-path 만 적용한 보이는 영역 (말풍선이 줄 단위로 자라는 중이면 이만큼이 '전부'다)
+    // 조상의 overflow 마스크(줄 마스크 등)·clip-path 로 잘리면 그만큼만 보인다
     for (let n = el.parentElement; n && n !== document.body; n = n.parentElement) {
       const cs = getComputedStyle(n);
       if (cs.overflow !== "visible" || cs.overflowX !== "visible" || cs.overflowY !== "visible") {
         const pr = n.getBoundingClientRect();
         box = { l: Math.max(box.l, pr.left), t: Math.max(box.t, pr.top), r: Math.min(box.r, pr.right), b: Math.min(box.b, pr.bottom) };
       }
-      // clip-path: inset(t r b l ...) — 오프닝 윈도우, 말풍선 줄 단위 공개
-      const m = /inset\(([-\d.]+)px(?: ([-\d.]+)px)?(?: ([-\d.]+)px)?(?: ([-\d.]+)px)?/.exec(cs.clipPath || "");
-      if (m) {
-        const it = +m[1], ir = m[2] != null ? +m[2] : it, ib = m[3] != null ? +m[3] : it, il = m[4] != null ? +m[4] : ir;
-        const pr = n.getBoundingClientRect();
-        const sx = pr.width / (n.offsetWidth || pr.width), sy = pr.height / (n.offsetHeight || pr.height);
-        box = { l: Math.max(box.l, pr.left + il * sx), t: Math.max(box.t, pr.top + it * sy), r: Math.min(box.r, pr.right - ir * sx), b: Math.min(box.b, pr.bottom - ib * sy) };
-      }
+      inset(n);
     }
     box = { l: Math.max(box.l, 0), t: Math.max(box.t, 0), r: Math.min(box.r, W), b: Math.min(box.b, H) };
     const area = Math.max(0, box.r - box.l) * Math.max(0, box.b - box.t);
-    const full = Math.max(1, (r.right - r.left) * (r.bottom - r.top));
-    if (area / full < 0.5) return null; // 마스크 안에서 올라오는 중이거나 화면 밖 (한 줄로 접힌 입력창 = 59%)
-    return { op, rect: r };
+    const full = Math.max(1, (own.r - own.l) * (own.b - own.t));
+    if (area / full < 0.5) return null; // 조상 마스크 안에서 올라오는 중이거나 화면 밖
+    return { op, rect: r, box };
   };
   const onTop = () => true; // 가림은 vis() 의 overflow·clip-path 교차로 판단한다
   const directText = (el) => Array.from(el.childNodes).some((n) => n.nodeType === 3 && n.textContent.trim());
@@ -99,7 +106,32 @@ function collect() {
     (sizes[fs] = sizes[fs] || []).push(txt(el));
     if (!el.closest("[data-m]") && !el.querySelector("[data-m]")) stray.push({ el: label(el), text: txt(el), fs });
   });
-  return { centred, cols, sizes, stray };
+  // 블록 사이 틈: 보이는 블록의 세로 구간을 합쳐 위에서 아래로 훑는다
+  const blocks = [];
+  document.querySelectorAll("[data-m], [data-fill]").forEach((el) => {
+    const v = vis(el);
+    if (!v || v.box.b - v.box.t < 2) return;
+    blocks.push({ name: label(el), t: v.box.t, b: v.box.b });
+  });
+  blocks.sort((a, b) => a.t - b.t);
+  const merged = [];
+  for (const k of blocks) {
+    const last = merged[merged.length - 1];
+    if (last && k.t <= last.b + 0.5) { last.b = Math.max(last.b, k.b); last.last = k.name; }
+    else merged.push({ first: k.name, last: k.name, t: k.t, b: k.b });
+  }
+  const gaps = [];
+  for (let i = 1; i < merged.length; i++) gaps.push({ gap: +(merged[i].t - merged[i - 1].b).toFixed(1), from: merged[i - 1].last, to: merged[i].first, y: Math.round(merged[i - 1].b) });
+  const maxGap = gaps.reduce((m, g) => (g.gap > m.gap ? g : m), { gap: 0, from: "-", to: "-", y: 0 });
+  // 로고 락업: 브랜드 프레임마다 심볼 + 기관명이 한 줄로 보이고 락업 전체 중심이 x=540 인지
+  let logo = null;
+  const lr = document.querySelector("#br-logo-row"), lm = document.querySelector("#br-mark");
+  if (lr && lm && vis(lr)) {
+    const a = lr.getBoundingClientRect(), m = lm.getBoundingClientRect();
+    const name = lr.lastElementChild.getBoundingClientRect();
+    logo = { cx: +((a.left + a.right) / 2).toFixed(2), mark: Math.round(m.width) + "×" + Math.round(m.height), gapMarkName: +(name.left - m.right).toFixed(1), sameRow: Math.abs((m.top + m.bottom) / 2 - (name.top + name.bottom) / 2) < 3 };
+  }
+  return { centred, cols, sizes, stray, gaps, maxGap, logo };
 }
 
 // 스크린샷(PNG base64)을 빈 페이지 canvas 로 풀어, 바탕색(최빈색)과 다른 픽셀이 없는 행의 최장 연속 구간을 잰다
@@ -174,14 +206,25 @@ function emptyBand(b64) {
     lines.push(`| ${f.t} | ${c.el} | ${c.text} | ${c.w} | ${c.L} | ${c.R} | ${c.dx >= 0 ? "+" : ""}${c.dx} |`);
   }
   lines.push("");
-  lines.push("| t (s) | largest empty band (rows y) | px | % of 1920 | ≤ 35% |");
+  lines.push("| t (s) | max gap between adjacent blocks (px) | between (y) | ≤ 140 | largest empty band (rows y) | px | % of 1920 | ≤ 15% |");
+  lines.push("|---|---|---|---|---|---|---|---|");
+  let worstGap = 0, worstBand = 0;
+  for (const f of out) {
+    worstGap = Math.max(worstGap, f.maxGap.gap);
+    worstBand = Math.max(worstBand, f.band.pct);
+    lines.push(`| ${f.t} | ${f.maxGap.gap} | ${f.maxGap.from} → ${f.maxGap.to} (${f.maxGap.y}) | ${f.maxGap.gap <= 140 ? "✓" : "✗"} | ${f.band.from}–${f.band.to} | ${f.band.px} | ${f.band.pct} | ${f.band.pct <= 15 ? "✓" : "✗"} |`);
+  }
+  const brandFrames = out.filter((f) => f.logo);
+  lines.push("");
+  lines.push("| t (s) | logo lockup centre x | mark (px) | mark → name gap | one row |");
   lines.push("|---|---|---|---|---|");
-  for (const f of out) lines.push(`| ${f.t} | ${f.band.from}–${f.band.to} | ${f.band.px} | ${f.band.pct} | ${f.band.pct <= 35 ? "✓" : "✗"} |`);
+  for (const f of brandFrames) lines.push(`| ${f.t} | ${f.logo.cx} | ${f.logo.mark} | ${f.logo.gapMarkName} | ${f.logo.sameRow ? "✓" : "✗"} |`);
   const strays = out.flatMap((f) => f.stray.map((s) => `${f.t}s ${s.el} "${s.text}" ${s.fs}`));
   const sizeList = [...allSizes].sort((a, b) => parseFloat(a) - parseFloat(b));
   lines.push("");
   lines.push(`font sizes seen (computed): ${sizeList.join(", ")} — ${sizeList.length} sizes`);
   lines.push(`max |Δx| centred text: ${worst.toFixed(2)} px; max |Δx| bubble column centre: ${worstCol.toFixed(2)} px`);
+  lines.push(`max block gap over all frames: ${worstGap} px; largest empty band over all frames: ${worstBand}%`);
   lines.push(`unannotated visible text: ${strays.length ? strays.join("; ") : "none"}`);
   console.log(lines.join("\n"));
   if (jsonOut) fs.writeFileSync(jsonOut, JSON.stringify(out, null, 1));

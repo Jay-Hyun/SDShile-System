@@ -59,5 +59,12 @@
     /* blank signature line and the caret that waits on it */
     .rule { position: absolute; height: 4px; background: currentColor; }
     .caret { position: absolute; width: 4px; background: currentColor; }
+    /* logo lockup (v3.2 §7-2): gold mark (height 62) + 18px gap + name (Body 44 / 600), one inline row,
+       the whole lockup centred on x=540 (same as ask-ai brand.html #br-logo-row) */
+    .lock { height: 62px; display: flex; align-items: center; justify-content: center; }
+    .lockrow { display: flex; align-items: center; gap: 18px; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; padding-right: 0.01em; color: var(--paper); }
+    .lmark { display: block; width: 56px; height: 62px; background: var(--gold); -webkit-mask: url("assets/img/mark.svg") center / contain no-repeat; mask: url("assets/img/mark.svg") center / contain no-repeat; }
+    /* full-width footer field on the dark brand / end scenes: one tone off the ground, y 1580-1920 */
+    .dock { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; background: #102245; }
     /* pill control (button, toast): the only rounded shape */
     .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }

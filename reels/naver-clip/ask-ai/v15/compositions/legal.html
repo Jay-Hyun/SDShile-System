@@ -6,7 +6,7 @@
       font-weight: 45 930;
     }
     /* 컴플라이언스 레이어 (02-art-direction.md §7): Small 26 / 400 / 1.4, x=540 가운데.
-       배지 y 160, 고지 y 1500–1560. Paper 바탕 #5F6368, Navy 바탕 #9AA0A6 */
+       배지 y 160, 고지 y 1494–1567 (브랜드 풋터 필드 y 1580 위). Paper 바탕 #5F6368, Navy 바탕 #9AA0A6 */
     #root {
       position: absolute;
       inset: 0;
@@ -24,36 +24,36 @@
     .on-paper { color: var(--color-muted, #5f6368); }
     .on-navy { color: var(--color-sec, #9aa0a6); }
     .badge { top: 142px; }
-    #lg-note { top: 1560px; } /* 입력창(y 1456–1544) 바로 아래, 아래 끝 1596 ≤ 1600 */
+    /* 챗 입력 독 안, 입력창(y 1472–1584) 바로 아래 */
+    #lg-note { top: 1604px; }
     #lg-l1 { top: 1494px; }
     #lg-l2 { top: 1530px; }
   </style>
   <div id="root" data-composition-id="legal" data-width="1080" data-height="1920">
     <!-- 배지: 챗 화면 동안 "가상 챗봇 화면 · 연출", 버튼이 열려 화면 위쪽까지 덮으면 "연출"로 바꿔 끝까지 -->
-    <div id="lg-b1" class="clip" data-start="0" data-duration="8.88" data-track-index="1"><div class="lg badge on-paper"><span id="b1" data-m="c">가상 챗봇 화면 · 연출</span></div></div>
-    <div id="lg-b2" class="clip" data-start="8.833" data-duration="6.167" data-track-index="2"><div class="lg badge on-navy"><span id="b2" data-m="c">연출</span></div></div>
-    <!-- 연출 대화 고지: 첫 AI 답(C2)부터 버튼이 열릴 때까지, 챗 입력창 바로 아래 -->
-    <div id="lg-n" class="clip" data-start="3" data-duration="5.2" data-track-index="3"><div id="lg-note" class="lg on-paper"><span id="nt" data-m="c">※ 연출된 가상 대화입니다</span></div></div>
+    <div id="lg-b1" class="clip" data-start="0" data-duration="9.013" data-track-index="1"><div class="lg badge on-paper"><span id="b1" data-m="c">가상 챗봇 화면 · 연출</span></div></div>
+    <div id="lg-b2" class="clip" data-start="8.966" data-duration="6.034" data-track-index="2"><div class="lg badge on-navy"><span id="b2" data-m="c">연출</span></div></div>
+    <!-- 연출 대화 고지: 처음부터(입력 독과 AI 말풍선이 첫 프레임에 있다) 버튼이 열릴 때까지, 입력창 바로 아래 -->
+    <div id="lg-n" class="clip" data-start="0" data-duration="8.333" data-track-index="3"><div id="lg-note" class="lg on-paper"><span id="nt" data-m="c">※ 연출된 가상 대화입니다</span></div></div>
     <!-- '국내 유일' 근거 각주 + 보장 금지 고지: 브랜드 진입(원곡 크래시)부터 끝까지 -->
-    <div id="lg-l" class="clip" data-start="8.5" data-duration="6.5" data-track-index="4">
+    <div id="lg-l" class="clip" data-start="8.638" data-duration="6.362" data-track-index="4">
       <div id="lg-l1" class="lg on-navy"><span id="l1" data-m="c">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</span></div>
       <div id="lg-l2" class="lg on-navy"><span id="l2" data-m="c">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</span></div>
     </div>
   </div>
   <script>
     (function () {
+      const CUT = 15; // tools/build_15s.py 가 v15에서 15로 바꾼다 (클립 시각은 tools/stamp_timing.py 가 lib/cue.js 에서 찍는다)
       const { ms, E, D, timeline, ui } = window.HF;
+      const C = window.HFCUE(CUT);
       const tl = timeline();
-      // build_15s.py 가 15초 값으로 바꾼다
-      const T = { note: 3.0, win: 237 / 30, brand: 8.5, end: 15 };
-      tl.set(["#nt", "#l1", "#l2", "#b2"], { opacity: 0 }, 0);
-      ui(tl, "#nt", T.note);
-      tl.add("#nt", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(T.win));
-      tl.add("#b1", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(T.win + 0.68));
-      ui(tl, "#b2", T.win + 0.93);
-      ui(tl, "#l1", T.brand);
-      ui(tl, "#l2", T.brand + 0.09);
-      tl.set({ v: 0 }, { v: 1 }, ms(T.end));
+      tl.set(["#l1", "#l2", "#b2"], { opacity: 0 }, 0);
+      tl.add("#nt", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(C.WIN));
+      tl.add("#b1", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(C.WIN + 0.68));
+      ui(tl, "#b2", C.WIN + 0.93);
+      ui(tl, "#l1", C.BR);
+      ui(tl, "#l2", C.BR + 0.09);
+      tl.set({ v: 0 }, { v: 1 }, ms(C.END));
       tl.seek(0);
     })();
   </script>

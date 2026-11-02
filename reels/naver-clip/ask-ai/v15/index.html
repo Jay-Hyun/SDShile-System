@@ -10,6 +10,7 @@
     {"id":"color-field","type":"color","label":"챗 입력창 면","default":"#EEEBE4"},
     {"id":"color-navy","type":"color","label":"브랜드 Navy","default":"#0B1A33"},
     {"id":"color-sec","type":"color","label":"보조 글자 (Navy 위)","default":"#9AA0A6"},
+    {"id":"color-foot","type":"color","label":"브랜드 풋터 필드 (Navy 한 톤)","default":"#102545"},
     {"id":"color-gold","type":"color","label":"골드 (강조 하나)","default":"#B8955A"}
   ]'
 >
@@ -17,6 +18,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1080, height=1920" />
     <script src="lib/anime.min.js"></script>
+    <script src="lib/cue.js"></script>
     <script src="lib/beat.js"></script>
     <style>
       * {
@@ -45,14 +47,15 @@
       data-height="1920"
     >
       <!-- 15초판: tools/build_15s.py 가 생성 — 직접 고치지 말 것 -->
-      <!-- 엔진: anime.js v4 (lib/anime.min.js) + lib/beat.js. 컷·챕터는 BGM 다운비트(1마디 = 4·60/125.03 s), 장면 안 모션은 비트와 무관하게 흐른다 -->
-      <!-- C1–C4 가상 챗봇 화면 (한 컷, 0–7.9). [상담사 연결]이 열리는 동안 9.15까지 아래에 깔림 -->
+      <!-- 엔진: anime.js v4 (lib/anime.min.js) + lib/beat.js. 컷·챕터는 BGM 다운비트(1마디 = 4·60/125.03 s), 장면 안 모션은 비트와 무관하게 흐른다.
+           모든 시각의 단일 출처 = lib/cue.js. 아래 data-start/data-duration 은 tools/stamp_timing.py 가 거기서 찍는다 (손으로 고치지 말 것) -->
+      <!-- C1–C4 가상 챗봇 화면 (한 컷). [상담사 연결]이 열리는 1.2초 동안 아래에 깔린다 -->
       <div id="chat" class="clip" data-composition-id="chat" data-composition-src="compositions/chat.html"
-        data-start="0" data-duration="9.15" data-track-index="1" data-track-kind="graphics"
+        data-start="0" data-duration="9.263" data-track-index="1" data-track-kind="graphics"
         data-width="1080" data-height="1920" style="z-index: 1"></div>
-      <!-- C5–C6 상담 화면 · 엔드카드 (7.9 버튼이 열리기 시작 → 8.5 원곡 B섹션 크래시 = 열림 중간점) -->
+      <!-- C5–C6 상담 화면 · 엔드카드 (버튼이 열리기 시작 → 원곡 B섹션 크래시 = 열림 중간점) -->
       <div id="brand" class="clip" data-composition-id="brand" data-composition-src="compositions/brand.html"
-        data-start="7.9" data-duration="7.1" data-track-index="2" data-track-kind="graphics"
+        data-start="8.033" data-duration="6.967" data-track-index="2" data-track-kind="graphics"
         data-width="1080" data-height="1920" style="z-index: 2"></div>
       <!-- 연출 배지 · 연출 대화 고지 · 국내 유일 각주 · 보장 금지 고지 (전 구간 오버레이) -->
       <div id="legal" class="clip" data-composition-id="legal" data-composition-src="compositions/legal.html"

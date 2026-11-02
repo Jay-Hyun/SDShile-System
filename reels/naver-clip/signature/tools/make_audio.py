@@ -6,9 +6,9 @@ Usage (project root; numpy + ffmpeg):
 
 Music: assets/music/source.mp3 = "Breaking News Intro" by kornevmusic (Pixabay 527939), user supplied.
 The excerpt starts on a beat (beats/source.json) and plays at its natural level and tone: no filter,
-no ducking (client round 4: "먹먹해지는 효과는 빼줘"). The only automation is the hook's short stop
-(the story's beat) and the fade into the end. The quiet of C4/C5 is carried by the track's own
-drumless build.
+no ducking (round 4: "먹먹해지는 효과는 빼줘"), and no stop either (round 5: the hook's short music stop
+is gone; the 30s C2 cut moved from B7, where the music used to return, to the downbeat B8). The only
+automation is the fade into the end. The quiet of C4/C5 is carried by the track's own drumless build.
 SFX (client: "조잡한 효과음도 줄여봐"): exactly two per cut, both clean tones without noise — the error
 toast (one sine, -20 dB under the music around it) and the pen touch of the signature (a soft wood
 tone, -18 dB, riding the music's biggest hit). Cue times come from the picture (beats/cuts*.json
@@ -57,13 +57,12 @@ def curve(points):
 
 
 db = lambda v: 10 ** (v / 20)
+# Music is continuous from the excerpt's first sample (client round 5: "브금 끊지 마"): no stop, no
+# duck, no filter. The only gain automation is the ending fade onto the final hit.
 if VARIANT == "30":
-    # 2.70–3.05 short stop (spec C1 "2.8s 짧은 스톱"), back on the C2 cut (B7); lands on the downbeat
-    # hit B68 (29.78 s), 0.2 s fade to 30.0
-    g = curve([(0, 0), (2.69, 0), (2.70, -40), (B(7) - 0.012, -40), (B(7), 0), (B(68), 0), (DUR, -40)])
+    g = curve([(0, 0), (B(68), 0), (DUR, -40)])      # lands on the downbeat hit B68 (29.78 s), 0.2 s fade to 30.0
 else:
-    # hook stop B4.75–B5 (back on C3'), lands on the accent hit B34 (14.90 s), fade to 15.0
-    g = curve([(0, 0), (B(4.75), 0), (B(4.75) + 0.01, -40), (B(5) - 0.012, -40), (B(5), 0), (B(34), 0), (DUR, -40)])
+    g = curve([(0, 0), (B(34), 0), (DUR, -40)])      # lands on the accent hit B34 (14.90 s), fade to 15.0
 music = mus * db(g)[:, None]
 
 

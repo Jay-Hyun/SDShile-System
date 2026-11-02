@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-"""「AI에게 물었다」 오디오: 제공 BGM 편집 + 효과음 2개(질문 전송·[상담사 연결] 누름) + 마스터.
+"""「AI에게 물었다」 오디오: 제공 BGM 편집(끊김 없음) + 효과음 2개(질문 전송·[상담사 연결] 누름) + 마스터.
 
 Usage: python3 tools/make_audio.py [--cut 15]
   assets/music/source.mp3 (grand_project, Pixabay 505611) 를 잘라 붙인다. 합성 음악은 없다.
   → assets/audio/bgm.wav, sfx.wav (30s) / bgm-15s.wav, sfx-15s.wav (15s)
   두 스템에 같은 게인·리미터를 걸어 합이 −15 LUFS(±0.3), 트루피크 ≤ −1 dBTP.
-  편집 구간·챕터·컷은 beats/cuts-30.json / cuts-15.json 으로도 저장(HTML 타이밍과 같은 수식).
-  아트 디렉션 v3: 컷·챕터는 다운비트(1마디 = 4P)에만. 먹먹해지는 처리(LPF·피치 다운) 없음, 합성 효과음은 부드러운 탭 2개뿐(음악보다 −20dB).
+  시각은 lib/cue.js 가 단일 출처(tools/timing.py 로 읽는다). 챕터·컷·효과음 표는 beats/cuts-30.json / cuts-15.json 에도 저장.
 
-음악 편집 (P = 1비트 = 60/125.03 s, 소스 다운비트 1.007 + 4P·k):
-  30s  A  src 1.007→  v 0.000–12.477 (26P)   → 12.477 클린 스톱: 비트에서 80ms 페이드 후 완전 무음 (로딩 개그)
-       —  무음 12.98–14.637 (초침 틱만)
-       B  src 12.524→ v 14.637–26.154 (24P)  14.637 다운비트 슬램(🙂 말풍선), 18.476 = src 16.363 B섹션 크래시(브랜드)
-       C  src 29.800→ v 26.154–30.000          28.073 = src 31.719 마지막 크래시, 29.65–30.0 페이드
-  15s  A  src 1.007→  v 0.000–5.759 (12P)    → 5.759 클린 스톱 (다운비트, 80ms 페이드 → 무음)
-       B  src 14.443→ v 6.580–10.420 (8P)      6.580 슬램, 8.500 = src 16.363 크래시(브랜드)
-       C  src 29.800→ v 10.420–15.000          12.339 = src 31.719 크래시(슬로건), 14.6–15.0 페이드
+음악 편집 v3.2 — 무음·페이드·필터·덕킹·피치 변화 없음 (P = 1박 = 60/125.03 s, 소스 다운비트 1.007 + 4P·k):
+  30s  A  src 1.007→   v 0.000–14.397 (30P)   고민 중… 구간에도 계속 흐른다. 정수 박자 R 에서 B 로 이음 (반 마디 짧은 마디)
+       B  src 12.524→  v 14.397–25.914 (24P)  14.397 = B 의 다운비트(🙂 답), 18.236 = src 16.363 B섹션 크래시 = 오프닝 윈도우 중간점
+       C  src 29.800→  v 25.914–30.000        27.833 = src 31.719 마지막 크래시, 29.65–30.0 엔딩 페이드 0.35 s
+  15s  A  src 1.007→   v 0.000–6.718 (14P)
+       B  src 14.443→  v 6.718–10.557 (8P)    6.718 = B 의 다운비트, 8.638 = src 16.363 크래시
+       C  src 29.800→  v 10.557–15.000        12.477 = src 31.719 마지막 크래시, 14.6–15.0 엔딩 페이드 0.4 s
+  이음새는 6 ms 등전력 크로스페이드(겹치는 구간에서 앞은 cos, 뒤는 sin). 뒤 구간은 다운비트 6 ms 앞부터 깔아 다운비트가 온전한 게인으로 온다.
+  R 이 정수 박자라 A·B·C 의 박 그리드가 하나로 이어진다.
 """
 import json
 import os
@@ -25,6 +25,9 @@ import sys
 import wave
 
 import numpy as np
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from timing import cue  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SR = 48000
@@ -40,44 +43,32 @@ def src_downbeat(t):
     return float(d[np.argmin(np.abs(d - t))])
 
 
-# ------------------------------------------------------------------ 큐 (HTML과 같은 수식)
-# 챕터 = 다운비트(1마디 BAR = 4P). 30s A 구간 다운비트 = k·BAR, B 구간 = R + k·BAR (R = 음악 복귀 다운비트).
-# cuts = 실제 화면이 갈리는 지점: 하드컷(30s C9·C10, 15s C6) + 시그니처 오프닝 윈도우의 중간점(가장 빠른 순간 = 크래시).
-# chat 은 컷 없이 한 컷으로 흐른다(말풍선이 도착하면 컬럼이 450ms in-out 으로 밀려 올라간다).
+# ------------------------------------------------------------------ 큐 (lib/cue.js 와 같은 값)
+# 챕터 = 다운비트(1마디 BAR). A 구간 다운비트 = k·BAR, B·C 구간 = R + k·BAR (R = 첫 구간의 끝 = 두 번째 구간의 다운비트).
+# cuts = 실제 화면이 갈리는 지점: 하드컷(30s C9, 15s C6) + 시그니처 오프닝 윈도우의 중간점(가장 빠른 순간 = 크래시).
 def cues(cut):
-    B = lambda k: k * P
-    BAR = 4 * P
+    x = cue(cut)
+    BAR, R, WIN = x["BAR"], x["R"], x["WIN"]
     if cut == 30:
-        R = B(30.5)
-        WIN = 536 / 30  # [상담사 연결]이 열리기 시작 (1200ms, 중간점 = 크래시)
-        c = {
-            "dur": 30.0, "R": R, "brand": R + 2 * BAR, "win": WIN,
-            "chapters": {"C1": 0.0, "C2": 2 * BAR, "C3": 4 * BAR, "C4": 5 * BAR, "C5": B(26), "C6": R,
-                         "C7": R + 2 * BAR, "C8": R + 3 * BAR, "C9": R + 4 * BAR, "C10": R + 6 * BAR, "end": 30.0},
-            # C10 은 엔드 시퀀스 안의 문장 교체(퇴장 300ms → 다운비트에 상승)라 하드컷이 아니다
-            "cuts": {"open_mid": WIN + 0.6, "C9": R + 4 * BAR},
-            "music": [
-                {"v0": 0.0, "v1": B(26), "src": DB0, "tail": "stop"},
-                {"v0": R, "v1": R + 24 * P, "src": src_downbeat(12.524)},
-                {"v0": R + 24 * P, "v1": 30.0, "src": src_downbeat(29.8), "fade": 0.35},
-            ],
-        }
+        chapters = {"C1": 0.0, "C2": x["C2"], "C3": x["C3"], "C4": x["C4"], "gag": x["GAG"], "C6": R,
+                    "C7": x["BR"], "C8": x["C8"], "C9": x["C9"], "list": x["LIST"], "slogan": x["SLO"], "end": 30.0}
+        cuts = {"open_mid": WIN + 0.6, "C9": x["C9"]}
+        music = [
+            {"v0": 0.0, "v1": R, "src": DB0},
+            {"v0": R, "v1": R + 6 * BAR, "src": src_downbeat(12.524)},
+            {"v0": R + 6 * BAR, "v1": 30.0, "src": src_downbeat(29.8), "fade": 0.35},
+        ]
     else:
-        R = 8.5 - 4 * P
-        WIN = 237 / 30
-        c = {
-            "dur": 15.0, "R": R, "brand": 8.5, "win": WIN,
-            # 15s C2·C3 은 훅 3초(8자/초)와 고민 중(5.759 테이프 스톱) 사이에 들어가야 해서 읽는 속도에 둔 장면 안 등장 (컷 아님)
-            "chapters": {"C1": 0.0, "C2": 3.0, "C2u": 2 * BAR, "C3": 4.9, "gag": 3 * BAR, "C4": R, "C5": 8.5,
-                         "C5b": R + 2 * BAR, "C6": R + 3 * BAR, "end": 15.0},
-            "cuts": {"open_mid": WIN + 0.6, "C6": R + 3 * BAR},
-            "music": [
-                {"v0": 0.0, "v1": B(12), "src": DB0, "tail": "stop"},
-                {"v0": R, "v1": 8.5 + 4 * P, "src": src_downbeat(14.443)},
-                {"v0": 8.5 + 4 * P, "v1": 15.0, "src": src_downbeat(29.8), "fade": 0.4},
-            ],
-        }
-    return c
+        chapters = {"C1": 0.0, "C2": x["C2"], "underline": x["UL"], "C3": x["C3"], "gag": x["GAG"], "C4": R,
+                    "C5": x["BR"], "C5b": x["C5b"], "C6": x["C6"], "end": 15.0}
+        cuts = {"open_mid": WIN + 0.6, "C6": x["C6"]}
+        music = [
+            {"v0": 0.0, "v1": R, "src": DB0},
+            {"v0": R, "v1": R + 2 * BAR, "src": src_downbeat(14.443)},
+            {"v0": R + 2 * BAR, "v1": 15.0, "src": src_downbeat(29.8), "fade": 0.4},
+        ]
+    return {"dur": float(x["END"]), "R": R, "brand": x["BR"], "win": WIN, "send": x["SEND"], "press": x["PRESS"],
+            "chapters": chapters, "cuts": cuts, "music": music}
 
 
 # ------------------------------------------------------------------ 입출력
@@ -104,30 +95,33 @@ def measure(path):
 
 
 # ------------------------------------------------------------------ 음악 편집
-STOP_FADE = 0.08  # 클린 스톱: 정지 지점(비트)부터 80ms 페이드아웃, 그 뒤 완전 무음. 필터·피치 변화 없음
+XF = 0.006  # 이음새 크로스페이드 6 ms (등전력)
 
 
 def build_music(c, src):
     N = int(round(c["dur"] * SR))
     out = np.zeros((N, 2))
-    xf = int(0.006 * SR)
-    for seg in c["music"]:
+    xf = int(XF * SR)
+    th = np.linspace(0, np.pi / 2, xf)
+    g_in, g_out = np.sin(th)[:, None], np.cos(th)[:, None]
+    segs = c["music"]
+    for k, seg in enumerate(segs):
         i0, i1 = int(round(seg["v0"] * SR)), int(round(seg["v1"] * SR))
         s0 = int(round(seg["src"] * SR))
-        n = i1 - i0
-        if seg.get("tail") == "stop":
-            n += int(STOP_FADE * SR)
-        piece = src[s0 : s0 + n].copy()
-        piece[:xf] *= np.linspace(0, 1, xf)[:, None]
-        if seg.get("fade"):
-            nf = int(seg["fade"] * SR)
-            piece[-nf:] *= (np.linspace(1, 0, nf) ** 1.5)[:, None]
-        elif seg.get("tail") == "stop":
-            nf = int(STOP_FADE * SR)
-            piece[-nf:] *= (0.5 + 0.5 * np.cos(np.linspace(0, np.pi, nf)))[:, None]
+        pre = xf if k > 0 else 0  # 뒤 구간은 다운비트 6 ms 앞부터 깔아 앞 구간의 마지막 6 ms 와 겹친다
+        piece = src[s0 - pre : s0 + (i1 - i0)].copy()
+        if k == 0:
+            piece[:xf] *= np.linspace(0, 1, xf)[:, None]  # 곡 첫 소리의 클릭 방지
         else:
-            piece[-xf:] *= np.linspace(1, 0, xf)[:, None]
-        out[i0 : i0 + len(piece)] += piece[: N - i0]
+            piece[:xf] *= g_in
+        if k < len(segs) - 1:
+            piece[-xf:] *= g_out
+        elif seg.get("fade"):
+            nf = int(seg["fade"] * SR)
+            piece[-nf:] *= (np.linspace(1, 0, nf) ** 1.5)[:, None]  # 엔딩 페이드만 허용
+        start = i0 - pre
+        end = min(N, start + len(piece))
+        out[start:end] += piece[: end - start]
     return out
 
 
@@ -182,13 +176,8 @@ def build_sfx(c, music):
         buf[i : i + len(sig)] += sig[:, None]
         cue_list.append({"t": round(t, 3), "sfx": name, "rel_db": REL_DB, "music_rms_dbfs": round(20 * np.log10(m_rms), 1)})
 
-    BAR = 4 * P
-    if c["dur"] == 30.0:
-        kSend = 5 * BAR + 0.25 + 0.6 + 0.25 + 0.5 + 0.7  # chat.html C4: 아래 입력창 전송
-        place_rel(kSend, "질문 전송 탭")
-    else:
-        place_rel(4.9, "질문 전송 탭")  # 15s: 다시 묻는 말풍선
-    place_rel(c["win"] - 0.42, "[상담사 연결] 누름 탭")
+    place_rel(c["send"], "질문 전송 탭")  # 30s: 입력창 전송 / 15s: 다시 묻는 말풍선
+    place_rel(c["press"], "[상담사 연결] 누름 탭")
     return buf, cue_list
 
 
@@ -231,7 +220,7 @@ def main():
     write_wav(tmp, (music + sfx) * gain * g)
     i_lufs, tp = measure(tmp)
     os.remove(tmp)
-    rec = {"cut": cut, "bpm": BEATS["bpm"], "beat_period": P, "R_slam": round(c["R"], 4), "brand": round(c["brand"], 4),
+    rec = {"cut": cut, "bpm": BEATS["bpm"], "beat_period": P, "R": round(c["R"], 4), "brand": round(c["brand"], 4),
            "win": round(c["win"], 4),
            "chapters": {k: round(v, 4) for k, v in c["chapters"].items()},
            "cuts": {k: round(v, 4) for k, v in c["cuts"].items()},

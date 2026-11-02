@@ -4,7 +4,7 @@ Usage: python3 tools/verify_cuts.py 30|15 [--plan]
 - 계획표: beats/cuts-N.json 의 챕터마다 가장 가까운 다운비트와의 거리(프레임). MP4 없이 돈다.
 - 렌더 대조(--plan 이 아니고 renders/ask-ai-Ns.mp4 가 있을 때): 실제 화면이 갈리는 지점(cuts: 하드컷 + 오프닝 윈도우 중간점)마다
   ±3프레임 안의 프레임 차 피크를 찾아, 그 프레임과 가장 가까운 비트의 거리(프레임)를 보고한다. 최장 정지 구간도 잰다.
-비트 그리드 = 실제로 들리는 음악의 비트 (구간별: A·B·C 세그먼트, 무음 구간은 A 그리드 연장). 다운비트 = 구간 시작 + 4P·k.
+비트 그리드 = 실제로 들리는 음악의 비트 (구간별: A·B·C 세그먼트, 음악은 끊기지 않는다). 다운비트 = 구간 시작 + 4P·k.
 """
 import json
 import os
@@ -28,16 +28,7 @@ for s in segs:
         if k % 4 == 0:
             downs.append(t)
         k += 1
-R = c["R_slam"]
-a = segs[0]
-k = 0
-while a["v0"] + k * P < R - 1e-6:  # 무음 개그 구간 = A 그리드 연장
-    t = a["v0"] + k * P
-    if t > a["v1"]:
-        beats.append(t)
-        if k % 4 == 0:
-            downs.append(t)
-    k += 1
+
 beats, downs = np.array(sorted(beats)), np.array(sorted(downs))
 
 print(f"## {cut}s 챕터 ↔ 다운비트 (계획)")

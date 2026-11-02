@@ -61,6 +61,13 @@
     /* blank signature line and the caret that waits on it */
     .rule { position: absolute; height: 4px; background: currentColor; }
     .caret { position: absolute; width: 4px; background: currentColor; }
+    /* logo lockup (v3.2 §7-2): gold mark (height 62) + 18px gap + name (Body 44 / 600), one inline row,
+       the whole lockup centred on x=540 (same as ask-ai brand.html #br-logo-row) */
+    .lock { height: 62px; display: flex; align-items: center; justify-content: center; }
+    .lockrow { display: flex; align-items: center; gap: 18px; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; padding-right: 0.01em; color: var(--paper); }
+    .lmark { display: block; width: 56px; height: 62px; background: var(--gold); -webkit-mask: url("assets/img/mark.svg") center / contain no-repeat; mask: url("assets/img/mark.svg") center / contain no-repeat; }
+    /* full-width footer field on the dark brand / end scenes: one tone off the ground, y 1580-1920 */
+    .dock { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; background: #102245; }
     /* pill control (button, toast): the only rounded shape */
     .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
 
@@ -71,13 +78,14 @@
   <div id="root" data-composition-id="tease" data-width="1080" data-height="1920">
     <div id="t-ground" class="field" data-layout-ignore></div>
     <div id="t-cam" class="cam" data-layout-allow-overflow>
-      <div id="t-cap" class="row t-display on-paper rise" style="top:300px;"><span class="ln"><span id="t-cap-0" class="li">딱 한 칸만</span></span><span class="ln"><span id="t-cap-1" class="li">빼고.</span></span></div>
-      <div id="t-wm" class="row t-small m-l" style="top:710px;"><span class="ln"><span id="t-wm-0" class="li">[가상 문서 · 예시]</span></span></div>
-      <div id="t-l0" class="row t-body on-paper" style="top:766px;"><span class="ln"><span id="t-l0-0" class="li">제5조의 해석은 갑에게 유리합니다.</span></span><span class="ln"><span id="t-l0-1" class="li">추가 자료 확인 후 보완을 권합니다.</span></span></div><div id="t-l1" class="row t-body on-paper rise" style="top:766px;"><span class="ln"><span id="t-l1-0" class="li">위약금 조항은 감액될 여지가 있습니다.</span></span><span class="ln"><span id="t-l1-1" class="li">을의 지체 책임은 일부 제한됩니다.</span></span></div><div id="t-l2" class="row t-body on-paper rise" style="top:766px;"><span class="ln"><span id="t-l2-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="t-l2-1" class="li">을의 지체 책임은 일부 제한됩니다.</span></span></div><div id="t-l3" class="row t-body on-paper rise" style="top:766px;"><span class="ln"><span id="t-l3-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="t-l3-1" class="li">제5조의 해석은 갑에게 유리합니다.</span></span></div>
-      <div id="t-sg" class="row t-head on-paper" style="top:940px;"><span class="ln"><span id="t-sg-0" class="li">법률 검토·책임자 서명</span></span></div>
-      <div id="t-r" class="rule on-paper" style="left:120px;top:1130px;width:840px;"></div>
-      <div id="t-c" class="caret on-paper" style="left:120px;top:1052px;height:70px;opacity:0"></div>
-      <div id="t-btn" class="pill t-body" style="left:360px;top:1190px;width:360px;height:110px;background:var(--ink);color:var(--paper);opacity:0">생성</div><div id="t-toast" class="pill t-body" style="left:120px;top:1190px;width:840px;height:110px;background:var(--red);color:var(--paper);opacity:0">이 항목은 생성할 수 없습니다.</div>
+      <div id="t-cap" class="row t-display on-paper rise" style="top:250px;"><span class="ln"><span id="t-cap-0" class="li">딱 한 칸만</span></span><span class="ln"><span id="t-cap-1" class="li">빼고.</span></span></div>
+      <div id="t-wm" class="row t-small m-l" data-tx style="top:620px;"><span class="ln"><span id="t-wm-0" class="li">[가상 문서 · 예시]</span></span></div>
+      <div id="t-l0" class="row t-body on-paper" data-tx style="top:690px;"><span class="ln"><span id="t-l0-0" class="li">제5조의 해석은 갑에게 유리합니다.</span></span><span class="ln"><span id="t-l0-1" class="li">추가 자료 확인 후 보완을 권합니다.</span></span></div><div id="t-l1" class="row t-body on-paper rise" data-tx style="top:690px;"><span class="ln"><span id="t-l1-0" class="li">위약금 조항은 감액될 여지가 있습니다.</span></span><span class="ln"><span id="t-l1-1" class="li">을의 지체 책임은 일부 제한됩니다.</span></span></div><div id="t-l2" class="row t-body on-paper rise" data-tx style="top:690px;"><span class="ln"><span id="t-l2-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="t-l2-1" class="li">을의 지체 책임은 일부 제한됩니다.</span></span></div><div id="t-l3" class="row t-body on-paper rise" data-tx style="top:690px;"><span class="ln"><span id="t-l3-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="t-l3-1" class="li">제5조의 해석은 갑에게 유리합니다.</span></span></div>
+      <div id="t-p" class="sheet" style="left:120px;top:870px;width:840px;height:570px;background:var(--sheet-2)"></div>
+      <div id="t-sg" class="row t-head on-paper" data-tx style="top:900px;"><span class="ln"><span id="t-sg-0" class="li">법률 검토·책임자 서명</span></span></div>
+      <div id="t-r" class="rule on-paper" style="left:180px;top:1320px;width:720px;"></div>
+      <div id="t-c" class="caret on-paper" style="left:180px;top:1244px;height:76px;opacity:0"></div>
+      <div id="t-btn" class="pill t-body" data-tx style="left:360px;top:1496px;width:360px;height:136px;background:var(--ink);color:var(--paper);">생성</div><div id="t-toast" class="pill t-body" style="left:120px;top:1496px;width:840px;height:136px;background:var(--red);color:var(--paper);opacity:0">이 항목은 생성할 수 없습니다.</div>
     </div>
   </div>
   <script>
@@ -117,7 +125,6 @@
     RISE(T.cap, ["#t-cap-0", "#t-cap-1"]);
     CARET("#t-c", T.c0, T.end);
     if (T.btn != null) {
-      ENTER(T.btn, "#t-btn");
       T.presses.forEach((t, k) => {
         S(t, "#t-btn", { backgroundColor: "#b8955a", color: "#0e1116" });
         S(t + 0.14, "#t-btn", { backgroundColor: "#0e1116", color: "#f7f6f2" });

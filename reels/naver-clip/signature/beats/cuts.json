@@ -11,11 +11,11 @@
    "downbeat": true
   },
   {
-   "t": 3.065,
-   "frame": 92,
+   "t": 3.495,
+   "frame": 105,
    "label": "C2",
-   "beat": 7,
-   "downbeat": false
+   "beat": 8,
+   "downbeat": true
   },
   {
    "t": 7.013,
@@ -60,7 +60,7 @@
    "label": "C6 S2 signature stroke"
   },
   {
-   "t": 21.514,
+   "t": 21.434,
    "label": "C6 S3 USP stack"
   },
   {
@@ -91,12 +91,12 @@
   {
    "id": "tease",
    "start": 1.753,
-   "duration": 1.312
+   "duration": 1.742
   },
   {
    "id": "fill",
-   "start": 3.065,
-   "duration": 3.948
+   "start": 3.495,
+   "duration": 3.518
   },
   {
    "id": "blank",

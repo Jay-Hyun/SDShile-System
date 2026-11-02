@@ -61,6 +61,13 @@
     /* blank signature line and the caret that waits on it */
     .rule { position: absolute; height: 4px; background: currentColor; }
     .caret { position: absolute; width: 4px; background: currentColor; }
+    /* logo lockup (v3.2 §7-2): gold mark (height 62) + 18px gap + name (Body 44 / 600), one inline row,
+       the whole lockup centred on x=540 (same as ask-ai brand.html #br-logo-row) */
+    .lock { height: 62px; display: flex; align-items: center; justify-content: center; }
+    .lockrow { display: flex; align-items: center; gap: 18px; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; padding-right: 0.01em; color: var(--paper); }
+    .lmark { display: block; width: 56px; height: 62px; background: var(--gold); -webkit-mask: url("assets/img/mark.svg") center / contain no-repeat; mask: url("assets/img/mark.svg") center / contain no-repeat; }
+    /* full-width footer field on the dark brand / end scenes: one tone off the ground, y 1580-1920 */
+    .dock { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; background: #102245; }
     /* pill control (button, toast): the only rounded shape */
     .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
 
@@ -71,12 +78,13 @@
   <div id="root" data-composition-id="tease" data-width="1080" data-height="1920">
     <div id="t-ground" class="field" data-layout-ignore></div>
     <div id="t-cam" class="cam" data-layout-allow-overflow>
-      <div id="t-cap" class="row t-display on-paper rise" style="top:470px;"><span class="ln"><span id="t-cap-0" class="li">딱 한 칸만</span></span><span class="ln"><span id="t-cap-1" class="li">빼고.</span></span></div>
-      <div id="t-wm" class="row t-small m-l" style="top:880px;"><span class="ln"><span id="t-wm-0" class="li">[가상 문서 · 예시]</span></span></div>
-      <div id="t-l0" class="row t-body on-paper" style="top:936px;"><span class="ln"><span id="t-l0-0" class="li">제5조의 해석은 갑에게 유리합니다.</span></span><span class="ln"><span id="t-l0-1" class="li">추가 자료 확인 후 보완을 권합니다.</span></span></div>
-      <div id="t-sg" class="row t-head on-paper" style="top:1110px;"><span class="ln"><span id="t-sg-0" class="li">법률 검토·책임자 서명</span></span></div>
-      <div id="t-r" class="rule on-paper" style="left:120px;top:1300px;width:840px;"></div>
-      <div id="t-c" class="caret on-paper" style="left:120px;top:1222px;height:70px;opacity:0"></div>
+      <div id="t-cap" class="row t-display on-paper rise" style="top:250px;"><span class="ln"><span id="t-cap-0" class="li">딱 한 칸만</span></span><span class="ln"><span id="t-cap-1" class="li">빼고.</span></span></div>
+      <div id="t-wm" class="row t-small m-l" data-tx style="top:620px;"><span class="ln"><span id="t-wm-0" class="li">[가상 문서 · 예시]</span></span></div>
+      <div id="t-l0" class="row t-body on-paper" data-tx style="top:690px;"><span class="ln"><span id="t-l0-0" class="li">제5조의 해석은 갑에게 유리합니다.</span></span><span class="ln"><span id="t-l0-1" class="li">추가 자료 확인 후 보완을 권합니다.</span></span></div>
+      <div id="t-p" class="sheet" style="left:120px;top:870px;width:840px;height:780px;background:var(--sheet-2)"></div>
+      <div id="t-sg" class="row t-head on-paper" data-tx style="top:900px;"><span class="ln"><span id="t-sg-0" class="li">법률 검토·책임자 서명</span></span></div>
+      <div id="t-r" class="rule on-paper" style="left:180px;top:1530px;width:720px;"></div>
+      <div id="t-c" class="caret on-paper" style="left:180px;top:1454px;height:76px;opacity:0"></div>
       
     </div>
   </div>
@@ -112,12 +120,11 @@
     }
 
 
-    const T = {"c0": 1.753, "cap": 1.803, "end": 3.065, "btn": null};
+    const T = {"c0": 1.753, "cap": 1.803, "end": 3.495, "btn": null};
     PUSH(T.c0, T.end, "#t-cam");
     RISE(T.cap, ["#t-cap-0", "#t-cap-1"]);
     CARET("#t-c", T.c0, T.end);
     if (T.btn != null) {
-      ENTER(T.btn, "#t-btn");
       T.presses.forEach((t, k) => {
         S(t, "#t-btn", { backgroundColor: "#b8955a", color: "#0e1116" });
         S(t + 0.14, "#t-btn", { backgroundColor: "#0e1116", color: "#f7f6f2" });
