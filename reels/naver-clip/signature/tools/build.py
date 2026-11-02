@@ -395,7 +395,7 @@ def build_sign(T, compact=False):
     #s-svg {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }}
 """
     u3 = "교육부장관 명의" if compact else "교육부장관 명의 · '법학 전공' 표기"
-    y_step = FIELD_TOP + GLIDE + FIELD_H + 18 + 101 + 33     # under the glided sentence
+    y_step = FIELD_TOP + GLIDE + FIELD_H + 18 + 101 + 23     # under the glided sentence
     html = f'''    <div id="s-ground" class="field" data-layout-ignore></div>
     <div id="s-cam" class="cam" data-layout-allow-overflow>
       <div id="s-you">
@@ -409,10 +409,10 @@ def build_sign(T, compact=False):
         {text("s-you2", "head", FIELD_TOP + FIELD_H + 18, ['이 칸의 이름, <span class="au">당신.</span>'], "on-ink", rise=True)}
       </div>
       {text("s-nl", "body", y_step, [NEW], "on-ink", rise=True)}
-      {text("s-u1", "body", y_step + 86, ["국내 유일*"], "au", rise=True)}
-      {text("s-u2", "display", y_step + 156, ["100% 온라인", "법학사"], "on-ink", rise=True)}
-      {text("s-u3", "small", y_step + 486, [u3], "m-d", rise=True)}
-      {text("s-bn", "body", y_step + 548, [BRAND], "on-ink", cls="later")}
+      {text("s-u1", "body", y_step + 120, ["국내 유일*"], "au", rise=True)}   <!-- 58px clear of the step line: the USP is its own block -->
+      {text("s-u2", "display", y_step + 190, ["100% 온라인", "법학사"], "on-ink", rise=True)}
+      {text("s-u3", "small", y_step + 514, [u3], "m-d", rise=True)}
+      {text("s-bn", "body", y_step + 576, [BRAND], "on-ink", cls="later")}
     </div>'''
     js = f"""
     const T = {J(T)};

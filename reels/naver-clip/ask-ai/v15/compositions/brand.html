@@ -195,16 +195,18 @@
       tl.set("#br-p1", { opacity: 0 }, ms(tCut1));
       if (CUT === 30) {
         // ===== 엔드 시퀀스 22.315 (하드컷, 다운비트) – 30.0: 버튼·전화는 끝까지 고정 =====
+        // 읽는 순서: 질문 + 유도·버튼·전화 → 증거 → 슬로건 + 안내. 유도·버튼·전화는 처음부터 끝까지 같은 자리
         rise(tl, ["#cta-1", "#cta-2", "#cta-3"], tCut1);
         rise(tl, "#push-1", tCut1 + 0.3);
         ui(tl, "#br-btn", tCut1 + 0.35);
-        ui(tl, ["#note-1", "#br-tel-row"], tCut1 + 0.42);
+        ui(tl, "#br-tel-row", tCut1 + 0.42);
         // 24.234 다운비트: 증거 리스트가 한 줄씩 (90ms)
         rise(tl, ["#ls-1", "#ls-2", "#ls-3"], EB(5));
         // 26.154 다운비트: 문장이 슬로건으로 바뀐다 (CTA 3행 퇴장 300ms → 슬로건 상승). 리스트는 남는다
         const tSlo = EB(6);
         ["#cta-1", "#cta-2", "#cta-3"].forEach((q) => riseOut(tl, q, tSlo - 0.3));
         rise(tl, ["#slo-1", "#slo-2"], tSlo);
+        ui(tl, "#note-1", tSlo + 0.25); // "상담만 받아도 돼요." 는 슬로건과 함께 (첫 구간 읽기 부담 분산)
         push(tl, "#br-end", tCut1, END);
       } else {
         // ===== 15초 C6 하드컷 (마지막 크래시): 슬로건 + 한 줄 + CTA 유도 + 버튼 (전화는 브랜드 진입부터) =====
