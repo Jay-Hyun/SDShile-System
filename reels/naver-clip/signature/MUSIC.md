@@ -27,8 +27,9 @@
 
 - **연속성 확인(5차, 50ms 창 RMS):** 새 믹스는 −40 dBFS 미만이 이어지는 곳이 없다(최소 RMS 30초 −21.6, 15초 −21.0 dBFS). 이전 렌더는 30초 2.70초에 320ms, 15초 2.09초에 60ms가 이어졌다. 옛 정지 구간의 RMS는 30초 −51.0 → −16.3, 15초 −26.4 → −15.8 dBFS(앞뒤 1초 평균 −15.0/−14.5)로 돌아왔다.
 - 마스터: 볼륨 → 192kHz 오버샘플 리미터(−2.5dBFS) → 48kHz MP3 256k.
-  - 측정 `assets/audio/mix-30s.mp3` −14.9 LUFS / TP −4.4 dBTP, `mix-15s.mp3` −15.0 LUFS / TP −4.8 dBTP.
-  - 렌더 MP4(AAC, v3): 30초 −15.0 LUFS / TP −4.9 dBTP, 15초 −15.1 LUFS / TP −4.6 dBTP (`tools/verify.py`).
+  - 측정 `assets/audio/mix-30s.mp3` −15.0 LUFS / TP −5.6 dBTP, `mix-15s.mp3` −15.0 LUFS / TP −5.8 dBTP.
+  - 렌더 MP4(AAC, 5차): 30초 −15.1 LUFS / TP −6.1 dBTP / LRA 2.5, 15초 −15.1 LUFS / TP −5.9 dBTP / LRA 2.5 (`tools/verify.py`).
+  - MP4 오디오 연속성: −40 dBFS 미만이 이어지는 곳이 없다(0ms). 옛 정지 구간 RMS는 30초 −16.3, 15초 −15.9 dBFS.
 - 덕킹을 지워 LRA가 줄었다. 수치는 렌더 검증 값(README "검증")에 있다.
 - **SFX (4차, 편당 2개):** 노이즈 없는 깨끗한 톤만 쓴다. 시각은 그림에서 온다: `tools/build.py`가 `beats/cuts*.json`의 `sfx`에 쓰고, `make_audio.py`가 읽는다. 소리는 그림보다 1프레임 늦게 놓는다.
   - 토스트 "이 항목은 생성할 수 없습니다": 330Hz 사인 단음 0.28초(어택 6ms, 감쇠 τ 90ms). 주변 음악 RMS보다 −20dB. 30초 8.88초, 15초 3.28초.

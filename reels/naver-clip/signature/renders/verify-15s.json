@@ -10,9 +10,9 @@
   ]
  },
  "loudness": {
-  "I": -15.0,
-  "LRA": 2.6,
-  "TP": -5.4
+  "I": -15.1,
+  "LRA": 2.5,
+  "TP": -5.9
  },
  "detected": [
   {
@@ -24,7 +24,7 @@
    "off_downbeat_frames": 0.28,
    "within2": true,
    "on_downbeat": true,
-   "score": 109.7
+   "score": 108.9
   },
   {
    "frame": 145,
@@ -35,7 +35,7 @@
    "off_downbeat_frames": 0.25,
    "within2": true,
    "on_downbeat": true,
-   "score": 192.6
+   "score": 186.9
   },
   {
    "frame": 302,
@@ -46,7 +46,7 @@
    "off_downbeat_frames": 0.02,
    "within2": true,
    "on_downbeat": true,
-   "score": 27.2
+   "score": 30.2
   },
   {
    "frame": 368,
@@ -57,7 +57,7 @@
    "off_downbeat_frames": 13.43,
    "within2": true,
    "on_downbeat": false,
-   "score": 15.8
+   "score": 24.4
   }
  ],
  "planned": [
@@ -207,10 +207,17 @@
    },
    {
     "frame": 243,
-    "text": "AI\uac00 \ub300\uc2e0\ud560\uc218\ub85d,",
+    "text": "AI\uac00",
+    "size": 88,
+    "dom_dx": -0.67,
+    "ink_dx": 1.0
+   },
+   {
+    "frame": 243,
+    "text": "\ub300\uc2e0\ud560\uc218\ub85d,",
     "size": 88,
     "dom_dx": -0.68,
-    "ink_dx": -2.0
+    "ink_dx": -0.5
    },
    {
     "frame": 243,
@@ -284,10 +291,10 @@
    },
    {
     "frame": 366,
-    "text": "\uacbd\ucc30\ubcf5\uc9c0\uc0ac\uc774\ubc84\ud3c9\uc0dd\uad50\uc721\uc6d0",
+    "text": "[mark] \uacbd\ucc30\ubcf5\uc9c0\uc0ac\uc774\ubc84\ud3c9\uc0dd\uad50\uc721\uc6d0",
     "size": 44,
-    "dom_dx": -0.11,
-    "ink_dx": -0.5
+    "dom_dx": 0,
+    "ink_dx": -1.5
    },
    {
     "frame": 366,
@@ -305,6 +312,13 @@
    },
    {
     "frame": 444,
+    "text": "[mark] \uacbd\ucc30\ubcf5\uc9c0\uc0ac\uc774\ubc84\ud3c9\uc0dd\uad50\uc721\uc6d0",
+    "size": 44,
+    "dom_dx": 0,
+    "ink_dx": -1.5
+   },
+   {
+    "frame": 444,
     "text": "\ucc45\uc784\uc9c0\ub294 \uc790\ub9ac\ub85c,",
     "size": 88,
     "dom_dx": -0.68,
@@ -319,13 +333,6 @@
    },
    {
     "frame": 444,
-    "text": "\uacbd\ucc30\ubcf5\uc9c0\uc0ac\uc774\ubc84\ud3c9\uc0dd\uad50\uc721\uc6d0",
-    "size": 44,
-    "dom_dx": -0.11,
-    "ink_dx": -0.5
-   },
-   {
-    "frame": 444,
     "text": "\ubb34\ub8cc \uc0c1\ub2f4 \uc2e0\uccad",
     "size": 44,
     "dom_dx": 0,
@@ -333,7 +340,14 @@
    },
    {
     "frame": 444,
-    "text": "070-4006-7128 (\ud3c9\uc77c 10\u201318\uc2dc)",
+    "text": "070-4006-7128",
+    "size": 88,
+    "dom_dx": -0.68,
+    "ink_dx": 0.5
+   },
+   {
+    "frame": 444,
+    "text": "(\ud3c9\uc77c 10\u201318\uc2dc)",
     "size": 44,
     "dom_dx": -0.12,
     "ink_dx": 0.0
