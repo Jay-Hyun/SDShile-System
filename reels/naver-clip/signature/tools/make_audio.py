@@ -88,8 +88,8 @@ if VARIANT == "30":
                (B(40), -4), (B(43.5), 0), (B(68), 0), (DUR, -40)])
 else:
     # hook glitch stop, toast → C4' sweep down + duck (falls into the track's drumless build), open into the hit B23
-    fc = curve([(0, 20000), (B(9), 20000), (B(11), 300), (B(16), 500), (B(21), 4000), (B(22.5), 20000), (DUR, 20000)])
-    g = curve([(0, 0), (B(4.75), 0), (B(4.75) + 0.01, -40), (B(5) - 0.012, -40), (B(5), 0), (B(9), 0), (B(11), -11),
+    fc = curve([(0, 20000), (B(8), 20000), (B(11), 300), (B(16), 500), (B(21), 4000), (B(22.5), 20000), (DUR, 20000)])
+    g = curve([(0, 0), (B(4.75), 0), (B(4.75) + 0.01, -40), (B(5) - 0.012, -40), (B(5), 0), (B(8), 0), (B(11), -11),
                (B(18), -8), (B(22.5), 0), (B(34), 0), (DUR, -40)])
 music = sweep(fc) * db(g)[:, None]
 
@@ -180,9 +180,9 @@ if VARIANT == "30":
     place(click(0.45), B(60) + 0.05, 1.0)                     # button "톡"
 else:
     place(swoosh(0.26), B(3) - 0.1, 0.8)
-    for k in (6, 7, 8):
+    for k in (6, 6.5, 7):
         place(click(), B(k), 1.0)
-    place(error_tone(), B(9), 1.0)
+    place(error_tone(), B(8), 1.0)
     place(pen_tok(), B(23), 1.0)
     place(click(0.45), B(28) + 0.05, 1.0)
 

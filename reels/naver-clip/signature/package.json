@@ -3,14 +3,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "python3 tools/build.py && python3 tools/build.py --variant 15 && python3 tools/make_audio.py && python3 tools/make_audio.py --variant 15 && python3 tools/build.py --variant 15 && python3 tools/subset_font.py",
+    "beats": "python3 tools/beats.py",
+    "audio": "python3 tools/make_audio.py && python3 tools/make_audio.py --variant 15",
+    "build": "python3 tools/build.py && python3 tools/build.py --variant 15",
     "dev": "npx --yes hyperframes@0.8.200 preview",
     "check": "npx --yes hyperframes@0.8.200 check",
-    "snapshot": "npx --yes hyperframes@0.8.200 snapshot --at 0.5,1.8,5,9,12,19,22,26,29.5",
+    "snapshot": "npx --yes hyperframes@0.8.200 snapshot --at 0,0.6,1.9,3.2,4.6,6.4,7.3,8.9,9.9,11,12.5,14.6,15.6,16.9,18.5,19.27,20.2,22,24.4,25.6,26.5,27.9,29.5",
     "render": "npx --yes hyperframes@0.8.200 render --quality delivery -o renders/last-signature-30s.mp4",
+    "verify": "python3 tools/verify.py renders/last-signature-30s.mp4 30 && python3 tools/verify.py renders/last-signature-15s.mp4 15",
     "publish": "npx --yes hyperframes@0.8.200 publish",
     "check:15": "cd v15 && npx --yes hyperframes@0.8.200 check",
-    "snapshot:15": "cd v15 && npx --yes hyperframes@0.8.200 snapshot --at 0.5,1.8,3.3,4.8,6,7.5,8.6,9.5,10.4,11.5,12.5,14.5",
+    "snapshot:15": "cd v15 && npx --yes hyperframes@0.8.200 snapshot --at 0.3,1,1.6,2.5,3.6,4.3,5.5,6.8,8.4,9.6,10.1,10.7,11.6,12.5,14.9",
     "render:15": "cd v15 && npx --yes hyperframes@0.8.200 render --quality delivery -o ../renders/last-signature-15s.mp4"
   }
 }

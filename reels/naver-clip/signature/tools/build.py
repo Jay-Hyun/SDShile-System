@@ -946,7 +946,7 @@ else:
     C = dict(hook=0, blank=B(5), dust=B(11), sign=B(21), end=B(28), fin=15.0)
     T_h = dict(p1=B(1), p2=B(2), s2=B(3), w0=B(3) + 0.12, w1=B(4), w2=B(4.5), gl=B(4.75) , end=C["blank"])
     T_b = dict(fromWide=False, c0=C["blank"], tilt=None, w0=None, w1=None, w2=None, wAll=C["blank"], btn=C["blank"],
-               clicks=[B(6), B(7), B(8)], capOut=B(9), toast=B(9), push=B(10), end=C["dust"])
+               clicks=[B(6), B(6.5), B(7)], capOut=B(8), toast=B(8), push=B(9), end=C["dust"])
     T_d = dict(c0=C["dust"], s2=B(14), br=B(18), end=C["sign"])
     T_s = dict(c0=C["sign"], tense=[B(22), B(22.5)], hit=B(23), lab=B(23) + 0.12, labDur=0.32, inkEnd=B(24) + 0.2,
                usp=B(24), brand=B(25), acc=[B(26), B(27)], nlY=-580, end=C["end"])
@@ -963,7 +963,7 @@ else:
     DISC = T_s["usp"]                    # spec f321
     LIGHT_FROM = C["end"]
     CUTS = [(B(1), "C1' punch-in 1"), (B(2), "C1' punch-in 2"), (B(3), "C1' S2 whip"), (C["blank"], "C3'"),
-            (B(9), "C3' toast"), (C["dust"], "C4'"), (B(18), "C4' S3 bridge"), (C["sign"], "C6'"),
+            (B(8), "C3' toast"), (C["dust"], "C4'"), (B(18), "C4' S3 bridge"), (C["sign"], "C6'"),
             (T_s["hit"], "C6' S2 pen touch"), (T_s["usp"], "C6' S3 USP"), (C["end"], "C8'")]
 
 for k, (cid, t0, t1, (css, html, js)) in enumerate(SCENE_SPECS):
