@@ -3,11 +3,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "python3 tools/build.py && python3 tools/make_audio.py && python3 tools/subset_font.py",
+    "build": "python3 tools/build.py && python3 tools/build.py --variant 15 && python3 tools/make_audio.py && python3 tools/make_audio.py --variant 15 && python3 tools/build.py --variant 15 && python3 tools/subset_font.py",
     "dev": "npx --yes hyperframes@0.8.200 preview",
     "check": "npx --yes hyperframes@0.8.200 check",
     "snapshot": "npx --yes hyperframes@0.8.200 snapshot --at 0.5,1.8,5,9,12,19,22,26,29.5",
     "render": "npx --yes hyperframes@0.8.200 render --quality delivery -o renders/last-signature-30s.mp4",
-    "publish": "npx --yes hyperframes@0.8.200 publish"
+    "publish": "npx --yes hyperframes@0.8.200 publish",
+    "check:15": "cd v15 && npx --yes hyperframes@0.8.200 check",
+    "snapshot:15": "cd v15 && npx --yes hyperframes@0.8.200 snapshot --at 0.5,1.8,3.3,4.8,6,7.5,8.6,9.5,10.4,11.5,12.5,14.5",
+    "render:15": "cd v15 && npx --yes hyperframes@0.8.200 render --quality delivery -o ../renders/last-signature-15s.mp4"
   }
 }

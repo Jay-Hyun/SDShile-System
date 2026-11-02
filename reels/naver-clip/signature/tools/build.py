@@ -8,10 +8,14 @@ Scene-local times are written as F(n) = (n - scene_start_frame) / 30.
 import json
 import os
 import random
+import shutil
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 COMMON = open(os.path.join(ROOT, "tools", "common.css"), encoding="utf-8").read()
 TOTAL = 30.0
+VARIANT = sys.argv[sys.argv.index("--variant") + 1] if "--variant" in sys.argv else "30"
+OUT = ROOT if VARIANT == "30" else os.path.join(ROOT, "v15")
 
 # ---------------------------------------------------------------- shared art
 ICON = ('<svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="16" fill="#22262B"/>'
@@ -159,7 +163,7 @@ def chars(text, pid, acc_from=None):
     return "".join(out)
 
 
-def scene(cid, f0, f1, css, html, js):
+def scene(cid, f0, f1, css, html, js, variant="30"):
     helpers = HELPERS.replace("__F0__", str(f0))
     s = f'''<template>
   <style>
@@ -177,7 +181,9 @@ def scene(cid, f0, f1, css, html, js):
   </script>
 </template>
 '''
-    open(os.path.join(ROOT, "compositions", cid + ".html"), "w", encoding="utf-8").write(s)
+    if variant == VARIANT:
+        os.makedirs(os.path.join(OUT, "compositions"), exist_ok=True)
+        open(os.path.join(OUT, "compositions", cid + ".html"), "w", encoding="utf-8").write(s)
     return (cid, round(f0 / 30, 4), round((f1 - f0 + 1) / 30, 4))
 
 
@@ -704,15 +710,176 @@ legal_js = """
 """
 SLOTS.append(scene("legal", 465, 899, legal_css, legal_html, legal_js))
 
+# ============================================================ 15초 버전 (§3 + 15초 컷씬 시트) — python3 tools/build.py --variant 15 → v15/
+SLOTS15 = []
+
+# C1' f0–f59: C1 S1과 동일, f45–f59 스냅 틸트 다운 + 줌. 자막 '딱 한 칸만 빼고.' f45–f95(C3'까지 유지)
+hook15_js = """
+    [[1, 7, -5], [2, -6, 4], [3, 4, 3], [4, -2, -2], [5, 0, 0]].forEach(([n, x, y]) => tl.set("#h-cam", { x, y }, F(n)));
+    tl.fromTo(["#h-f0", "#h-f2", "#h-f1"], { y: -16 }, { y: 0, duration: 0.7, ease: "back.out(2.4)", stagger: 0.07 }, 0);
+    tl.fromTo("#h-chip", { scale: 1.08 }, { scale: 1, duration: 0.35, ease: "power3.out" }, F(9));
+    OUT("#h-head", F(45), { y: -140 }, 0.12);
+    tl.fromTo("#h-world", { y: 0 }, { y: -2100, duration: 0.4, ease: "expo.inOut" }, F(45));
+    tl.fromTo("#h-world", { filter: "blur(0px)" }, { filter: "blur(14px)", duration: 0.2, ease: "power2.in" }, F(45));
+    tl.to("#h-world", { filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, F(45) + 0.2);
+    tl.fromTo("#h-plate", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power3.out" }, F(47));
+    tl.fromTo("#h-cap .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.12, ease: "power3.out", stagger: 0.05 }, F(48));
+    tl.fromTo(["#h-s0", "#h-s1", "#h-s2"], { backgroundColor: "#eeece6" }, { backgroundColor: "#e1ebe3", duration: 0.2 }, F(54));
+    ["#h-c0", "#h-c1", "#h-c2"].forEach((c) => BLINK(c, F(56), F(60)));
+"""
+SLOTS15.append(scene("hook", 0, 59, hook_css, hook_html, hook15_js, variant="15"))
+
+# C3' f60–f149: 서명란 클로즈업 유지, '생성' 3연타(f75·f90·f97), 토스트, 비네팅. 자막은 f95까지
+blank15_js = """
+    tl.set("#b-cam", { y: -505 }, 0);
+    tl.set(["#b-s0", "#b-s1", "#b-s2"], { backgroundColor: "#e1ebe3" }, 0);
+    ["#b-c0", "#b-c1", "#b-c2"].forEach((c) => BLINK(c, 0, F(150)));
+    OUT("#b-cap", F(96), {}, 0.1);
+    IN("#b-btn", F(61), { y: 40 }, 0.2);
+    tl.fromTo("#b-ptr", { opacity: 0, x: 140, y: 160 }, { opacity: 1, x: 0, y: 0, duration: 0.2, ease: "power3.out" }, F(64));
+    [75, 90, 97].forEach((n, k) => {
+      const t = F(n);
+      tl.fromTo("#b-ptr", { scale: 1 }, { scale: 0.86, duration: 0.05, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, t);
+      tl.fromTo("#b-btn", { scale: 1 }, { scale: 0.94, duration: 0.05, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, t);
+      GLITCH("#b-cam", "#b-gl", t, k % 2 ? -18 : 18);
+      [0, 1, 2].forEach((i) => { tl.set("#b-l" + i + "-" + k, { opacity: 0 }, t); tl.set("#b-l" + i + "-" + (k + 1), { opacity: 1 }, t); });
+    });
+    tl.fromTo("#b-toast", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, F(102));
+    tl.fromTo("#b-toast", { x: 0 }, { x: 10, duration: 0.04, yoyo: true, repeat: 3, ease: "none", immediateRender: false }, F(103));
+    OUT(["#b-btn", "#b-ptr"], F(108), { y: 30 }, 0.16);
+    tl.fromTo("#b-cam", { scale: 1, transformOrigin: "490px 1385px" }, { scale: 2.4, duration: 0.9, ease: "power3.inOut", immediateRender: false }, F(110));
+    tl.to("#b-toast", { y: 168, duration: 0.9, ease: "power3.inOut" }, F(110));
+    tl.fromTo("#b-vig", { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "power2.inOut" }, F(110));
+"""
+SLOTS15.append(scene("blank", 60, 149, blank_css, blank_html, blank15_js, variant="15"))
+
+# C4' f150–f269: 'AI가 대신할수록,'(S1 1.4s) / '책임질 자리는 더 귀해집니다.'(S2 f192) / 브리지 '그 칸은, 법을 아는 사람의 몫'(S3 f249–f269)
+dust15_css = dust_css + """
+    #d-br1 { top: 300px; font-size: 56px; font-weight: 800; color: #e9e3d6; }
+    #d-br2 { top: 380px; font-size: 84px; color: #fbf9f4; }
+"""
+dust15_html = dust_html.replace(words("AI가 일을 대신할수록,"), words("AI가 대신할수록,")) + """
+    <div id="d-br1" class="col">그 칸은,</div>
+    <div id="d-br2" class="col cap">법을 아는 사람의 몫</div>"""
+dust15_js = """
+    const PTS = __PTS__;
+    tl.fromTo("#d-c1 .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.12, ease: "power3.out", stagger: 0.06 }, 0);
+    [0, 1, 2].forEach((i) => tl.fromTo("#d-b" + i, { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.85, ease: "power1.in" }, 0.1));
+    tl.fromTo(["#d-s0", "#d-s2"], { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "power1.in" }, 0.05);
+    tl.fromTo(["#d-t0", "#d-t1", "#d-t2", "#d-k0", "#d-k1", "#d-k2", "#d-d0 .wm", "#d-d1 .wm", "#d-d2 .wm", "#d-d0 .hd", "#d-d1 .hd", "#d-d2 .hd"], { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.85);
+    tl.fromTo(["#d-d0", "#d-d1", "#d-d2"], { backgroundColor: "rgba(255,255,255,1)", borderColor: "rgba(221,216,204,1)", boxShadow: "0 14px 34px rgba(34,38,43,0.1)" },
+      { backgroundColor: "rgba(255,255,255,0)", borderColor: "rgba(221,216,204,0)", boxShadow: "0 14px 34px rgba(34,38,43,0)", duration: 0.28, ease: "power1.in" }, 0.8);
+    tl.fromTo("#d-dark", { opacity: 0 }, { opacity: 1, duration: 1.0, ease: "power1.inOut" }, 0.25);
+    tl.fromTo("#d-c1", { color: "#22262B" }, { color: "#cfcac0", duration: 0.7 }, 0.5);
+    document.querySelectorAll("#d-pts i").forEach((el, k) => {
+      const [y, a, b] = PTS[k];
+      const t = 0.1 + Math.max(0, Math.min(1, 1 - (y - 586) / 724)) * 0.85 + a * 0.07;
+      tl.fromTo(el, { opacity: 0, x: 0, y: 0 }, { opacity: 0.9, duration: 0.06, ease: "none" }, t);
+      tl.to(el, { opacity: 0, x: (b - 0.5) * 120, y: -(260 + a * 520), duration: 0.8 + b * 0.3, ease: "power1.out" }, t + 0.06);
+    });
+    tl.fromTo("#d-s1", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 1.1);
+    tl.fromTo("#d-hero", { opacity: 0, y: 465, scale: 0.37, transformOrigin: "490px 920px" }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power3.inOut" }, 1.05);
+    BLINK("#d-cur", 1.6, 4.0);
+    tl.fromTo("#d-c2", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, F(192));
+    tl.fromTo("#d-push", { scale: 1, transformOrigin: "490px 960px" }, { scale: 1.08, duration: F(270) - F(192), ease: "none" }, F(192));
+    tl.fromTo("#d-glow", { opacity: 0 }, { opacity: 1, duration: 1.6, ease: "power1.inOut" }, F(196));
+    // S3 f249–f269 브리지 타이포
+    OUT(["#d-c1", "#d-c2"], F(249), {}, 0.12);
+    IN("#d-br1", F(250), {}, 0.16);
+    IN("#d-br2", F(252), {}, 0.18);
+""".replace("__PTS__", pts_js)
+SLOTS15.append(scene("dust", 150, 269, dust15_css, dust15_html, dust15_js, variant="15"))
+
+# C6' f270–f359: 펜 접촉 f299 + 플래시 → 잉크·리타이핑(f300–f320) → USP 스택 f321 + 브랜드 f330
+sign15_html = sign_html.replace("<div id=\"s-u3\" class=\"col\">교육부장관 명의 · '법학 전공' 표기</div>", '<div id="s-u3" class="col">· 교육부장관 명의</div>')
+sign15_js = """
+    const OLDN = __OLDN__, NEWN = __NEWN__;
+    tl.fromTo("#s-pen", { x: 170, y: -240, opacity: 0 }, { x: 0, y: -46, opacity: 1, duration: 0.35, ease: "power3.out" }, 0);
+    tl.to("#s-pen", { y: -10, duration: F(290) - 0.35, ease: "power1.inOut" }, 0.35);
+    tl.to("#s-pen", { y: 0, duration: F(299) - F(290), ease: "sine.inOut" }, F(290));
+    tl.fromTo("#s-world", { scale: 1.0, transformOrigin: "200px 1000px" }, { scale: 1.05, duration: F(299), ease: "none" }, 0);
+    tl.fromTo("#s-flash", { opacity: 0 }, { opacity: 0.95, duration: 2 / 30, ease: "none" }, F(297));
+    tl.to("#s-flash", { opacity: 0, duration: 0.25, ease: "power2.out" }, F(300));
+    tl.fromTo("#s-tip", { opacity: 0, scale: 0.4, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1.25, duration: 0.12, ease: "power2.out" }, F(299));
+    tl.to("#s-tip", { scale: 0.9, opacity: 0.85, duration: 0.25, ease: "power2.out" }, F(303));
+    tl.to("#s-tip", { opacity: 0, duration: 0.2 }, F(318));
+    tl.fromTo("#s-ink", { scaleX: 0 }, { scaleX: 1, duration: F(319) - F(300), ease: "power1.inOut" }, F(300));
+    tl.to("#s-pen", { x: 710, duration: F(319) - F(300), ease: "power1.inOut" }, F(300));
+    for (let i = 0; i < OLDN; i++) tl.set("#s-o" + (OLDN - 1 - i), { opacity: 0 }, F(300) + i * (5 / 30) / OLDN);
+    for (let i = 0; i < NEWN; i++) tl.fromTo("#s-n" + i, { opacity: 0 }, { opacity: 1, duration: 0.03, ease: "none" }, F(305) + i * (14 / 30) / NEWN);
+    tl.fromTo("#s-navy", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.inOut" }, F(321));
+    tl.fromTo("#s-world", { filter: "blur(0px)" }, { filter: "blur(9px)", duration: 0.4, ease: "power2.out" }, F(321));
+    tl.fromTo("#s-base", { opacity: 0, x: 15, y: 428, scaleX: 1.365 }, { opacity: 1, x: 0, y: 0, scaleX: 1, duration: 0.35, ease: "power3.inOut" }, F(321));
+    tl.fromTo("#s-nl", { y: 0, scale: 1 }, { y: -580, scale: 0.82, duration: 0.35, ease: "power3.inOut" }, F(321));
+    tl.fromTo("#s-nl", { color: "#161616", "--acc": "#7d6233" }, { color: "#fbf9f4", "--acc": "#e0c27e", duration: 0.25 }, F(321));
+    IN("#s-u1", F(321), { y: 30 }, 0.2);
+    IN("#s-u2", F(321) + 0.12, { y: 30 }, 0.22);
+    IN("#s-u3", F(321) + 0.24, { y: 30 }, 0.2);
+    IN("#s-br", F(330), { y: 24 }, 0.22);
+""".replace("__OLDN__", str(len(OLD))).replace("__NEWN__", str(len(NEW)))
+SLOTS15.append(scene("sign", 270, 359, sign_css, sign15_html, sign15_js, variant="15"))
+
+# C8' f360–f449: 압축 엔드카드 — 슬로건(f360–f374 와이프, 무음 자막), 버튼 펄스 2회, 전화, 브랜드, 고지. USP 반복 없음
+end15_css = end_css + """
+    #e-navy { background: linear-gradient(180deg, #0b1a33 0%, #0e1f3b 60%, #1c2a42 100%); }
+    #e-xk { top: 458px; font-size: 51px; font-weight: 900; color: #fbf9f4; --acc: var(--gold-light); }
+    #e-x1 { top: 604px; font-size: 46px; font-weight: 800; color: var(--gold-light); }
+    #e-x2 { top: 664px; font-size: 88px; font-weight: 900; color: #ffffff; letter-spacing: -0.05em; }
+    #e-x3 { top: 782px; font-size: 40px; font-weight: 600; color: rgba(255, 255, 255, 0.9); }
+    #e-xb { top: 866px; display: flex; justify-content: center; align-items: center; gap: 14px; font-size: 38px; font-weight: 800; color: var(--gold-light); }
+    #e-xb img { width: 50px; height: 56px; }
+    #e-xl { position: absolute; left: 230px; top: 568px; width: 520px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #a07c3f, #e0c27e 55%, #b8955a); }
+"""
+end15_html = f'''    <div id="e-paper" class="full" data-layout-ignore></div>
+    <div id="e-navy" class="full" data-layout-ignore></div>
+    <div id="e-xk" class="col">{chars(NEW, "e-xn", acc_from=NEW.index("첫"))}</div>
+    <div id="e-x1" class="col">국내 유일*</div>
+    <div id="e-x2" class="col">100% 온라인 법학사</div>
+    <div id="e-x3" class="col">· 교육부장관 명의</div>
+    <div id="e-xb" class="col"><img src="assets/img/mark-gold.svg" alt="">경찰복지사이버평생교육원</div>
+    <div id="e-xl" data-layout-ignore></div>
+    <div id="e-slo" class="col cap">책임지는 자리로,<br>지금 있는 자리에서.</div>
+    <div id="e-ul" data-layout-ignore></div>
+    <div id="e-br" class="col"><img src="assets/img/mark-gold.svg" alt="">경찰복지사이버평생교육원</div>
+    <div id="e-btn">무료 상담 신청</div>
+    <div id="e-tel" class="col">{PHONE}<span>070-4006-7128 (평일 10–18시)</span></div>'''
+end15_js = """
+    OUT(["#e-xk", "#e-x1", "#e-x2", "#e-x3"], 0, { y: -30 }, 0.15);
+    tl.fromTo("#e-navy", { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.28, ease: "power2.inOut" }, 0.02);
+    OUT("#e-xl", 0, { scaleX: 0.6 }, 0.14);
+    tl.fromTo("#e-xb", { y: 0 }, { y: 246, duration: 0.4, ease: "power3.inOut" }, 0);
+    tl.fromTo("#e-xb", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.2);
+    tl.fromTo("#e-slo", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: F(374) - F(360), ease: "power2.inOut" }, 0);
+    tl.fromTo("#e-ul", { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "power2.inOut" }, F(366));
+    tl.fromTo("#e-ul", { boxShadow: "0 0 18px rgba(224,194,126,0.9)" }, { boxShadow: "0 0 0px rgba(224,194,126,0)", duration: 0.6 }, 0.45);
+    IN("#e-br", 0.22, { y: 20 }, 0.24);
+    IN("#e-btn", 0.12, { y: 50 }, 0.26);
+    IN("#e-tel", 0.05, { y: 16 }, 0.24);
+    [1.2, 1.7].forEach((t) => tl.fromTo("#e-btn", { scale: 1 }, { scale: 1.045, duration: 0.12, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, t));
+"""
+SLOTS15.append(scene("end", 360, 449, end15_css, end15_html, end15_js, variant="15"))
+
+# 상시 레이어: 연출 f270–f359, 고지 L1·L2 f321–f449
+legal15_html = '''    <div id="l-tag" class="clip" data-start="0" data-duration="3" data-track-index="1"><div id="l-tagi" class="tag">연출</div></div>
+    <div id="l-d1" class="clip l-d" data-start="1.7" data-duration="4.3" data-track-index="2" style="top:1580px"><span id="l-d1i">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</span></div>
+    <div id="l-d2" class="clip l-d" data-start="1.7" data-duration="4.3" data-track-index="3" style="top:1615px"><span id="l-d2i">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</span></div>'''
+legal15_js = """
+    // 연출 f270–f359 (0–3.0s), 고지 L1·L2 f321–f449 (1.7–6.0s). f360(C8') 밝은 배경 → 먹색 85%
+    tl.fromTo(["#l-d1i", "#l-d2i"], { color: "#ffffff" }, { color: "#161616", duration: 0.12, ease: "none" }, 3.12);
+"""
+SLOTS15.append(scene("legal", 270, 449, legal_css, legal15_html, legal15_js, variant="15"))
+
+
 # ---------------------------------------------------------------- index.html
-hosts = []
-for cid, start, dur in SLOTS:
-    z = 5 if cid == "legal" else 2
-    hosts.append(f'''      <div id="{cid}" class="clip" data-composition-id="{cid}" data-composition-src="compositions/{cid}.html"
+def write_index(SLOTS, TOTAL, note):
+  hosts = []
+  for cid, start, dur in SLOTS:
+      z = 5 if cid == "legal" else 2
+      hosts.append(f'''      <div id="{cid}" class="clip" data-composition-id="{cid}" data-composition-src="compositions/{cid}.html"
         data-start="{start}" data-duration="{dur}" data-track-index="{2 if cid == 'legal' else 1}" data-track-kind="graphics"
         data-width="1080" data-height="1920" style="z-index: {z}"></div>''')
 
-index = f'''<!doctype html>
+  index = f'''<!doctype html>
 <html
   lang="ko"
   data-resolution="portrait"
@@ -744,7 +911,7 @@ index = f'''<!doctype html>
     </style>
   </head>
   <body>
-    <!-- 「마지막 서명」 30초 · docs/ads/naver-clip/01-last-signature.md §4 컷씬 시트 기준. tools/build.py 가 생성 -->
+    <!-- {note} -->
     <div
       id="root"
       data-composition-id="main"
@@ -765,6 +932,24 @@ index = f'''<!doctype html>
   </body>
 </html>
 '''
-open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8").write(index)
-for s in SLOTS:
-    print(s)
+  open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(index)
+  for s in SLOTS:
+      print(s)
+
+
+
+if VARIANT == "30":
+    write_index(SLOTS, 30.0, "「마지막 서명」 30초 · docs/ads/naver-clip/01-last-signature.md §4 컷씬 시트 기준. tools/build.py 가 생성")
+else:
+    write_index(SLOTS15, 15.0, "「마지막 서명」 15초 · docs/ads/naver-clip/01-last-signature.md §3 + 15초 컷씬 시트 기준. tools/build.py --variant 15 가 생성")
+    # v15/ 는 독립 프로젝트(check 가 진입 파일을 고를 수 없어서). 에셋은 상위에서 복사
+    for sub in ("fonts", "img", "audio"):
+        os.makedirs(os.path.join(OUT, "assets", sub), exist_ok=True)
+    shutil.copy(os.path.join(ROOT, "assets", "img", "mark-gold.svg"), os.path.join(OUT, "assets", "img", "mark-gold.svg"))
+    shutil.copy(os.path.join(ROOT, "assets", "fonts", "PretendardGOV-subset.woff2"), os.path.join(OUT, "assets", "fonts", "PretendardGOV-subset.woff2"))
+    bed15 = os.path.join(ROOT, "assets", "audio", "bed-15s.mp3")
+    if os.path.exists(bed15):
+        shutil.copy(bed15, os.path.join(OUT, "assets", "audio", "bed.mp3"))
+    shutil.copy(os.path.join(ROOT, "hyperframes.json"), os.path.join(OUT, "hyperframes.json"))
+    json.dump({"id": "naver-clip-signature-15s", "name": "naver-clip-signature-15s", "createdAt": "2026-11-02T00:00:00.000Z"},
+              open(os.path.join(OUT, "meta.json"), "w"), indent=2)

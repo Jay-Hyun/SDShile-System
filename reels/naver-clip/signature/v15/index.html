@@ -1,0 +1,69 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-resolution="portrait"
+  data-composition-variables='[
+  {"id":"color-ground","type":"color","label":"Paper","default":"#FBF9F4"},
+  {"id":"color-ink","type":"color","label":"Ink","default":"#161616"},
+  {"id":"color-accent","type":"color","label":"Gold","default":"#B8955A"},
+  {"id":"font-display","type":"string","label":"Display font","default":"PretendardGOV"}
+]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #161616;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 「마지막 서명」 15초 · docs/ads/naver-clip/01-last-signature.md §3 + 15초 컷씬 시트 기준. tools/build.py --variant 15 가 생성 -->
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="15"
+      data-width="1080"
+      data-height="1920"
+    >
+      <div id="hook" class="clip" data-composition-id="hook" data-composition-src="compositions/hook.html"
+        data-start="0.0" data-duration="2.0" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="blank" class="clip" data-composition-id="blank" data-composition-src="compositions/blank.html"
+        data-start="2.0" data-duration="3.0" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="dust" class="clip" data-composition-id="dust" data-composition-src="compositions/dust.html"
+        data-start="5.0" data-duration="4.0" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="sign" class="clip" data-composition-id="sign" data-composition-src="compositions/sign.html"
+        data-start="9.0" data-duration="3.0" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="end" class="clip" data-composition-id="end" data-composition-src="compositions/end.html"
+        data-start="12.0" data-duration="3.0" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="legal" class="clip" data-composition-id="legal" data-composition-src="compositions/legal.html"
+        data-start="9.0" data-duration="6.0" data-track-index="2" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 5"></div>
+
+      <!-- 사운드 베드(음악 + SFX, 합성). tools/make_audio.py. 내레이션은 추후 녹음 후 별도 <audio id="vo"> 로 추가 -->
+      <audio id="bed" class="clip" src="assets/audio/bed.mp3" data-start="0" data-duration="15" data-track-index="10" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

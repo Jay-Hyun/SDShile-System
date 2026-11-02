@@ -10,13 +10,16 @@ Cues follow docs/ads/naver-clip/01-last-signature.md §2/§4 (BGM + SFX columns)
 """
 import os
 import subprocess
+import sys
 import wave
 
 import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SR = 48000
-DUR = 30.0
+VARIANT = sys.argv[sys.argv.index("--variant") + 1] if "--variant" in sys.argv else "30"
+DUR = 15.0 if VARIANT == "15" else 30.0
+SUFFIX = "-15s" if VARIANT == "15" else ""
 N = int(SR * DUR)
 rng = np.random.default_rng(1102)
 BPM = 120
@@ -167,91 +170,94 @@ def noise_sweep(d, f0, f1, level, rise=True):
     return x * e * level
 
 
-# ------------------------------------------------------------------ music
-music = np.zeros(N)
-DM, BB, FM, CM = [50, 53, 57], [46, 50, 53], [53, 57, 60], [48, 52, 55]
-PROG = [DM, BB, FM, CM]
-ROOTS = [38, 34, 41, 36]
+# ------------------------------------------------------------------ 30s music
+def music30():
+    music = np.zeros(N)
+    DM, BB, FM, CM = [50, 53, 57], [46, 50, 53], [53, 57, 60], [48, 52, 55]
+    PROG = [DM, BB, FM, CM]
+    ROOTS = [38, 34, 41, 36]
 
-# A 0–2.8: minimal tech pulse, kick on first beat (+ soft four-on-floor), short stop at 2.8
-for b in range(6):
-    t = b * BEAT
-    if t < 2.8:
-        place(music, kick(1.0 if b == 0 else 0.55), t)
-for e in range(11):
-    t = e * BEAT / 2
-    if t < 2.75:
-        place(music, pluck([69, 74][e % 2], level=0.22), t)
-# B 3.0–9.5: pulse resumes + hi-hats
-for b in range(13):
-    t = 3.0 + b * BEAT
-    if t < 9.5:
-        place(music, kick(0.7), t)
-        bar = int((t - 3.0) // 2) % 4
-        place(music, bass(ROOTS[bar] + 12, BEAT * 0.9, 0.32), t)
-for e in range(26):
-    t = 3.0 + e * BEAT / 2
-    if t < 9.5:
-        bar = int((t - 3.0) // 2) % 4
-        place(music, pluck(PROG[bar][e % 3] + 12, level=0.2), t)
-        if e % 2 == 1:
-            place(music, hat(0.22), t)
-# 9.5 reverse sweep → cut at 10.0
-rs = noise_sweep(0.5, 300, 6000, 0.55, rise=True)
-place(music, rs, 9.5)
-# fade out pulses under the sweep
-i0, i1 = int(9.5 * SR), int(10.0 * SR)
-music[i0:i1] *= np.linspace(1, 0.2, i1 - i0)
-music[i1:int(11.55 * SR)] = 0.0
-# 11.6 single piano note (with reverb), 14.0 three-note motif, 15.5 string pad
-pn = np.zeros(N)
-place(pn, piano(57, 3.2, 0.55), 11.6)
-for k, (m, t) in enumerate([(62, 14.2), (65, 14.7), (69, 15.2), (62, 16.2), (65, 16.7), (67, 17.2)]):
-    place(pn, piano(m, 2.4, 0.42 if k < 3 else 0.36), t)
-music += reverb(pn, 2.2, 0.35)
-pd = pad([50, 57, 62, 65], 2.5, 0.16, attack=1.2, release=0.3)
-place(music, pd, 15.5)
-place(music, pad([46, 53, 58, 62], 0.9, 0.2, attack=0.2, release=0.25), 17.1)
-place(music, noise_sweep(1.2, 400, 5000, 0.25, rise=True), 16.8)
+    # A 0–2.8: minimal tech pulse, kick on first beat (+ soft four-on-floor), short stop at 2.8
+    for b in range(6):
+        t = b * BEAT
+        if t < 2.8:
+            place(music, kick(1.0 if b == 0 else 0.55), t)
+    for e in range(11):
+        t = e * BEAT / 2
+        if t < 2.75:
+            place(music, pluck([69, 74][e % 2], level=0.22), t)
+    # B 3.0–9.5: pulse resumes + hi-hats
+    for b in range(13):
+        t = 3.0 + b * BEAT
+        if t < 9.5:
+            place(music, kick(0.7), t)
+            bar = int((t - 3.0) // 2) % 4
+            place(music, bass(ROOTS[bar] + 12, BEAT * 0.9, 0.32), t)
+    for e in range(26):
+        t = 3.0 + e * BEAT / 2
+        if t < 9.5:
+            bar = int((t - 3.0) // 2) % 4
+            place(music, pluck(PROG[bar][e % 3] + 12, level=0.2), t)
+            if e % 2 == 1:
+                place(music, hat(0.22), t)
+    # 9.5 reverse sweep → cut at 10.0
+    rs = noise_sweep(0.5, 300, 6000, 0.55, rise=True)
+    place(music, rs, 9.5)
+    # fade out pulses under the sweep
+    i0, i1 = int(9.5 * SR), int(10.0 * SR)
+    music[i0:i1] *= np.linspace(1, 0.2, i1 - i0)
+    music[i1:int(11.55 * SR)] = 0.0
+    # 11.6 single piano note (with reverb), 14.0 three-note motif, 15.5 string pad
+    pn = np.zeros(N)
+    place(pn, piano(57, 3.2, 0.55), 11.6)
+    for k, (m, t) in enumerate([(62, 14.2), (65, 14.7), (69, 15.2), (62, 16.2), (65, 16.7), (67, 17.2)]):
+        place(pn, piano(m, 2.4, 0.42 if k < 3 else 0.36), t)
+    music += reverb(pn, 2.2, 0.35)
+    pd = pad([50, 57, 62, 65], 2.5, 0.16, attack=1.2, release=0.3)
+    place(music, pd, 15.5)
+    place(music, pad([46, 53, 58, 62], 0.9, 0.2, attack=0.2, release=0.25), 17.1)
+    place(music, noise_sweep(1.2, 400, 5000, 0.25, rise=True), 16.8)
 
-# 18.0–27.5: full beat drop
-drop = np.zeros(N)
-for b in range(19):
-    t = 18.0 + b * BEAT
-    if t >= 27.5:
-        break
-    bar = int((t - 18.0) // 2) % 4
-    place(drop, kick(1.0), t)
-    if b % 2 == 1:
-        place(drop, clap(0.42), t)
-    for s in range(2):
-        place(drop, bass(ROOTS[bar], BEAT / 2 * 0.92, 0.55), t + s * BEAT / 2)
-for e in range(76):
-    t = 18.0 + e * BEAT / 4
-    if t >= 27.5:
-        break
-    bar = int((t - 18.0) // 2) % 4
-    place(drop, hat(0.16 if e % 2 else 0.1, 0.03), t)
-    if e % 2 == 0:
-        place(drop, pluck(PROG[bar][(e // 2) % 3] + 12, d=0.18, level=0.17, bright=3200), t)
-for bar in range(5):
-    t = 18.0 + bar * 2.0
-    if t < 27.5:
-        place(drop, pad([m + 12 for m in PROG[bar % 4]], 2.0, 0.12, attack=0.05, release=0.2), t)
-# decay from 26.5 → 27.5
-i0, i1 = int(26.5 * SR), int(27.5 * SR)
-drop[i0:i1] *= np.linspace(1, 0.0, i1 - i0) ** 1.5
-drop[i1:] = 0
-music += drop
-# 27.5 final chord (F add9) + reverb tail, clean end at 30.0
-fin = np.zeros(N)
-for m in (41, 53, 57, 60, 67):
-    place(fin, piano(m, 2.5, 0.3), 27.5)
-place(fin, pad([53, 57, 60, 67], 2.5, 0.14, attack=0.05, release=1.2), 27.5)
-music += reverb(fin, 1.8, 0.35)
+    # 18.0–27.5: full beat drop
+    drop = np.zeros(N)
+    for b in range(19):
+        t = 18.0 + b * BEAT
+        if t >= 27.5:
+            break
+        bar = int((t - 18.0) // 2) % 4
+        place(drop, kick(1.0), t)
+        if b % 2 == 1:
+            place(drop, clap(0.42), t)
+        for s in range(2):
+            place(drop, bass(ROOTS[bar], BEAT / 2 * 0.92, 0.55), t + s * BEAT / 2)
+    for e in range(76):
+        t = 18.0 + e * BEAT / 4
+        if t >= 27.5:
+            break
+        bar = int((t - 18.0) // 2) % 4
+        place(drop, hat(0.16 if e % 2 else 0.1, 0.03), t)
+        if e % 2 == 0:
+            place(drop, pluck(PROG[bar][(e // 2) % 3] + 12, d=0.18, level=0.17, bright=3200), t)
+    for bar in range(5):
+        t = 18.0 + bar * 2.0
+        if t < 27.5:
+            place(drop, pad([m + 12 for m in PROG[bar % 4]], 2.0, 0.12, attack=0.05, release=0.2), t)
+    # decay from 26.5 → 27.5
+    i0, i1 = int(26.5 * SR), int(27.5 * SR)
+    drop[i0:i1] *= np.linspace(1, 0.0, i1 - i0) ** 1.5
+    drop[i1:] = 0
+    music += drop
+    # 27.5 final chord (F add9) + reverb tail, clean end at 30.0
+    fin = np.zeros(N)
+    for m in (41, 53, 57, 60, 67):
+        place(fin, piano(m, 2.5, 0.3), 27.5)
+    place(fin, pad([53, 57, 60, 67], 2.5, 0.14, attack=0.05, release=1.2), 27.5)
+    music += reverb(fin, 1.8, 0.35)
 
-# ------------------------------------------------------------------ SFX
-sfx = np.zeros(N)
+    return music
+
+
+# ------------------------------------------------------------------ SFX instruments
 
 
 def swoosh(d=0.18, lo=1200, hi=6000, level=0.4):
@@ -312,60 +318,164 @@ def pop(f=900, level=0.3):
     return np.sin(2 * np.pi * np.cumsum(ff) / SR) * np.exp(-t / 0.03) * np.minimum(1, t / 0.001) * level
 
 
-# C1: paper "슉슉슉", counter "띵", blink ticks from 1.5
-for k, t in enumerate([0.0, 0.11, 0.22]):
-    place(sfx, swoosh(0.16, 900 + 300 * k, 6000, 0.38), t)
-place(sfx, ding(0.26), 0.3)
-place(sfx, swoosh(0.35, 500, 4000, 0.35), 1.53)  # tilt-down whoosh
-for k in range(3):
-    place(sfx, tick(0.2), 2.0 + k * 16 / 30)
-place(sfx, band(rng.standard_normal(int(0.07 * SR)), 300, 8000) * 0.25, 2.8)  # glitch
-# C2: typing texture 3.0–5.9 (accelerating), check ticks
-t = 3.05
-while t < 5.85:
-    place(sfx, tick(0.12 + 0.06 * rng.random(), 2400 + 1600 * rng.random()), t)
-    t += 0.075 - 0.035 * ((t - 3.0) / 2.9) + 0.02 * rng.random()
-for k, n in enumerate([165, 171, 177]):
-    place(sfx, pop(1200 + 200 * k, 0.32), n / 30 + 1 / 30)
-# C3: blink ticks, 4 clicks, error x2, reverse sweep (in music)
-for k in range(3):
-    place(sfx, tick(0.2), 6.55 + k * 16 / 30)
-for n in [216, 226, 236, 246]:
-    place(sfx, click(0.45), n / 30 + 1 / 30)
-    place(sfx, band(rng.standard_normal(int(0.035 * SR)), 400, 9000) * 0.12, n / 30)
-place(sfx, error_tone(0.5), 255 / 30 + 1 / 30)
-place(sfx, error_tone(0.42), 255 / 30 + 0.36)
-# C4: room tone + low sub drone 10.0–14.0
-n = int(4.0 * SR)
-room = band(rng.standard_normal(n), 80, 2500)
-room = norm(room) * 0.012
-tt = np.arange(n) / SR
-drone = (np.sin(2 * np.pi * 55 * tt) + 0.5 * np.sin(2 * np.pi * 110 * tt) + 0.25 * np.sin(2 * np.pi * 165 * tt)) * 0.06
-drone *= np.minimum(1, tt / 1.2) * np.minimum(1, (4.0 - tt) / 0.6)
-place(sfx, room + drone, 10.0)
-# dissolve shimmer (soft)
-place(sfx, noise_sweep(1.2, 6000, 2000, 0.05, rise=False), 10.2)
-# C5: paper flip
-pf = band(rng.standard_normal(int(0.4 * SR)), 1500, 7000)
-pf *= (np.abs(np.sin(np.arange(len(pf)) / SR * 2 * np.pi * 22)) ** 2) * np.sin(np.pi * np.arange(len(pf)) / len(pf))
-place(sfx, norm(pf) * 0.3, 14.05)
-# C6: pen "톡" at contact f584 (mix peak), impact crash, ink scratch, riser, typo pops
-place(sfx, pen_tok(1.0), 584 / 30 + 1 / 30)
-place(sfx, crash(2.4, 0.22), 584 / 30 + 1 / 30)
-ns = int(1.4 * SR)
-scr = band(rng.standard_normal(ns), 2500, 7000) * (0.5 + 0.5 * np.abs(np.sin(np.arange(ns) / SR * 2 * np.pi * 9)))
-scr *= np.minimum(1, np.arange(ns) / SR / 0.05) * np.minimum(1, (1.4 - np.arange(ns) / SR) / 0.2)
-place(sfx, norm(scr) * 0.1, 585 / 30)
-place(sfx, noise_sweep(0.8, 500, 8000, 0.3, rise=True), 20.2)
-for k, t in enumerate([21.0, 21.15, 21.3, 21.3]):
-    place(sfx, pop(700 + 150 * k, 0.3), t + 1 / 30)
-# C7: swipe "휙", button "톡" + pulse
-place(sfx, swoosh(0.4, 700, 7000, 0.45), 760 / 30 + 0.12)
-place(sfx, swoosh(0.3, 400, 3000, 0.3), 780 / 30)
-place(sfx, click(0.35), 798 / 30 + 1 / 30)
-place(sfx, pop(1100, 0.22), 812 / 30 + 1 / 30)
-# C8: signature finish "샥"
-place(sfx, swoosh(0.28, 2500, 11000, 0.4), 27.5)
+def sfx30():
+    sfx = np.zeros(N)
+    # C1: paper "슉슉슉", counter "띵", blink ticks from 1.5
+    for k, t in enumerate([0.0, 0.11, 0.22]):
+        place(sfx, swoosh(0.16, 900 + 300 * k, 6000, 0.38), t)
+    place(sfx, ding(0.26), 0.3)
+    place(sfx, swoosh(0.35, 500, 4000, 0.35), 1.53)  # tilt-down whoosh
+    for k in range(3):
+        place(sfx, tick(0.2), 2.0 + k * 16 / 30)
+    place(sfx, band(rng.standard_normal(int(0.07 * SR)), 300, 8000) * 0.25, 2.8)  # glitch
+    # C2: typing texture 3.0–5.9 (accelerating), check ticks
+    t = 3.05
+    while t < 5.85:
+        place(sfx, tick(0.12 + 0.06 * rng.random(), 2400 + 1600 * rng.random()), t)
+        t += 0.075 - 0.035 * ((t - 3.0) / 2.9) + 0.02 * rng.random()
+    for k, n in enumerate([165, 171, 177]):
+        place(sfx, pop(1200 + 200 * k, 0.32), n / 30 + 1 / 30)
+    # C3: blink ticks, 4 clicks, error x2, reverse sweep (in music)
+    for k in range(3):
+        place(sfx, tick(0.2), 6.55 + k * 16 / 30)
+    for n in [216, 226, 236, 246]:
+        place(sfx, click(0.45), n / 30 + 1 / 30)
+        place(sfx, band(rng.standard_normal(int(0.035 * SR)), 400, 9000) * 0.12, n / 30)
+    place(sfx, error_tone(0.5), 255 / 30 + 1 / 30)
+    place(sfx, error_tone(0.42), 255 / 30 + 0.36)
+    # C4: room tone + low sub drone 10.0–14.0
+    n = int(4.0 * SR)
+    room = band(rng.standard_normal(n), 80, 2500)
+    room = norm(room) * 0.012
+    tt = np.arange(n) / SR
+    drone = (np.sin(2 * np.pi * 55 * tt) + 0.5 * np.sin(2 * np.pi * 110 * tt) + 0.25 * np.sin(2 * np.pi * 165 * tt)) * 0.06
+    drone *= np.minimum(1, tt / 1.2) * np.minimum(1, (4.0 - tt) / 0.6)
+    place(sfx, room + drone, 10.0)
+    # dissolve shimmer (soft)
+    place(sfx, noise_sweep(1.2, 6000, 2000, 0.05, rise=False), 10.2)
+    # C5: paper flip
+    pf = band(rng.standard_normal(int(0.4 * SR)), 1500, 7000)
+    pf *= (np.abs(np.sin(np.arange(len(pf)) / SR * 2 * np.pi * 22)) ** 2) * np.sin(np.pi * np.arange(len(pf)) / len(pf))
+    place(sfx, norm(pf) * 0.3, 14.05)
+    # C6: pen "톡" at contact f584 (mix peak), impact crash, ink scratch, riser, typo pops
+    place(sfx, pen_tok(1.0), 584 / 30 + 1 / 30)
+    place(sfx, crash(2.4, 0.22), 584 / 30 + 1 / 30)
+    ns = int(1.4 * SR)
+    scr = band(rng.standard_normal(ns), 2500, 7000) * (0.5 + 0.5 * np.abs(np.sin(np.arange(ns) / SR * 2 * np.pi * 9)))
+    scr *= np.minimum(1, np.arange(ns) / SR / 0.05) * np.minimum(1, (1.4 - np.arange(ns) / SR) / 0.2)
+    place(sfx, norm(scr) * 0.1, 585 / 30)
+    place(sfx, noise_sweep(0.8, 500, 8000, 0.3, rise=True), 20.2)
+    for k, t in enumerate([21.0, 21.15, 21.3, 21.3]):
+        place(sfx, pop(700 + 150 * k, 0.3), t + 1 / 30)
+    # C7: swipe "휙", button "톡" + pulse
+    place(sfx, swoosh(0.4, 700, 7000, 0.45), 760 / 30 + 0.12)
+    place(sfx, swoosh(0.3, 400, 3000, 0.3), 780 / 30)
+    place(sfx, click(0.35), 798 / 30 + 1 / 30)
+    place(sfx, pop(1100, 0.22), 812 / 30 + 1 / 30)
+    # C8: signature finish "샥"
+    place(sfx, swoosh(0.28, 2500, 11000, 0.4), 27.5)
+
+    return sfx
+
+
+# ------------------------------------------------------------------ 15s cues (§3)
+def music15():
+    """0 pulse+kick · 4.6 reverse sweep → 5.0 cut · 6.4 piano note · 8.3 bridge silence · 9.0 drop · 12.0 final chord · 15.0 end"""
+    music = np.zeros(N)
+    for b in range(10):
+        t = b * BEAT
+        if t < 4.6:
+            place(music, kick(1.0 if b == 0 else (0.55 if t < 2.0 else 0.7)), t)
+            if t >= 2.0:
+                place(music, bass(ROOTS15[int((t - 2.0) // 2) % 4] + 12, BEAT * 0.9, 0.32), t)
+    for e in range(19):
+        t = e * BEAT / 2
+        if t < 4.55:
+            if t < 2.0:
+                place(music, pluck([69, 74][e % 2], level=0.22), t)
+            else:
+                place(music, pluck(PROG15[int((t - 2.0) // 2) % 4][e % 3] + 12, level=0.2), t)
+                if e % 2 == 1:
+                    place(music, hat(0.22), t)
+    place(music, noise_sweep(0.4, 300, 6000, 0.55, rise=True), 4.6)
+    i0, i1 = int(4.6 * SR), int(5.0 * SR)
+    music[i0:i1] *= np.linspace(1, 0.2, i1 - i0)
+    music[i1:int(6.35 * SR)] = 0.0
+    pn = np.zeros(N)
+    place(pn, piano(57, 3.0, 0.55), 192 / 30)
+    pn = reverb(pn, 2.0, 0.35)
+    i0, i1 = int(7.9 * SR), int(8.3 * SR)
+    pn[i0:i1] *= np.linspace(1, 0, i1 - i0) ** 2
+    pn[i1:] = 0
+    music += pn
+    drop = np.zeros(N)
+    for b in range(6):
+        t = 9.0 + b * BEAT
+        bar = int((t - 9.0) // 2) % 4
+        place(drop, kick(1.0), t)
+        if b % 2 == 1:
+            place(drop, clap(0.42), t)
+        for s in range(2):
+            place(drop, bass(ROOTS15[bar], BEAT / 2 * 0.92, 0.55), t + s * BEAT / 2)
+    for e in range(24):
+        t = 9.0 + e * BEAT / 4
+        bar = int((t - 9.0) // 2) % 4
+        place(drop, hat(0.16 if e % 2 else 0.1, 0.03), t)
+        if e % 2 == 0:
+            place(drop, pluck(PROG15[bar][(e // 2) % 3] + 12, d=0.18, level=0.17, bright=3200), t)
+    for bar in range(2):
+        place(drop, pad([m + 12 for m in PROG15[bar]], 2.0, 0.12, attack=0.05, release=0.2), 9.0 + bar * 2.0)
+    i0, i1 = int(11.6 * SR), int(12.0 * SR)
+    drop[i0:i1] *= np.linspace(1, 0.0, i1 - i0) ** 1.5
+    drop[i1:] = 0
+    music += drop
+    fin = np.zeros(N)
+    for m in (41, 53, 57, 60, 67):
+        place(fin, piano(m, 3.0, 0.3), 12.0)
+    place(fin, pad([53, 57, 60, 67], 3.0, 0.14, attack=0.05, release=1.4), 12.0)
+    music += reverb(fin, 1.8, 0.35)
+    return music
+
+
+def sfx15():
+    sfx = np.zeros(N)
+    for k, t in enumerate([0.0, 0.11, 0.22]):
+        place(sfx, swoosh(0.16, 900 + 300 * k, 6000, 0.38), t)
+    place(sfx, ding(0.26), 0.3)
+    place(sfx, swoosh(0.3, 500, 4000, 0.35), 1.5)
+    for t in (1.95, 2.25):
+        place(sfx, tick(0.2), t)
+    for n in (75, 90, 97):  # 클릭 3연타
+        place(sfx, click(0.45), n / 30 + 1 / 30)
+        place(sfx, band(rng.standard_normal(int(0.035 * SR)), 400, 9000) * 0.12, n / 30)
+    place(sfx, error_tone(0.5), 102 / 30 + 1 / 30)
+    n = int(3.3 * SR)
+    tt = np.arange(n) / SR
+    room = norm(band(rng.standard_normal(n), 80, 2500)) * 0.012
+    drone = (np.sin(2 * np.pi * 55 * tt) + 0.5 * np.sin(2 * np.pi * 110 * tt) + 0.25 * np.sin(2 * np.pi * 165 * tt)) * 0.06
+    drone *= np.minimum(1, tt / 1.0) * np.minimum(1, (3.3 - tt) / 0.5)
+    place(sfx, room + drone, 5.0)
+    place(sfx, noise_sweep(1.0, 6000, 2000, 0.05, rise=False), 5.15)
+    place(sfx, pen_tok(1.0), 299 / 30 + 1 / 30)
+    place(sfx, crash(2.0, 0.22), 299 / 30 + 1 / 30)
+    ns = int(0.7 * SR)
+    scr = band(rng.standard_normal(ns), 2500, 7000) * (0.5 + 0.5 * np.abs(np.sin(np.arange(ns) / SR * 2 * np.pi * 9)))
+    scr *= np.minimum(1, np.arange(ns) / SR / 0.05) * np.minimum(1, (0.7 - np.arange(ns) / SR) / 0.15)
+    place(sfx, norm(scr) * 0.1, 300 / 30)
+    place(sfx, noise_sweep(0.5, 500, 8000, 0.3, rise=True), 10.2)
+    for k, t in enumerate([321 / 30, 321 / 30 + 0.12, 321 / 30 + 0.24, 330 / 30]):
+        place(sfx, pop(700 + 150 * k, 0.3), t + 1 / 30)
+    place(sfx, swoosh(0.28, 2500, 11000, 0.4), 12.0)  # 서명 "샥"
+    place(sfx, click(0.35), 13.2 + 1 / 30)  # 버튼 "톡"
+    place(sfx, pop(1100, 0.22), 13.7 + 1 / 30)
+    return sfx
+
+
+PROG15 = [[50, 53, 57], [46, 50, 53], [53, 57, 60], [48, 52, 55]]
+ROOTS15 = [38, 34, 41, 36]
+
+
+music, sfx = (music30(), sfx30()) if VARIANT == "30" else (music15(), sfx15())
 
 # ------------------------------------------------------------------ mix + write
 mix = music * 0.62 + sfx * 0.9
@@ -389,8 +499,8 @@ def write_wav(path, x):
 
 
 pk = np.max(np.abs(mix))
-write_wav(os.path.join(out_dir, "stems", "music.wav"), music * 0.62 / pk * 0.5)
-write_wav(os.path.join(out_dir, "stems", "sfx.wav"), sfx * 0.9 / pk * 0.5)
+write_wav(os.path.join(out_dir, "stems", f"music{SUFFIX}.wav"), music * 0.62 / pk * 0.5)
+write_wav(os.path.join(out_dir, "stems", f"sfx{SUFFIX}.wav"), sfx * 0.9 / pk * 0.5)
 raw = os.path.join(out_dir, "stems", "mix-raw.wav")
 write_wav(raw, mix / pk * 0.5)
 
@@ -406,7 +516,7 @@ def measure(path):
 
 I, tp = measure(raw)
 gain = -16.0 - I
-final = os.path.join(out_dir, "bed.mp3")
+final = os.path.join(out_dir, f"bed{SUFFIX}.mp3")
 subprocess.run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", raw, "-af",
                 f"volume={gain:.2f}dB,alimiter=limit=0.79:attack=1:release=60:level=false",
                 "-ar", "48000", "-c:a", "libmp3lame", "-b:a", "192k", final], check=True)
@@ -420,8 +530,8 @@ if I2 < -16.6:
     I2, tp2 = measure(final)
 os.remove(raw)
 for stem in ("music", "sfx"):  # keep stems small: wav -> mp3
-    w = os.path.join(out_dir, "stems", stem + ".wav")
+    w = os.path.join(out_dir, "stems", stem + SUFFIX + ".wav")
     subprocess.run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", w, "-c:a", "libmp3lame", "-b:a", "160k",
-                    os.path.join(out_dir, "stems", stem + ".mp3")], check=True)
+                    os.path.join(out_dir, "stems", stem + SUFFIX + ".mp3")], check=True)
     os.remove(w)
-print(f"raw I={I:.1f} LUFS tp={tp:.1f}  ->  bed.mp3 I={I2:.1f} LUFS true-peak={tp2:.1f} dBTP")
+print(f"raw I={I:.1f} LUFS tp={tp:.1f}  ->  bed{SUFFIX}.mp3 I={I2:.1f} LUFS true-peak={tp2:.1f} dBTP")

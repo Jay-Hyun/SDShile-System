@@ -2,7 +2,7 @@
 
 Usage: python3 tools/subset_font.py [path/to/PretendardGOVVariable.woff2]
 Default source: $PRETENDARD_GOV (the 5MB full font is not committed).
-Collects every character in index.html + compositions/*.html (+ printable ASCII).
+Collects every character in index.html + compositions/*.html and v15/ (+ printable ASCII); copies the subset into v15/.
 """
 import glob
 import os
@@ -14,7 +14,7 @@ src = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("PRETENDARD_GOV", "")
 if not src or not os.path.exists(src):
     sys.exit("full font not found: pass the path or set PRETENDARD_GOV")
 chars = set(chr(c) for c in range(0x20, 0x7F))
-for f in [os.path.join(ROOT, "index.html")] + glob.glob(os.path.join(ROOT, "compositions", "*.html")):
+for f in [os.path.join(ROOT, "index.html")] + glob.glob(os.path.join(ROOT, "compositions", "*.html")) + glob.glob(os.path.join(ROOT, "v15", "*.html")) + glob.glob(os.path.join(ROOT, "v15", "compositions", "*.html")):
     chars |= set(open(f, encoding="utf-8").read())
 chars = "".join(sorted(c for c in chars if ord(c) >= 0x20))
 txt = os.path.join(ROOT, "assets", "fonts", ".subset-chars.txt")
@@ -23,4 +23,7 @@ out = os.path.join(ROOT, "assets", "fonts", "PretendardGOV-subset.woff2")
 subprocess.run([sys.executable, "-m", "fontTools.subset", src, f"--text-file={txt}", "--flavor=woff2",
                 f"--output-file={out}", "--layout-features=*", "--no-hinting"], check=True)
 os.remove(txt)
+if os.path.isdir(os.path.join(ROOT, "v15", "assets", "fonts")):
+    import shutil
+    shutil.copy(out, os.path.join(ROOT, "v15", "assets", "fonts", os.path.basename(out)))
 print(out, os.path.getsize(out), "bytes,", len(chars), "chars")
