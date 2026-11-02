@@ -1,0 +1,225 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
+      font-weight: 45 930;
+    }
+    #root {
+      /* 브랜드 토큰 (policecyber 릴스와 동일) */
+      --paper: #fbf9f4;
+      --ink: #161616;
+      --navy: #0b1a33;
+      --gold: #b8955a;
+      --gold-text: #7d6233;
+      --gold-light: #e0c27e;
+      /* 가상 "문서 도우미" UI 토큰 (스펙 1장) */
+      --ui-bg: #f4f1ea;
+      --ui-ink: #22262b;
+      --sage: #6f8f7a;
+      --noise: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.07 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      --pat-dots: radial-gradient(circle, rgba(34, 38, 43, 0.07) 1.6px, rgba(34, 38, 43, 0) 1.8px) 0 0 / 34px 34px;
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: "PretendardGOV", sans-serif;
+      letter-spacing: -0.035em;
+      word-break: keep-all;
+      color: var(--ink);
+    }
+    .abs { position: absolute; }
+    .cam { transform-origin: 0 0; }
+    .full { position: absolute; inset: 0; }
+    /* 키 텍스트 컬럼: 좌 60 ~ 우 920 (우측 160px 아이콘 레일 회피), 중심 x=490 */
+    .col { position: absolute; left: 60px; width: 860px; text-align: center; }
+    .cap { font-weight: 900; line-height: 1.18; letter-spacing: -0.045em; }
+    /* 문서 위 자막 판: 종이색 플레이트로 바쁜 배경과 분리 */
+    .plate { display: inline-block; padding: 14px 40px 22px; border-radius: 28px; background: rgba(251, 249, 244, 0.97); box-shadow: 0 0 0 10px rgba(251, 249, 244, 0.45), 0 22px 60px rgba(34, 38, 43, 0.28); }
+    .ch { display: inline-block; white-space: pre; }
+    /* 가상 문서 도우미 UI */
+    .ui-head { position: absolute; left: 60px; top: 232px; height: 56px; display: flex; align-items: center; gap: 16px; }
+    .ui-head svg { width: 56px; height: 56px; }
+    .ui-head b { font-size: 32px; font-weight: 800; color: #f4f1ea; letter-spacing: -0.03em; }
+    .ui-strip { position: absolute; left: 60px; top: 304px; width: 860px; height: 84px; border-radius: 22px; background: #ffffff; border: 2px solid #d8d3c7; display: flex; align-items: center; padding: 0 22px 0 28px; gap: 16px; box-shadow: 0 6px 18px rgba(34, 38, 43, 0.06); }
+    .ui-strip .q { flex: 1; font-size: 32px; font-weight: 600; color: var(--ui-ink); }
+    .ui-strip .sent { width: 48px; height: 48px; border-radius: 14px; background: var(--sage); display: flex; align-items: center; justify-content: center; }
+    .ui-strip .sent svg { width: 28px; height: 28px; }
+    /* 가상 문서 */
+    .doc { position: absolute; background: #ffffff; border: 2px solid #ddd8cc; border-radius: 16px; box-shadow: 0 14px 34px rgba(34, 38, 43, 0.1); overflow: hidden; }
+    .doc .dt { position: absolute; left: 18px; top: 16px; font-size: 25px; font-weight: 800; color: var(--ui-ink); letter-spacing: -0.04em; white-space: nowrap; }
+    .doc .ok { position: absolute; right: 12px; top: 13px; width: 34px; height: 34px; border-radius: 50%; background: var(--sage); color: #fff; font-size: 22px; font-weight: 900; display: flex; align-items: center; justify-content: center; letter-spacing: 0; }
+    .doc .wm { position: absolute; left: 16px; top: 64px; padding: 3px 10px; border-radius: 8px; background: #e7eee9; color: #47604f; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+    .doc .hd { position: absolute; left: 18px; top: 112px; font-size: 24px; font-weight: 800; color: var(--ui-ink); white-space: nowrap; }
+    .doc .body { position: absolute; left: 18px; right: 18px; top: 156px; height: 640px; }
+    .doc .bar { position: absolute; left: 0; height: 11px; border-radius: 6px; background: #d3d6d9; }
+    .doc .bar.dk { background: #b9bec3; }
+    .doc .mid { position: absolute; left: 0; font-size: 21px; font-weight: 700; color: #4f555b; white-space: nowrap; }
+    .doc .last { position: absolute; left: 18px; right: 18px; top: 800px; height: 80px; }
+    .doc .last span { position: absolute; left: 0; top: 0; font-size: 21px; line-height: 1.3; font-weight: 600; color: #4f555b; }
+    .doc .sig { position: absolute; left: 10px; right: 10px; top: 888px; height: 132px; border-radius: 12px; background: #eeece6; }
+    .doc .sig .lb { position: absolute; left: 14px; top: 12px; font-size: 26px; line-height: 1.22; font-weight: 800; color: #6b7076; }
+    .doc .sig .ul { position: absolute; left: 14px; right: 14px; top: 104px; height: 3px; background: #8d9196; }
+    .doc .sig .cur { position: absolute; left: 16px; top: 74px; width: 3px; height: 28px; background: var(--ui-ink); }
+    /* 연출 / 고지 공통 */
+    .tag { position: absolute; padding: 4px 12px; border-radius: 8px; background: rgba(10, 10, 10, 0.55); color: #ffffff; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+    .glitch { position: absolute; left: 0; width: 1080px; mix-blend-mode: screen; }
+
+
+    #s-paper { background: radial-gradient(70% 45% at 30% 58%, #fffaf0 0%, #ece3d2 70%, #cfc2aa 100%); }
+    #s-ul { position: absolute; left: 120px; top: 998px; width: 740px; height: 4px; background: #2b2b2b; }
+    #s-svg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+    #s-pen { position: absolute; left: 136px; top: 414px; width: 640px; height: 640px; }
+    #s-lb { top: 1036px; font-size: 56px; font-weight: 800; color: #2b2b2b; }
+    #s-nl { top: 1032px; font-size: 64px; font-weight: 900; color: var(--ink); --acc: var(--gold-text); }
+    #s-nl .ch { opacity: 0; }
+    #s-navy { background: linear-gradient(180deg, rgba(11, 26, 51, 0.97) 0%, rgba(11, 26, 51, 0.94) 58%, rgba(11, 26, 51, 0.82) 100%); opacity: 0; }
+    #s-base { position: absolute; left: 230px; top: 568px; width: 520px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #a07c3f, #e0c27e 55%, #b8955a); box-shadow: 0 0 18px rgba(224, 194, 126, 0.6); opacity: 0; transform-origin: 50% 50%; }
+    #s-u1 { top: 604px; font-size: 50px; font-weight: 800; color: var(--gold-light); }
+    #s-u2 { top: 668px; font-size: 92px; font-weight: 900; color: #ffffff; letter-spacing: -0.05em; }
+    #s-u2 span { background: linear-gradient(100deg, #ffffff 40%, #ffe6b0 50%, #ffffff 60%) 0 0 / 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; }
+    #s-u3 { top: 790px; font-size: 40px; font-weight: 600; color: rgba(255, 255, 255, 0.92); }
+    #s-br { top: 872px; display: flex; justify-content: center; align-items: center; gap: 14px; font-size: 40px; font-weight: 800; color: var(--gold-light); }
+    #s-br img { width: 52px; height: 58px; }
+    #s-u1, #s-u2, #s-u3, #s-br { opacity: 0; }
+    #s-tip { transform-box: fill-box; transform-origin: center; }
+    #s-dim { background: radial-gradient(60% 40% at 30% 52%, rgba(0,0,0,0), rgba(0,0,0,0.6)); }
+
+    #s-u1 { top: 620px; font-size: 54px; }
+    #s-u2 { top: 690px; font-size: 76px; }
+    #s-u3 { top: 790px; font-size: 44px; font-weight: 700; }
+
+  </style>
+  <div id="root" data-composition-id="sign" data-width="1080" data-height="1920">
+    <div id="s-shake" class="full" data-layout-allow-overlap data-layout-allow-overflow>
+    <div id="s-world" class="full cam" data-layout-allow-overlap data-layout-allow-overflow>
+      <div id="s-paper" class="full" data-layout-ignore></div>
+      <div id="s-ul" data-layout-ignore></div>
+      <svg id="s-svg" viewBox="0 0 1080 1920" data-layout-ignore>
+        <path id="s-inkg" d="M150 999 C 260 995, 330 1004, 430 998 S 640 993, 740 1000 S 830 1002, 860 998" stroke="#e0c27e" stroke-width="22" stroke-linecap="round" fill="none" stroke-opacity="0.5" style="filter:blur(9px);opacity:0"/>
+        <path id="s-ink" d="M150 999 C 260 995, 330 1004, 430 998 S 640 993, 740 1000 S 830 1002, 860 998" stroke="#c49a4e" stroke-width="8" stroke-linecap="round" fill="none" style="opacity:0"/>
+      </svg>
+      <div id="s-pen" data-layout-ignore><svg viewBox="0 0 640 640" width="640" height="640" style="overflow:visible">
+  <defs>
+    <linearGradient id="s-lq" x1="0" y1="-22" x2="0" y2="22" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4a4f58"/><stop offset="0.28" stop-color="#15171b"/><stop offset="0.7" stop-color="#050506"/><stop offset="1" stop-color="#2a2d33"/></linearGradient>
+    <linearGradient id="s-gd" x1="0" y1="-18" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f3dfae"/><stop offset="0.45" stop-color="#c9a666"/><stop offset="1" stop-color="#8a6a33"/></linearGradient>
+    <radialGradient id="s-gl"><stop offset="0" stop-color="#fff4d6" stop-opacity="1"/><stop offset="0.35" stop-color="#e0c27e" stop-opacity="0.7"/><stop offset="1" stop-color="#e0c27e" stop-opacity="0"/></radialGradient>
+    <filter id="s-sh" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+  </defs>
+  <g transform="translate(14 586) rotate(-45)">
+    <rect x="60" y="34" width="1500" height="30" rx="15" fill="rgba(0,0,0,0.35)" filter="url(#s-sh)"/>
+    <rect x="118" y="-21" width="1500" height="42" rx="21" fill="url(#s-lq)"/>
+    <rect x="118" y="-21" width="1500" height="9" rx="4" fill="rgba(255,255,255,0.16)"/>
+    <rect x="96" y="-17" width="30" height="34" rx="6" fill="url(#s-gd)"/>
+    <rect x="72" y="-15" width="28" height="30" rx="4" fill="#0d0e10"/>
+    <rect x="430" y="-22" width="16" height="44" fill="url(#s-gd)"/>
+    <rect x="452" y="-22" width="5" height="44" fill="url(#s-gd)"/>
+    <path d="M0 0 C18 -4 40 -13 74 -15 L74 15 C40 13 18 4 0 0 Z" fill="url(#s-gd)"/>
+    <path d="M4 0 L56 0" stroke="#5a4320" stroke-width="1.6"/>
+    <circle cx="56" cy="0" r="3.2" fill="#5a4320"/>
+  </g>
+  <circle id="s-tip" cx="14" cy="586" r="46" fill="url(#s-gl)" opacity="0"/>
+</svg></div>
+      <div id="s-dim" class="full" data-layout-ignore></div>
+    </div>
+    </div>
+    <div id="s-lb" class="col"><span id="s-o0" class="ch">법</span><span id="s-o1" class="ch">률</span><span id="s-o2" class="ch"> </span><span id="s-o3" class="ch">검</span><span id="s-o4" class="ch">토</span><span id="s-o5" class="ch">·</span><span id="s-o6" class="ch">책</span><span id="s-o7" class="ch">임</span><span id="s-o8" class="ch">자</span><span id="s-o9" class="ch"> </span><span id="s-o10" class="ch">서</span><span id="s-o11" class="ch">명</span></div>
+    <div id="s-navy" class="full" data-layout-ignore></div>
+    <div id="s-base" data-layout-ignore></div>
+    <div id="s-nl" class="col" data-layout-allow-overlap data-layout-allow-overflow><span id="s-n0" class="ch">그</span><span id="s-n1" class="ch"> </span><span id="s-n2" class="ch">칸</span><span id="s-n3" class="ch">으</span><span id="s-n4" class="ch">로</span><span id="s-n5" class="ch"> </span><span id="s-n6" class="ch">가</span><span id="s-n7" class="ch">는</span><span id="s-n8" class="ch"> </span><span id="s-n9" class="ch" style="color:var(--acc)">첫</span><span id="s-n10" class="ch" style="color:var(--acc)"> </span><span id="s-n11" class="ch" style="color:var(--acc)">계</span><span id="s-n12" class="ch" style="color:var(--acc)">단</span></div>
+    <div id="s-u1" class="col">국내 유일*</div>
+    <div id="s-u2" class="col"><span>100% 온라인 법학사</span></div>
+    <div id="s-u3" class="col">교육부장관 명의</div>
+    <div id="s-br" class="col"><img src="assets/img/mark-gold.svg" alt="">경찰복지사이버평생교육원</div>
+    <div id="s-flash" class="full" style="background:#ffffff;opacity:0" data-layout-ignore></div>
+  </div>
+  <script>
+  (function () {
+
+    const tl = anime.createTimeline({ autoplay: false, defaults: { ease: "outExpo" } });
+    const R = anime.createSeededRandom(1103);
+    const ms = (s) => Math.round(s * 1000);
+    const FR = 1 / 30;
+    // A: tween (props may be [from, to]); S: instant set; both at absolute video seconds
+    function A(t, sel, props, dur, ease, extra) {
+      tl.add(sel, Object.assign({ duration: Math.max(1, ms(dur == null ? 0.3 : dur)), ease: ease || "outExpo" }, props, extra || {}), ms(t));
+    }
+    function S(t, sel, props) { tl.set(sel, props, ms(t)); }
+    // camera: point (px,py) lands at screen (cx,cy) at scale s (elements with class .cam use transform-origin 0 0)
+    function camv(px, py, s, cx, cy) { return { translateX: (cx == null ? 490 : cx) - s * px, translateY: (cy == null ? 960 : cy) - s * py, scale: s }; }
+    function CAM(t, sel, px, py, s, dur, ease, cx, cy) {
+      const v = camv(px, py, s, cx, cy);
+      if (!dur) S(t, sel, v); else A(t, sel, v, dur, ease || "inOutExpo");
+    }
+    // seeded camera shake on a wrapper (frames x amplitude px), returns to 0
+    function SHAKE(t, sel, frames, amp) {
+      for (let i = 0; i < frames; i++) {
+        const a = amp * (1 - i / frames);
+        S(t + i * FR, sel, { translateX: R(-a, a, 1), translateY: R(-a, a, 1), rotate: R(-a, a, 1) * 0.04 });
+      }
+      S(t + frames * FR, sel, { translateX: 0, translateY: 0, rotate: 0 });
+    }
+    // scale snap on a punch wrapper: hard jump to s, settles back on a long tail
+    function PUNCH(t, sel, s, dur) { A(t, sel, { scale: [s, 1] }, dur || 0.35, "outExpo"); }
+    // 1-frame flash
+    function FLASH(t, sel, o) { S(t, sel, { opacity: o == null ? 1 : o }); S(t + FR, sel, { opacity: 0 }); }
+    function GLITCH(t, cam, gl, dx) {
+      S(t, cam, { translateX: dx }); S(t, gl, { opacity: 1 });
+      S(t + FR, cam, { translateX: 0 }); S(t + FR, gl, { opacity: 0 });
+    }
+    // cursor blink: 8-frame on/off
+    function BLINK(sel, t0, t1) { let on = true; for (let t = t0; t < t1 - 1e-6; t += 8 * FR) { S(t, sel, { opacity: on ? 1 : 0 }); on = !on; } }
+    // word-level kinetic type: each word snaps in on its own time (scale + blur, no slide)
+    function WORD(t, sel, s) {
+      A(t, sel, { opacity: [0, 1], scale: [s || 1.4, 1], filter: ["blur(10px)", "blur(0px)"] }, 0.22, "outExpo");
+    }
+    function WORDS(t, sel, gap) {
+      A(t, sel, { opacity: [0, 1], scale: [1.25, 1], filter: ["blur(10px)", "blur(0px)"] }, 0.2, "outExpo", { delay: anime.stagger(ms(gap || 0.08)) });
+    }
+    function OUT(t, sel, dur, extra) { A(t, sel, Object.assign({ opacity: 0, filter: "blur(8px)" }, extra || {}), dur || 0.14, "inQuad"); }
+
+
+    const T = {"c0": 9.207, "tense": [9.637, 9.852], "hit": 10.066, "lab": 10.186, "labDur": 0.32, "inkEnd": 10.719, "usp": 10.519, "brand": 10.96, "acc": [11.39, 11.819], "nlY": -580, "end": 12.261};
+    const OLDN = 12, NEWN = 13;
+    CAM(T.c0, "#s-world", 200, 1000, 1, 0, null, 200, 1000);
+    S(T.c0, ["#s-ink", "#s-inkg"].map((s) => anime.svg.createDrawable(s)), { draw: "0 0" });
+    // S1: pen comes in fast, then creeps the last centimetre (slow motion) while the build rises
+    A(T.c0, "#s-pen", { translateX: [190, 0], translateY: [-280, -60], opacity: [0, 1] }, 0.45, "outExpo");
+    A(T.c0 + 0.45, "#s-pen", { translateY: [-60, -8] }, T.hit - T.c0 - 0.45 - 0.08, "inOutSine");
+    A(T.c0, "#s-world", camv(200, 1000, 1.18, 200, 1000), T.hit - T.c0, "inQuad");
+    A(T.c0, "#s-dim", { opacity: [0.2, 1] }, T.hit - T.c0, "inQuad");
+    (T.tense || []).forEach((t, i) => SHAKE(t, "#s-shake", 2, 2 + i * 2));
+    // HIT: nib touches = the music's biggest hit. 1-frame white, scale snap, shake, glow
+    A(T.hit - 0.08, "#s-pen", { translateY: [-8, 0] }, 0.08, "inQuad");
+    FLASH(T.hit, "#s-flash");
+    S(T.hit, "#s-dim", { opacity: 0 });
+    PUNCH(T.hit, "#s-shake", 1.1, 0.5);
+    SHAKE(T.hit + FR, "#s-world", 6, 16);
+    A(T.hit, "#s-tip", { opacity: [0, 1], scale: [0.3, 1.4] }, 0.25, "outExpo");
+    A(T.hit + 0.25, "#s-tip", { opacity: [1, 0.7], scale: [1.4, 1] }, 0.4, "outQuad");
+    A(T.inkEnd, "#s-tip", { opacity: 0 }, 0.25, "outQuad");
+    S(T.hit, ["#s-ink", "#s-inkg"], { opacity: 1 });
+    // S2: gold ink draws along the line (createDrawable), pen tracks it; label is erased and retyped
+    A(T.hit, ["#s-ink", "#s-inkg"].map((s) => anime.svg.createDrawable(s)), { draw: ["0 0", "0 1"] }, T.inkEnd - T.hit, "inOutSine");
+    A(T.hit, "#s-pen", { translateX: [0, 710] }, T.inkEnd - T.hit, "inOutSine");
+    A(T.hit, "#s-world", camv(520, 1000, 1.1, 520, 1000), T.inkEnd - T.hit, "inOutSine");
+    for (let i = 0; i < OLDN; i++) S(T.hit + 0.05 + i * (T.lab - T.hit - 0.1) / OLDN, "#s-o" + (OLDN - 1 - i), { opacity: 0 });
+    A(T.lab, "#s-nl .ch", { opacity: [0, 1], translateY: [24, 0], scale: [1.3, 1] }, 0.2, "outExpo", { delay: anime.stagger(ms(T.labDur / NEWN)) });
+    // S3 on the downbeat: navy flood, label folds up into the base, USP stack (staggered), brand
+    A(T.usp, "#s-navy", { opacity: [0.6, 1] }, 0.15, "outQuad");
+    A(T.usp, "#s-world", { filter: ["blur(0px)", "blur(10px)"] }, 0.4, "outQuad");
+    A(T.usp, "#s-base", { opacity: [0, 1], translateX: [15, 0], translateY: [428, 0], scaleX: [1.365, 1] }, 0.4, "outExpo");
+    A(T.usp, "#s-nl", { translateY: [0, T.nlY], scale: [1, 0.82], color: ["#161616", "#fbf9f4"], "--acc": ["#7d6233", "#e0c27e"] }, 0.4, "outExpo");
+    WORD(T.usp, "#s-u1", 1.35);
+    WORD(T.usp + 0.11, "#s-u2", 1.3);
+    WORD(T.usp + 0.22, "#s-u3", 1.2);
+    PUNCH(T.usp, "#s-shake", 1.04, 0.3);
+    A(T.brand, "#s-br", { opacity: [0, 1], translateY: [24, 0] }, 0.5, anime.spring({ bounce: 0.4, duration: 450 }));
+    // keep it alive: gold sheen sweeps the hero line, punches on the accents
+    A(T.usp + 0.4, "#s-u2 span", { backgroundPosition: ["100% 0", "0% 0"] }, T.end - T.usp - 0.4, "inOutSine");
+    (T.acc || []).forEach((t) => { PUNCH(t, "#s-u2", 1.08, 0.35); A(t, "#s-base", { scaleX: [1.25, 1] }, 0.4, "outExpo"); });
+
+    window.__hfAnime = window.__hfAnime || [];
+    window.__hfAnime.push(tl);
+  })();
+  </script>
+</template>

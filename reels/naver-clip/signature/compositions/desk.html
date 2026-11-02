@@ -28,6 +28,7 @@
       color: var(--ink);
     }
     .abs { position: absolute; }
+    .cam { transform-origin: 0 0; }
     .full { position: absolute; inset: 0; }
     /* 키 텍스트 컬럼: 좌 60 ~ 우 920 (우측 160px 아이콘 레일 회피), 중심 x=490 */
     .col { position: absolute; left: 60px; width: 860px; text-align: center; }
@@ -38,7 +39,7 @@
     /* 가상 문서 도우미 UI */
     .ui-head { position: absolute; left: 60px; top: 232px; height: 56px; display: flex; align-items: center; gap: 16px; }
     .ui-head svg { width: 56px; height: 56px; }
-    .ui-head b { font-size: 32px; font-weight: 800; color: var(--ui-ink); letter-spacing: -0.03em; }
+    .ui-head b { font-size: 32px; font-weight: 800; color: #f4f1ea; letter-spacing: -0.03em; }
     .ui-strip { position: absolute; left: 60px; top: 304px; width: 860px; height: 84px; border-radius: 22px; background: #ffffff; border: 2px solid #d8d3c7; display: flex; align-items: center; padding: 0 22px 0 28px; gap: 16px; box-shadow: 0 6px 18px rgba(34, 38, 43, 0.06); }
     .ui-strip .q { flex: 1; font-size: 32px; font-weight: 600; color: var(--ui-ink); }
     .ui-strip .sent { width: 48px; height: 48px; border-radius: 14px; background: var(--sage); display: flex; align-items: center; justify-content: center; }
@@ -61,33 +62,33 @@
     .doc .sig .cur { position: absolute; left: 16px; top: 74px; width: 3px; height: 28px; background: var(--ui-ink); }
     /* 연출 / 고지 공통 */
     .tag { position: absolute; padding: 4px 12px; border-radius: 8px; background: rgba(10, 10, 10, 0.55); color: #ffffff; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
-    .glitch { position: absolute; left: 0; width: 1080px; mix-blend-mode: multiply; }
+    .glitch { position: absolute; left: 0; width: 1080px; mix-blend-mode: screen; }
 
 
-    #k-ink { background: #141414; }
-    #k-c1 { top: 300px; font-size: 56px; font-weight: 800; color: #e9e3d6; }
-    #k-c2 { top: 380px; font-size: 84px; color: #fbf9f4; }
-    #k-scaled { position: absolute; inset: 0; transform: scale(1.08); transform-origin: 490px 960px; }
-    #k-hlb { position: absolute; left: 160px; top: 858px; width: 660px; text-align: center; font-size: 46px; font-weight: 800; color: #fbf9f4; }
-    #k-line { position: absolute; left: 160px; top: 958px; width: 660px; height: 4px; background: #fbf9f4; transform-origin: 50% 50%; }
-    #k-glow { position: absolute; left: 150px; top: 946px; width: 680px; height: 28px; border-radius: 14px; background: radial-gradient(50% 50% at 50% 50%, rgba(224, 194, 126, 0.75), rgba(224, 194, 126, 0)); }
+    #k-ink { background: #07080a; }
+    #k-c1 { top: 270px; font-size: 64px; font-weight: 800; color: #e9e3d6; }
+    #k-c2 { top: 360px; font-size: 104px; line-height: 1.12; color: #ffffff; text-shadow: 0 8px 40px rgba(0, 0, 0, 0.7); }
+    #k-c1 .w, #k-c2 .w { display: inline-block; opacity: 0; }
+    #k-svg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     #k-desk { opacity: 0; }
-    .k-wall { position: absolute; left: 0; top: 0; width: 1080px; height: 960px; background: radial-gradient(55% 45% at 88% 18%, rgba(255, 226, 180, 0.2), rgba(255, 226, 180, 0) 100%), linear-gradient(180deg, #1d1a17 0%, #2c261f 70%, #3a3027 100%); }
-    .k-win { position: absolute; left: 760px; top: 90px; width: 300px; height: 560px; border: 10px solid #1b1714; background: linear-gradient(160deg, rgba(255, 238, 205, 0.45), rgba(255, 220, 170, 0.18)); }
-    .k-win::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 10px; margin-left: -5px; background: #1b1714; }
-    .k-win::after { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 10px; margin-top: -5px; background: #1b1714; }
+    .k-wall { position: absolute; left: 0; top: 0; width: 1080px; height: 960px; background: radial-gradient(55% 45% at 88% 18%, rgba(255, 226, 180, 0.18), rgba(255, 226, 180, 0) 100%), linear-gradient(180deg, #0c0b0a 0%, #1d1915 70%, #2a231c 100%); }
+    .k-win { position: absolute; left: 760px; top: 90px; width: 300px; height: 560px; border: 10px solid #0e0c0a; background: linear-gradient(160deg, rgba(255, 238, 205, 0.4), rgba(255, 220, 170, 0.14)); }
+    .k-win::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 10px; margin-left: -5px; background: #0e0c0a; }
+    .k-win::after { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 10px; margin-top: -5px; background: #0e0c0a; }
     .k-beam { position: absolute; width: 220px; height: 1500px; background: linear-gradient(180deg, rgba(255, 228, 180, 0.22), rgba(255, 228, 180, 0)); filter: blur(22px); transform-origin: 50% 0; }
-    .k-top { position: absolute; left: 0; top: 960px; width: 1080px; height: 960px; background: repeating-linear-gradient(177deg, rgba(0, 0, 0, 0.07) 0 3px, rgba(0, 0, 0, 0) 3px 26px), linear-gradient(180deg, #8d6545 0%, #6b4a31 45%, #3f2a1b 100%); }
+    .k-top { position: absolute; left: 0; top: 960px; width: 1080px; height: 960px; background: repeating-linear-gradient(177deg, rgba(0, 0, 0, 0.08) 0 3px, rgba(0, 0, 0, 0) 3px 26px), linear-gradient(180deg, #7d5a3d 0%, #573c27 45%, #2a1c12 100%); }
     .k-edge { position: absolute; left: 0; top: 957px; width: 1080px; height: 5px; background: linear-gradient(90deg, rgba(255, 214, 160, 0.35), rgba(255, 224, 176, 0.85) 70%, rgba(255, 214, 160, 0.5)); }
-    .k-patch { position: absolute; left: 0; top: 960px; width: 1080px; height: 960px; background: rgba(255, 222, 170, 0.16); clip-path: polygon(52% 0, 100% 0, 78% 100%, 18% 100%); filter: blur(10px); }
+    .k-patch { position: absolute; left: 0; top: 960px; width: 1080px; height: 960px; background: rgba(255, 222, 170, 0.14); clip-path: polygon(52% 0, 100% 0, 78% 100%, 18% 100%); filter: blur(10px); }
     #k-papers { position: absolute; left: 210px; top: 1080px; width: 560px; height: 420px; }
-    #k-pen { position: absolute; left: 330px; top: 1120px; width: 420px; height: 160px; }
+    #k-pen { position: absolute; left: 330px; top: 1120px; width: 420px; height: 160px; filter: blur(5px); }
+    #k-dim { background: #000; opacity: 0; }
 
   </style>
   <div id="root" data-composition-id="desk" data-width="1080" data-height="1920">
     <div id="k-ink" class="full" data-layout-ignore></div>
+    <div id="k-shake" class="full" data-layout-allow-overlap data-layout-allow-overflow>
     <div id="k-desk" class="full" data-layout-ignore>
-      <div id="k-dolly" class="full">
+      <div id="k-dolly" class="full cam">
         <div class="k-wall"></div>
         <div class="k-win"></div>
         <div class="k-beam" style="left:720px;top:120px;transform:rotate(32deg)"></div>
@@ -106,56 +107,83 @@
         </g></svg></div>
       </div>
     </div>
-    <div id="k-scaled" data-layout-ignore>
-      <div id="k-hlb">법률 검토·책임자 서명:</div>
-      <div id="k-glow"></div>
-      <div id="k-line"></div>
     </div>
-    <div id="k-c1" class="col"><span class="w" style="display:inline-block">그</span> <span class="w" style="display:inline-block">자리엔</span> <span class="w" style="display:inline-block">언제나</span></div>
-    <div id="k-c2" class="col cap">법을 아는 사람이<br>있었습니다.</div>
+    <svg id="k-svg" viewBox="0 0 1080 1920" data-layout-ignore>
+      <path id="k-glow" d="M0 962 L1080 962" stroke="#e0c27e" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.4" style="filter:blur(8px)"/>
+      <path id="k-line" d="M0 962 L1080 962" stroke="#fff3dc" stroke-width="5" fill="none"/>
+    </svg>
+    <div id="k-dim" class="full" data-layout-ignore></div>
+    <div id="k-c1" class="col"><span class="w">그</span> <span class="w">자리엔</span> <span class="w">언제나</span></div>
+    <div id="k-c2" class="col cap"><span class="w">법을</span> <span class="w">아는</span> <span class="w">사람이</span><br><span class="w">있었습니다.</span></div>
   </div>
   <script>
-    const tl = gsap.timeline({ paused: true });
+  (function () {
 
-    const F0 = 420;
-    const F = (n) => (n - F0) / 30;
-    function IN(sel, t, from, dur, ease) {
-      const f = Object.assign({ opacity: 0, filter: "blur(10px)" }, from || {});
-      const to = { opacity: 1, filter: "blur(0px)", duration: dur || 0.2, ease: ease || "power3.out" };
-      for (const k in f) if (!(k in to)) to[k] = k.startsWith("scale") ? 1 : 0;
-      tl.fromTo(sel, f, to, t);
+    const tl = anime.createTimeline({ autoplay: false, defaults: { ease: "outExpo" } });
+    const R = anime.createSeededRandom(1104);
+    const ms = (s) => Math.round(s * 1000);
+    const FR = 1 / 30;
+    // A: tween (props may be [from, to]); S: instant set; both at absolute video seconds
+    function A(t, sel, props, dur, ease, extra) {
+      tl.add(sel, Object.assign({ duration: Math.max(1, ms(dur == null ? 0.3 : dur)), ease: ease || "outExpo" }, props, extra || {}), ms(t));
     }
-    function OUT(sel, t, to, dur) {
-      tl.to(sel, Object.assign({ opacity: 0, filter: "blur(8px)", duration: dur || 0.14, ease: "power2.in" }, to || {}), t);
+    function S(t, sel, props) { tl.set(sel, props, ms(t)); }
+    // camera: point (px,py) lands at screen (cx,cy) at scale s (elements with class .cam use transform-origin 0 0)
+    function camv(px, py, s, cx, cy) { return { translateX: (cx == null ? 490 : cx) - s * px, translateY: (cy == null ? 960 : cy) - s * py, scale: s }; }
+    function CAM(t, sel, px, py, s, dur, ease, cx, cy) {
+      const v = camv(px, py, s, cx, cy);
+      if (!dur) S(t, sel, v); else A(t, sel, v, dur, ease || "inOutExpo");
     }
-    // 커서 깜박임: 8프레임 간격 on/off (시간의 함수)
-    function BLINK(sel, t0, t1) {
-      let on = true;
-      for (let t = t0; t < t1 - 1e-6; t += 8 / 30) { tl.set(sel, { opacity: on ? 1 : 0 }, t); on = !on; }
+    // seeded camera shake on a wrapper (frames x amplitude px), returns to 0
+    function SHAKE(t, sel, frames, amp) {
+      for (let i = 0; i < frames; i++) {
+        const a = amp * (1 - i / frames);
+        S(t + i * FR, sel, { translateX: R(-a, a, 1), translateY: R(-a, a, 1), rotate: R(-a, a, 1) * 0.04 });
+      }
+      S(t + frames * FR, sel, { translateX: 0, translateY: 0, rotate: 0 });
     }
-    // 1프레임 글리치: 카메라 가로 밀림 + RGB 슬라이스
-    function GLITCH(cam, gl, t, dx) {
-      tl.set(cam, { x: dx }, t);
-      tl.set(gl, { opacity: 1 }, t);
-      tl.set(cam, { x: 0 }, t + 1 / 30);
-      tl.set(gl, { opacity: 0 }, t + 1 / 30);
+    // scale snap on a punch wrapper: hard jump to s, settles back on a long tail
+    function PUNCH(t, sel, s, dur) { A(t, sel, { scale: [s, 1] }, dur || 0.35, "outExpo"); }
+    // 1-frame flash
+    function FLASH(t, sel, o) { S(t, sel, { opacity: o == null ? 1 : o }); S(t + FR, sel, { opacity: 0 }); }
+    function GLITCH(t, cam, gl, dx) {
+      S(t, cam, { translateX: dx }); S(t, gl, { opacity: 1 });
+      S(t + FR, cam, { translateX: 0 }); S(t + FR, gl, { opacity: 0 });
     }
+    // cursor blink: 8-frame on/off
+    function BLINK(sel, t0, t1) { let on = true; for (let t = t0; t < t1 - 1e-6; t += 8 * FR) { S(t, sel, { opacity: on ? 1 : 0 }); on = !on; } }
+    // word-level kinetic type: each word snaps in on its own time (scale + blur, no slide)
+    function WORD(t, sel, s) {
+      A(t, sel, { opacity: [0, 1], scale: [s || 1.4, 1], filter: ["blur(10px)", "blur(0px)"] }, 0.22, "outExpo");
+    }
+    function WORDS(t, sel, gap) {
+      A(t, sel, { opacity: [0, 1], scale: [1.25, 1], filter: ["blur(10px)", "blur(0px)"] }, 0.2, "outExpo", { delay: anime.stagger(ms(gap || 0.08)) });
+    }
+    function OUT(t, sel, dur, extra) { A(t, sel, Object.assign({ opacity: 0, filter: "blur(8px)" }, extra || {}), dur || 0.14, "inQuad"); }
 
 
-    // S1 f420–f464: 발광하는 밑줄이 수평으로 늘어나 책상 모서리 라인으로 (매치컷)
-    tl.fromTo("#k-c1 .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.14, ease: "power3.out", stagger: 0.067 }, 0.05);
-    tl.fromTo("#k-hlb", { opacity: 1 }, { opacity: 0, filter: "blur(8px)", duration: 0.3, ease: "power2.in" }, 0.1);
-    tl.fromTo("#k-line", { scaleX: 1 }, { scaleX: 1.62, duration: 1.0, ease: "power2.inOut" }, 0.3);
-    tl.fromTo("#k-line", { backgroundColor: "#fbf9f4" }, { backgroundColor: "#ffdcae", duration: 1.0 }, 0.3);
-    tl.fromTo("#k-desk", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.inOut" }, F(458));
-    tl.to(["#k-line", "#k-glow"], { opacity: 0, duration: 0.25 }, F(464));
-    // S2 f465–f539: 스톡 대체 일러스트. 슬로 돌리 인, 랙 포커스(서류 → 펜)
-    tl.fromTo("#k-dolly", { scale: 1, transformOrigin: "490px 1150px" }, { scale: 1.09, duration: 4.0 - 1.4, ease: "none" }, 1.4);
-    tl.fromTo("#k-papers", { filter: "blur(0px)" }, { filter: "blur(5px)", duration: 1.3, ease: "power2.inOut" }, F(490));
-    tl.fromTo("#k-pen", { filter: "blur(5px)" }, { filter: "blur(0px)", duration: 1.3, ease: "power2.inOut" }, F(490));
-    tl.fromTo("#k-c1", { color: "#e9e3d6" }, { color: "#bdb5a6", duration: 0.4 }, F(465));
-    tl.fromTo("#k-c2", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, F(465));
+    const T = {"c0": 14.02, "s2": 15.349, "dip": 16.208, "b1": 16.649, "b2": 17.085, "b3": 17.52, "end": 17.961};
+    // S1: the signature underline (centre 140–840) stretches to the full frame width = the desk edge
+    const dl = anime.svg.createDrawable("#k-line"), dg = anime.svg.createDrawable("#k-glow");
+    S(T.c0, [dl, dg], { draw: "0.13 0.78" });
+    A(T.c0 + 0.1, [dl, dg], { draw: ["0.13 0.78", "0 1"] }, T.s2 - T.c0 - 0.1, "inOutQuart");
+    WORDS(T.c0, "#k-c1 .w", 0.1);
+    // match cut on the beat: desk fades up under the line, line becomes the desk edge
+    A(T.s2, "#k-desk", { opacity: [0.15, 1] }, 0.12, "outQuad");
+    A(T.s2, "#k-svg", { opacity: [1, 0] }, 0.2, "outQuad");
+    CAM(T.c0, "#k-dolly", 490, 962, 1, 0, null, 490, 962);
+    A(T.s2, "#k-dolly", camv(490, 1150, 1.1, 490, 1150), T.end - T.s2, "linear");
+    A(T.s2, "#k-c1 .w", { opacity: 0.55 }, 0.3, "outQuad");
+    WORDS(T.s2, "#k-c2 .w", 0.1);
+    // rack focus papers -> pen
+    A(T.s2 + 0.3, "#k-papers", { filter: ["blur(0px)", "blur(6px)"] }, 1.3, "inOutQuad");
+    A(T.s2 + 0.3, "#k-pen", { filter: ["blur(5px)", "blur(0px)"] }, 1.3, "inOutQuad");
+    // build: the track drops to a breath, then the camera steps in on every beat into the drop
+    A(T.dip, "#k-dim", { opacity: [0, 0.5, 0] }, T.b1 - T.dip, "inOutSine");
+    [T.b1, T.b2, T.b3].forEach((t, i) => { PUNCH(t, "#k-shake", 1.03 + i * 0.02, 0.4); SHAKE(t, "#k-shake", 2, 4 + i * 3); });
 
-    window.__timelines["desk"] = tl;
+    window.__hfAnime = window.__hfAnime || [];
+    window.__hfAnime.push(tl);
+  })();
   </script>
 </template>

@@ -28,6 +28,7 @@
       color: var(--ink);
     }
     .abs { position: absolute; }
+    .cam { transform-origin: 0 0; }
     .full { position: absolute; inset: 0; }
     /* 키 텍스트 컬럼: 좌 60 ~ 우 920 (우측 160px 아이콘 레일 회피), 중심 x=490 */
     .col { position: absolute; left: 60px; width: 860px; text-align: center; }
@@ -38,7 +39,7 @@
     /* 가상 문서 도우미 UI */
     .ui-head { position: absolute; left: 60px; top: 232px; height: 56px; display: flex; align-items: center; gap: 16px; }
     .ui-head svg { width: 56px; height: 56px; }
-    .ui-head b { font-size: 32px; font-weight: 800; color: var(--ui-ink); letter-spacing: -0.03em; }
+    .ui-head b { font-size: 32px; font-weight: 800; color: #f4f1ea; letter-spacing: -0.03em; }
     .ui-strip { position: absolute; left: 60px; top: 304px; width: 860px; height: 84px; border-radius: 22px; background: #ffffff; border: 2px solid #d8d3c7; display: flex; align-items: center; padding: 0 22px 0 28px; gap: 16px; box-shadow: 0 6px 18px rgba(34, 38, 43, 0.06); }
     .ui-strip .q { flex: 1; font-size: 32px; font-weight: 600; color: var(--ui-ink); }
     .ui-strip .sent { width: 48px; height: 48px; border-radius: 14px; background: var(--sage); display: flex; align-items: center; justify-content: center; }
@@ -61,87 +62,119 @@
     .doc .sig .cur { position: absolute; left: 16px; top: 74px; width: 3px; height: 28px; background: var(--ui-ink); }
     /* 연출 / 고지 공통 */
     .tag { position: absolute; padding: 4px 12px; border-radius: 8px; background: rgba(10, 10, 10, 0.55); color: #ffffff; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
-    .glitch { position: absolute; left: 0; width: 1080px; mix-blend-mode: multiply; }
+    .glitch { position: absolute; left: 0; width: 1080px; mix-blend-mode: screen; }
 
 
-    #f-bg { background: var(--noise), var(--pat-dots), var(--ui-bg); }
-    #f-bar { position: absolute; left: 60px; top: 398px; width: 860px; height: 8px; border-radius: 4px; background: #e2ddd2; overflow: hidden; }
-    #f-bar i { position: absolute; inset: 0; background: var(--sage); transform-origin: 0 50%; }
-    #f-flash { background: #ffffff; }
+    #f-bg { background: radial-gradient(70% 45% at 50% 55%, #1d2733 0%, #0e1218 60%, #08090c 100%); }
+    #f-bar { position: absolute; left: 60px; top: 398px; width: 860px; height: 8px; border-radius: 4px; background: #2a3038; overflow: hidden; }
+    #f-bar i { position: absolute; inset: 0; background: var(--sage); transform-origin: 0 50%; transform: scaleX(0); }
+    #f-cam .ui-head b { color: #f4f1ea; }
 
   </style>
   <div id="root" data-composition-id="fill" data-width="1080" data-height="1920">
     <div id="f-bg" class="full" data-layout-ignore></div>
-    <div id="f-cam" class="full" data-layout-allow-overlap>
-      <div class="ui-head"><svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="16" fill="#22262B"/><path d="M21 14h15l10 10v25a3 3 0 0 1-3 3H21a3 3 0 0 1-3-3V17a3 3 0 0 1 3-3z" fill="#F4F1EA"/><path d="M36 14v10h10z" fill="#6F8F7A"/><path d="M24 32h16M24 38h16M24 44h10" stroke="#22262B" stroke-width="2.6" stroke-linecap="round"/></svg><b>문서 도우미</b></div>
-      <div class="ui-strip"><span class="q">법률 검토 문서 3건 작성</span><span id="f-pct" style="font-size:28px;font-weight:800;color:#6F8F7A;letter-spacing:-0.02em">생성 중 0%</span></div>
-      <div id="f-bar"><i id="f-bari"></i></div>
-      <div id="f-d0" class="doc" style="left:60px;top:430px;width:273px;height:1030px">
+    <div id="f-shake" class="full" data-layout-allow-overlap data-layout-allow-overflow>
+      <div id="f-cam" class="full cam" data-layout-allow-overlap data-layout-allow-overflow>
+        <div class="ui-head"><span class="ui-icon"><svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="16" fill="#22262B"/><path d="M21 14h15l10 10v25a3 3 0 0 1-3 3H21a3 3 0 0 1-3-3V17a3 3 0 0 1 3-3z" fill="#F4F1EA"/><path d="M36 14v10h10z" fill="#6F8F7A"/><path d="M24 32h16M24 38h16M24 44h10" stroke="#22262B" stroke-width="2.6" stroke-linecap="round"/></svg></span><b>문서 도우미</b></div>
+      <div class="ui-strip"><span class="q">법률 검토 문서 3건 작성</span><span style="font-size:28px;font-weight:800;color:#6F8F7A;letter-spacing:-0.02em;white-space:nowrap">생성 중 <span id="f-pct">0</span>%</span></div>
+        <div id="f-bar"><i id="f-bari"></i></div>
+        <div id="f-d0" class="doc" style="left:60px;top:430px;width:273px;height:1030px">
         <div id="f-t0" class="dt">계약 검토의견서</div><div id="f-k0" class="ok" style="opacity:0">✓</div>
         <div class="wm">[가상 문서 · 예시]</div>
         <div class="hd">1. 검토 의견</div>
-        <div id="f-b0" class="body" style="height:724px"><div class="bar dk" style="top:0px;width:100%"></div><div class="bar" style="top:26px;width:94%"></div><div class="bar" style="top:52px;width:62%"></div><div class="bar" style="top:78px;width:82%"></div><div class="bar" style="top:104px;width:98%"></div><div class="bar" style="top:130px;width:99%"></div><div class="bar dk" style="top:156px;width:100%"></div><div class="bar" style="top:182px;width:68%"></div><div class="bar" style="top:208px;width:65%"></div><div class="bar" style="top:234px;width:84%"></div><div class="bar" style="top:260px;width:60%"></div><div class="mid" style="top:280px">당사자: 갑 · 을</div><div class="bar dk" style="top:312px;width:100%"></div><div class="bar" style="top:338px;width:99%"></div><div class="bar" style="top:364px;width:70%"></div><div class="bar" style="top:390px;width:83%"></div><div class="bar" style="top:416px;width:91%"></div><div class="bar" style="top:442px;width:97%"></div><div class="bar dk" style="top:468px;width:100%"></div><div class="bar" style="top:494px;width:87%"></div><div class="bar" style="top:520px;width:70%"></div><div class="bar" style="top:546px;width:96%"></div><div class="bar" style="top:572px;width:69%"></div><div class="bar" style="top:598px;width:93%"></div><div class="last" style="left:0;right:0;top:644px"><span>갑의 해지 통지는 요건을 갖추었습니다.</span></div></div>
+        <div id="f-b0" class="body" style="height:724px"><div class="bar dk" style="top:0px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:26px;width:94%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:52px;width:62%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:78px;width:82%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:104px;width:98%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:130px;width:99%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar dk" style="top:156px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:182px;width:68%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:208px;width:65%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:234px;width:84%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:260px;width:60%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="mid" style="top:280px">당사자: 갑 · 을</div><div class="bar dk" style="top:312px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:338px;width:99%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:364px;width:70%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:390px;width:83%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:416px;width:91%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:442px;width:97%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar dk" style="top:468px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:494px;width:87%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:520px;width:70%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:546px;width:96%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:572px;width:69%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:598px;width:93%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="last" style="left:0;right:0;top:644px"><span>갑의 해지 통지는 요건을 갖추었습니다.</span></div></div>
         <div id="f-s0" class="sig" style=""><div class="lb">법률 검토·<br>책임자 서명:</div><div class="ul"></div><div id="f-c0" class="cur" style="opacity:0"></div></div>
       </div><div id="f-d1" class="doc" style="left:353px;top:430px;width:273px;height:1030px">
         <div id="f-t1" class="dt">소장 초안(가상)</div><div id="f-k1" class="ok" style="opacity:0">✓</div>
         <div class="wm">[가상 문서 · 예시]</div>
         <div class="hd">청구 취지</div>
-        <div id="f-b1" class="body" style="height:724px"><div class="bar dk" style="top:0px;width:100%"></div><div class="bar" style="top:26px;width:84%"></div><div class="bar" style="top:52px;width:94%"></div><div class="bar" style="top:78px;width:86%"></div><div class="bar" style="top:104px;width:95%"></div><div class="bar" style="top:130px;width:78%"></div><div class="bar dk" style="top:156px;width:100%"></div><div class="bar" style="top:182px;width:70%"></div><div class="bar" style="top:208px;width:92%"></div><div class="bar" style="top:234px;width:100%"></div><div class="bar" style="top:260px;width:90%"></div><div class="mid" style="top:280px">원고 갑 · 피고 을</div><div class="bar dk" style="top:312px;width:100%"></div><div class="bar" style="top:338px;width:61%"></div><div class="bar" style="top:364px;width:98%"></div><div class="bar" style="top:390px;width:63%"></div><div class="bar" style="top:416px;width:64%"></div><div class="bar" style="top:442px;width:98%"></div><div class="bar dk" style="top:468px;width:100%"></div><div class="bar" style="top:494px;width:62%"></div><div class="bar" style="top:520px;width:91%"></div><div class="bar" style="top:546px;width:92%"></div><div class="bar" style="top:572px;width:58%"></div><div class="bar" style="top:598px;width:59%"></div><div class="last" style="left:0;right:0;top:644px"><span>피고 을은 원고 갑에게 지급하라.</span></div></div>
+        <div id="f-b1" class="body" style="height:724px"><div class="bar dk" style="top:0px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:26px;width:84%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:52px;width:94%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:78px;width:86%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:104px;width:95%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:130px;width:78%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar dk" style="top:156px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:182px;width:70%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:208px;width:92%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:234px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:260px;width:90%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="mid" style="top:280px">원고 갑 · 피고 을</div><div class="bar dk" style="top:312px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:338px;width:61%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:364px;width:98%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:390px;width:63%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:416px;width:64%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:442px;width:98%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar dk" style="top:468px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:494px;width:62%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:520px;width:91%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:546px;width:92%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:572px;width:58%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:598px;width:59%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="last" style="left:0;right:0;top:644px"><span>피고 을은 원고 갑에게 지급하라.</span></div></div>
         <div id="f-s1" class="sig" style=""><div class="lb">법률 검토·<br>책임자 서명:</div><div class="ul"></div><div id="f-c1" class="cur" style="opacity:0"></div></div>
       </div><div id="f-d2" class="doc" style="left:646px;top:430px;width:273px;height:1030px">
         <div id="f-t2" class="dt">법률 검토 보고서</div><div id="f-k2" class="ok" style="opacity:0">✓</div>
         <div class="wm">[가상 문서 · 예시]</div>
         <div class="hd">검토 결론</div>
-        <div id="f-b2" class="body" style="height:724px"><div class="bar dk" style="top:0px;width:100%"></div><div class="bar" style="top:26px;width:87%"></div><div class="bar" style="top:52px;width:80%"></div><div class="bar" style="top:78px;width:94%"></div><div class="bar" style="top:104px;width:92%"></div><div class="bar" style="top:130px;width:62%"></div><div class="bar dk" style="top:156px;width:100%"></div><div class="bar" style="top:182px;width:85%"></div><div class="bar" style="top:208px;width:98%"></div><div class="bar" style="top:234px;width:96%"></div><div class="bar" style="top:260px;width:65%"></div><div class="mid" style="top:280px">의뢰인: 갑</div><div class="bar dk" style="top:312px;width:100%"></div><div class="bar" style="top:338px;width:100%"></div><div class="bar" style="top:364px;width:72%"></div><div class="bar" style="top:390px;width:90%"></div><div class="bar" style="top:416px;width:96%"></div><div class="bar" style="top:442px;width:64%"></div><div class="bar dk" style="top:468px;width:100%"></div><div class="bar" style="top:494px;width:76%"></div><div class="bar" style="top:520px;width:94%"></div><div class="bar" style="top:546px;width:91%"></div><div class="bar" style="top:572px;width:92%"></div><div class="bar" style="top:598px;width:85%"></div><div class="last" style="left:0;right:0;top:644px"><span>현 단계에서 분쟁 위험은 낮습니다.</span></div></div>
+        <div id="f-b2" class="body" style="height:724px"><div class="bar dk" style="top:0px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:26px;width:87%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:52px;width:80%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:78px;width:94%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:104px;width:92%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:130px;width:62%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar dk" style="top:156px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:182px;width:85%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:208px;width:98%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:234px;width:96%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:260px;width:65%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="mid" style="top:280px">의뢰인: 갑</div><div class="bar dk" style="top:312px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:338px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:364px;width:72%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:390px;width:90%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:416px;width:96%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:442px;width:64%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar dk" style="top:468px;width:100%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:494px;width:76%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:520px;width:94%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:546px;width:91%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:572px;width:92%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="bar" style="top:598px;width:85%;transform-origin:0 50%;transform:scaleX(0);"></div><div class="last" style="left:0;right:0;top:644px"><span>현 단계에서 분쟁 위험은 낮습니다.</span></div></div>
         <div id="f-s2" class="sig" style=""><div class="lb">법률 검토·<br>책임자 서명:</div><div class="ul"></div><div id="f-c2" class="cur" style="opacity:0"></div></div>
       </div>
+      </div>
     </div>
-    <div id="f-flash" class="full" data-layout-ignore></div>
+    <div id="f-flash" class="full" style="background:#ffffff;opacity:0" data-layout-ignore></div>
   </div>
   <script>
-    const tl = gsap.timeline({ paused: true });
+  (function () {
 
-    const F0 = 90;
-    const F = (n) => (n - F0) / 30;
-    function IN(sel, t, from, dur, ease) {
-      const f = Object.assign({ opacity: 0, filter: "blur(10px)" }, from || {});
-      const to = { opacity: 1, filter: "blur(0px)", duration: dur || 0.2, ease: ease || "power3.out" };
-      for (const k in f) if (!(k in to)) to[k] = k.startsWith("scale") ? 1 : 0;
-      tl.fromTo(sel, f, to, t);
+    const tl = anime.createTimeline({ autoplay: false, defaults: { ease: "outExpo" } });
+    const R = anime.createSeededRandom(1101);
+    const ms = (s) => Math.round(s * 1000);
+    const FR = 1 / 30;
+    // A: tween (props may be [from, to]); S: instant set; both at absolute video seconds
+    function A(t, sel, props, dur, ease, extra) {
+      tl.add(sel, Object.assign({ duration: Math.max(1, ms(dur == null ? 0.3 : dur)), ease: ease || "outExpo" }, props, extra || {}), ms(t));
     }
-    function OUT(sel, t, to, dur) {
-      tl.to(sel, Object.assign({ opacity: 0, filter: "blur(8px)", duration: dur || 0.14, ease: "power2.in" }, to || {}), t);
+    function S(t, sel, props) { tl.set(sel, props, ms(t)); }
+    // camera: point (px,py) lands at screen (cx,cy) at scale s (elements with class .cam use transform-origin 0 0)
+    function camv(px, py, s, cx, cy) { return { translateX: (cx == null ? 490 : cx) - s * px, translateY: (cy == null ? 960 : cy) - s * py, scale: s }; }
+    function CAM(t, sel, px, py, s, dur, ease, cx, cy) {
+      const v = camv(px, py, s, cx, cy);
+      if (!dur) S(t, sel, v); else A(t, sel, v, dur, ease || "inOutExpo");
     }
-    // 커서 깜박임: 8프레임 간격 on/off (시간의 함수)
-    function BLINK(sel, t0, t1) {
-      let on = true;
-      for (let t = t0; t < t1 - 1e-6; t += 8 / 30) { tl.set(sel, { opacity: on ? 1 : 0 }, t); on = !on; }
+    // seeded camera shake on a wrapper (frames x amplitude px), returns to 0
+    function SHAKE(t, sel, frames, amp) {
+      for (let i = 0; i < frames; i++) {
+        const a = amp * (1 - i / frames);
+        S(t + i * FR, sel, { translateX: R(-a, a, 1), translateY: R(-a, a, 1), rotate: R(-a, a, 1) * 0.04 });
+      }
+      S(t + frames * FR, sel, { translateX: 0, translateY: 0, rotate: 0 });
     }
-    // 1프레임 글리치: 카메라 가로 밀림 + RGB 슬라이스
-    function GLITCH(cam, gl, t, dx) {
-      tl.set(cam, { x: dx }, t);
-      tl.set(gl, { opacity: 1 }, t);
-      tl.set(cam, { x: 0 }, t + 1 / 30);
-      tl.set(gl, { opacity: 0 }, t + 1 / 30);
+    // scale snap on a punch wrapper: hard jump to s, settles back on a long tail
+    function PUNCH(t, sel, s, dur) { A(t, sel, { scale: [s, 1] }, dur || 0.35, "outExpo"); }
+    // 1-frame flash
+    function FLASH(t, sel, o) { S(t, sel, { opacity: o == null ? 1 : o }); S(t + FR, sel, { opacity: 0 }); }
+    function GLITCH(t, cam, gl, dx) {
+      S(t, cam, { translateX: dx }); S(t, gl, { opacity: 1 });
+      S(t + FR, cam, { translateX: 0 }); S(t + FR, gl, { opacity: 0 });
     }
+    // cursor blink: 8-frame on/off
+    function BLINK(sel, t0, t1) { let on = true; for (let t = t0; t < t1 - 1e-6; t += 8 * FR) { S(t, sel, { opacity: on ? 1 : 0 }); on = !on; } }
+    // word-level kinetic type: each word snaps in on its own time (scale + blur, no slide)
+    function WORD(t, sel, s) {
+      A(t, sel, { opacity: [0, 1], scale: [s || 1.4, 1], filter: ["blur(10px)", "blur(0px)"] }, 0.22, "outExpo");
+    }
+    function WORDS(t, sel, gap) {
+      A(t, sel, { opacity: [0, 1], scale: [1.25, 1], filter: ["blur(10px)", "blur(0px)"] }, 0.2, "outExpo", { delay: anime.stagger(ms(gap || 0.08)) });
+    }
+    function OUT(t, sel, dur, extra) { A(t, sel, Object.assign({ opacity: 0, filter: "blur(8px)" }, extra || {}), dur || 0.14, "inQuad"); }
 
 
-    tl.fromTo("#f-flash", { opacity: 1 }, { opacity: 0, duration: 0.2, ease: "power2.out" }, 0);
-    // S1 f90–f125: 본문 0→50%, 타이핑 가속 / S2 f126–f179: 50→99%
-    [0, 1, 2].forEach((i) => {
-      const o = i * 0.06;
-      tl.fromTo("#f-b" + i, { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 50% 0%)", duration: F(125) - o, ease: "power2.in" }, o);
-      tl.to("#f-b" + i, { clipPath: "inset(0% 0% 0% 0%)", duration: F(176) - F(126) - o, ease: "power1.inOut" }, F(126) + o);
+    const T = {"c0": 3.065, "c1": 3.495, "c2": 3.948, "wide": 4.377, "k0": 4.818, "k1": 5.26, "k2": 5.701, "end": 6.13};
+    FLASH(T.c0, "#f-flash");
+    // micro-cuts, one beat each: column 1 / 2 / 3 close (title + filling body), then the wide
+    const CX = [196.5, 489.5, 782.5];
+    [T.c0, T.c1, T.c2].forEach((t, i) => {
+      CAM(t, "#f-cam", CX[i], 720, 2.15, 0, null, 490, 900);
+      A(t, "#f-cam", { translateY: "-=120" }, T.c1 - T.c0, "linear");
+      SHAKE(t, "#f-shake", 3, 8);
+      A(t, "#f-b" + i + " .bar", { scaleX: [0, 1] }, 0.18, "outExpo", { delay: anime.stagger(22) });
     });
-    const pct = document.querySelector("#f-pct");
-    const P = { v: 0 };
-    tl.fromTo(P, { v: 0 }, { v: 50, duration: F(125), ease: "power2.in", onUpdate: () => (pct.textContent = "생성 중 " + Math.round(P.v) + "%") }, 0);
-    tl.to(P, { v: 99, duration: F(176) - F(126), ease: "power1.inOut", onUpdate: () => (pct.textContent = "생성 중 " + Math.round(P.v) + "%") }, F(126));
-    tl.fromTo("#f-bari", { scaleX: 0 }, { scaleX: 0.5, duration: F(125), ease: "power2.in" }, 0);
-    tl.to("#f-bari", { scaleX: 0.99, duration: F(176) - F(126), ease: "power1.inOut" }, F(126));
-    // ✓ 순차 팝 (f165 / f171 / f177)
-    [165, 171, 177].forEach((n, i) => tl.fromTo("#f-k" + i, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.16, ease: "back.out(2)" }, F(n)));
+    CAM(T.wide, "#f-cam", 490, 960, 1.18, 0, null, 490, 900);
+    A(T.wide, "#f-cam", camv(490, 960, 1, 490, 960), T.end - T.wide, "outQuart");
+    SHAKE(T.wide, "#f-shake", 3, 10);
+    // progress count-up (innerHTML tween) and bar
+    A(T.c0, "#f-pct", { innerHTML: [0, 50] }, T.wide - T.c0, "inQuad", { modifier: (v) => Math.round(v) });
+    A(T.wide, "#f-pct", { innerHTML: [50, 99] }, T.k2 - T.wide, "outQuad", { modifier: (v) => Math.round(v) });
+    A(T.c0, "#f-bari", { scaleX: [0, 0.5] }, T.wide - T.c0, "inQuad");
+    A(T.wide, "#f-bari", { scaleX: [0.5, 0.99] }, T.k2 - T.wide, "outQuad");
+    // checks spring-pop on the beat
+    [T.k0, T.k1, T.k2].forEach((t, i) => {
+      A(t, "#f-k" + i, { opacity: [0, 1], scale: [0.2, 1] }, 0.5, anime.spring({ bounce: 0.6, duration: 380 }));
+      PUNCH(t, "#f-shake", 1.025, 0.25);
+    });
+    // grey signature boxes stay empty: pulse them on the last beat
+    A(T.k2, ["#f-s0", "#f-s1", "#f-s2"], { backgroundColor: ["#eeece6", "#d9d6cf"] }, 0.3, "outQuad");
 
-    window.__timelines["fill"] = tl;
+    window.__hfAnime = window.__hfAnime || [];
+    window.__hfAnime.push(tl);
+  })();
   </script>
 </template>

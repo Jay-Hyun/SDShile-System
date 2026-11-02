@@ -1,0 +1,212 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
+      font-weight: 45 930;
+    }
+    #root {
+      /* 브랜드 토큰 (policecyber 릴스와 동일) */
+      --paper: #fbf9f4;
+      --ink: #161616;
+      --navy: #0b1a33;
+      --gold: #b8955a;
+      --gold-text: #7d6233;
+      --gold-light: #e0c27e;
+      /* 가상 "문서 도우미" UI 토큰 (스펙 1장) */
+      --ui-bg: #f4f1ea;
+      --ui-ink: #22262b;
+      --sage: #6f8f7a;
+      --noise: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.07 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      --pat-dots: radial-gradient(circle, rgba(34, 38, 43, 0.07) 1.6px, rgba(34, 38, 43, 0) 1.8px) 0 0 / 34px 34px;
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: "PretendardGOV", sans-serif;
+      letter-spacing: -0.035em;
+      word-break: keep-all;
+      color: var(--ink);
+    }
+    .abs { position: absolute; }
+    .cam { transform-origin: 0 0; }
+    .full { position: absolute; inset: 0; }
+    /* 키 텍스트 컬럼: 좌 60 ~ 우 920 (우측 160px 아이콘 레일 회피), 중심 x=490 */
+    .col { position: absolute; left: 60px; width: 860px; text-align: center; }
+    .cap { font-weight: 900; line-height: 1.18; letter-spacing: -0.045em; }
+    /* 문서 위 자막 판: 종이색 플레이트로 바쁜 배경과 분리 */
+    .plate { display: inline-block; padding: 14px 40px 22px; border-radius: 28px; background: rgba(251, 249, 244, 0.97); box-shadow: 0 0 0 10px rgba(251, 249, 244, 0.45), 0 22px 60px rgba(34, 38, 43, 0.28); }
+    .ch { display: inline-block; white-space: pre; }
+    /* 가상 문서 도우미 UI */
+    .ui-head { position: absolute; left: 60px; top: 232px; height: 56px; display: flex; align-items: center; gap: 16px; }
+    .ui-head svg { width: 56px; height: 56px; }
+    .ui-head b { font-size: 32px; font-weight: 800; color: #f4f1ea; letter-spacing: -0.03em; }
+    .ui-strip { position: absolute; left: 60px; top: 304px; width: 860px; height: 84px; border-radius: 22px; background: #ffffff; border: 2px solid #d8d3c7; display: flex; align-items: center; padding: 0 22px 0 28px; gap: 16px; box-shadow: 0 6px 18px rgba(34, 38, 43, 0.06); }
+    .ui-strip .q { flex: 1; font-size: 32px; font-weight: 600; color: var(--ui-ink); }
+    .ui-strip .sent { width: 48px; height: 48px; border-radius: 14px; background: var(--sage); display: flex; align-items: center; justify-content: center; }
+    .ui-strip .sent svg { width: 28px; height: 28px; }
+    /* 가상 문서 */
+    .doc { position: absolute; background: #ffffff; border: 2px solid #ddd8cc; border-radius: 16px; box-shadow: 0 14px 34px rgba(34, 38, 43, 0.1); overflow: hidden; }
+    .doc .dt { position: absolute; left: 18px; top: 16px; font-size: 25px; font-weight: 800; color: var(--ui-ink); letter-spacing: -0.04em; white-space: nowrap; }
+    .doc .ok { position: absolute; right: 12px; top: 13px; width: 34px; height: 34px; border-radius: 50%; background: var(--sage); color: #fff; font-size: 22px; font-weight: 900; display: flex; align-items: center; justify-content: center; letter-spacing: 0; }
+    .doc .wm { position: absolute; left: 16px; top: 64px; padding: 3px 10px; border-radius: 8px; background: #e7eee9; color: #47604f; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+    .doc .hd { position: absolute; left: 18px; top: 112px; font-size: 24px; font-weight: 800; color: var(--ui-ink); white-space: nowrap; }
+    .doc .body { position: absolute; left: 18px; right: 18px; top: 156px; height: 640px; }
+    .doc .bar { position: absolute; left: 0; height: 11px; border-radius: 6px; background: #d3d6d9; }
+    .doc .bar.dk { background: #b9bec3; }
+    .doc .mid { position: absolute; left: 0; font-size: 21px; font-weight: 700; color: #4f555b; white-space: nowrap; }
+    .doc .last { position: absolute; left: 18px; right: 18px; top: 800px; height: 80px; }
+    .doc .last span { position: absolute; left: 0; top: 0; font-size: 21px; line-height: 1.3; font-weight: 600; color: #4f555b; }
+    .doc .sig { position: absolute; left: 10px; right: 10px; top: 888px; height: 132px; border-radius: 12px; background: #eeece6; }
+    .doc .sig .lb { position: absolute; left: 14px; top: 12px; font-size: 26px; line-height: 1.22; font-weight: 800; color: #6b7076; }
+    .doc .sig .ul { position: absolute; left: 14px; right: 14px; top: 104px; height: 3px; background: #8d9196; }
+    .doc .sig .cur { position: absolute; left: 16px; top: 74px; width: 3px; height: 28px; background: var(--ui-ink); }
+    /* 연출 / 고지 공통 */
+    .tag { position: absolute; padding: 4px 12px; border-radius: 8px; background: rgba(10, 10, 10, 0.55); color: #ffffff; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+    .glitch { position: absolute; left: 0; width: 1080px; mix-blend-mode: screen; }
+
+
+    #b-bg { background: radial-gradient(70% 45% at 50% 60%, #1d2733 0%, #0e1218 60%, #08090c 100%); }
+    #b-cam .ui-head b { color: #f4f1ea; }
+    #b-cap { top: 250px; font-size: 118px; line-height: 1.08; color: #ffffff; text-shadow: 0 10px 40px rgba(0, 0, 0, 0.7); }
+    #b-cap .w { display: inline-block; opacity: 0; }
+    #b-cap .hot { color: var(--gold-light); }
+    #b-btn { position: absolute; left: 330px; top: 1500px; width: 320px; height: 108px; border-radius: 26px; background: #f4f1ea; color: #22262b; font-size: 46px; font-weight: 900; display: flex; align-items: center; justify-content: center; letter-spacing: -0.02em; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5); opacity: 0; }
+    #b-ptr { position: absolute; left: 520px; top: 1555px; width: 96px; height: 116px; opacity: 0; }
+    #b-toast { position: absolute; left: 90px; top: 700px; width: 800px; height: 120px; border-radius: 26px; background: #d93a2f; color: #fff; display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 42px; font-weight: 900; letter-spacing: -0.03em; box-shadow: 0 24px 60px rgba(217, 58, 47, 0.45); opacity: 0; white-space: nowrap; }
+    #b-toast i { width: 50px; height: 50px; border-radius: 50%; background: #fff; color: #d93a2f; font-style: normal; font-size: 34px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+    #b-band { background: linear-gradient(180deg, rgba(8, 9, 12, 0.97) 0px, rgba(8, 9, 12, 0.93) 560px, rgba(8, 9, 12, 0) 780px); opacity: 0; }
+    #b-vig { background: radial-gradient(ellipse 60% 34% at 50% 52%, rgba(6, 7, 9, 0) 25%, rgba(6, 7, 9, 0.94) 100%); opacity: 0; }
+
+  </style>
+  <div id="root" data-composition-id="blank" data-width="1080" data-height="1920">
+    <div id="b-bg" class="full" data-layout-ignore></div>
+    <div id="b-shake" class="full" data-layout-allow-overlap data-layout-allow-overflow>
+      <div id="b-cam" class="full cam" data-layout-allow-overlap data-layout-allow-overflow>
+        <div class="ui-head"><span class="ui-icon"><svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="16" fill="#22262B"/><path d="M21 14h15l10 10v25a3 3 0 0 1-3 3H21a3 3 0 0 1-3-3V17a3 3 0 0 1 3-3z" fill="#F4F1EA"/><path d="M36 14v10h10z" fill="#6F8F7A"/><path d="M24 32h16M24 38h16M24 44h10" stroke="#22262B" stroke-width="2.6" stroke-linecap="round"/></svg></span><b>문서 도우미</b></div>
+      <div class="ui-strip"><span class="q">법률 검토 문서 3건 작성</span><div class="sent"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+        <div id="b-d0" class="doc" style="left:60px;top:430px;width:273px;height:1030px">
+        <div id="b-t0" class="dt">계약 검토의견서</div><div id="b-k0" class="ok" style="opacity:1">✓</div>
+        <div class="wm">[가상 문서 · 예시]</div>
+        <div class="hd">1. 검토 의견</div>
+        <div id="b-b0" class="body" style="height:724px"><div class="bar dk" style="top:0px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:26px;width:94%;transform-origin:0 50%;"></div><div class="bar" style="top:52px;width:62%;transform-origin:0 50%;"></div><div class="bar" style="top:78px;width:82%;transform-origin:0 50%;"></div><div class="bar" style="top:104px;width:98%;transform-origin:0 50%;"></div><div class="bar" style="top:130px;width:99%;transform-origin:0 50%;"></div><div class="bar dk" style="top:156px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:182px;width:68%;transform-origin:0 50%;"></div><div class="bar" style="top:208px;width:65%;transform-origin:0 50%;"></div><div class="bar" style="top:234px;width:84%;transform-origin:0 50%;"></div><div class="bar" style="top:260px;width:60%;transform-origin:0 50%;"></div><div class="mid" style="top:280px">당사자: 갑 · 을</div><div class="bar dk" style="top:312px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:338px;width:99%;transform-origin:0 50%;"></div><div class="bar" style="top:364px;width:70%;transform-origin:0 50%;"></div><div class="bar" style="top:390px;width:83%;transform-origin:0 50%;"></div><div class="bar" style="top:416px;width:91%;transform-origin:0 50%;"></div><div class="bar" style="top:442px;width:97%;transform-origin:0 50%;"></div><div class="bar dk" style="top:468px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:494px;width:87%;transform-origin:0 50%;"></div><div class="bar" style="top:520px;width:70%;transform-origin:0 50%;"></div><div class="bar" style="top:546px;width:96%;transform-origin:0 50%;"></div><div class="bar" style="top:572px;width:69%;transform-origin:0 50%;"></div><div class="bar" style="top:598px;width:93%;transform-origin:0 50%;"></div><div class="last" style="left:0;right:0;top:644px"><span id="b-l0-0" style="opacity:1">갑의 해지 통지는 요건을 갖추었습니다.</span><span id="b-l0-1" style="opacity:0">을의 지체 책임은 일부 제한됩니다.</span><span id="b-l0-2" style="opacity:0">위약금 조항은 감액될 여지가 있습니다.</span><span id="b-l0-3" style="opacity:0">제5조의 해석은 갑에게 유리합니다.</span><span id="b-l0-4" style="opacity:0">추가 자료 확인 후 보완을 권합니다.</span></div></div>
+        <div id="b-s0" class="sig" style=""><div class="lb">법률 검토·<br>책임자 서명:</div><div class="ul"></div><div id="b-c0" class="cur" style="opacity:0"></div></div>
+      </div><div id="b-d1" class="doc" style="left:353px;top:430px;width:273px;height:1030px">
+        <div id="b-t1" class="dt">소장 초안(가상)</div><div id="b-k1" class="ok" style="opacity:1">✓</div>
+        <div class="wm">[가상 문서 · 예시]</div>
+        <div class="hd">청구 취지</div>
+        <div id="b-b1" class="body" style="height:724px"><div class="bar dk" style="top:0px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:26px;width:84%;transform-origin:0 50%;"></div><div class="bar" style="top:52px;width:94%;transform-origin:0 50%;"></div><div class="bar" style="top:78px;width:86%;transform-origin:0 50%;"></div><div class="bar" style="top:104px;width:95%;transform-origin:0 50%;"></div><div class="bar" style="top:130px;width:78%;transform-origin:0 50%;"></div><div class="bar dk" style="top:156px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:182px;width:70%;transform-origin:0 50%;"></div><div class="bar" style="top:208px;width:92%;transform-origin:0 50%;"></div><div class="bar" style="top:234px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:260px;width:90%;transform-origin:0 50%;"></div><div class="mid" style="top:280px">원고 갑 · 피고 을</div><div class="bar dk" style="top:312px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:338px;width:61%;transform-origin:0 50%;"></div><div class="bar" style="top:364px;width:98%;transform-origin:0 50%;"></div><div class="bar" style="top:390px;width:63%;transform-origin:0 50%;"></div><div class="bar" style="top:416px;width:64%;transform-origin:0 50%;"></div><div class="bar" style="top:442px;width:98%;transform-origin:0 50%;"></div><div class="bar dk" style="top:468px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:494px;width:62%;transform-origin:0 50%;"></div><div class="bar" style="top:520px;width:91%;transform-origin:0 50%;"></div><div class="bar" style="top:546px;width:92%;transform-origin:0 50%;"></div><div class="bar" style="top:572px;width:58%;transform-origin:0 50%;"></div><div class="bar" style="top:598px;width:59%;transform-origin:0 50%;"></div><div class="last" style="left:0;right:0;top:644px"><span id="b-l1-0" style="opacity:1">피고 을은 원고 갑에게 지급하라.</span><span id="b-l1-1" style="opacity:0">소송비용은 피고 을이 부담한다.</span><span id="b-l1-2" style="opacity:0">피고 을은 계약금을 반환하라.</span><span id="b-l1-3" style="opacity:0">원고 갑의 나머지 청구를 유지한다.</span><span id="b-l1-4" style="opacity:0">제1항은 가집행할 수 있다.</span></div></div>
+        <div id="b-s1" class="sig" style=""><div class="lb">법률 검토·<br>책임자 서명:</div><div class="ul"></div><div id="b-c1" class="cur" style="opacity:0"></div></div>
+      </div><div id="b-d2" class="doc" style="left:646px;top:430px;width:273px;height:1030px">
+        <div id="b-t2" class="dt">법률 검토 보고서</div><div id="b-k2" class="ok" style="opacity:1">✓</div>
+        <div class="wm">[가상 문서 · 예시]</div>
+        <div class="hd">검토 결론</div>
+        <div id="b-b2" class="body" style="height:724px"><div class="bar dk" style="top:0px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:26px;width:87%;transform-origin:0 50%;"></div><div class="bar" style="top:52px;width:80%;transform-origin:0 50%;"></div><div class="bar" style="top:78px;width:94%;transform-origin:0 50%;"></div><div class="bar" style="top:104px;width:92%;transform-origin:0 50%;"></div><div class="bar" style="top:130px;width:62%;transform-origin:0 50%;"></div><div class="bar dk" style="top:156px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:182px;width:85%;transform-origin:0 50%;"></div><div class="bar" style="top:208px;width:98%;transform-origin:0 50%;"></div><div class="bar" style="top:234px;width:96%;transform-origin:0 50%;"></div><div class="bar" style="top:260px;width:65%;transform-origin:0 50%;"></div><div class="mid" style="top:280px">의뢰인: 갑</div><div class="bar dk" style="top:312px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:338px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:364px;width:72%;transform-origin:0 50%;"></div><div class="bar" style="top:390px;width:90%;transform-origin:0 50%;"></div><div class="bar" style="top:416px;width:96%;transform-origin:0 50%;"></div><div class="bar" style="top:442px;width:64%;transform-origin:0 50%;"></div><div class="bar dk" style="top:468px;width:100%;transform-origin:0 50%;"></div><div class="bar" style="top:494px;width:76%;transform-origin:0 50%;"></div><div class="bar" style="top:520px;width:94%;transform-origin:0 50%;"></div><div class="bar" style="top:546px;width:91%;transform-origin:0 50%;"></div><div class="bar" style="top:572px;width:92%;transform-origin:0 50%;"></div><div class="bar" style="top:598px;width:85%;transform-origin:0 50%;"></div><div class="last" style="left:0;right:0;top:644px"><span id="b-l2-0" style="opacity:1">현 단계에서 분쟁 위험은 낮습니다.</span><span id="b-l2-1" style="opacity:0">합의 조건의 재검토를 권합니다.</span><span id="b-l2-2" style="opacity:0">갑의 주장은 대체로 타당합니다.</span><span id="b-l2-3" style="opacity:0">증빙 보완 시 승소 가능성이 높아집니다.</span><span id="b-l2-4" style="opacity:0">을과의 협상을 우선 권합니다.</span></div></div>
+        <div id="b-s2" class="sig" style=""><div class="lb">법률 검토·<br>책임자 서명:</div><div class="ul"></div><div id="b-c2" class="cur" style="opacity:0"></div></div>
+      </div>
+      </div>
+    </div>
+    <div id="b-band" class="full" data-layout-ignore></div>
+    <div id="b-vig" class="full" data-layout-ignore></div>
+    <div id="b-cap" class="col cap"><span id="b-w0" class="w hot">딱</span> <span id="b-w1" class="w">한 칸만</span><br><span id="b-w2" class="w">빼고.</span></div>
+    <div id="b-btn">생성</div>
+    <div id="b-ptr" data-layout-ignore><svg viewBox="0 0 100 120"><path d="M38 8c6 0 10 4 10 10v34l4-1c2-8 16-8 18 1 4-6 16-4 17 4 5-3 13 0 13 8v24c0 16-12 28-28 28H54c-9 0-16-4-21-11L10 74c-4-6 0-14 8-13 4 0 7 3 10 6V18c0-6 4-10 10-10z" fill="#ffffff" stroke="#161616" stroke-width="5" stroke-linejoin="round"/></svg></div>
+    <div id="b-toast"><i>!</i>이 항목은 생성할 수 없습니다.</div>
+    <div id="b-gl" class="full" style="opacity:0" data-layout-ignore>
+      <div class="glitch" style="top:420px;height:46px;background:rgba(80,140,255,0.35)"></div>
+      <div class="glitch" style="top:880px;height:22px;background:rgba(0,200,230,0.4)"></div>
+      <div class="glitch" style="top:1210px;height:64px;background:rgba(255,255,255,0.3)"></div>
+      <div class="glitch" style="top:1330px;height:14px;background:rgba(0,200,230,0.45)"></div>
+    </div>
+    <div id="b-flash" class="full" style="background:#ffffff;opacity:0" data-layout-ignore></div>
+  </div>
+  <script>
+  (function () {
+
+    const tl = anime.createTimeline({ autoplay: false, defaults: { ease: "outExpo" } });
+    const R = anime.createSeededRandom(1101);
+    const ms = (s) => Math.round(s * 1000);
+    const FR = 1 / 30;
+    // A: tween (props may be [from, to]); S: instant set; both at absolute video seconds
+    function A(t, sel, props, dur, ease, extra) {
+      tl.add(sel, Object.assign({ duration: Math.max(1, ms(dur == null ? 0.3 : dur)), ease: ease || "outExpo" }, props, extra || {}), ms(t));
+    }
+    function S(t, sel, props) { tl.set(sel, props, ms(t)); }
+    // camera: point (px,py) lands at screen (cx,cy) at scale s (elements with class .cam use transform-origin 0 0)
+    function camv(px, py, s, cx, cy) { return { translateX: (cx == null ? 490 : cx) - s * px, translateY: (cy == null ? 960 : cy) - s * py, scale: s }; }
+    function CAM(t, sel, px, py, s, dur, ease, cx, cy) {
+      const v = camv(px, py, s, cx, cy);
+      if (!dur) S(t, sel, v); else A(t, sel, v, dur, ease || "inOutExpo");
+    }
+    // seeded camera shake on a wrapper (frames x amplitude px), returns to 0
+    function SHAKE(t, sel, frames, amp) {
+      for (let i = 0; i < frames; i++) {
+        const a = amp * (1 - i / frames);
+        S(t + i * FR, sel, { translateX: R(-a, a, 1), translateY: R(-a, a, 1), rotate: R(-a, a, 1) * 0.04 });
+      }
+      S(t + frames * FR, sel, { translateX: 0, translateY: 0, rotate: 0 });
+    }
+    // scale snap on a punch wrapper: hard jump to s, settles back on a long tail
+    function PUNCH(t, sel, s, dur) { A(t, sel, { scale: [s, 1] }, dur || 0.35, "outExpo"); }
+    // 1-frame flash
+    function FLASH(t, sel, o) { S(t, sel, { opacity: o == null ? 1 : o }); S(t + FR, sel, { opacity: 0 }); }
+    function GLITCH(t, cam, gl, dx) {
+      S(t, cam, { translateX: dx }); S(t, gl, { opacity: 1 });
+      S(t + FR, cam, { translateX: 0 }); S(t + FR, gl, { opacity: 0 });
+    }
+    // cursor blink: 8-frame on/off
+    function BLINK(sel, t0, t1) { let on = true; for (let t = t0; t < t1 - 1e-6; t += 8 * FR) { S(t, sel, { opacity: on ? 1 : 0 }); on = !on; } }
+    // word-level kinetic type: each word snaps in on its own time (scale + blur, no slide)
+    function WORD(t, sel, s) {
+      A(t, sel, { opacity: [0, 1], scale: [s || 1.4, 1], filter: ["blur(10px)", "blur(0px)"] }, 0.22, "outExpo");
+    }
+    function WORDS(t, sel, gap) {
+      A(t, sel, { opacity: [0, 1], scale: [1.25, 1], filter: ["blur(10px)", "blur(0px)"] }, 0.2, "outExpo", { delay: anime.stagger(ms(gap || 0.08)) });
+    }
+    function OUT(t, sel, dur, extra) { A(t, sel, Object.assign({ opacity: 0, filter: "blur(8px)" }, extra || {}), dur || 0.14, "inQuad"); }
+
+
+    const T = {"fromWide": false, "c0": 2.195, "tilt": null, "w0": null, "w1": null, "w2": null, "wAll": 2.195, "btn": 2.195, "clicks": [2.636, 3.065, 3.507], "capOut": 3.948, "toast": 3.948, "push": 4.377, "end": 4.825};
+    const GS = 1.12, GY = 1324;
+    // open: either from the wide (30s) or already on the signature boxes (15s)
+    if (T.fromWide) {
+      FLASH(T.c0, "#b-flash", 0.85);
+      CAM(T.c0, "#b-cam", 490, 960, 1, 0);
+      CAM(T.tilt, "#b-cam", 490, GY, GS, 0.45, "outExpo", 490, 1180);
+      A(T.tilt, "#b-cam", { filter: ["blur(14px)", "blur(0px)"] }, 0.3, "outQuad");
+    } else {
+      CAM(T.c0, "#b-cam", 490, GY, GS, 0, null, 490, 1180);
+    }
+    A(T.c0, ["#b-s0", "#b-s1", "#b-s2"], { backgroundColor: ["#dbe9de", "#dbe9de"] }, 0.1);
+    ["#b-c0", "#b-c1", "#b-c2"].forEach((c) => BLINK(c, T.c0, T.end));
+    // caption: word by word on the beat, on an ink band (docs pass under it)
+    A(T.w0 != null ? T.w0 : T.c0, "#b-band", { opacity: [0, 1] }, 0.25, "outQuad");
+    if (T.w0 != null) { WORD(T.w0, "#b-w0", 1.8); PUNCH(T.w0, "#b-shake", 1.05); }
+    if (T.w1 != null) WORD(T.w1, "#b-w1", 1.5);
+    if (T.w2 != null) { WORD(T.w2, "#b-w2", 1.5); PUNCH(T.w2, "#b-shake", 1.04); }
+    if (T.wAll != null) S(T.wAll, "#b-cap .w", { opacity: 1, scale: 1, filter: "blur(0px)" });
+    // '생성' button + pointer, clicks on the beat: text above rerolls, signature stays empty
+    A(T.btn, "#b-btn", { opacity: [0, 1], translateY: [60, 0], scale: [0.8, 1] }, 0.5, anime.spring({ bounce: 0.45, duration: 420 }));
+    A(T.btn, "#b-ptr", { opacity: [0, 1], translateX: [160, 0], translateY: [180, 0] }, 0.25, "outExpo");
+    T.clicks.forEach((t, k) => {
+      A(t, "#b-ptr", { scale: [0.82, 1] }, 0.16, "outQuad");
+      A(t, "#b-btn", { scale: [0.9, 1], backgroundColor: ["#6F8F7A", "#f4f1ea"] }, 0.18, "outQuad");
+      GLITCH(t, "#b-shake", "#b-gl", k % 2 ? -22 : 22);
+      [0, 1, 2].forEach((i) => { S(t, "#b-l" + i + "-" + k, { opacity: 0 }); S(t, "#b-l" + i + "-" + (k + 1), { opacity: 1 }); });
+      A(t, ["#b-s0", "#b-s1", "#b-s2"], { backgroundColor: ["#f2c9c4", "#dbe9de"] }, 0.2, "outQuad");
+    });
+    // toast (the only red in the film): slam + shake
+    if (T.capOut != null) { OUT(T.capOut, "#b-cap .w", 0.14, { translateY: -60 }); A(T.capOut, "#b-band", { opacity: 0 }, 0.3, "outQuad"); }
+    OUT(T.toast, ["#b-btn", "#b-ptr"], 0.14, { translateY: 40 });
+    A(T.toast, "#b-toast", { opacity: [0, 1], scale: [1.35, 1] }, 0.3, "outExpo");
+    SHAKE(T.toast, "#b-shake", 6, 18);
+    A(T.toast + 2 * FR, "#b-toast", { translateX: [12, 0] }, 0.25, anime.spring({ bounce: 0.7, duration: 250 }));
+    // push in to one signature line, everything else falls into the dark
+    CAM(T.push, "#b-cam", 490, 1364, 2.5, T.end - T.push, "inOutQuart", 490, 1030);
+    A(T.push, "#b-toast", { translateY: [0, -90], scale: [1, 0.92] }, T.end - T.push, "inOutQuart");
+    A(T.push, "#b-vig", { opacity: [0, 1] }, T.end - T.push, "inOutQuad");
+
+    window.__hfAnime = window.__hfAnime || [];
+    window.__hfAnime.push(tl);
+  })();
+  </script>
+</template>

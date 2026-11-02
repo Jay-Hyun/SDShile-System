@@ -26,6 +26,7 @@
       color: var(--ink);
     }
     .abs { position: absolute; }
+    .cam { transform-origin: 0 0; }
     .full { position: absolute; inset: 0; }
     /* 키 텍스트 컬럼: 좌 60 ~ 우 920 (우측 160px 아이콘 레일 회피), 중심 x=490 */
     .col { position: absolute; left: 60px; width: 860px; text-align: center; }
@@ -36,7 +37,7 @@
     /* 가상 문서 도우미 UI */
     .ui-head { position: absolute; left: 60px; top: 232px; height: 56px; display: flex; align-items: center; gap: 16px; }
     .ui-head svg { width: 56px; height: 56px; }
-    .ui-head b { font-size: 32px; font-weight: 800; color: var(--ui-ink); letter-spacing: -0.03em; }
+    .ui-head b { font-size: 32px; font-weight: 800; color: #f4f1ea; letter-spacing: -0.03em; }
     .ui-strip { position: absolute; left: 60px; top: 304px; width: 860px; height: 84px; border-radius: 22px; background: #ffffff; border: 2px solid #d8d3c7; display: flex; align-items: center; padding: 0 22px 0 28px; gap: 16px; box-shadow: 0 6px 18px rgba(34, 38, 43, 0.06); }
     .ui-strip .q { flex: 1; font-size: 32px; font-weight: 600; color: var(--ui-ink); }
     .ui-strip .sent { width: 48px; height: 48px; border-radius: 14px; background: var(--sage); display: flex; align-items: center; justify-content: center; }
@@ -59,4 +60,4 @@
     .doc .sig .cur { position: absolute; left: 16px; top: 74px; width: 3px; height: 28px; background: var(--ui-ink); }
     /* 연출 / 고지 공통 */
     .tag { position: absolute; padding: 4px 12px; border-radius: 8px; background: rgba(10, 10, 10, 0.55); color: #ffffff; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
-    .glitch { position: absolute; left: 0; width: 1080px; mix-blend-mode: multiply; }
+    .glitch { position: absolute; left: 0; width: 1080px; mix-blend-mode: screen; }

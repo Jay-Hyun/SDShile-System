@@ -28,6 +28,7 @@
       color: var(--ink);
     }
     .abs { position: absolute; }
+    .cam { transform-origin: 0 0; }
     .full { position: absolute; inset: 0; }
     /* 키 텍스트 컬럼: 좌 60 ~ 우 920 (우측 160px 아이콘 레일 회피), 중심 x=490 */
     .col { position: absolute; left: 60px; width: 860px; text-align: center; }
@@ -38,7 +39,7 @@
     /* 가상 문서 도우미 UI */
     .ui-head { position: absolute; left: 60px; top: 232px; height: 56px; display: flex; align-items: center; gap: 16px; }
     .ui-head svg { width: 56px; height: 56px; }
-    .ui-head b { font-size: 32px; font-weight: 800; color: var(--ui-ink); letter-spacing: -0.03em; }
+    .ui-head b { font-size: 32px; font-weight: 800; color: #f4f1ea; letter-spacing: -0.03em; }
     .ui-strip { position: absolute; left: 60px; top: 304px; width: 860px; height: 84px; border-radius: 22px; background: #ffffff; border: 2px solid #d8d3c7; display: flex; align-items: center; padding: 0 22px 0 28px; gap: 16px; box-shadow: 0 6px 18px rgba(34, 38, 43, 0.06); }
     .ui-strip .q { flex: 1; font-size: 32px; font-weight: 600; color: var(--ui-ink); }
     .ui-strip .sent { width: 48px; height: 48px; border-radius: 14px; background: var(--sage); display: flex; align-items: center; justify-content: center; }
@@ -61,7 +62,7 @@
     .doc .sig .cur { position: absolute; left: 16px; top: 74px; width: 3px; height: 28px; background: var(--ui-ink); }
     /* 연출 / 고지 공통 */
     .tag { position: absolute; padding: 4px 12px; border-radius: 8px; background: rgba(10, 10, 10, 0.55); color: #ffffff; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
-    .glitch { position: absolute; left: 0; width: 1080px; mix-blend-mode: multiply; }
+    .glitch { position: absolute; left: 0; width: 1080px; mix-blend-mode: screen; }
 
 
     #root { pointer-events: none; }
@@ -71,42 +72,61 @@
 
   </style>
   <div id="root" data-composition-id="legal" data-width="1080" data-height="1920">
-    <div id="l-tag" class="clip" data-start="0" data-duration="8.5" data-track-index="1"><div id="l-tagi" class="tag">연출</div></div>
-    <div id="l-d1" class="clip l-d" data-start="5.5" data-duration="9" data-track-index="2" style="top:1580px"><span id="l-d1i">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</span></div>
-    <div id="l-d2" class="clip l-d" data-start="5.5" data-duration="9" data-track-index="3" style="top:1615px"><span id="l-d2i">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</span></div>
+    <div id="l-tag" class="clip" data-start="0.000" data-duration="8.742" data-track-index="1"><div class="tag">연출</div></div>
+    <div id="l-d1" class="clip l-d" data-start="5.665" data-duration="8.986" data-track-index="2" style="top:1580px"><span id="l-d1i">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</span></div>
+    <div id="l-d2" class="clip l-d" data-start="5.665" data-duration="8.986" data-track-index="3" style="top:1615px"><span id="l-d2i">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</span></div>
   </div>
   <script>
-    const tl = gsap.timeline({ paused: true });
+  (function () {
 
-    const F0 = 465;
-    const F = (n) => (n - F0) / 30;
-    function IN(sel, t, from, dur, ease) {
-      const f = Object.assign({ opacity: 0, filter: "blur(10px)" }, from || {});
-      const to = { opacity: 1, filter: "blur(0px)", duration: dur || 0.2, ease: ease || "power3.out" };
-      for (const k in f) if (!(k in to)) to[k] = k.startsWith("scale") ? 1 : 0;
-      tl.fromTo(sel, f, to, t);
+    const tl = anime.createTimeline({ autoplay: false, defaults: { ease: "outExpo" } });
+    const R = anime.createSeededRandom(1199);
+    const ms = (s) => Math.round(s * 1000);
+    const FR = 1 / 30;
+    // A: tween (props may be [from, to]); S: instant set; both at absolute video seconds
+    function A(t, sel, props, dur, ease, extra) {
+      tl.add(sel, Object.assign({ duration: Math.max(1, ms(dur == null ? 0.3 : dur)), ease: ease || "outExpo" }, props, extra || {}), ms(t));
     }
-    function OUT(sel, t, to, dur) {
-      tl.to(sel, Object.assign({ opacity: 0, filter: "blur(8px)", duration: dur || 0.14, ease: "power2.in" }, to || {}), t);
+    function S(t, sel, props) { tl.set(sel, props, ms(t)); }
+    // camera: point (px,py) lands at screen (cx,cy) at scale s (elements with class .cam use transform-origin 0 0)
+    function camv(px, py, s, cx, cy) { return { translateX: (cx == null ? 490 : cx) - s * px, translateY: (cy == null ? 960 : cy) - s * py, scale: s }; }
+    function CAM(t, sel, px, py, s, dur, ease, cx, cy) {
+      const v = camv(px, py, s, cx, cy);
+      if (!dur) S(t, sel, v); else A(t, sel, v, dur, ease || "inOutExpo");
     }
-    // 커서 깜박임: 8프레임 간격 on/off (시간의 함수)
-    function BLINK(sel, t0, t1) {
-      let on = true;
-      for (let t = t0; t < t1 - 1e-6; t += 8 / 30) { tl.set(sel, { opacity: on ? 1 : 0 }, t); on = !on; }
+    // seeded camera shake on a wrapper (frames x amplitude px), returns to 0
+    function SHAKE(t, sel, frames, amp) {
+      for (let i = 0; i < frames; i++) {
+        const a = amp * (1 - i / frames);
+        S(t + i * FR, sel, { translateX: R(-a, a, 1), translateY: R(-a, a, 1), rotate: R(-a, a, 1) * 0.04 });
+      }
+      S(t + frames * FR, sel, { translateX: 0, translateY: 0, rotate: 0 });
     }
-    // 1프레임 글리치: 카메라 가로 밀림 + RGB 슬라이스
-    function GLITCH(cam, gl, t, dx) {
-      tl.set(cam, { x: dx }, t);
-      tl.set(gl, { opacity: 1 }, t);
-      tl.set(cam, { x: 0 }, t + 1 / 30);
-      tl.set(gl, { opacity: 0 }, t + 1 / 30);
+    // scale snap on a punch wrapper: hard jump to s, settles back on a long tail
+    function PUNCH(t, sel, s, dur) { A(t, sel, { scale: [s, 1] }, dur || 0.35, "outExpo"); }
+    // 1-frame flash
+    function FLASH(t, sel, o) { S(t, sel, { opacity: o == null ? 1 : o }); S(t + FR, sel, { opacity: 0 }); }
+    function GLITCH(t, cam, gl, dx) {
+      S(t, cam, { translateX: dx }); S(t, gl, { opacity: 1 });
+      S(t + FR, cam, { translateX: 0 }); S(t + FR, gl, { opacity: 0 });
     }
+    // cursor blink: 8-frame on/off
+    function BLINK(sel, t0, t1) { let on = true; for (let t = t0; t < t1 - 1e-6; t += 8 * FR) { S(t, sel, { opacity: on ? 1 : 0 }); on = !on; } }
+    // word-level kinetic type: each word snaps in on its own time (scale + blur, no slide)
+    function WORD(t, sel, s) {
+      A(t, sel, { opacity: [0, 1], scale: [s || 1.4, 1], filter: ["blur(10px)", "blur(0px)"] }, 0.22, "outExpo");
+    }
+    function WORDS(t, sel, gap) {
+      A(t, sel, { opacity: [0, 1], scale: [1.25, 1], filter: ["blur(10px)", "blur(0px)"] }, 0.2, "outExpo", { delay: anime.stagger(ms(gap || 0.08)) });
+    }
+    function OUT(t, sel, dur, extra) { A(t, sel, Object.assign({ opacity: 0, filter: "blur(8px)" }, extra || {}), dur || 0.14, "inQuad"); }
 
 
-    // 연출: f465–f719 (overlay 시작 15.5s 기준 0–8.5s). 고지 L1·L2: f630–f899 (5.5–14.5s)
-    // 24.0s(C7)부터 밝은 배경 → 먹색 85%
-    tl.fromTo(["#l-d1i", "#l-d2i"], { color: "#ffffff" }, { color: "#161616", duration: 0.15, ease: "none" }, 8.55);
+    // on the light C7/C8 grounds the disclaimers turn ink (still 85%)
+    S(24.091, ["#l-d1i", "#l-d2i"], { color: "#161616" });
 
-    window.__timelines["legal"] = tl;
+    window.__hfAnime = window.__hfAnime || [];
+    window.__hfAnime.push(tl);
+  })();
   </script>
 </template>

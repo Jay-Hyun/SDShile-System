@@ -1,0 +1,328 @@
+{
+ "probe": {
+  "width": 1080,
+  "height": 1920,
+  "r": "30/1",
+  "frames": "900",
+  "duration": "30.000000",
+  "audio": [
+   "aac"
+  ]
+ },
+ "loudness": {
+  "I": -15.1,
+  "LRA": 15.7,
+  "TP": -2.5
+ },
+ "detected": [
+  {
+   "frame": 14,
+   "t": 0.467,
+   "beat": 1,
+   "beat_t": 0.442,
+   "off_frames": 0.74,
+   "within2": true,
+   "diff": 78.4
+  },
+  {
+   "frame": 27,
+   "t": 0.9,
+   "beat": 2,
+   "beat_t": 0.883,
+   "off_frames": 0.51,
+   "within2": true,
+   "diff": 37.9
+  },
+  {
+   "frame": 40,
+   "t": 1.333,
+   "beat": 3,
+   "beat_t": 1.312,
+   "off_frames": 0.64,
+   "within2": true,
+   "diff": 67.2
+  },
+  {
+   "frame": 46,
+   "t": 1.533,
+   "beat": 4,
+   "beat_t": 1.753,
+   "off_frames": -6.59,
+   "within2": false,
+   "diff": 48.3
+  },
+  {
+   "frame": 92,
+   "t": 3.067,
+   "beat": 7,
+   "beat_t": 3.065,
+   "off_frames": 0.05,
+   "within2": true,
+   "diff": 174.1
+  },
+  {
+   "frame": 105,
+   "t": 3.5,
+   "beat": 8,
+   "beat_t": 3.495,
+   "off_frames": 0.15,
+   "within2": true,
+   "diff": 51.0
+  },
+  {
+   "frame": 119,
+   "t": 3.967,
+   "beat": 9,
+   "beat_t": 3.948,
+   "off_frames": 0.56,
+   "within2": true,
+   "diff": 70.3
+  },
+  {
+   "frame": 132,
+   "t": 4.4,
+   "beat": 10,
+   "beat_t": 4.377,
+   "off_frames": 0.69,
+   "within2": true,
+   "diff": 88.4
+  },
+  {
+   "frame": 184,
+   "t": 6.133,
+   "beat": 14,
+   "beat_t": 6.13,
+   "off_frames": 0.1,
+   "within2": true,
+   "diff": 105.1
+  },
+  {
+   "frame": 190,
+   "t": 6.333,
+   "beat": 14,
+   "beat_t": 6.13,
+   "off_frames": 6.1,
+   "within2": false,
+   "diff": 25.7
+  },
+  {
+   "frame": 198,
+   "t": 6.6,
+   "beat": 15,
+   "beat_t": 6.572,
+   "off_frames": 0.84,
+   "within2": true,
+   "diff": 25.9
+  },
+  {
+   "frame": 302,
+   "t": 10.067,
+   "beat": 23,
+   "beat_t": 10.066,
+   "off_frames": 0.02,
+   "within2": true,
+   "diff": 63.9
+  },
+  {
+   "frame": 539,
+   "t": 17.967,
+   "beat": 41,
+   "beat_t": 17.961,
+   "off_frames": 0.17,
+   "within2": true,
+   "diff": 107.6
+  },
+  {
+   "frame": 578,
+   "t": 19.267,
+   "beat": 44,
+   "beat_t": 19.261,
+   "off_frames": 0.17,
+   "within2": true,
+   "diff": 110.4
+  },
+  {
+   "frame": 635,
+   "t": 21.167,
+   "beat": 48,
+   "beat_t": 21.014,
+   "off_frames": 4.58,
+   "within2": false,
+   "diff": 32.2
+  },
+  {
+   "frame": 729,
+   "t": 24.3,
+   "beat": 55,
+   "beat_t": 24.091,
+   "off_frames": 6.27,
+   "within2": false,
+   "diff": 107.5
+  }
+ ],
+ "planned": [
+  {
+   "t": 0.442,
+   "frame": 13,
+   "label": "C1 punch-in 1",
+   "detected": 14,
+   "detected_off": 1,
+   "beat": 1,
+   "beat_off": -0.26
+  },
+  {
+   "t": 0.883,
+   "frame": 26,
+   "label": "C1 punch-in 2",
+   "detected": 27,
+   "detected_off": 1,
+   "beat": 2,
+   "beat_off": -0.49
+  },
+  {
+   "t": 1.312,
+   "frame": 39,
+   "label": "C1 S2 whip",
+   "detected": 40,
+   "detected_off": 1,
+   "beat": 3,
+   "beat_off": -0.36
+  },
+  {
+   "t": 3.065,
+   "frame": 92,
+   "label": "C2",
+   "detected": 92,
+   "detected_off": 0,
+   "beat": 7,
+   "beat_off": 0.05
+  },
+  {
+   "t": 3.495,
+   "frame": 105,
+   "label": "C2 col2",
+   "detected": 105,
+   "detected_off": 0,
+   "beat": 8,
+   "beat_off": 0.15
+  },
+  {
+   "t": 3.948,
+   "frame": 118,
+   "label": "C2 col3",
+   "detected": 119,
+   "detected_off": 1,
+   "beat": 9,
+   "beat_off": -0.44
+  },
+  {
+   "t": 4.377,
+   "frame": 131,
+   "label": "C2 wide",
+   "detected": 132,
+   "detected_off": 1,
+   "beat": 10,
+   "beat_off": -0.31
+  },
+  {
+   "t": 6.13,
+   "frame": 184,
+   "label": "C3",
+   "detected": 184,
+   "detected_off": 0,
+   "beat": 14,
+   "beat_off": 0.1
+  },
+  {
+   "t": 8.766,
+   "frame": 263,
+   "label": "C3 S3 toast",
+   "detected": 302,
+   "detected_off": 39,
+   "beat": 20,
+   "beat_off": 0.02
+  },
+  {
+   "t": 10.066,
+   "frame": 302,
+   "label": "C4",
+   "detected": 302,
+   "detected_off": 0,
+   "beat": 23,
+   "beat_off": 0.02
+  },
+  {
+   "t": 14.02,
+   "frame": 421,
+   "label": "C5",
+   "detected": 539,
+   "detected_off": 118,
+   "beat": 32,
+   "beat_off": 0.4
+  },
+  {
+   "t": 15.349,
+   "frame": 460,
+   "label": "C5 S2 desk match",
+   "detected": 539,
+   "detected_off": 79,
+   "beat": 35,
+   "beat_off": -0.47
+  },
+  {
+   "t": 17.961,
+   "frame": 539,
+   "label": "C6",
+   "detected": 539,
+   "detected_off": 0,
+   "beat": 41,
+   "beat_off": 0.17
+  },
+  {
+   "t": 19.261,
+   "frame": 578,
+   "label": "C6 S2 pen touch",
+   "detected": 578,
+   "detected_off": 0,
+   "beat": 44,
+   "beat_off": 0.17
+  },
+  {
+   "t": 21.014,
+   "frame": 630,
+   "label": "C6 S3 USP",
+   "detected": 635,
+   "detected_off": 5,
+   "beat": 48,
+   "beat_off": -0.42
+  },
+  {
+   "t": 24.091,
+   "frame": 723,
+   "label": "C7",
+   "detected": 729,
+   "detected_off": 6,
+   "beat": 55,
+   "beat_off": 0.27
+  },
+  {
+   "t": 26.274,
+   "frame": 788,
+   "label": "C7 S2",
+   "detected": 729,
+   "detected_off": -59,
+   "beat": 60,
+   "beat_off": -0.22
+  },
+  {
+   "t": 27.597,
+   "frame": 828,
+   "label": "C8",
+   "detected": 729,
+   "detected_off": -99,
+   "beat": 63,
+   "beat_off": 0.09
+  }
+ ],
+ "within2_pct": 75.0
+}

@@ -1,0 +1,99 @@
+{
+ "variant": "15",
+ "offset": 10.971,
+ "bpm": 137.023,
+ "cuts": [
+  {
+   "t": 0.442,
+   "frame": 13,
+   "label": "C1' punch-in 1"
+  },
+  {
+   "t": 0.871,
+   "frame": 26,
+   "label": "C1' punch-in 2"
+  },
+  {
+   "t": 1.324,
+   "frame": 40,
+   "label": "C1' S2 whip"
+  },
+  {
+   "t": 2.195,
+   "frame": 66,
+   "label": "C3'"
+  },
+  {
+   "t": 3.948,
+   "frame": 118,
+   "label": "C3' toast"
+  },
+  {
+   "t": 4.825,
+   "frame": 145,
+   "label": "C4'"
+  },
+  {
+   "t": 7.89,
+   "frame": 237,
+   "label": "C4' S3 bridge"
+  },
+  {
+   "t": 9.207,
+   "frame": 276,
+   "label": "C6'"
+  },
+  {
+   "t": 10.066,
+   "frame": 302,
+   "label": "C6' S2 pen touch"
+  },
+  {
+   "t": 10.519,
+   "frame": 316,
+   "label": "C6' S3 USP"
+  },
+  {
+   "t": 12.261,
+   "frame": 368,
+   "label": "C8'"
+  }
+ ],
+ "scenes": [
+  {
+   "id": "hook",
+   "start": 0,
+   "duration": 2.195
+  },
+  {
+   "id": "blank",
+   "start": 2.195,
+   "duration": 2.63
+  },
+  {
+   "id": "dust",
+   "start": 4.825,
+   "duration": 4.382
+  },
+  {
+   "id": "sign",
+   "start": 9.207,
+   "duration": 3.054
+  },
+  {
+   "id": "end",
+   "start": 12.261,
+   "duration": 2.739
+  },
+  {
+   "id": "legal",
+   "start": 9.207,
+   "duration": 5.793
+  },
+  {
+   "id": "fx",
+   "start": 0,
+   "duration": 15.0
+  }
+ ]
+}

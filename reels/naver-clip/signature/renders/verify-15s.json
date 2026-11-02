@@ -1,0 +1,157 @@
+{
+ "probe": {
+  "width": 1080,
+  "height": 1920,
+  "r": "30/1",
+  "frames": "450",
+  "duration": "15.000000",
+  "audio": [
+   "aac"
+  ]
+ },
+ "loudness": {
+  "I": -16.2,
+  "LRA": 12.5,
+  "TP": -2.5
+ },
+ "detected": [
+  {
+   "frame": 150,
+   "t": 5.0,
+   "beat": 11,
+   "beat_t": 4.825,
+   "off_frames": 5.25,
+   "within2": false,
+   "diff": 139.0
+  },
+  {
+   "frame": 270,
+   "t": 9.0,
+   "beat": 21,
+   "beat_t": 9.207,
+   "off_frames": -6.21,
+   "within2": false,
+   "diff": 199.6
+  },
+  {
+   "frame": 326,
+   "t": 10.867,
+   "beat": 25,
+   "beat_t": 10.96,
+   "off_frames": -2.8,
+   "within2": false,
+   "diff": 53.7
+  },
+  {
+   "frame": 365,
+   "t": 12.167,
+   "beat": 28,
+   "beat_t": 12.261,
+   "off_frames": -2.83,
+   "within2": false,
+   "diff": 61.8
+  }
+ ],
+ "planned": [
+  {
+   "t": 0.442,
+   "frame": 13,
+   "label": "C1' punch-in 1",
+   "detected": 150,
+   "detected_off": 137,
+   "beat": 1,
+   "beat_off": -0.26
+  },
+  {
+   "t": 0.871,
+   "frame": 26,
+   "label": "C1' punch-in 2",
+   "detected": 150,
+   "detected_off": 124,
+   "beat": 2,
+   "beat_off": -0.13
+  },
+  {
+   "t": 1.324,
+   "frame": 40,
+   "label": "C1' S2 whip",
+   "detected": 150,
+   "detected_off": 110,
+   "beat": 3,
+   "beat_off": 0.28
+  },
+  {
+   "t": 2.195,
+   "frame": 66,
+   "label": "C3'",
+   "detected": 150,
+   "detected_off": 84,
+   "beat": 5,
+   "beat_off": 0.15
+  },
+  {
+   "t": 3.948,
+   "frame": 118,
+   "label": "C3' toast",
+   "detected": 150,
+   "detected_off": 32,
+   "beat": 9,
+   "beat_off": -0.44
+  },
+  {
+   "t": 4.825,
+   "frame": 145,
+   "label": "C4'",
+   "detected": 150,
+   "detected_off": 5,
+   "beat": 11,
+   "beat_off": 0.25
+  },
+  {
+   "t": 7.89,
+   "frame": 237,
+   "label": "C4' S3 bridge",
+   "detected": 270,
+   "detected_off": 33,
+   "beat": 18,
+   "beat_off": 0.3
+  },
+  {
+   "t": 9.207,
+   "frame": 276,
+   "label": "C6'",
+   "detected": 270,
+   "detected_off": -6,
+   "beat": 21,
+   "beat_off": -0.21
+  },
+  {
+   "t": 10.066,
+   "frame": 302,
+   "label": "C6' S2 pen touch",
+   "detected": 326,
+   "detected_off": 24,
+   "beat": 23,
+   "beat_off": 0.02
+  },
+  {
+   "t": 10.519,
+   "frame": 316,
+   "label": "C6' S3 USP",
+   "detected": 326,
+   "detected_off": 10,
+   "beat": 24,
+   "beat_off": 0.43
+  },
+  {
+   "t": 12.261,
+   "frame": 368,
+   "label": "C8'",
+   "detected": 365,
+   "detected_off": -3,
+   "beat": 28,
+   "beat_off": 0.17
+  }
+ ],
+ "within2_pct": 0.0
+}
