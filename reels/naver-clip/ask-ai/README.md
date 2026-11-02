@@ -18,6 +18,7 @@
 | `tools/timing.py` · `tools/stamp_timing.py` | cue.js 를 파이썬으로 읽기 · HTML 클립 시각(30s·v15) 찍기 |
 | `tools/build_15s.py` | `v15/` 생성 (`const CUT = 30` → 15) 후 시각 찍기. v15 파일은 직접 고치지 않는다 |
 | `tools/verify_cuts.py` | 챕터 ↔ 다운비트 계획표(`--plan`, MP4 불필요) + 렌더 MP4의 컷(프레임 차 피크) ↔ 비트, 최장 정지 구간 |
+| `tools/remux_audio.py` | 렌더 뒤 MP4 의 오디오를 같은 믹스의 320 kbps AAC 로 교체(`-c:v copy`). 렌더러의 AAC(≈194 kbps)는 밝은 구간의 10 kHz+ 비율을 −2 dB 깎고, 192k·256k 는 트루피크가 −0.4·+0.4 dBTP 로 튀어 320k 로 고정 |
 | `tools/audio_check.py` | 음악 연속성: −40 dBFS 미만 최장 구간, 고민 중 구간 RMS, 이음새 클릭, 10 kHz 비율 (스템·MP4 모두) |
 | `tools/measure_frames.cjs` | Playwright: 지정 시각마다 글자 중심 x(Δx), 말풍선 컬럼 여백, font-size 집합, **블록 사이 최대 틈**, 최장 빈 띠(%), 로고 락업(심볼·간격·중심) |
 | `tools/reading_speed.py` | 구간별 읽기 속도(자/초) 표 |
@@ -32,7 +33,8 @@ npm run plan && npm run audiocheck && npm run reading
 # 측정: 미리보기 서버가 소스에 data-hf-id 를 박으므로 프로젝트 사본에서 띄운다
 #   cp -rL index.html hyperframes.json meta.json lib compositions assets /tmp/m30/ && (cd /tmp/m30 && npx --yes hyperframes@0.8.200 preview --background --port 4611)
 #   node tools/measure_frames.cjs http://localhost:4611/api/projects/m30/preview 1.2,3,4.3,5.1,6.2,7.5,9.5,10.9,11.7,12.6,13.4,14.2,15.2,16.8,19.3,21.4,22.9,24.8,26.9,29.5
-npm run render && npm run render15 && npm run verify
+npm run render && npm run render15 && npm run remux   # remux: 오디오를 320 kbps AAC 로 바꿔 끼움(영상 스트림은 그대로)
+npm run verify && python3 tools/audio_check.py 30 renders/ask-ai-30s.mp4 && python3 tools/audio_check.py 15 renders/ask-ai-15s.mp4
 ```
 
 ## 룩 (02 §1–3, §7-1, §7-2)

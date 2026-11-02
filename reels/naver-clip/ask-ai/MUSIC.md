@@ -44,4 +44,6 @@
 ## 마스터
 - 두 스템(`assets/audio/bgm*.wav`, `sfx*.wav`)에 같은 게인과 같은 룩어헤드 리미터(샘플 피크 −1.7 dBFS)를 건다.
 - 믹스 실측(ffmpeg ebur128, `beats/cuts-*.json`): **30s -15.0 LUFS / TP -2.2 dBTP**, **15s -15.0 LUFS / TP -3.1 dBTP** (리미터 작동 0.0 / 0.0 dB). 들어보지는 못했다(측정값만).
+- **렌더된 MP4 실측**(`renders/ask-ai-*.mp4`, ffmpeg ebur128): **30s −15.0 LUFS / TP −2.1 dBTP**, **15s −15.1 LUFS / TP −2.8 dBTP**. `audio_check.py` 로 MP4 오디오를 점검했을 때 −40 dBFS 미만 구간 0 ms, 고민 중 구간 RMS 가 앞뒤 평균 대비 30s −2.1 dB / 15s +0.3 dB, 이음새 클릭 비율 0.47–0.80, 10 kHz+ 비율 최악 −0.34 / −0.47 dB.
+- 렌더 뒤 `npm run remux`: 렌더러 AAC(≈194 kbps)는 밝은 구간(30s 6.2–7.2 s)의 10 kHz+ 비율을 −2.0 dB 깎아서, 같은 믹스를 320 kbps AAC 로 바꿔 끼운다(영상 스트림 그대로, md5 동일). 192k 와 256k 는 트루피크가 −0.4·+0.4 dBTP 로 튀므로 쓰지 않는다.
 - 다시 만들기: `npm run beats && npm run audio`.

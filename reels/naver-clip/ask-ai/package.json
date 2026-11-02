@@ -18,6 +18,7 @@
     "plan": "python3 tools/verify_cuts.py 30 --plan && python3 tools/verify_cuts.py 15 --plan",
     "audiocheck": "python3 tools/audio_check.py 30 && python3 tools/audio_check.py 15",
     "reading": "python3 tools/reading_speed.py",
-    "stamp": "python3 tools/stamp_timing.py"
+    "stamp": "python3 tools/stamp_timing.py",
+    "remux": "python3 tools/remux_audio.py"
   }
 }
