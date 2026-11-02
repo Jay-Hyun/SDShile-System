@@ -52,13 +52,15 @@
     #a1-dots { position: absolute; left: 48px; top: 60px; display: flex; gap: 14px; }
     #a1-dots b { display: block; width: 14px; height: 14px; border-radius: 7px; background: var(--color-muted, #5f6368); }
 
-    /* 입력창 → 그대로 사용자 말풍선이 된다 */
-    #ch-u2 { background: #ffffff; color: var(--color-ink, #0e1116); }
-    #u2-ph { position: absolute; left: 48px; top: 36px; height: 62px; line-height: 62px; color: #6b6f76; white-space: nowrap; }
+    /* 입력창: 대화 컬럼 바로 아래 상시 UI (840 폭, 톤 한 단계 면, 선·그림자 없음). 한 줄 = y 1456–1544.
+       글이 둘째 줄로 넘어가면 위로 한 줄 자라고(clip-path), 대화도 같은 만큼 올라간다 */
+    #ch-bar { position: absolute; left: 120px; top: 1394px; width: 840px; height: 150px; background: var(--color-field, #eeebe4); font-size: 44px; line-height: 62px; font-weight: 500; letter-spacing: -0.01em; }
+    #bar-ph { position: absolute; left: 48px; top: 75px; height: 62px; color: #6b6f76; white-space: nowrap; }
+    #bar-text { position: absolute; left: 48px; top: 13px; width: 704px; }
     .ln2 { display: block; height: 62px; white-space: nowrap; }
-    #u2-c2, #u2-c3 { display: none; }
-    #u2-send { position: absolute; right: 31px; top: 31px; width: 72px; height: 72px; border-radius: 36px; background: var(--color-ink, #0e1116); display: flex; align-items: center; justify-content: center; }
-    #u2-send svg { width: 36px; height: 36px; }
+    #bar-c2, #bar-c3 { display: none; }
+    #bar-send { position: absolute; right: 12px; top: 74px; width: 64px; height: 64px; border-radius: 32px; background: #c9c6be; display: flex; align-items: center; justify-content: center; }
+    #bar-send svg { width: 32px; height: 32px; }
 
     /* 로딩 개그: 답이 올 자리 가운데에 Head 88 상태 문구 */
     #ch-gag { position: absolute; left: 0; width: 840px; }
@@ -97,11 +99,9 @@
             <div class="ln ex"><span id="a1-l3">예: 법조인, 법무 책임자</span></div>
           </div>
 
-          <div id="ch-u2" class="b" data-m="col">
-            <div id="u2-ph">메시지를 입력하세요</div>
-            <div class="ln2"><span id="u2-c1">나 전문대 나왔</span><span id="u2-d">는데</span><span id="u2-c2">고 회사 다니는데,</span></div>
-            <div class="ln2"><span id="u2-c3">법 공부 할 수 있어?</span></div>
-            <i id="u2-send"><svg viewBox="0 0 24 24"><path d="M12 18V6M7 11l5-5 5 5" fill="none" stroke="#f7f6f2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></i>
+          <div id="ch-u2" class="b u" data-m="col">
+            <div class="ln"><span>나 전문대 나왔고 회사 다니는데,</span></div>
+            <div class="ln"><span>법 공부 할 수 있어?</span></div>
           </div>
 
           <div id="ch-gag">
@@ -118,6 +118,15 @@
 
           <div id="ch-btn" data-m="c"><span>상담사 연결</span></div>
         </div>
+      </div>
+
+      <div id="ch-bar" data-m="col">
+        <div id="bar-ph">메시지를 입력하세요</div>
+        <div id="bar-text">
+          <div class="ln2"><span id="bar-c1">나 전문대 나왔</span><span id="bar-d">는데</span><span id="bar-c2">고 회사 다니는데,</span></div>
+          <div class="ln2"><span id="bar-c3">법 공부 할 수 있어?</span></div>
+        </div>
+        <i id="bar-send"><svg viewBox="0 0 24 24"><path d="M12 18V6M7 11l5-5 5 5" fill="none" stroke="#f7f6f2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></i>
       </div>
     </div>
   </div>
@@ -141,10 +150,7 @@
         $("#a1-l2").parentNode.remove();
         $("#a1-l3").textContent = "예: 법조인";
         const u2 = $("#ch-u2");
-        u2.className = "b u";
         u2.innerHTML = '<div class="ln"><span id="u2-l1">전문대 졸 직장인도 법 공부 돼?</span></div>';
-        u2.style.background = "var(--color-ink, #0e1116)";
-        u2.style.color = "var(--color-paper, #f7f6f2)";
         $("#st2").remove();
         $("#st3").remove();
         $("#a2-l1").innerHTML = $("#a2-l1").innerHTML.replace(/이건 (<em[\s\S]*?<\/em>)지고 답할 분께 넘길게요/, "$1질 분께 넘길게요");
@@ -206,10 +212,11 @@
       tl.set("#a1-dots b", { opacity: 0.3 }, 0);
       tl.set("#ch-a1", { clipPath: clip(ONE, hA1) }, 0);
       uls.forEach((d) => tl.set(d, { draw: "0 0" }, 0));
-      if (CUT === 30) {
-        tl.set("#ch-u2", { clipPath: clip(ONE, hU2) }, 0);
-        tl.set(["#u2-c1", "#u2-d", "#u2-c2", "#u2-c3"], { opacity: 0 }, 0);
-      }
+      // 입력창: 한 줄(아래 88px)만 보이게. 두 줄이면 위로 한 줄(62) 더
+      const barClip = (n) => "inset(" + (n === 1 ? LINE : 0) + "px 0px 0px 0px round 44px)";
+      tl.set("#ch-bar", { clipPath: barClip(1) }, 0);
+      tl.set("#bar-text", { translateY: LINE }, 0);
+      tl.set(["#bar-c1", "#bar-d", "#bar-c2", "#bar-c3"], { opacity: 0 }, 0);
       offNow = off(yU1 + ONE);
       tl.set("#ch-thread", { translateY: offNow }, 0);
       // 카메라: 한 컷(챗 전체)에 한 번, 1.00 → 1.03 선형 푸시. 원점 = 시그니처 버튼 중심
@@ -247,29 +254,35 @@
         growA1(tEx, hA1);
         rise(tl, "#a1-l3", tEx + 0.05);
 
-        // ===== C4 다운비트: 입력창이 대화 바닥에 생기고 질문이 3–4 덩어리로 =====
+        // ===== C4 다운비트: 아래 입력창에 질문이 3–4 덩어리로 들어간다 =====
         const tC4 = DB(5);
-        ui(tl, "#ch-u2", tC4);
-        glide(tC4, off(yU2 + ONE));
-        exit(tl, "#ch-title", tC4); // 헤더 바로 밑에 붙기 전에 퇴장
-        const k1 = tC4 + 0.45; // "나 전문대 나왔는데"
-        tl.add("#u2-ph", { opacity: [1, 0], duration: 150, ease: E.exit }, ms(k1));
-        tl.add(["#u2-c1", "#u2-d"], { opacity: [0, 1], duration: 200, ease: E.ui }, ms(k1 + 0.1));
+        tl.add("#bar-ph", { opacity: [1, 0], duration: 150, ease: E.exit }, ms(tC4 + 0.1));
+        const k1 = tC4 + 0.25; // "나 전문대 나왔는데"
+        tl.add(["#bar-c1", "#bar-d"], { opacity: [0, 1], duration: 200, ease: E.ui }, ms(k1));
+        tl.add("#bar-send", { backgroundColor: ["#c9c6be", "#0e1116"], duration: 200, ease: "inOutSine" }, ms(k1));
         const k2 = k1 + 0.6; // 망설임: "는데"를 지운다
-        tl.add("#u2-d", { opacity: [1, 0], duration: 150, ease: E.exit }, ms(k2));
-        tl.set("#u2-d", { display: "none" }, ms(k2 + 0.17));
-        tl.set("#u2-c2", { display: "inline" }, ms(k2 + 0.17));
+        tl.add("#bar-d", { opacity: [1, 0], duration: 150, ease: E.exit }, ms(k2));
+        tl.set("#bar-d", { display: "none" }, ms(k2 + 0.17));
+        tl.set("#bar-c2", { display: "inline" }, ms(k2 + 0.17));
         const k3 = k2 + 0.25; // "고 회사 다니는데,"
-        tl.add("#u2-c2", { opacity: [0, 1], duration: 200, ease: E.ui }, ms(k3));
-        const k4 = k3 + 0.5; // 둘째 줄: 입력창이 한 줄 늘고 대화가 그만큼 올라간다
-        tl.add("#ch-u2", { clipPath: [clip(ONE, hU2), clip(hU2, hU2)], duration: D.glide, ease: E.glide }, ms(k4));
-        glide(k4, off(yU2 + hU2));
-        tl.add("#u2-send", { translateY: [0, LINE / 2], duration: D.glide, ease: E.glide }, ms(k4));
-        tl.set("#u2-c3", { display: "inline" }, ms(k4));
-        tl.add("#u2-c3", { opacity: [0, 1], duration: 200, ease: E.ui }, ms(k4 + 0.1));
-        const kSend = k4 + 0.6; // 전송: 입력창이 그 자리에서 사용자 말풍선이 된다
-        tl.add("#u2-send", { opacity: [1, 0], duration: 200, ease: E.exit }, ms(kSend));
-        tl.add("#ch-u2", { backgroundColor: ["#ffffff", "#0e1116"], color: ["#0e1116", "#f7f6f2"], duration: 240, ease: "inOutSine" }, ms(kSend));
+        tl.add("#bar-c2", { opacity: [0, 1], duration: 200, ease: E.ui }, ms(k3));
+        const k4 = k3 + 0.5; // 둘째 줄: 입력창이 위로 한 줄 자라고 대화도 그만큼 올라간다
+        tl.add("#ch-bar", { clipPath: [barClip(1), barClip(2)], duration: D.glide, ease: E.glide }, ms(k4));
+        tl.add("#bar-text", { translateY: [LINE, 0], duration: D.glide, ease: E.glide }, ms(k4));
+        glide(k4, offNow - LINE);
+        tl.set("#bar-c3", { display: "inline" }, ms(k4));
+        tl.add("#bar-c3", { opacity: [0, 1], duration: 200, ease: E.ui }, ms(k4 + 0.1));
+        const kSend = k4 + 0.7; // 전송: 입력창은 비고 한 줄로 돌아가며, 질문은 대화에 사용자 말풍선으로
+        tl.add("#bar-send", { scale: [1, 0.94], duration: D.press / 2, ease: E.ui }, ms(kSend));
+        tl.add("#bar-send", { scale: [0.94, 1], duration: D.press / 2, ease: E.ui }, ms(kSend + D.press / 2000));
+        const kOut = kSend + 0.08;
+        tl.add("#bar-text", { opacity: [1, 0], duration: 150, ease: E.exit }, ms(kOut));
+        tl.add("#ch-bar", { clipPath: [barClip(2), barClip(1)], duration: D.glide, ease: E.glide }, ms(kOut));
+        tl.add("#bar-send", { backgroundColor: ["#0e1116", "#c9c6be"], duration: 200, ease: "inOutSine" }, ms(kOut));
+        tl.add("#bar-ph", { opacity: [0, 1], duration: 200, ease: E.ui }, ms(kOut + 0.3));
+        ui(tl, "#ch-u2", kOut);
+        glide(kOut, off(yU2 + hU2));
+        exit(tl, "#ch-title", kOut); // 헤더 바로 밑에 붙기 전에 퇴장
       } else {
         // ===== 15초 C2: 앞 문단 + 핵심 문장 → 다운비트에 언더라인 → 예시 줄 =====
         growA1(tC2, ONE + LINE);

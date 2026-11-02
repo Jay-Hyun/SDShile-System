@@ -58,7 +58,7 @@ function collect() {
     box = { l: Math.max(box.l, 0), t: Math.max(box.t, 0), r: Math.min(box.r, W), b: Math.min(box.b, H) };
     const area = Math.max(0, box.r - box.l) * Math.max(0, box.b - box.t);
     const full = Math.max(1, (r.right - r.left) * (r.bottom - r.top));
-    if (area / full < 0.6) return null; // 마스크 안에서 올라오는 중이거나 화면 밖
+    if (area / full < 0.5) return null; // 마스크 안에서 올라오는 중이거나 화면 밖 (한 줄로 접힌 입력창 = 59%)
     return { op, rect: r };
   };
   const onTop = () => true; // 가림은 vis() 의 overflow·clip-path 교차로 판단한다

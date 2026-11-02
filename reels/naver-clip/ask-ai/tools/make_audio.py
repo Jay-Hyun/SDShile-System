@@ -262,8 +262,8 @@ def build_sfx(c):
         place(marker(), 4 * BAR + 0.09, 0.16, 0.2)
         place(pop(800, 500), 4 * BAR + 1.0, 0.18)            # 예시 줄
         # C4 입력: 단어 덩어리마다 짧은 타건, 망설임 백스페이스 2회
-        k1 = 5 * BAR + 0.45
-        clicks([k1 - 0.12, k1 - 0.06, k1 + 0.01, k1 + 0.07])
+        k1 = 5 * BAR + 0.25  # 아래 입력창에 덩어리로 들어간다 (chat.html C4)
+        clicks([k1 - 0.18, k1 - 0.12, k1 - 0.06, k1])
         k2 = k1 + 0.6
         place(key_click(True), k2 - 0.03, 0.3)
         place(key_click(True), k2 + 0.06, 0.3)
@@ -271,9 +271,9 @@ def build_sfx(c):
         clicks([k3 - 0.12, k3 - 0.06, k3])
         k4 = k3 + 0.5
         clicks([k4 - 0.13, k4 - 0.07, k4, k4 + 0.06])
-        kSend = k4 + 0.6
-        place(tap(), kSend, 0.4)                             # 전송: 입력창이 말풍선이 된다
-        place(whoosh(0.35, True, 500, 5000), kSend + 0.02, 0.22)
+        kSend = k4 + 0.7
+        place(tap(), kSend, 0.4)                             # 전송: 질문이 대화로 올라간다
+        place(whoosh(0.35, True, 500, 5000), kSend + 0.08, 0.22)
         # C5 정적: 초침 틱(무음 그리드 유지) + 귀뚜라미
         for k, hi in ((27, True), (28, False), (29, True)):
             place(clock_tick(hi), B(k), 0.5)
