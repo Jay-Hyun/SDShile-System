@@ -53,7 +53,6 @@
     #br-list { top: 785px; }
     #br-list-blk { display: inline-block; text-align: left; }
     #br-list .lnB { margin-bottom: 8px; }
-    #br-one { top: 742px; }
     .chk { display: inline-block; width: 34px; height: 34px; vertical-align: -4px; margin-right: 16px; }
     #br-push { top: 1059px; }
     #br-note { top: 1289px; }
@@ -115,8 +114,6 @@
           <div class="lnB"><span id="ls-2"><svg class="chk" viewBox="0 0 24 24"><path d="M4.5 12.5l4.8 4.6L19.5 7" fill="none" stroke="#b8955a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>교육부장관 명의 법학사</span></div>
           <div class="lnB"><span id="ls-3"><svg class="chk" viewBox="0 0 24 24"><path d="M4.5 12.5l4.8 4.6L19.5 7" fill="none" stroke="#b8955a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>전문대 졸업이면 60학점부터</span></div>
         </div></div>
-        <!-- 15초: 리스트를 한 줄로 -->
-        <div id="br-one" class="row bd"><div class="lnB"><span id="one-1" data-m="c">100% 온라인 · 교육부장관 명의 법학사</span></div></div>
       </div>
 
       <!-- CTA 유도 (골드 44) → 버튼 → 안내 → 전화: 엔드 시퀀스 내내 고정 -->
@@ -143,18 +140,15 @@
       if (CUT === 15) {
         $("#ans-1").textContent = "첫 계단,";
         $("#br-q").remove(); // 15초판은 인용 없이 답만 (05 §3)
-        $("#br-ans").style.top = "959px";
-        // 15초 엔드카드(2.66s): 슬로건 + 한 줄 + CTA 유도 + 버튼·전화 (CTA 문장·리스트·안내 줄 없음)
+        $("#br-ans").style.top = "911px";
+        // 15초 엔드카드(2.66s): 12.339 에 새로 뜨는 글은 슬로건뿐. CTA 유도(골드)·전화는 브랜드 진입부터, 버튼은 C6 에
         ["#br-cta", "#br-list", "#br-note"].forEach((q) => $(q).remove());
-        // 전화는 브랜드 진입(C5)부터 y 1270 에 있으므로 15초 엔드카드는 그 위로 쌓는다
-        $("#br-tel").style.top = "1270px";
-        $("#br-btn").style.top = "1130px";
-        $("#br-push").style.top = "1040px";
-        // 슬로건 2행 + 한 줄(202 + 40 + 62)을 로고(아래 362)와 CTA 유도(위 1040) 사이 가운데에
-        $("#br-slo").style.top = "549px";
-        $("#br-one").style.top = "791px";
-      } else {
-        $("#br-one").remove();
+        // 세로: 유도 1148 → (C6) 버튼 1238 → 전화 1378 을 바닥(1440)에 붙여 고정, C5 의 답(911–1113)과 겹치지 않는다
+        $("#br-tel").style.top = "1378px";
+        $("#br-btn").style.top = "1238px";
+        $("#br-push").style.top = "1148px";
+        // 슬로건 2행(202)을 로고(아래 362)와 유도(위 1148) 사이 가운데에
+        $("#br-slo").style.top = "654px";
       }
       // 숫자 롤: 십의 자리 0→6, 일의 자리 0→9→0 (한 바퀴)
       $("#roll-t").innerHTML = [0, 1, 2, 3, 4, 5, 6].map((d) => "<b>" + d + "</b>").join("");
@@ -180,7 +174,10 @@
       tl.add("#br-label", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(WIN + 0.05));
       ui(tl, "#br-logo-row", BR);
       rise(tl, ["#kick-1", "#usp-1", "#usp-2"], BR + 0.12);
-      if (CUT === 15) ui(tl, "#br-tel-row", BR + 0.9);
+      if (CUT === 15) {
+        ui(tl, "#br-tel-row", BR + 0.9);
+        rise(tl, "#push-1", BR + 1.0); // 15초: CTA 유도는 전화와 함께 일찍 (끝 장면에 새 글을 슬로건 하나로)
+      }
 
       // ===== C8 다음 다운비트: USP 묶음이 위로 비켜나고(450ms in-out) 내 질문 → 사람의 답, 60 롤 =====
       const tC8 = EB(CUT === 30 ? 3 : 2);
@@ -209,9 +206,8 @@
         ui(tl, "#note-1", tSlo + 0.25); // "상담만 받아도 돼요." 는 슬로건과 함께 (첫 구간 읽기 부담 분산)
         push(tl, "#br-end", tCut1, END);
       } else {
-        // ===== 15초 C6 하드컷 (마지막 크래시): 슬로건 + 한 줄 + CTA 유도 + 버튼 (전화는 브랜드 진입부터) =====
-        rise(tl, ["#slo-1", "#slo-2", "#one-1"], tCut1);
-        rise(tl, "#push-1", tCut1 + 0.3);
+        // ===== 15초 C6 하드컷 (마지막 크래시): 슬로건 + 버튼 (CTA 유도·전화는 브랜드 진입부터 그 자리) =====
+        rise(tl, ["#slo-1", "#slo-2"], tCut1);
         ui(tl, "#br-btn", tCut1 + 0.35);
         push(tl, "#br-end", tCut1, END);
       }
