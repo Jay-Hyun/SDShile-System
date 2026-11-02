@@ -1,0 +1,37 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
+      font-weight: 45 930;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: "PretendardGOV", sans-serif;
+      letter-spacing: -0.02em;
+      word-break: keep-all;
+      pointer-events: none;
+    }
+    /* 연출 배지: 좌상단 y 240. 사양 26px → 가독 하한 28px로 올림 */
+    .badge { position: absolute; left: 60px; top: 240px; height: 44px; padding: 0 18px; border-radius: 10px; background: rgba(22, 22, 22, 0.66); color: #ffffff; font-size: 28px; line-height: 44px; font-weight: 700; white-space: nowrap; }
+    /* 고지 트랙: 흰 글자 + 60% 블랙 박스, 28px, y 1395–1480 */
+    .bar { position: absolute; left: 60px; height: 40px; padding: 0 16px; background: rgba(0, 0, 0, 0.6); color: #ffffff; font-size: 28px; line-height: 40px; font-weight: 600; white-space: nowrap; border-radius: 6px; }
+    #lg-foot { top: 1395px; }
+    #lg-warn { top: 1440px; }
+  </style>
+  <div id="root" data-composition-id="legal" data-width="1080" data-height="1920">
+    <div id="lg-badge1" class="clip" data-start="0" data-duration="18" data-track-index="1"><div class="badge">가상 챗봇 화면 · 연출</div></div>
+    <div id="lg-badge2" class="clip" data-start="18" data-duration="12" data-track-index="1"><div class="badge">연출</div></div>
+    <div id="lg-foot-c" class="clip" data-start="18" data-duration="12" data-track-index="2"><div id="lg-foot" class="bar">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</div></div>
+    <div id="lg-warn-c" class="clip" data-start="18" data-duration="12" data-track-index="3"><div id="lg-warn" class="bar">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</div></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // 각주·고지는 브랜드 진입(18.0)과 함께 올라와 30.0까지 유지
+    tl.fromTo(["#lg-foot", "#lg-warn"], { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: "expo.out", stagger: 0.05 }, 18.15);
+    tl.set({}, {}, 30);
+    window.__timelines["legal"] = tl;
+  </script>
+</template>

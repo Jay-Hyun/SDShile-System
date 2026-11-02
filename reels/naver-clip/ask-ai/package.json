@@ -1,0 +1,13 @@
+{
+  "name": "naver-clip-ask-ai",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "font": "python3 tools/subset_font.py",
+    "audio": "python3 tools/make_audio.py",
+    "dev": "npx --yes hyperframes@0.8.200 preview",
+    "check": "npx --yes hyperframes@0.8.200 check",
+    "snapshot": "npx --yes hyperframes@0.8.200 snapshot --at 0.5,2.5,6,9,12,14,16.5,19.5,22,25,29",
+    "render": "npx --yes hyperframes@0.8.200 render --quality delivery -o renders/ask-ai-30s.mp4"
+  }
+}

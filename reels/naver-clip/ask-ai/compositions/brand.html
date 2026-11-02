@@ -1,0 +1,210 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
+      font-weight: 45 930;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      color: #ffffff;
+      font-family: "PretendardGOV", sans-serif;
+      letter-spacing: -0.04em;
+      word-break: keep-all;
+    }
+    #br-wrap { position: absolute; inset: 0; clip-path: circle(0px at 410px 1230px); }
+    #br-ground {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(60% 34% at 50% 34%, rgba(46, 92, 190, 0.34), rgba(46, 92, 190, 0) 100%),
+        radial-gradient(40% 22% at 85% 100%, rgba(224, 194, 126, 0.12), rgba(224, 194, 126, 0) 100%),
+        var(--color-navy, #0b1a33);
+    }
+    #br-grid { position: absolute; inset: 0; background: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1.6px, rgba(255, 255, 255, 0) 1.8px) 0 0 / 40px 40px; }
+    #br-desk { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 50% 60%; }
+    #br-sweep { position: absolute; left: -760px; top: -200px; width: 260px; height: 2400px; background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0)); }
+    .cam { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 500px 900px; }
+    /* 세이프 컬럼: x 80–920 (우측 160px 회피) → 중심 x 500 */
+    .stage { position: absolute; left: 80px; width: 840px; text-align: center; white-space: nowrap; }
+
+    #br-logo { top: 262px; height: 96px; display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 46px; font-weight: 800; letter-spacing: -0.03em; }
+    #br-logo img { width: 72px; height: 80px; }
+    #br-logo-s { position: absolute; left: 60px; top: 304px; height: 52px; display: flex; align-items: center; gap: 12px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
+    #br-logo-s img { width: 43px; height: 48px; }
+
+    #br-h1 { top: 520px; font-size: 96px; font-weight: 900; line-height: 1.1; color: var(--color-gold-light, #e0c27e); }
+    #br-h2 { top: 640px; font-size: 88px; font-weight: 900; line-height: 1.1; }
+    #br-h2 sup { font-size: 56px; color: var(--color-gold-light, #e0c27e); vertical-align: 26px; margin-left: 4px; }
+
+    #br-chip { position: absolute; left: 196px; top: 790px; height: 52px; padding: 0 22px; border-radius: 26px; background: rgba(255, 255, 255, 0.14); border: 2px solid rgba(255, 255, 255, 0.28); display: flex; align-items: center; gap: 10px; font-size: 30px; font-weight: 600; color: rgba(255, 255, 255, 0.86); letter-spacing: -0.02em; white-space: nowrap; }
+    #br-chip svg { width: 26px; height: 26px; }
+    #br-cs { position: absolute; left: 72px; top: 864px; width: 108px; height: 108px; }
+    #br-cs svg { width: 100%; height: 100%; display: block; }
+    #br-cdots { position: absolute; left: 196px; top: 872px; width: 170px; height: 84px; border-radius: 42px; background: rgba(251, 249, 244, 0.9); display: flex; align-items: center; justify-content: center; gap: 14px; }
+    .cd { width: 16px; height: 16px; border-radius: 50%; background: var(--color-gold, #b8955a); }
+    #br-bub { position: absolute; left: 196px; top: 864px; width: 664px; padding: 28px 40px 30px; border-radius: 48px 48px 48px 14px; background: var(--color-paper, #fbf9f4); color: var(--color-navy, #0b1a33); font-size: 56px; line-height: 76px; font-weight: 800; letter-spacing: -0.035em; white-space: nowrap; }
+    #br-bub .stair { display: inline-block; width: 52px; height: 52px; vertical-align: -6px; margin-right: 10px; }
+    #br-num { position: relative; display: inline-block; min-width: 1.15em; text-align: center; font-variant-numeric: tabular-nums; color: var(--color-gold, #b8955a); font-weight: 900; }
+    #br-num i { position: absolute; left: 0; right: 0; bottom: 4px; height: 7px; border-radius: 4px; background: var(--color-gold, #b8955a); transform-origin: 0 50%; }
+
+    .line { position: absolute; left: 80px; width: 840px; height: 104px; overflow: hidden; text-align: center; white-space: nowrap; }
+    .line > div { font-size: 80px; line-height: 104px; font-weight: 900; }
+    #br-cta1 { top: 700px; }
+    #br-cta2 { top: 812px; }
+    #br-cta2 em { font-style: normal; color: var(--color-gold-light, #e0c27e); }
+
+    #br-btn { position: absolute; left: 120px; top: 1150px; width: 760px; height: 120px; border-radius: 60px; background: var(--color-gold-light, #e0c27e); color: var(--color-navy, #0b1a33); display: flex; align-items: center; justify-content: center; gap: 16px; font-size: 54px; font-weight: 900; letter-spacing: -0.03em; box-shadow: 0 20px 50px rgba(224, 194, 126, 0.28); }
+    #br-btn svg { width: 46px; height: 46px; }
+    #br-tel { top: 1290px; height: 40px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 32px; font-weight: 700; letter-spacing: -0.01em; }
+    #br-tel svg { width: 32px; height: 32px; }
+    #br-hand { position: absolute; left: 560px; top: 1186px; width: 130px; height: 130px; transform-origin: 44% 18%; }
+
+    .slo { position: absolute; left: 80px; width: 840px; text-align: center; white-space: nowrap; font-size: 92px; line-height: 110px; font-weight: 900; letter-spacing: -0.045em; text-shadow: 0 6px 30px rgba(5, 10, 25, 0.55); }
+    #br-s1 { top: 790px; }
+    #br-s2 { top: 910px; }
+    #br-sub { top: 1066px; font-size: 44px; line-height: 56px; font-weight: 800; color: var(--color-gold-light, #e0c27e); letter-spacing: -0.02em; text-shadow: 0 4px 20px rgba(5, 10, 25, 0.6); }
+  </style>
+  <div id="root" data-composition-id="brand" data-width="1080" data-height="1920">
+    <div id="br-wrap" data-layout-allow-overlap data-layout-allow-overflow>
+      <div id="br-ground" data-layout-ignore></div>
+      <div id="br-grid" data-layout-ignore></div>
+      <!-- C10 배경: 저녁 사무실 책상 (스톡 대신 벡터 일러스트, 블러. "연출" 배지 적용) -->
+      <svg id="br-desk" viewBox="0 0 1080 1920" data-layout-ignore>
+        <defs>
+          <radialGradient id="dk-sky" cx="50%" cy="58%" r="70%">
+            <stop offset="0" stop-color="#f3a35c" />
+            <stop offset="0.28" stop-color="#b8675a" />
+            <stop offset="0.6" stop-color="#2f3a6a" />
+            <stop offset="1" stop-color="#0e1730" />
+          </radialGradient>
+          <radialGradient id="dk-lamp" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#ffd59a" stop-opacity="0.85" />
+            <stop offset="1" stop-color="#ffd59a" stop-opacity="0" />
+          </radialGradient>
+          <radialGradient id="dk-vig" cx="50%" cy="48%" r="62%">
+            <stop offset="0" stop-color="#0b1a33" stop-opacity="0.35" />
+            <stop offset="1" stop-color="#0b1a33" stop-opacity="0.82" />
+          </radialGradient>
+          <filter id="dk-blur" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="9" /></filter>
+        </defs>
+        <g filter="url(#dk-blur)">
+          <rect width="1080" height="1920" fill="url(#dk-sky)" />
+          <g fill="#151d3a">
+            <rect x="0" y="930" width="120" height="420" /><rect x="110" y="1010" width="90" height="340" /><rect x="190" y="880" width="130" height="470" />
+            <rect x="320" y="1040" width="80" height="310" /><rect x="390" y="960" width="110" height="390" /><rect x="660" y="900" width="120" height="450" />
+            <rect x="770" y="1020" width="90" height="330" /><rect x="850" y="940" width="140" height="410" /><rect x="980" y="1060" width="100" height="290" />
+          </g>
+          <g fill="#ffd28a" opacity="0.75">
+            <circle cx="70" cy="990" r="14" /><circle cx="240" cy="940" r="18" /><circle cx="430" cy="1010" r="12" /><circle cx="700" cy="960" r="16" />
+            <circle cx="900" cy="1000" r="20" /><circle cx="1010" cy="1100" r="14" /><circle cx="150" cy="1090" r="11" /><circle cx="820" cy="1080" r="12" />
+          </g>
+          <g fill="#ffb36b" opacity="0.5">
+            <circle cx="300" cy="760" r="40" /><circle cx="820" cy="700" r="52" /><circle cx="560" cy="640" r="30" /><circle cx="140" cy="640" r="34" /><circle cx="980" cy="820" r="38" />
+          </g>
+          <g stroke="#0c1328" stroke-width="22"><line x1="540" y1="380" x2="540" y2="1350" /><line x1="0" y1="560" x2="1080" y2="560" /></g>
+          <rect x="0" y="1340" width="1080" height="580" fill="#3a2a22" />
+          <rect x="0" y="1340" width="1080" height="16" fill="#5a4234" />
+          <circle cx="210" cy="1140" r="260" fill="url(#dk-lamp)" />
+          <path d="M150 1340 L190 1320 L230 1340 Z" fill="#20160f" /><line x1="190" y1="1320" x2="150" y2="1150" stroke="#20160f" stroke-width="14" /><line x1="150" y1="1150" x2="240" y2="1060" stroke="#20160f" stroke-width="14" /><path d="M215 1030 L300 1090 L250 1120 Z" fill="#20160f" />
+          <path d="M380 1340 L700 1340 L730 1356 L350 1356 Z" fill="#2b2f3a" />
+          <rect x="400" y="1110" width="280" height="230" rx="10" fill="#1d2233" /><rect x="414" y="1124" width="252" height="200" rx="4" fill="#9fb8ff" opacity="0.35" />
+          
+          <rect x="820" y="1240" width="80" height="100" rx="10" fill="#f1e7d6" opacity="0.8" /><path d="M900 1260 q36 0 36 30 q0 30 -36 30" fill="none" stroke="#f1e7d6" stroke-width="10" opacity="0.8" />
+        </g>
+        <rect width="1080" height="1920" fill="url(#dk-vig)" />
+      </svg>
+      <div id="br-sweep" data-layout-ignore></div>
+
+      <div id="br-cam" class="cam" data-layout-allow-overlap>
+        <div id="br-logo" class="stage"><img src="assets/img/mark-gold.svg" alt="" />경찰복지사이버평생교육원</div>
+        <div id="br-logo-s"><img src="assets/img/mark-gold.svg" alt="" />경찰복지사이버평생교육원</div>
+
+        <div id="br-h1" class="stage">국내 유일</div>
+        <div id="br-h2" class="stage">100% 온라인 법학사<sup>*</sup></div>
+
+        <div id="br-chip"><svg viewBox="0 0 24 24"><path d="M5 17h4l2-4V7H5v6h3zm8 0h4l2-4V7h-6v6h3z" fill="rgba(255,255,255,0.8)" /></svg>나 전문대 나왔고…</div>
+        <div id="br-cs" data-layout-ignore>
+          <!-- 얼굴 없는 상담사 라인 아이콘 (헤드셋) -->
+          <svg viewBox="0 0 108 108"><circle cx="54" cy="54" r="52" fill="#16294a" stroke="#e0c27e" stroke-width="3" /><circle cx="54" cy="44" r="15" fill="none" stroke="#fbf9f4" stroke-width="4" /><path d="M27 86c3-14 13-22 27-22s24 8 27 22" fill="none" stroke="#fbf9f4" stroke-width="4" stroke-linecap="round" /><path d="M33 47v-4a21 21 0 0 1 42 0v4" fill="none" stroke="#e0c27e" stroke-width="4" stroke-linecap="round" /><rect x="29" y="44" width="8" height="13" rx="3" fill="#e0c27e" /><rect x="71" y="44" width="8" height="13" rx="3" fill="#e0c27e" /><path d="M75 57c0 6-5 9-12 9" fill="none" stroke="#e0c27e" stroke-width="3" stroke-linecap="round" /></svg>
+        </div>
+        <div id="br-cdots"><span class="cd"></span><span class="cd"></span><span class="cd"></span></div>
+        <div id="br-bub"><svg class="stair" viewBox="0 0 24 24"><path d="M3 20h6v-5h5v-5h5V5h2" fill="none" stroke="#b8955a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>첫 계단은,<br />전문대면 <span id="br-num"><b id="br-cnt">60</b><i id="br-numul"></i></span>학점부터</div>
+
+        <div id="br-cta1" class="line"><div id="br-cta1-t">AI도 넘긴 질문,</div></div>
+        <div id="br-cta2" class="line"><div id="br-cta2-t">사람이 <em>1:1</em>로 답해드려요.</div></div>
+
+        <div id="br-s1" class="slo">책임지는 자리로,</div>
+        <div id="br-s2" class="slo">지금 있는 자리에서.</div>
+        <div id="br-sub" class="stage">교육부장관 명의 법학사</div>
+
+        <div id="br-btn">무료 상담 신청<svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="#0b1a33" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+        <div id="br-tel" class="stage"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="#ffffff" /></svg>070-4006-7128 (평일 10–18시)</div>
+        <svg id="br-hand" viewBox="0 0 24 24" data-layout-ignore><path d="M10 7.5c0-.83.67-1.5 1.5-1.5S13 6.67 13 7.5v6h1.76c.19 0 .37.04.54.11l4.54 2.26c.53.22.91.76.91 1.38 0 .06-.01.13-.02.2l-.75 5.27c-.11.73-.69 1.28-1.44 1.28h-6.79c-.41 0-.79-.17-1.06-.44l-4.94-4.94.79-.8c.2-.2.48-.33.79-.33.09 0 .16.02.24.03l3.43.72z" fill="#ffffff" stroke="#0b1a33" stroke-width="1.1" stroke-linejoin="round" /></svg>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // 로컬 시간 = 전체 시간 − 18.0
+    function IN(sel, t, from, dur, ease) {
+      const f = Object.assign({ opacity: 0, filter: "blur(8px)" }, from || {});
+      const to = { opacity: 1, filter: "blur(0px)", duration: dur || 0.3, ease: ease || "expo.out" };
+      for (const k in f) if (!(k in to)) to[k] = k.startsWith("scale") ? 1 : 0;
+      tl.fromTo(sel, f, to, t);
+    }
+    function OUT(sel, t, to, dur) {
+      tl.to(sel, Object.assign({ opacity: 0, filter: "blur(8px)", duration: dur || 0.22, ease: "power2.in" }, to || {}), t);
+    }
+
+    // 초기 상태 (탐색 안전: 모두 fromTo로 시작)
+    // ===== C7 반전 · 브랜드 18.0–21.0 =====
+    tl.fromTo("#br-wrap", { clipPath: "circle(0px at 410px 1230px)" }, { clipPath: "circle(2300px at 410px 1230px)", duration: 0.5, ease: "power2.out" }, 0);
+    tl.fromTo("#br-sweep", { x: 0, rotation: 18 }, { x: 2700, rotation: 18, duration: 0.6, ease: "power2.inOut" }, 0.3);
+    tl.fromTo("#br-desk", { opacity: 0, scale: 1.06 }, { opacity: 0, scale: 1.06, duration: 0.01 }, 0);
+    IN("#br-logo", 0.5, { y: -16 }, 0.35);
+    IN("#br-h1", 0.9, { y: 70, filter: "blur(10px)" }, 0.5);
+    IN("#br-h2", 1.15, { y: 70, filter: "blur(10px)" }, 0.5);
+
+    // ===== C8 사람의 답 · 첫 계단 21.0–23.5 =====
+    IN("#br-chip", 3.0, { x: -260, filter: "blur(6px)" }, 0.4, "power3.out");
+    IN("#br-cs", 3.25, { scale: 0.6 }, 0.35, "back.out(2)");
+    tl.fromTo("#br-cdots", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, 3.3);
+    tl.fromTo("#br-cdots .cd", { y: 0 }, { y: -10, duration: 0.15, yoyo: true, repeat: 1, stagger: 0.07, ease: "sine.inOut" }, 3.35);
+    tl.to("#br-cdots", { opacity: 0, duration: 0.06, ease: "none" }, 3.62);
+    tl.fromTo("#br-bub", { opacity: 0, scale: 0.85, transformOrigin: "0% 100%" }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 3.65);
+    const cnt = { v: 0 };
+    tl.fromTo(cnt, { v: 0 }, { v: 60, duration: 0.7, ease: "power2.out", onUpdate: () => { document.querySelector("#br-cnt").textContent = String(Math.round(cnt.v)); } }, 3.8);
+    tl.fromTo("#br-numul", { scaleX: 0 }, { scaleX: 1, duration: 0.25, ease: "power2.out" }, 4.5);
+    tl.fromTo("#br-cam", { scale: 1 }, { scale: 1.03, duration: 1.85, ease: "power1.inOut" }, 3.65);
+
+    // ===== C9 엔드카드 A (CTA) 23.5–27.0 =====
+    OUT(["#br-h1", "#br-h2", "#br-chip", "#br-cs", "#br-bub"], 5.5, { y: -50 });
+    tl.to("#br-cam", { scale: 1, duration: 0.4, ease: "power2.inOut" }, 5.5);
+    tl.fromTo("#br-cta1-t", { yPercent: 105 }, { yPercent: 0, duration: 0.5, ease: "expo.out" }, 5.6);
+    tl.fromTo("#br-cta2-t", { yPercent: 105 }, { yPercent: 0, duration: 0.5, ease: "expo.out" }, 6.1);
+    tl.fromTo("#br-btn", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(2)" }, 6.9);
+    IN("#br-tel", 7.1, { y: 16 }, 0.3);
+    // 탭 루프 1회
+    tl.fromTo("#br-hand", { opacity: 0, x: 140, y: 160 }, { opacity: 1, x: 0, y: 0, duration: 0.35, ease: "power3.out" }, 7.7);
+    tl.to("#br-hand", { scale: 0.86, duration: 0.08, ease: "power2.out" }, 8.1);
+    tl.to("#br-btn", { scale: 0.95, duration: 0.08, ease: "power2.out" }, 8.1);
+    tl.to("#br-hand", { scale: 1, duration: 0.12, ease: "power2.out" }, 8.2);
+    tl.to("#br-btn", { scale: 1, duration: 0.14, ease: "power2.out" }, 8.2);
+    tl.to("#br-hand", { opacity: 0, x: 80, y: 90, duration: 0.25, ease: "power2.in" }, 8.6);
+
+    // ===== C10 엔드카드 B (슬로건) 27.0–30.0 =====
+    tl.to(["#br-cta1-t", "#br-cta2-t"], { yPercent: -105, duration: 0.3, ease: "power3.in", stagger: 0.05 }, 9.0);
+    tl.fromTo("#br-desk", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out", immediateRender: false }, 9.0);
+    tl.fromTo("#br-desk", { scale: 1.06 }, { scale: 1, duration: 3.0, ease: "power1.out", immediateRender: false }, 9.0);
+    OUT("#br-logo", 9.0, { y: -10 }, 0.2);
+    IN("#br-logo-s", 9.15, { x: -16 }, 0.3);
+    IN("#br-s1", 9.12, { y: -110, filter: "blur(4px)" }, 0.5, "back.out(1.5)");
+    IN("#br-s2", 9.72, { y: -110, filter: "blur(4px)" }, 0.5, "back.out(1.5)");
+    IN("#br-sub", 10.2, { y: 0 }, 0.35, "power3.out");
+
+    window.__timelines["brand"] = tl;
+  </script>
+</template>

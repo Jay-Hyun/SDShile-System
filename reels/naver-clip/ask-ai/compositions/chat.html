@@ -1,0 +1,284 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
+      font-weight: 45 930;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: var(--color-chat-ground, #f2f3f5);
+      color: var(--color-ink, #161616);
+      font-family: "PretendardGOV", sans-serif;
+      letter-spacing: -0.03em;
+      word-break: keep-all;
+    }
+    .cam { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 0 0; }
+    /* 앱 헤더: 가상 "AI 어시스턴트" (실존 서비스 요소 없음) */
+    #ch-head { position: absolute; left: 60px; top: 300px; height: 72px; display: flex; align-items: center; gap: 20px; }
+    #ch-head svg { width: 64px; height: 64px; }
+    #ch-head b { font-size: 40px; font-weight: 700; letter-spacing: -0.03em; }
+    #ch-top { position: absolute; left: 0; top: 0; width: 1080px; height: 390px; background: var(--color-chat-ground, #f2f3f5); }
+    #ch-hr { position: absolute; left: 0; top: 388px; width: 1080px; height: 2px; background: #e1e4e8; }
+
+    #ch-vp { position: absolute; left: 0; top: 390px; width: 1080px; height: 950px; overflow: hidden; }
+    #ch-thread { position: absolute; left: 0; top: 0; width: 1080px; height: 2000px; }
+
+    #ch-title { position: absolute; left: 60px; top: 40px; font-size: 92px; font-weight: 800; line-height: 1.15; letter-spacing: -0.05em; white-space: nowrap; }
+    #ch-title i { display: block; height: 10px; margin-top: 8px; border-radius: 5px; background: var(--color-teal, #2a9d8f); }
+
+    .bub { position: absolute; font-size: 52px; line-height: 72px; font-weight: 500; border-radius: 36px; padding: 26px 34px; white-space: nowrap; }
+    .user { background: var(--color-teal, #2a9d8f); color: #ffffff; font-weight: 600; border-bottom-right-radius: 10px; }
+    .ai { background: #ffffff; border-top-left-radius: 10px; }
+    .av { position: absolute; }
+    .av svg { width: 100%; height: 100%; display: block; }
+
+    #ch-u1 { right: 220px; top: 230px; }
+    #ch-av1 { left: 56px; top: 480px; width: 76px; height: 76px; }
+    #ch-typing { left: 150px; top: 480px; width: 190px; height: 100px; padding: 0; display: flex; align-items: center; justify-content: center; gap: 16px; }
+    .td { width: 18px; height: 18px; border-radius: 50%; background: #8a9099; }
+
+    #ch-a1 { left: 150px; top: 480px; width: 710px; height: 592px; white-space: normal; clip-path: inset(0px 0px 592px 0px round 10px 36px 36px 36px); }
+    #a1-pre { color: #8a9099; filter: blur(7px); }
+    #a1-key { margin-top: 16px; }
+    #a1-ex { margin-top: 20px; }
+    #a1-ex b { display: inline-block; font-weight: 800; }
+    .hl { background-image: linear-gradient(#ffe066, #ffe066); background-repeat: no-repeat; background-position: 0 86%; background-size: 0% 46%; }
+    #ch-note { position: absolute; left: 156px; top: 996px; font-size: 30px; line-height: 40px; font-weight: 600; color: #5f6670; letter-spacing: -0.02em; white-space: nowrap; }
+
+    #ch-u2 { right: 220px; top: 1150px; }
+    #ch-av2 { left: 48px; top: 1470px; width: 88px; height: 88px; }
+    #ch-dots { left: 150px; top: 1474px; width: 220px; height: 80px; padding: 0 0 0 30px; display: flex; align-items: center; gap: 14px; }
+    .sd { width: 18px; height: 18px; border-radius: 50%; background: var(--color-teal, #2a9d8f); }
+    .st { position: absolute; left: 396px; top: 1478px; font-size: 52px; line-height: 72px; font-weight: 600; color: #5f6670; white-space: nowrap; }
+
+    #ch-a2 { left: 150px; top: 1470px; width: 710px; }
+    .ul { position: relative; display: inline-block; }
+    .ul i { position: absolute; left: 0; right: 0; bottom: 2px; height: 7px; border-radius: 4px; background: var(--color-teal, #2a9d8f); transform-origin: 0 50%; }
+    .emo { width: 58px; height: 58px; vertical-align: -9px; margin-left: 4px; }
+    #ch-btn { position: absolute; left: 150px; top: 1694px; width: 520px; height: 112px; border-radius: 56px; background: var(--color-teal, #2a9d8f); color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 52px; font-weight: 700; box-shadow: 0 14px 34px rgba(42, 157, 143, 0.32); }
+    #ch-btn svg { width: 56px; height: 56px; }
+    #ch-hand { position: absolute; left: 345px; top: 1724px; width: 140px; height: 140px; transform-origin: 44% 18%; }
+
+    /* 입력창 */
+    #ch-comp { position: absolute; left: 60px; top: 1356px; width: 800px; height: 104px; border-radius: 52px; background: #ffffff; border: 2px solid #e1e4e8; display: flex; align-items: center; padding-left: 40px; font-size: 40px; font-weight: 500; color: #858b93; }
+    .send { position: absolute; right: 14px; width: 76px; height: 76px; border-radius: 50%; background: #c9ced4; display: flex; align-items: center; justify-content: center; }
+    .send svg { width: 40px; height: 40px; }
+    #ch-comp .send { top: 12px; }
+    #ch-dim { position: absolute; left: 0; top: 390px; width: 1080px; height: 950px; background: rgba(242, 243, 245, 0.78); }
+    #ch-comp2 { position: absolute; left: 80px; top: 1100px; width: 760px; height: 360px; border-radius: 40px; background: #ffffff; border: 3px solid var(--color-teal, #2a9d8f); box-shadow: 0 20px 50px rgba(22, 22, 22, 0.12); }
+    #cp-text { position: absolute; left: 36px; top: 30px; width: 600px; font-size: 52px; line-height: 72px; font-weight: 500; white-space: nowrap; }
+    #ch-comp2 .send { right: 18px; bottom: 18px; width: 84px; height: 84px; }
+    .caret { display: inline-block; width: 4px; height: 58px; margin-left: 3px; vertical-align: -10px; background: var(--color-teal, #2a9d8f); opacity: 0; }
+
+    /* 타이핑: 글자 단위로 display를 켜서 커서가 따라오게 한다 */
+    .typed .ch { display: none; }
+    .typed .nl { display: none; }
+    .nl { display: block; height: 0; }
+  </style>
+  <div id="root" data-composition-id="chat" data-width="1080" data-height="1920">
+    <div id="ch-cam" class="cam" data-layout-allow-overlap data-layout-allow-overflow>
+
+      <div id="ch-vp" data-layout-allow-overflow>
+        <div id="ch-thread">
+          <div id="ch-title">AI가 답 못 한 질문<i></i></div>
+          <div id="ch-u1" class="bub user" data-layout-allow-occlusion>AI 시대에도 안 없어질<br />직업 알려줘.</div>
+
+          <div id="ch-av1" class="av"><svg viewBox="0 0 72 72"><rect width="72" height="72" rx="20" fill="#a9afb7" /><circle cx="26" cy="36" r="6.5" fill="#2b2f35" /><circle cx="46" cy="36" r="6.5" fill="#2b2f35" /></svg></div>
+          <div id="ch-typing" class="bub ai"><span class="td"></span><span class="td"></span><span class="td"></span></div>
+
+          <div id="ch-a1" class="bub ai">
+            <div id="a1-pre">…반복 업무는 점점 자동화되고, 문서 정리와 자료 검색도 빨라지겠지만</div>
+            <div id="a1-key" class="typed">…최종 판단과 <span id="hl1" class="hl">법적 책임</span>이<i class="nl"></i>따르는 일은 <span id="hl2" class="hl">사람</span>이<i class="nl"></i>맡게 됩니다.<span id="a1-caret" class="caret"></span></div>
+            <div id="a1-ex" class="typed">예: <b id="ex-b">법조인</b>, 법무 책임자<span id="ex-caret" class="caret"></span></div>
+          </div>
+          <div id="ch-note">※ 연출된 가상 대화입니다</div>
+
+          <div id="ch-u2" class="bub user">나 전문대 나왔고<br />회사 다니는데,<br />법 공부 할 수 있어?</div>
+
+          <div id="ch-av2" class="av"><svg viewBox="0 0 72 72"><rect width="72" height="72" rx="20" fill="#a9afb7" /><g id="av2-eyes"><circle cx="26" cy="36" r="6.5" fill="#2b2f35" /><circle cx="46" cy="36" r="6.5" fill="#2b2f35" /></g></svg></div>
+          <div id="ch-dots" class="bub ai"><span class="sd"></span><span class="sd"></span><span class="sd"></span><span id="sd4" class="sd"></span><span id="sd5" class="sd"></span></div>
+          <div id="st1" class="st">고민 중…</div>
+          <div id="st2" class="st">아직 고민 중…</div>
+          <div id="st3" class="st">음…</div>
+
+          <div id="ch-a2" class="bub ai"><span id="a2-text" class="typed">이건 <span class="ul">책임<i id="a2-ul"></i></span>지고 답할<i class="nl"></i>분께 넘길게요</span><svg id="a2-emo" class="emo" viewBox="0 0 36 36"><circle cx="18" cy="18" r="17" fill="#ffcc4d" /><ellipse cx="12.5" cy="14" rx="2.3" ry="3.2" fill="#664500" /><ellipse id="emo-eye" cx="23.5" cy="14" rx="2.3" ry="3.2" fill="#664500" /><path id="emo-wink" d="M20.6 14.6 Q23.5 11.6 26.4 14.6" fill="none" stroke="#664500" stroke-width="2.2" stroke-linecap="round" /><path d="M10 21.5 Q18 28.5 26 21.5" fill="none" stroke="#664500" stroke-width="2.4" stroke-linecap="round" /></svg></div>
+          <div id="ch-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6" fill="none" stroke="#fff" stroke-width="2" /><path d="M5 20c.6-3.6 3.4-5.6 7-5.6s6.4 2 7 5.6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" /><path d="M6.2 9.4V8a5.8 5.8 0 0 1 11.6 0v1.4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" /></svg>상담사 연결</div>
+          <svg id="ch-hand" viewBox="0 0 24 24"><path d="M10 7.5c0-.83.67-1.5 1.5-1.5S13 6.67 13 7.5v6h1.76c.19 0 .37.04.54.11l4.54 2.26c.53.22.91.76.91 1.38 0 .06-.01.13-.02.2l-.75 5.27c-.11.73-.69 1.28-1.44 1.28h-6.79c-.41 0-.79-.17-1.06-.44l-4.94-4.94.79-.8c.2-.2.48-.33.79-.33.09 0 .16.02.24.03l3.43.72z" fill="#ffffff" stroke="#161616" stroke-width="1.1" stroke-linejoin="round" /></svg>
+        </div>
+      </div>
+
+      <div id="ch-comp">메시지를 입력하세요<div class="send"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg></div></div>
+      <div id="ch-dim"></div>
+      <div id="ch-comp2">
+        <div id="cp-text"><span>나 전문대 나왔</span><span id="cp-d1">는</span><span id="cp-d2">데</span><span id="cp-typed" class="typed">고<i class="nl"></i>회사 다니는데,<i class="nl"></i>법 공부 할 수 있어?</span><span id="cp-caret" class="caret"></span></div>
+        <div id="cp-send" class="send"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+      </div>
+    </div>
+    <!-- 고정 앱 헤더 (카메라 줌 밖): 위쪽은 평평한 바탕으로 덮어 배지와 겹치지 않게 -->
+    <div id="ch-top" data-layout-allow-occlusion>
+      <div id="ch-head">
+        <svg viewBox="0 0 72 72"><rect width="72" height="72" rx="20" fill="#a9afb7" /><circle cx="26" cy="36" r="6.5" fill="#2b2f35" /><circle cx="46" cy="36" r="6.5" fill="#2b2f35" /></svg>
+        <b>AI 어시스턴트</b>
+      </div>
+      <div id="ch-hr"></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    // ---- helpers ----
+    // 글자를 span으로 쪼갠다(빌드 시 1회, 동기). .nl(줄바꿈)은 한 글자처럼 취급
+    function items(sel) {
+      const el = document.querySelector(sel);
+      const out = [];
+      (function walk(node) {
+        for (const n of Array.from(node.childNodes)) {
+          if (n.nodeType === 3) {
+            const f = document.createDocumentFragment();
+            for (const c of n.textContent) {
+              const s = document.createElement("span");
+              s.className = "ch";
+              s.textContent = c;
+              f.appendChild(s);
+              out.push(s);
+            }
+            node.replaceChild(f, n);
+          } else if (n.nodeType === 1) {
+            if (n.classList.contains("nl")) out.push(n);
+            else if (!n.classList.contains("caret") && n.tagName !== "I") walk(n);
+          }
+        }
+      })(el);
+      return out;
+    }
+    // t0→t1 사이에 한 글자씩 켠다 (탐색 안전: set만 사용)
+    function TYPE(sel, t0, t1) {
+      const it = items(sel);
+      const n = it.length;
+      it.forEach((s, i) => {
+        tl.set(s, { display: s.classList.contains("nl") ? "block" : "inline" }, +(t0 + ((t1 - t0) * i) / Math.max(1, n - 1)).toFixed(3));
+      });
+    }
+    // 카메라: 점 (px,py)를 중심으로 s배 확대 (원점 0 0 고정 → 상태 사이를 끊김 없이 보간)
+    function Z(s, px, py, dy) {
+      return { scale: s, x: +(px * (1 - s)).toFixed(2), y: +(py * (1 - s) + (dy || 0)).toFixed(2) };
+    }
+    // 같은 대상에 fromTo를 여러 번 걸 때: 첫 번째만 즉시 렌더 → 그 값이 기준(0초) 상태가 된다
+    const seen = new Set();
+    function FT(sel, a, b, t) {
+      const first = !seen.has(sel);
+      seen.add(sel);
+      tl.fromTo(sel, a, Object.assign({ immediateRender: first }, b), t);
+    }
+    function CAM(t, dur, a, b, ease) {
+      FT("#ch-cam", a, Object.assign({}, b, { duration: dur, ease: ease || "power2.inOut" }), t);
+    }
+    function SCROLL(t, dur, a, b, ease) {
+      FT("#ch-thread", { y: -a }, { y: -b, duration: dur, ease: ease || "power3.inOut" }, t);
+    }
+    function CLIP(t, dur, a, b, ease) {
+      const r = (v) => "inset(0px 0px " + v + "px 0px round 10px 36px 36px 36px)";
+      FT("#ch-a1", { clipPath: r(a) }, { clipPath: r(b), duration: dur, ease: ease || "power3.out" }, t);
+    }
+
+    // ---- 카메라 상태 ----
+    const C0 = Z(1, 0, 0), C1 = Z(1.04, 540, 820), C2 = Z(1.03, 480, 820), C3 = Z(1.1, 400, 760), C3b = Z(1.05, 420, 820);
+    const C4 = Z(1.15, 460, 1280, -220), C5 = Z(1.06, 420, 1210);
+
+    // ===== C1 훅 0.0–3.0: F0부터 제목+전송된 질문. 1.5초 아바타+타이핑 점 =====
+    CAM(0, 1.5, C0, C1, "power1.out");
+    tl.fromTo(["#ch-av1", "#ch-typing"], { opacity: 0, scale: 0.6, transformOrigin: "0% 0%" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 1.5);
+    tl.fromTo(".td", { opacity: 0.25 }, { opacity: 1, duration: 0.2, yoyo: true, repeat: 5, stagger: 0.12, ease: "sine.inOut" }, 1.62);
+
+    // ===== C2 핵심 답변 3.0–7.0 =====
+    tl.to("#ch-title", { opacity: 0, y: -30, duration: 0.25, ease: "power2.in" }, 3.0);
+    tl.to("#ch-typing", { opacity: 0, duration: 0.12, ease: "none" }, 3.0);
+    CLIP(3.0, 0.5, 592, 92);
+    SCROLL(3.0, 0.6, -120, 436);
+    FT("#ch-thread", { filter: "blur(0px)" }, { filter: "blur(5px)", duration: 0.3, ease: "power2.in" }, 3.0);
+    FT("#ch-thread", { filter: "blur(5px)" }, { filter: "blur(0px)", duration: 0.3, ease: "power2.out" }, 3.3);
+    CAM(3.0, 0.6, C1, C0, "power2.inOut");
+    tl.fromTo("#ch-note", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 3.3);
+    // 빈 말풍선에 커서 깜빡 → 타이핑 → 0.3초 정지
+    tl.set("#a1-caret", { opacity: 1 }, 3.35);
+    tl.set("#a1-caret", { opacity: 0 }, 3.5);
+    tl.set("#a1-caret", { opacity: 1 }, 3.6);
+    TYPE("#a1-key", 3.6, 6.35);
+    tl.set("#a1-caret", { opacity: 0 }, 6.45);
+    CAM(3.6, 3.3, C0, C2, "power1.inOut");
+
+    // ===== C3 하이라이트 + 예시 7.0–10.0 =====
+    tl.to("#hl1", { backgroundSize: "100% 46%", duration: 0.25, ease: "power2.out" }, 7.0);
+    tl.to("#hl2", { backgroundSize: "100% 46%", duration: 0.2, ease: "power2.out" }, 7.28);
+    CAM(7.4, 0.6, C2, C3, "power2.inOut");
+    CLIP(7.85, 0.3, 92, 0);
+    tl.fromTo("#ch-note", { y: 0 }, { y: 92, duration: 0.3, ease: "power3.out" }, 7.85);
+    tl.set("#ex-caret", { opacity: 1 }, 8.05);
+    TYPE("#a1-ex", 8.15, 8.9);
+    tl.set("#ex-caret", { opacity: 0 }, 9.0);
+    tl.fromTo("#ex-b", { scale: 1 }, { scale: 1.14, duration: 0.15, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, 9.0);
+    CAM(9.1, 0.9, C3, C3b, "power2.inOut");
+
+    // ===== C4 두 번째 질문 10.0–12.5 =====
+    CAM(10.0, 0.45, C3b, C4, "power3.inOut");
+    tl.fromTo("#ch-dim", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 10.0);
+    tl.fromTo("#ch-comp2", { opacity: 0, clipPath: "inset(250px 0px 0px 0px round 40px)" }, { opacity: 1, clipPath: "inset(0px 0px 0px 0px round 40px)", duration: 0.3, ease: "power3.out" }, 10.0);
+    tl.set("#cp-caret", { opacity: 1 }, 10.0);
+    tl.set("#cp-d2", { display: "none" }, 10.3);
+    tl.set("#cp-d1", { display: "none" }, 10.42);
+    TYPE("#cp-typed", 10.55, 11.1);
+    tl.set("#cp-send", { backgroundColor: "#2a9d8f" }, 11.1);
+    tl.fromTo("#cp-send", { scale: 1 }, { scale: 0.88, duration: 0.07, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, 11.18);
+    // 전송: 입력창이 닫히고 말풍선이 올라옴
+    tl.to("#cp-text", { opacity: 0, duration: 0.06, ease: "none" }, 11.25);
+    tl.to("#ch-comp2", { opacity: 0, clipPath: "inset(250px 0px 0px 0px round 40px)", duration: 0.22, ease: "power3.in" }, 11.27);
+    tl.to("#ch-dim", { opacity: 0, duration: 0.25, ease: "power2.in" }, 11.27);
+    tl.fromTo("#ch-u2", { opacity: 0, y: 240, scale: 0.92, transformOrigin: "100% 100%" }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.3)" }, 11.27);
+    SCROLL(11.27, 0.5, 436, 560, "power3.out");
+    CAM(11.27, 0.6, C4, C0, "power3.out");
+
+    // ===== C5 고민 중 (코믹 비트) 12.5–15.0 =====
+    SCROLL(12.45, 0.35, 560, 700, "power3.inOut");
+    tl.fromTo(["#ch-av2", "#ch-dots", "#st1"], { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: "expo.out" }, 12.55);
+    CAM(12.5, 2.5, C0, C5, "none");
+    tl.fromTo("#ch-dots .sd", { y: 0 }, { y: -12, duration: 0.2, yoyo: true, repeat: 9, stagger: 0.08, ease: "sine.inOut" }, 12.6);
+    tl.fromTo("#sd4", { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, 12.85);
+    tl.fromTo("#sd5", { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, 13.15);
+    tl.to("#st1", { opacity: 0, filter: "blur(6px)", duration: 0.1, ease: "power2.in" }, 13.35);
+    tl.fromTo("#st2", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power3.out" }, 13.42);
+    tl.fromTo("#av2-eyes", { x: 0 }, { x: -8, duration: 0.25, ease: "power2.inOut" }, 13.5);
+    tl.to("#av2-eyes", { x: 8, duration: 0.35, ease: "power2.inOut" }, 13.85);
+    tl.to("#st2", { opacity: 0, filter: "blur(6px)", duration: 0.1, ease: "power2.in" }, 14.25);
+    tl.fromTo("#st3", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power3.out" }, 14.32);
+    tl.to("#av2-eyes", { x: 0, y: 9, duration: 0.3, ease: "power2.out" }, 14.32);
+
+    // ===== C6 AI가 '책임'을 넘긴다 15.0–18.0 =====
+    tl.to(["#ch-dots", "#st3"], { opacity: 0, duration: 0.12, ease: "power2.in" }, 15.0);
+    tl.to("#av2-eyes", { y: 0, duration: 0.2, ease: "power2.out" }, 15.0);
+    SCROLL(15.0, 0.45, 700, 910, "power3.out");
+    CAM(15.0, 0.3, C5, C0, "power3.out");
+    tl.fromTo("#ch-a2", { opacity: 0, scale: 0.8, transformOrigin: "0% 0%" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.7)" }, 15.08);
+    TYPE("#a2-text", 15.2, 16.15);
+    tl.fromTo("#a2-emo", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.3, ease: "back.out(2.6)" }, 16.28);
+    tl.fromTo("#a2-ul", { scaleX: 0 }, { scaleX: 1, duration: 0.25, ease: "power2.out" }, 16.45);
+    tl.fromTo("#emo-wink", { opacity: 0 }, { opacity: 1, duration: 0.01, ease: "none" }, 16.9);
+    tl.fromTo("#emo-eye", { opacity: 1 }, { opacity: 0, duration: 0.01, ease: "none" }, 16.9);
+    tl.to("#emo-wink", { opacity: 0, duration: 0.01, ease: "none" }, 17.15);
+    tl.to("#emo-eye", { opacity: 1, duration: 0.01, ease: "none" }, 17.15);
+    tl.fromTo("#ch-btn", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "expo.out" }, 16.55);
+    // 2.2초 버튼 펄스 100→95→105→100
+    tl.to("#ch-btn", { scale: 0.95, duration: 0.1, ease: "power2.out" }, 17.2);
+    tl.to("#ch-btn", { scale: 1.05, duration: 0.12, ease: "power2.out" }, 17.3);
+    tl.to("#ch-btn", { scale: 1, duration: 0.1, ease: "power2.inOut" }, 17.42);
+    // 손가락 탭 → 눌린 채 빛난다
+    tl.fromTo("#ch-hand", { opacity: 0, x: 150, y: 170 }, { opacity: 1, x: 0, y: 0, duration: 0.3, ease: "power3.out" }, 17.28);
+    tl.to("#ch-hand", { scale: 0.86, duration: 0.08, ease: "power2.out" }, 17.62);
+    tl.to("#ch-btn", { scale: 0.96, backgroundColor: "#1f7a6f", boxShadow: "0 0 0 14px rgba(42, 157, 143, 0.28)", duration: 0.08, ease: "power2.out" }, 17.62);
+    tl.to("#ch-hand", { scale: 1, duration: 0.12, ease: "power2.out" }, 17.72);
+
+    window.__timelines["chat"] = tl;
+  </script>
+</template>
