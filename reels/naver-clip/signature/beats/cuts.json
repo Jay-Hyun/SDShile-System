@@ -4,146 +4,114 @@
  "bpm": 137.023,
  "cuts": [
   {
-   "t": 0.442,
-   "frame": 13,
-   "label": "C1 punch-in 1"
-  },
-  {
-   "t": 0.883,
-   "frame": 26,
-   "label": "C1 punch-in 2"
-  },
-  {
-   "t": 1.312,
-   "frame": 39,
-   "label": "C1 S2 whip"
+   "t": 1.753,
+   "frame": 53,
+   "label": "C1 S2",
+   "beat": 4,
+   "downbeat": true
   },
   {
    "t": 3.065,
    "frame": 92,
-   "label": "C2"
+   "label": "C2",
+   "beat": 7,
+   "downbeat": false
   },
   {
-   "t": 3.495,
-   "frame": 105,
-   "label": "C2 col2"
+   "t": 7.013,
+   "frame": 210,
+   "label": "C3",
+   "beat": 16,
+   "downbeat": true
   },
   {
-   "t": 3.948,
-   "frame": 118,
-   "label": "C2 col3"
+   "t": 10.519,
+   "frame": 316,
+   "label": "C4",
+   "beat": 24,
+   "downbeat": true
   },
   {
-   "t": 4.377,
-   "frame": 131,
-   "label": "C2 wide"
+   "t": 17.52,
+   "frame": 526,
+   "label": "C6",
+   "beat": 40,
+   "downbeat": true
   },
   {
-   "t": 6.13,
-   "frame": 184,
-   "label": "C3"
-  },
+   "t": 24.521,
+   "frame": 736,
+   "label": "C7",
+   "beat": 56,
+   "downbeat": true
+  }
+ ],
+ "moves": [
   {
-   "t": 8.766,
-   "frame": 263,
-   "label": "C3 S3 toast"
-  },
-  {
-   "t": 10.066,
-   "frame": 302,
-   "label": "C4"
+   "t": 8.88,
+   "label": "C3 S3 toast (entrance)"
   },
   {
    "t": 14.02,
-   "frame": 421,
-   "label": "C5"
-  },
-  {
-   "t": 15.349,
-   "frame": 460,
-   "label": "C5 S2 desk match"
-  },
-  {
-   "t": 17.961,
-   "frame": 539,
-   "label": "C6"
+   "label": "C5 line draws out (in shot)"
   },
   {
    "t": 19.261,
-   "frame": 578,
-   "label": "C6 S2 pen touch"
+   "label": "C6 S2 signature stroke"
   },
   {
    "t": 21.014,
-   "frame": 630,
-   "label": "C6 S3 USP"
-  },
-  {
-   "t": 24.091,
-   "frame": 723,
-   "label": "C7"
+   "label": "C6 S3 USP stack"
   },
   {
    "t": 26.274,
-   "frame": 788,
-   "label": "C7 S2"
+   "label": "C7 S2 button"
   },
   {
-   "t": 27.597,
-   "frame": 828,
-   "label": "C8"
+   "t": 27.5,
+   "label": "C8 end card (in shot)"
   }
  ],
  "scenes": [
   {
    "id": "hook",
    "start": 0,
-   "duration": 3.065
+   "duration": 1.753
+  },
+  {
+   "id": "tease",
+   "start": 1.753,
+   "duration": 1.312
   },
   {
    "id": "fill",
    "start": 3.065,
-   "duration": 3.065
+   "duration": 3.948
   },
   {
    "id": "blank",
-   "start": 6.13,
-   "duration": 3.936
-  },
-  {
-   "id": "dust",
-   "start": 10.066,
-   "duration": 3.954
-  },
-  {
-   "id": "desk",
-   "start": 14.02,
-   "duration": 3.941
-  },
-  {
-   "id": "sign",
-   "start": 17.961,
-   "duration": 6.13
-  },
-  {
-   "id": "cross",
-   "start": 24.091,
+   "start": 7.013,
    "duration": 3.506
   },
   {
-   "id": "end",
-   "start": 27.597,
-   "duration": 2.403
+   "id": "quiet",
+   "start": 10.519,
+   "duration": 7.001
+  },
+  {
+   "id": "sign",
+   "start": 17.52,
+   "duration": 7.001
+  },
+  {
+   "id": "cta",
+   "start": 24.521,
+   "duration": 5.479
   },
   {
    "id": "legal",
-   "start": 15.349,
-   "duration": 14.651
-  },
-  {
-   "id": "fx",
-   "start": 0,
-   "duration": 30.0
+   "start": 15.5,
+   "duration": 14.5
   }
  ]
 }

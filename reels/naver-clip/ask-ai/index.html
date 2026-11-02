@@ -3,13 +3,13 @@
   lang="ko"
   data-resolution="portrait"
   data-composition-variables='[
-    {"id":"color-chat-ground","type":"color","label":"챗 배경","default":"#F2F3F5"},
-    {"id":"color-teal","type":"color","label":"챗 포인트(틸)","default":"#2A9D8F"},
-    {"id":"color-ink","type":"color","label":"본문","default":"#161616"},
-    {"id":"color-navy","type":"color","label":"브랜드 네이비","default":"#0B1A33"},
-    {"id":"color-paper","type":"color","label":"웜화이트","default":"#FBF9F4"},
-    {"id":"color-gold","type":"color","label":"골드","default":"#B8955A"},
-    {"id":"color-gold-light","type":"color","label":"골드(어두운 배경용)","default":"#E0C27E"}
+    {"id":"color-ink","type":"color","label":"Ink (본문·사용자 말풍선)","default":"#0E1116"},
+    {"id":"color-paper","type":"color","label":"Paper (챗 바탕)","default":"#F7F6F2"},
+    {"id":"color-tone","type":"color","label":"AI 말풍선 (Paper 한 단계)","default":"#EAE7DF"},
+    {"id":"color-muted","type":"color","label":"보조 글자 (Paper 위)","default":"#5F6368"},
+    {"id":"color-navy","type":"color","label":"브랜드 Navy","default":"#0B1A33"},
+    {"id":"color-sec","type":"color","label":"보조 글자 (Navy 위)","default":"#9AA0A6"},
+    {"id":"color-gold","type":"color","label":"골드 (강조 하나)","default":"#B8955A"}
   ]'
 >
   <head>
@@ -29,7 +29,7 @@
         width: 1080px;
         height: 1920px;
         overflow: hidden;
-        background: #f2f3f5;
+        background: #f7f6f2;
       }
     </style>
   </head>
@@ -43,21 +43,21 @@
       data-width="1080"
       data-height="1920"
     >
-      <!-- 엔진: anime.js v4 (lib/anime.min.js) + lib/beat.js. 모든 타이밍은 BGM 비트 그리드(P = 60/125.03 s) -->
-      <!-- C1–C6 가상 챗봇 화면 (0–18.467). 브랜드 원형 전환 아래로 19.0까지 깔림 -->
+      <!-- 엔진: anime.js v4 (lib/anime.min.js) + lib/beat.js. 컷·챕터는 BGM 다운비트(1마디 = 4·60/125.03 s), 장면 안 모션은 비트와 무관하게 흐른다 -->
+      <!-- C1–C6 가상 챗봇 화면 (한 컷, 0–17.867). [상담사 연결]이 열리는 동안 19.1까지 아래에 깔림 -->
       <div id="chat" class="clip" data-composition-id="chat" data-composition-src="compositions/chat.html"
-        data-start="0" data-duration="19" data-track-index="1" data-track-kind="graphics"
+        data-start="0" data-duration="19.1" data-track-index="1" data-track-kind="graphics"
         data-width="1080" data-height="1920" style="z-index: 1"></div>
-      <!-- C7–C10 브랜드 · 상담 화면 · 엔드카드 (18.467–30.0, 원곡 B섹션 크래시에 진입) -->
+      <!-- C7–C10 상담 화면 · 엔드카드 (17.867 버튼이 열리기 시작 → 18.476 원곡 B섹션 크래시 = 열림 중간점) -->
       <div id="brand" class="clip" data-composition-id="brand" data-composition-src="compositions/brand.html"
-        data-start="18.467" data-duration="11.533" data-track-index="2" data-track-kind="graphics"
+        data-start="17.8667" data-duration="12.1333" data-track-index="2" data-track-kind="graphics"
         data-width="1080" data-height="1920" style="z-index: 2"></div>
-      <!-- 연출 배지 · 국내 유일 각주 · 보장 금지 고지 (전 구간 오버레이) -->
+      <!-- 연출 배지 · 연출 대화 고지 · 국내 유일 각주 · 보장 금지 고지 (전 구간 오버레이) -->
       <div id="legal" class="clip" data-composition-id="legal" data-composition-src="compositions/legal.html"
         data-start="0" data-duration="30" data-track-index="3" data-track-kind="graphics"
         data-width="1080" data-height="1920" style="z-index: 3"></div>
 
-      <!-- 오디오: tools/make_audio.py — 제공 BGM(Pixabay 505611) 편집 스템 + 비트 맞춤 SFX 스템 (합 −15 LUFS, TP ≤ −1 dBTP) -->
+      <!-- 오디오: tools/make_audio.py — 제공 BGM(Pixabay 505611) 편집 스템 + 장면 동작에 맞춘 SFX 스템 (합 −15 LUFS, TP ≤ −1 dBTP) -->
       <audio id="bgm" class="clip" src="assets/audio/bgm.wav" data-start="0" data-duration="30" data-track-index="4" data-volume="1"></audio>
       <audio id="sfx" class="clip" src="assets/audio/sfx.wav" data-start="0" data-duration="30" data-track-index="5" data-volume="1"></audio>
     </div>

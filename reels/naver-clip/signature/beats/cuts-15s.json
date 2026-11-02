@@ -4,96 +4,82 @@
  "bpm": 137.023,
  "cuts": [
   {
-   "t": 0.442,
-   "frame": 13,
-   "label": "C1' punch-in 1"
-  },
-  {
-   "t": 0.871,
-   "frame": 26,
-   "label": "C1' punch-in 2"
-  },
-  {
    "t": 1.324,
    "frame": 40,
-   "label": "C1' S2 whip"
-  },
-  {
-   "t": 2.195,
-   "frame": 66,
-   "label": "C3'"
-  },
-  {
-   "t": 3.507,
-   "frame": 105,
-   "label": "C3' toast"
+   "label": "C1' S2",
+   "beat": 3,
+   "downbeat": true
   },
   {
    "t": 4.825,
    "frame": 145,
-   "label": "C4'"
-  },
-  {
-   "t": 7.89,
-   "frame": 237,
-   "label": "C4' S3 bridge"
-  },
-  {
-   "t": 9.207,
-   "frame": 276,
-   "label": "C6'"
+   "label": "C4'",
+   "beat": 11,
+   "downbeat": true
   },
   {
    "t": 10.066,
    "frame": 302,
-   "label": "C6' S2 pen touch"
+   "label": "C6' (signature)",
+   "beat": 23,
+   "downbeat": true
   },
   {
-   "t": 10.519,
-   "frame": 316,
+   "t": 11.819,
+   "frame": 355,
+   "label": "C8'",
+   "beat": 27,
+   "downbeat": true
+  }
+ ],
+ "moves": [
+  {
+   "t": 2.195,
+   "label": "C3' button (music returns)"
+  },
+  {
+   "t": 3.28,
+   "label": "C3' toast"
+  },
+  {
+   "t": 8.325,
+   "label": "C4' S3 bridge"
+  },
+  {
+   "t": 10.7,
    "label": "C6' S3 USP"
-  },
-  {
-   "t": 12.261,
-   "frame": 368,
-   "label": "C8'"
   }
  ],
  "scenes": [
   {
    "id": "hook",
    "start": 0,
-   "duration": 2.195
+   "duration": 1.324
   },
   {
-   "id": "blank",
-   "start": 2.195,
-   "duration": 2.63
+   "id": "tease",
+   "start": 1.324,
+   "duration": 3.501
   },
   {
-   "id": "dust",
+   "id": "quiet",
    "start": 4.825,
-   "duration": 4.382
+   "duration": 5.241
   },
   {
    "id": "sign",
-   "start": 9.207,
-   "duration": 3.054
+   "start": 10.066,
+   "duration": 1.753
   },
   {
    "id": "end",
-   "start": 12.261,
-   "duration": 2.739
+   "start": 11.819,
+   "duration": 3.181
   },
   {
    "id": "legal",
-   "start": 9.207,
-   "duration": 5.793
-  },
-  {
-   "id": "fx",
-   "start": 0,
-   "duration": 15.0
+   "start": 9.0,
+   "duration": 6.0
   }
  ]
 }

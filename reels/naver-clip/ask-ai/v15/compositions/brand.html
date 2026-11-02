@@ -5,281 +5,178 @@
       src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
       font-weight: 45 930;
     }
+    /* 아트 디렉션 v3: Navy 단색 필드, 중심축 x=540, 텍스트 폭 ≤ 840, 크기 4단계(112/72/40/26), 골드 ≤ 5% */
     #root {
       position: absolute;
       inset: 0;
       overflow: hidden;
-      color: #ffffff;
+      color: var(--color-paper, #f7f6f2);
       font-family: "PretendardGOV", sans-serif;
-      letter-spacing: -0.04em;
       word-break: keep-all;
     }
-    #br-wrap { position: absolute; inset: 0; clip-path: circle(0px at 410px 1230px); }
-    #br-ground {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(60% 34% at 50% 34%, rgba(46, 92, 190, 0.34), rgba(46, 92, 190, 0) 100%),
-        radial-gradient(40% 22% at 85% 100%, rgba(224, 194, 126, 0.12), rgba(224, 194, 126, 0) 100%),
-        var(--color-navy, #0b1a33);
-    }
-    #br-grid { position: absolute; inset: 0; background: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1.6px, rgba(255, 255, 255, 0) 1.8px) 0 0 / 40px 40px; }
-    #br-desk { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 50% 60%; }
-    #br-sweep { position: absolute; left: -760px; top: -200px; width: 260px; height: 2400px; background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0)); }
-    .cam { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 500px 900px; }
-    /* 세이프 컬럼: x 80–920 (우측 160px 회피) → 중심 x 500 */
-    .stage { position: absolute; left: 80px; width: 840px; text-align: center; white-space: nowrap; }
+    /* 오프닝 윈도우: [상담사 연결] 버튼 크기의 clip-path inset → 전체 화면 */
+    #br-win { position: absolute; inset: 0; background: var(--color-navy, #0b1a33); }
+    .row { position: absolute; left: 0; width: 1080px; text-align: center; }
+    .push { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 540px 830px; }
 
-    #br-logo { top: 262px; height: 96px; display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 46px; font-weight: 800; letter-spacing: -0.03em; }
-    #br-logo img { width: 72px; height: 80px; }
-    #br-logo-s { position: absolute; left: 60px; top: 304px; height: 52px; display: flex; align-items: center; gap: 12px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
-    #br-logo-s img { width: 43px; height: 48px; }
+    .lnD, .lnH, .lnB { display: block; overflow: hidden; white-space: nowrap; }
+    .lnD > span, .lnH > span, .lnB > span { display: inline-block; }
+    /* Display 112 / 700 / −0.04em / 1.08 */
+    .dsp { font-size: 112px; line-height: 1.08; font-weight: 700; letter-spacing: -0.04em; }
+    .dsp span { padding-right: 0.04em; }
+    /* Head 72 / 600 / −0.03em / 1.15 */
+    .hd { font-size: 72px; line-height: 1.15; font-weight: 600; letter-spacing: -0.03em; }
+    .hd .lnH > span { padding-right: 0.03em; }
+    /* Body 40 / 500 / −0.01em / 1.4 */
+    .bd { font-size: 40px; line-height: 56px; font-weight: 500; letter-spacing: -0.01em; }
+    .bd .lnB > span, .bd > span { padding-right: 0.01em; }
+    .g { font-style: normal; color: var(--color-gold, #b8955a); }
+    .sec { color: var(--color-sec, #9aa0a6); }
 
-    #br-h1 { top: 520px; font-size: 96px; font-weight: 900; line-height: 1.1; color: var(--color-gold-light, #e0c27e); }
-    #br-h2 { top: 640px; font-size: 88px; font-weight: 900; line-height: 1.1; }
-    #br-h2 .w { display: inline-block; }
-    #br-h1 { transform-origin: 50% 60%; }
-    #br-h2 sup { font-size: 56px; color: var(--color-gold-light, #e0c27e); vertical-align: 26px; margin-left: 4px; }
+    /* 로고 락업 (상단, 끝까지 유지) */
+    #br-logo { top: 296px; height: 64px; display: flex; align-items: center; justify-content: center; }
+    #br-logo-row { display: flex; align-items: center; gap: 16px; font-size: 40px; line-height: 56px; font-weight: 600; letter-spacing: -0.01em; padding-right: 0.01em; }
+    #br-mark { width: 50px; height: 56px; background: var(--color-gold, #b8955a); -webkit-mask: url("assets/img/mark-gold.svg") center / contain no-repeat; mask: url("assets/img/mark-gold.svg") center / contain no-repeat; }
 
-    #br-chip { position: absolute; left: 196px; top: 790px; height: 52px; padding: 0 22px; border-radius: 26px; background: rgba(255, 255, 255, 0.14); border: 2px solid rgba(255, 255, 255, 0.28); display: flex; align-items: center; gap: 10px; font-size: 30px; font-weight: 600; color: rgba(255, 255, 255, 0.86); letter-spacing: -0.02em; white-space: nowrap; }
-    #br-chip svg { width: 26px; height: 26px; }
-    #br-cs { position: absolute; left: 72px; top: 864px; width: 108px; height: 108px; }
-    #br-cs svg { width: 100%; height: 100%; display: block; }
-    #br-cdots { position: absolute; left: 196px; top: 872px; width: 170px; height: 84px; border-radius: 42px; background: rgba(251, 249, 244, 0.9); display: flex; align-items: center; justify-content: center; gap: 14px; }
-    .cd { width: 16px; height: 16px; border-radius: 50%; background: var(--color-gold, #b8955a); }
-    #br-bub { position: absolute; left: 196px; top: 864px; width: 664px; padding: 28px 40px 30px; border-radius: 48px 48px 48px 14px; background: var(--color-paper, #fbf9f4); color: var(--color-navy, #0b1a33); font-size: 56px; line-height: 76px; font-weight: 800; letter-spacing: -0.035em; white-space: nowrap; }
-    #br-bub .stair { display: inline-block; width: 52px; height: 52px; vertical-align: -6px; margin-right: 10px; }
-    #br-num { position: relative; display: inline-block; height: 76px; vertical-align: top; overflow: visible; color: var(--color-gold, #b8955a); font-weight: 900; font-variant-numeric: tabular-nums; }
-    #br-num .odo { display: inline-block; height: 76px; overflow: hidden; vertical-align: top; }
-    #br-num .strip { display: block; }
-    #br-num .strip b { display: block; height: 76px; line-height: 76px; font-weight: 900; text-align: center; }
-    #br-num svg { position: absolute; left: -10px; bottom: -12px; width: 96px; height: 22px; overflow: visible; }
+    #br-usp { top: 520px; }
+    #br-q { top: 890px; }
+    #br-ans { top: 978px; }
+    #br-cta { top: 640px; }
+    #br-slo { top: 640px; }
+    #br-sub { top: 838px; }
 
-    .line { position: absolute; left: 80px; width: 840px; height: 104px; overflow: hidden; text-align: center; white-space: nowrap; }
-    .line > div { font-size: 80px; line-height: 104px; font-weight: 900; }
-    #br-cta1 { top: 700px; }
-    #br-cta2 { top: 812px; }
-    #br-cta2 em { display: inline-block; font-style: normal; color: var(--color-gold-light, #e0c27e); }
+    /* 0 → 60 숫자 롤 (자리마다 한 번, 700ms ease-out) */
+    .roll { display: inline-block; color: var(--color-gold, #b8955a); font-variant-numeric: tabular-nums; }
+    .col { display: inline-block; height: 1.15em; overflow: hidden; vertical-align: top; }
+    .strip { display: block; }
+    .strip > b { display: block; height: 1.15em; font-weight: inherit; text-align: center; }
 
-    #br-btn { position: absolute; left: 120px; top: 1150px; width: 760px; height: 120px; border-radius: 60px; background: var(--color-gold-light, #e0c27e); color: var(--color-navy, #0b1a33); display: flex; align-items: center; justify-content: center; gap: 16px; font-size: 54px; font-weight: 900; letter-spacing: -0.03em; box-shadow: 0 20px 50px rgba(224, 194, 126, 0.28); }
-    #br-btn svg { width: 46px; height: 46px; }
-    #br-ring { position: absolute; left: 120px; top: 1150px; width: 760px; height: 120px; border-radius: 60px; border: 8px solid rgba(224, 194, 126, 0.6); }
-    #br-tel { top: 1290px; height: 40px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 32px; font-weight: 700; letter-spacing: -0.01em; }
-    #br-tel svg { width: 32px; height: 32px; }
-    #br-hand { position: absolute; left: 560px; top: 1186px; width: 130px; height: 130px; transform-origin: 44% 18%; }
+    /* CTA 버튼: 골드 면 + Navy 글자 (골드 면적 ≈ 3%) */
+    #br-btn { position: absolute; left: 260px; top: 1080px; width: 560px; height: 112px; border-radius: 56px; background: var(--color-gold, #b8955a); color: var(--color-navy, #0b1a33); display: flex; align-items: center; justify-content: center; font-size: 40px; line-height: 56px; font-weight: 600; letter-spacing: -0.01em; }
+    #br-btn span { padding-right: 0.01em; }
+    #br-tel { top: 1232px; height: 56px; display: flex; align-items: center; justify-content: center; }
+    #br-tel-row { display: flex; align-items: center; gap: 12px; }
+    #br-tel svg { width: 36px; height: 36px; display: block; }
 
-    #br-flash { position: absolute; inset: 0; background: #ffffff; }
-    #br-shake { position: absolute; inset: 0; }
-    .slo { position: absolute; left: 80px; width: 840px; text-align: center; white-space: nowrap; font-size: 92px; line-height: 110px; font-weight: 900; letter-spacing: -0.045em; text-shadow: 0 6px 30px rgba(5, 10, 25, 0.55); }
-    #br-s1 { top: 790px; }
-    #br-s2 { top: 910px; }
-    #br-sub { top: 1066px; font-size: 44px; line-height: 56px; font-weight: 800; color: var(--color-gold-light, #e0c27e); letter-spacing: -0.02em; text-shadow: 0 4px 20px rgba(5, 10, 25, 0.6); }
+    /* 열리기 직전 버튼 라벨 (chat.html 의 #ch-btn 과 같은 자리·같은 배율) */
+    #br-label { position: absolute; left: 340px; width: 400px; height: 112px; display: flex; align-items: center; justify-content: center; font-size: 40px; line-height: 56px; font-weight: 600; letter-spacing: -0.01em; transform: scale(1.03); }
   </style>
   <div id="root" data-composition-id="brand" data-width="1080" data-height="1920">
-    <div id="br-wrap" data-layout-allow-overlap data-layout-allow-overflow>
-      <div id="br-ground" data-layout-ignore></div>
-      <div id="br-grid" data-layout-ignore></div>
-      <!-- C10 배경: 저녁 사무실 책상 (스톡 대신 벡터 일러스트, 블러. "연출" 배지 적용) -->
-      <svg id="br-desk" viewBox="0 0 1080 1920" data-layout-ignore>
-        <defs>
-          <radialGradient id="dk-sky" cx="50%" cy="58%" r="70%">
-            <stop offset="0" stop-color="#f3a35c" />
-            <stop offset="0.28" stop-color="#b8675a" />
-            <stop offset="0.6" stop-color="#2f3a6a" />
-            <stop offset="1" stop-color="#0e1730" />
-          </radialGradient>
-          <radialGradient id="dk-lamp" cx="50%" cy="50%" r="50%">
-            <stop offset="0" stop-color="#ffd59a" stop-opacity="0.85" />
-            <stop offset="1" stop-color="#ffd59a" stop-opacity="0" />
-          </radialGradient>
-          <radialGradient id="dk-vig" cx="50%" cy="48%" r="62%">
-            <stop offset="0" stop-color="#0b1a33" stop-opacity="0.35" />
-            <stop offset="1" stop-color="#0b1a33" stop-opacity="0.82" />
-          </radialGradient>
-          <filter id="dk-blur" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="9" /></filter>
-        </defs>
-        <g filter="url(#dk-blur)">
-          <rect width="1080" height="1920" fill="url(#dk-sky)" />
-          <g fill="#151d3a">
-            <rect x="0" y="930" width="120" height="420" /><rect x="110" y="1010" width="90" height="340" /><rect x="190" y="880" width="130" height="470" />
-            <rect x="320" y="1040" width="80" height="310" /><rect x="390" y="960" width="110" height="390" /><rect x="660" y="900" width="120" height="450" />
-            <rect x="770" y="1020" width="90" height="330" /><rect x="850" y="940" width="140" height="410" /><rect x="980" y="1060" width="100" height="290" />
-          </g>
-          <g fill="#ffd28a" opacity="0.75">
-            <circle cx="70" cy="990" r="14" /><circle cx="240" cy="940" r="18" /><circle cx="430" cy="1010" r="12" /><circle cx="700" cy="960" r="16" />
-            <circle cx="900" cy="1000" r="20" /><circle cx="1010" cy="1100" r="14" /><circle cx="150" cy="1090" r="11" /><circle cx="820" cy="1080" r="12" />
-          </g>
-          <g fill="#ffb36b" opacity="0.5">
-            <circle cx="300" cy="760" r="40" /><circle cx="820" cy="700" r="52" /><circle cx="560" cy="640" r="30" /><circle cx="140" cy="640" r="34" /><circle cx="980" cy="820" r="38" />
-          </g>
-          <g stroke="#0c1328" stroke-width="22"><line x1="540" y1="380" x2="540" y2="1350" /><line x1="0" y1="560" x2="1080" y2="560" /></g>
-          <rect x="0" y="1340" width="1080" height="580" fill="#3a2a22" />
-          <rect x="0" y="1340" width="1080" height="16" fill="#5a4234" />
-          <circle cx="210" cy="1140" r="260" fill="url(#dk-lamp)" />
-          <path d="M150 1340 L190 1320 L230 1340 Z" fill="#20160f" /><line x1="190" y1="1320" x2="150" y2="1150" stroke="#20160f" stroke-width="14" /><line x1="150" y1="1150" x2="240" y2="1060" stroke="#20160f" stroke-width="14" /><path d="M215 1030 L300 1090 L250 1120 Z" fill="#20160f" />
-          <path d="M380 1340 L700 1340 L730 1356 L350 1356 Z" fill="#2b2f3a" />
-          <rect x="400" y="1110" width="280" height="230" rx="10" fill="#1d2233" /><rect x="414" y="1124" width="252" height="200" rx="4" fill="#9fb8ff" opacity="0.35" />
-          
-          <rect x="820" y="1240" width="80" height="100" rx="10" fill="#f1e7d6" opacity="0.8" /><path d="M900 1260 q36 0 36 30 q0 30 -36 30" fill="none" stroke="#f1e7d6" stroke-width="10" opacity="0.8" />
-        </g>
-        <rect width="1080" height="1920" fill="url(#dk-vig)" />
-      </svg>
-      <div id="br-sweep" data-layout-ignore></div>
+    <div id="br-win" data-layout-allow-overflow>
+      <div id="br-label"><span>상담사 연결</span></div>
 
-      <div id="br-cam" class="cam" data-layout-allow-overlap><div id="br-shake" data-layout-allow-overlap>
-        <div id="br-logo" class="stage"><img src="assets/img/mark-gold.svg" alt="" />경찰복지사이버평생교육원</div>
-        <div id="br-logo-s"><img src="assets/img/mark-gold.svg" alt="" />경찰복지사이버평생교육원</div>
+      <div id="br-logo" class="row"><div id="br-logo-row" data-m="c"><span id="br-mark"></span><span>경찰복지사이버평생교육원</span></div></div>
 
-        <div id="br-h1" class="stage">국내 유일</div>
-        <div id="br-h2" class="stage"><span class="w">100%</span> <span class="w">온라인</span> <span class="w">법학사<sup>*</sup></span></div>
-
-        <div id="br-chip"><svg viewBox="0 0 24 24"><path d="M5 17h4l2-4V7H5v6h3zm8 0h4l2-4V7h-6v6h3z" fill="rgba(255,255,255,0.8)" /></svg>나 전문대 나왔고…</div>
-        <div id="br-cs" data-layout-ignore>
-          <!-- 얼굴 없는 상담사 라인 아이콘 (헤드셋) -->
-          <svg viewBox="0 0 108 108"><circle cx="54" cy="54" r="52" fill="#16294a" stroke="#e0c27e" stroke-width="3" /><circle cx="54" cy="44" r="15" fill="none" stroke="#fbf9f4" stroke-width="4" /><path d="M27 86c3-14 13-22 27-22s24 8 27 22" fill="none" stroke="#fbf9f4" stroke-width="4" stroke-linecap="round" /><path d="M33 47v-4a21 21 0 0 1 42 0v4" fill="none" stroke="#e0c27e" stroke-width="4" stroke-linecap="round" /><rect x="29" y="44" width="8" height="13" rx="3" fill="#e0c27e" /><rect x="71" y="44" width="8" height="13" rx="3" fill="#e0c27e" /><path d="M75 57c0 6-5 9-12 9" fill="none" stroke="#e0c27e" stroke-width="3" stroke-linecap="round" /></svg>
+      <!-- C7 USP + C8 사람의 답 (한 화면) -->
+      <div id="br-p1" class="push">
+        <div id="br-usp" class="row dsp">
+          <div class="lnD"><span id="usp-1" data-m="c">국내 유일 100%</span></div>
+          <div class="lnD"><span id="usp-2" data-m="c">온라인 법학사*</span></div>
         </div>
-        <div id="br-cdots"><span class="cd"></span><span class="cd"></span><span class="cd"></span></div>
-        <div id="br-bub"><svg class="stair" viewBox="0 0 24 24"><path d="M3 20h6v-5h5v-5h5V5h2" fill="none" stroke="#b8955a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>첫 계단은,<br />전문대면 <span id="br-num"><span class="odo"><span id="odo-t" class="strip"></span></span><span class="odo"><span id="odo-o" class="strip"></span></span><svg viewBox="0 0 96 22"><path id="br-numul" d="M4 12 C 30 4, 60 18, 92 8" fill="none" stroke="#b8955a" stroke-width="7" stroke-linecap="round" /></svg></span>학점부터</div>
-
-        <div id="br-cta1" class="line"><div id="br-cta1-t">AI도 넘긴 질문,</div></div>
-        <div id="br-cta2" class="line"><div id="br-cta2-t">사람이 <em id="br-11">1:1</em>로 답해드려요.</div></div>
-
-        <div id="br-s1" class="slo">책임지는 자리로,</div>
-        <div id="br-s2" class="slo">지금 있는 자리에서.</div>
-        <div id="br-sub" class="stage">교육부장관 명의 법학사</div>
-
-        <div id="br-btn">무료 상담 신청<svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="#0b1a33" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
-        <div id="br-tel" class="stage"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="#ffffff" /></svg>070-4006-7128 (평일 10–18시)</div>
-        <div id="br-ring"></div>
-        <svg id="br-hand" viewBox="0 0 24 24" data-layout-ignore><path d="M10 7.5c0-.83.67-1.5 1.5-1.5S13 6.67 13 7.5v6h1.76c.19 0 .37.04.54.11l4.54 2.26c.53.22.91.76.91 1.38 0 .06-.01.13-.02.2l-.75 5.27c-.11.73-.69 1.28-1.44 1.28h-6.79c-.41 0-.79-.17-1.06-.44l-4.94-4.94.79-.8c.2-.2.48-.33.79-.33.09 0 .16.02.24.03l3.43.72z" fill="#ffffff" stroke="#0b1a33" stroke-width="1.1" stroke-linejoin="round" /></svg>
+        <div id="br-q" class="row bd sec"><div class="lnB"><span id="q-1" data-m="c">“나 전문대 나왔고 회사 다니는데…”</span></div></div>
+        <div id="br-ans" class="row hd">
+          <div class="lnH"><span id="ans-1" data-m="c">첫 계단은,</span></div>
+          <div class="lnH"><span id="ans-2" data-m="c">전문대면 <span class="roll"><span class="col"><span id="roll-t" class="strip"></span></span><span class="col"><span id="roll-o" class="strip"></span></span></span>학점부터</span></div>
+        </div>
       </div>
+
+      <!-- C9 CTA -->
+      <div id="br-p2" class="push">
+        <div id="br-cta" class="row hd">
+          <div class="lnH"><span id="cta-1" data-m="c">AI도 넘긴 질문,</span></div>
+          <div class="lnH"><span id="cta-2" data-m="c">사람이 <em class="g">1:1</em>로 답해드려요.</span></div>
+        </div>
       </div>
+
+      <!-- C10 슬로건 (Display 112 로는 2행이 840px 을 넘어 Head 72) -->
+      <div id="br-p3" class="push">
+        <div id="br-slo" class="row hd">
+          <div class="lnH"><span id="slo-1" data-m="c">책임지는 자리로,</span></div>
+          <div class="lnH"><span id="slo-2" data-m="c">지금 있는 자리에서.</span></div>
+        </div>
+        <div id="br-sub" class="row bd"><div class="lnB"><span id="sub-1" data-m="c">교육부장관 명의 법학사</span></div></div>
+      </div>
+
+      <div id="br-btn" data-m="c"><span>무료 상담 신청</span></div>
+      <div id="br-tel" class="row bd"><div id="br-tel-row" data-m="c"><svg viewBox="0 0 24 24"><path d="M6.6 3.5h2.7l1.4 4.1-2 1.5a12 12 0 0 0 6.2 6.2l1.5-2 4.1 1.4v2.7a2 2 0 0 1-2 2A16.6 16.6 0 0 1 4.6 5.5a2 2 0 0 1 2-2z" fill="none" stroke="#f7f6f2" stroke-width="1.6" stroke-linejoin="round" /></svg><span>070-4006-7128 (평일 10–18시)</span></div></div>
     </div>
-    <div id="br-flash" data-layout-ignore></div>
   </div>
   <script>
     (function () {
       const CUT = 15; // tools/build_15s.py 가 v15에서 15로 바꾼다
-      const { A, P, ms, timeline, shake, flash } = window.HF;
+      const { P, BAR, ms, E, D, timeline, rise, ui, push } = window.HF;
       const $ = (q) => document.querySelector(q);
       const tl = timeline();
-      // 브랜드 진입 = 버튼 탭 다음 비트 = 원곡 B섹션 크래시 (src 16.363)
-      const T = CUT === 30 ? 30.5 * P + 8 * P : 8.5;
-      const at = (k) => ms(T + k * P); // 브랜드 진입 기준 k비트
+      // 음악 B 구간 다운비트 (R = 음악 복귀): 30s 14.637 + 1마디·k / 15s 6.580 + 1마디·k
+      const R = CUT === 30 ? 30.5 * P : 8.5 - 4 * P;
+      const EB = (k) => R + k * BAR;
+      const BR = EB(CUT === 30 ? 2 : 1); // 원곡 B섹션 크래시 = 브랜드 (30s 18.476 / 15s 8.500)
+      const WIN = CUT === 30 ? 536 / 30 : 237 / 30; // 열리기 시작, 1200ms in-out 의 중간점 = 크래시
+      const BTN_CY = CUT === 30 ? 1166 : 1110; // chat.html 과 같은 값
+      const END = CUT === 30 ? 30 : 15;
 
       if (CUT === 15) {
-        $("#br-bub").innerHTML = $("#br-bub").innerHTML.replace("첫 계단은,", "첫 계단,");
-        ["#br-chip", "#br-cta1", "#br-cta2", "#br-sub"].forEach((q) => $(q).remove());
-        $("#br-cs").style.top = "800px"; $("#br-bub").style.top = "800px"; $("#br-cdots").style.top = "808px";
+        $("#ans-1").textContent = "첫 계단,";
+        $("#q-1").textContent = "“전문대 졸 직장인도 법 공부 돼?”";
+        $("#br-p2").remove(); // 15초판은 CTA 카피 없이 버튼이 CTA (05 §3)
+        $("#br-sub").remove(); // 서브라인 없음
       }
-      // 오도미터 숫자 (0→60): 십의 자리 0–6, 일의 자리 0–9 ×6 + 0
-      const H = 76;
-      $("#odo-t").innerHTML = [0, 1, 2, 3, 4, 5, 6].map((d) => "<b>" + d + "</b>").join("");
-      let ones = "";
-      for (let i = 0; i <= 60; i++) ones += "<b>" + (i % 10) + "</b>";
-      $("#odo-o").innerHTML = ones;
+      // 숫자 롤: 십의 자리 0→6, 일의 자리 0→9→0 (한 바퀴)
+      $("#roll-t").innerHTML = [0, 1, 2, 3, 4, 5, 6].map((d) => "<b>" + d + "</b>").join("");
+      $("#roll-o").innerHTML = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((d) => "<b>" + d + "</b>").join("");
+      $("#br-label").style.top = BTN_CY - 56 + "px";
 
-      const IN = (q, k, from, dur, ease) => {
-        const p = Object.assign({ opacity: [0, 1], filter: ["blur(10px)", "blur(0px)"] }, from || {});
-        tl.add(q, Object.assign(p, { duration: (dur || 0.3) * 1000, ease: ease || "outExpo" }), at(k));
-      };
-      const OUT = (q, k, to, dur) => tl.add(q, Object.assign({ opacity: 0, filter: "blur(8px)", duration: (dur || 0.2) * 1000, ease: "inQuad" }, to || {}), at(k));
-      const SPRING = (b, d) => A.spring({ bounce: b, duration: d });
+      // ---------- 시작 상태 ----------
+      const half = { w: 206, h: 57.68 }; // 400×112 버튼 × 1.03 (챗 카메라 푸시 끝 배율)
+      const winFrom = "inset(" + (BTN_CY - half.h) + "px " + (540 - half.w) + "px " + (1920 - BTN_CY - half.h) + "px " + (540 - half.w) + "px round " + half.h + "px)";
+      const winTo = "inset(0px 0px 0px 0px round 0px)";
+      tl.set("#br-win", { clipPath: winFrom }, 0);
+      const lines = ["#usp-1", "#usp-2", "#q-1", "#ans-1", "#ans-2", "#slo-1", "#slo-2"];
+      if (CUT === 30) lines.push("#cta-1", "#cta-2", "#sub-1");
+      tl.set(lines, { translateY: "105%" }, 0);
+      tl.set(["#br-logo-row", "#br-btn", "#br-tel-row"], { opacity: 0 }, 0);
+      tl.set(["#roll-t", "#roll-o"], { translateY: "0em" }, 0);
 
-      // ---- 시작 상태 ----
-      const hidden = ["#br-logo", "#br-logo-s", "#br-h1", "#br-h2 .w", "#br-cs", "#br-cdots", "#br-bub", "#br-btn", "#br-tel", "#br-hand", "#br-ring", "#br-s1", "#br-s2", "#br-desk", "#br-flash"];
-      if (CUT === 30) hidden.push("#br-chip", "#br-sub");
-      tl.set(hidden, { opacity: 0 }, 0);
-      if (CUT === 30) tl.set(["#br-cta1-t", "#br-cta2-t"], { translateY: "105%" }, 0);
-      tl.set("#br-wrap", { clipPath: "circle(0px at 440px 1290px)" }, 0);
-      const numUl = A.svg.createDrawable("#br-numul");
-      tl.set(numUl, { draw: "0 0" }, 0);
-      tl.set(["#odo-t", "#odo-o"], { translateY: 0 }, 0);
+      // ===== C7 시그니처: 눌린 버튼이 열려 상담 화면이 된다 (1200ms in-out) =====
+      tl.add("#br-win", { clipPath: [winFrom, winTo], duration: D.open, ease: E.draw }, ms(WIN));
+      tl.add("#br-label", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(WIN + 0.05));
+      ui(tl, "#br-logo-row", BR);
+      rise(tl, ["#usp-1", "#usp-2"], BR + 0.12);
+      if (CUT === 15) ui(tl, "#br-tel-row", BR + 0.9);
 
-      // ===== C7 반전·브랜드: 탭한 버튼에서 원형 전환 =====
-      tl.add("#br-wrap", { clipPath: ["circle(0px at 440px 1290px)", "circle(2300px at 440px 1290px)"], duration: 170, ease: "inOutQuad" }, at(0));
-      tl.add("#br-sweep", { translateX: [0, 2700], rotate: [18, 18], duration: 600, ease: "inOutQuad" }, at(0.3));
-      shake(tl, "#br-shake", T + 0.17, 10, 6, 41);
-      IN("#br-logo", CUT === 30 ? 1 : 0.5, { translateY: [-20, 0] }, 0.35);
-      const hK = CUT === 30 ? 2 : 1;
-      IN("#br-h1", hK, { scale: [1.7, 1], filter: ["blur(14px)", "blur(0px)"] }, 0.28);
-      shake(tl, "#br-shake", T + hK * P + 0.12, 12, 6, 42);
-      document.querySelectorAll("#br-h2 .w").forEach((w, i) => IN(w, hK + (CUT === 30 ? 1 : 0.5) + i * 0.5, { translateY: [40, 0] }, 0.22));
-      if (CUT === 30) shake(tl, "#br-shake", T + 4 * P, 8, 5, 43);
-      tl.add("#br-cam", { scale: [1, 1.03], duration: (CUT === 30 ? 6 : 8) * P * 1000, ease: "inOutSine" }, at(0.5));
-
-      // ===== C8 사람의 답 · 첫 계단 =====
-      const c8 = CUT === 30 ? 6 : 3; // 30: T+6P, 15: 같은 화면 안
-      if (CUT === 30) {
-        flash(tl, "#br-flash", T + 6 * P, 0.45);
-        IN("#br-chip", 6, { translateX: [-260, 0], filter: ["blur(6px)", "blur(0px)"] }, 0.35, "outQuart");
-      }
-      IN("#br-cs", c8 + 0.5, { scale: [0.5, 1] }, 0.35, "outBack(2)");
-      tl.add("#br-cdots", { opacity: [{ to: 1, duration: 60 }, { to: 1, duration: P * 400 }, { to: 0, duration: 60 }], ease: "linear" }, at(c8 + 0.5));
-      const bubK = c8 + 1;
-      tl.add("#br-bub", { opacity: [0, 1], scale: [0.7, 1], ease: SPRING(0.45, 420) }, at(bubK));
-      shake(tl, "#br-shake", T + bubK * P, 7, 5, 44);
-      // 0→60 카운트 (2비트)
-      tl.add("#odo-t", { translateY: [0, -6 * H], duration: 2 * P * 1000, ease: "outQuart" }, at(bubK + 0.5));
-      tl.add("#odo-o", { translateY: [0, -60 * H], duration: 2 * P * 1000, ease: "outQuart" }, at(bubK + 0.5));
-      tl.add(numUl, { draw: ["0 0", "0 1"], duration: 260, ease: "outQuart" }, at(bubK + 2.5));
-      tl.add("#br-num", { scale: [{ to: 1.2, duration: 80 }, { to: 1, duration: 300, ease: "outBack(3)" }] }, at(bubK + 2.5));
-      shake(tl, "#br-shake", T + (bubK + 2.5) * P, 6, 4, 45);
+      // ===== C8 다음 다운비트: 내 질문 → 사람의 답, 60 롤 =====
+      const tC8 = EB(CUT === 30 ? 3 : 2);
+      rise(tl, "#q-1", tC8);
+      rise(tl, ["#ans-1", "#ans-2"], tC8 + 0.12);
+      tl.add("#roll-t", { translateY: ["0em", "-6.9em"], duration: D.roll, ease: E.roll }, ms(tC8 + 0.5));
+      tl.add("#roll-o", { translateY: ["0em", "-11.5em"], duration: D.roll, ease: E.roll }, ms(tC8 + 0.57));
+      const tCut1 = EB(CUT === 30 ? 4 : 3); // 30s C9 / 15s C6
+      push(tl, "#br-p1", WIN, tCut1);
 
       if (CUT === 30) {
-        // ===== C9 엔드카드 A (CTA) T+11P =====
-        flash(tl, "#br-flash", T + 11 * P, 0.45);
-        OUT(["#br-h1", "#br-h2", "#br-chip", "#br-cs", "#br-bub"], 11, { translateY: -60 }, 0.1);
-        tl.add("#br-cam", { scale: 1, duration: 300, ease: "outExpo" }, at(11));
-        tl.add("#br-cta1-t", { translateY: ["105%", "0%"], duration: 400 }, at(11.25));
-        tl.add("#br-cta2-t", { translateY: ["105%", "0%"], duration: 400 }, at(12));
-        shake(tl, "#br-shake", T + 12 * P, 9, 5, 46);
-        tl.add("#br-11", { scale: [{ to: 1.3, duration: 90 }, { to: 1, duration: 320, ease: "outBack(3)" }] }, at(12.5));
-        tl.add("#br-btn", { opacity: [0, 1], scale: [0.6, 1], ease: SPRING(0.5, 420) }, at(13));
-        IN("#br-tel", 13.5, { translateY: [16, 0] }, 0.3);
-        tl.add("#br-hand", { opacity: [0, 1], translateX: [150, 0], translateY: [170, 0], duration: 320 }, at(15));
-        tl.add("#br-hand", { scale: [{ to: 0.84, duration: 70 }, { to: 1, duration: 140 }], ease: "outQuad" }, at(16));
-        tl.add("#br-btn", { scale: [{ to: 0.94, duration: 70 }, { to: 1, duration: 160 }], ease: "outQuad" }, at(16));
-        tl.add("#br-ring", { opacity: [0.9, 0], scale: [1, 1.15], duration: 380, ease: "outQuad" }, at(16));
-        tl.add("#br-hand", { opacity: 0, translateX: 90, translateY: 100, duration: 220, ease: "inQuad" }, at(17));
-        tl.add("#br-cam", { scale: [1, 1.025], duration: 3.5 * P * 1000, ease: "inOutSine" }, at(14));
-
-        // ===== C10 엔드카드 B (슬로건) T+18.5P = 원곡 비트 / 마지막 크래시 T+19.5P =====
-        const s1 = 30.5 * P + 26 * P - T; // 슬로건 시작 (비트 단위 아님 → 초)
-        const k10 = s1 / P;
-        flash(tl, "#br-flash", T + k10 * P, 0.4);
-        tl.add(["#br-cta1-t", "#br-cta2-t"], { translateY: "-105%", duration: 110, ease: "inQuad" }, at(k10));
-        tl.add("#br-cam", { scale: 1, duration: 300 }, at(k10));
-        tl.add("#br-desk", { opacity: [0, 1], duration: 400, ease: "outQuad" }, at(k10));
-        tl.add("#br-desk", { scale: [1.1, 1], duration: (30 - (T + k10 * P)) * 1000, ease: "outSine" }, at(k10));
-        OUT("#br-logo", k10, { translateY: -10 }, 0.15);
-        IN("#br-logo-s", k10 + 0.25, { translateX: [-16, 0] }, 0.3);
-        tl.add("#br-s1", { opacity: [0, 1], translateY: [-140, 0], ease: SPRING(0.35, 420) }, at(k10 + 0.25));
-        tl.add("#br-s2", { opacity: [0, 1], translateY: [-140, 0], ease: SPRING(0.35, 420) }, at(k10 + 1));
-        // 마지막 크래시 (원곡 src 31.719)
-        flash(tl, "#br-flash", T + (k10 + 2) * P, 0.55);
-        shake(tl, "#br-shake", T + (k10 + 2) * P, 14, 7, 47);
-        IN("#br-sub", k10 + 2, { translateY: [24, 0] }, 0.35, "outQuart");
-        tl.add("#br-btn", { scale: [{ to: 1.06, duration: 90 }, { to: 1, duration: 320, ease: "outBack(3)" }] }, at(k10 + 2));
-        tl.add("#br-cam", { scale: [1, 1.02], duration: (30 - (T + (k10 + 2) * P)) * 1000, ease: "outSine" }, at(k10 + 2.2));
+        // ===== C9 하드컷 (다운비트): CTA =====
+        tl.set("#br-p1", { opacity: 0 }, ms(tCut1));
+        rise(tl, ["#cta-1", "#cta-2"], tCut1);
+        ui(tl, "#br-btn", tCut1 + 0.8);
+        ui(tl, "#br-tel-row", tCut1 + 0.9);
+        const tPress = tCut1 + 2.9;
+        tl.add("#br-btn", { scale: [1, 0.97], duration: D.press / 2, ease: E.ui }, ms(tPress));
+        tl.add("#br-btn", { scale: [0.97, 1], duration: D.press / 2, ease: E.ui }, ms(tPress + D.press / 2000));
+        const tC10 = EB(6); // 원곡 다운비트 스플라이스
+        push(tl, "#br-p2", tCut1, tC10);
+        // ===== C10 하드컷 (다운비트): 슬로건. 서브라인은 마지막 크래시에 =====
+        tl.set("#br-p2", { opacity: 0 }, ms(tC10));
+        rise(tl, ["#slo-1", "#slo-2"], tC10);
+        rise(tl, "#sub-1", EB(7));
+        push(tl, "#br-p3", tC10, END);
       } else {
-        // 15초: 전화는 브랜드 진입부터
-        IN("#br-tel", 1, { translateY: [16, 0] }, 0.3);
-        // ===== C6 엔드카드 T+8P = 원곡 마지막 크래시 (슬로건 착지) =====
-        flash(tl, "#br-flash", T + 8 * P, 0.6);
-        shake(tl, "#br-shake", T + 8 * P, 14, 7, 47);
-        OUT(["#br-h1", "#br-h2", "#br-cs", "#br-bub"], 7.85, { translateY: -60 }, 0.15);
-        tl.add("#br-cam", { scale: 1, duration: 300 }, at(8));
-        tl.add("#br-desk", { opacity: [0, 1], duration: 350, ease: "outQuad" }, at(8));
-        tl.add("#br-desk", { scale: [1.1, 1], duration: (15 - (T + 8 * P)) * 1000, ease: "outSine" }, at(8));
-        OUT("#br-logo", 8, { translateY: -10 }, 0.15);
-        IN("#br-logo-s", 8.25, { translateX: [-16, 0] }, 0.3);
-        tl.add("#br-s1", { opacity: [0, 1], translateY: [-140, 0], ease: SPRING(0.35, 420) }, at(8));
-        tl.add("#br-btn", { opacity: [0, 1], scale: [0.6, 1], ease: SPRING(0.5, 420) }, at(8));
-        tl.add("#br-s2", { opacity: [0, 1], translateY: [-140, 0], ease: SPRING(0.35, 420) }, at(9));
-        tl.add("#br-cam", { scale: [1, 1.02], duration: (15 - (T + 9.3 * P)) * 1000, ease: "outSine" }, at(9.3));
+        // ===== 15초 C6 하드컷 (마지막 크래시): 슬로건 + 버튼 =====
+        tl.set("#br-p1", { opacity: 0 }, ms(tCut1));
+        rise(tl, ["#slo-1", "#slo-2"], tCut1);
+        ui(tl, "#br-btn", tCut1 + 0.5);
+        push(tl, "#br-p3", tCut1, END);
       }
-      tl.set({ v: 0 }, { v: 1 }, ms(CUT === 30 ? 30 : 15));
+      tl.set({ v: 0 }, { v: 1 }, ms(END));
       tl.seek(0);
     })();
   </script>

@@ -5,36 +5,55 @@
       src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
       font-weight: 45 930;
     }
+    /* 컴플라이언스 레이어 (02-art-direction.md §7): Small 26 / 400 / 1.4, x=540 가운데.
+       배지 y 160, 고지 y 1500–1560. Paper 바탕 #5F6368, Navy 바탕 #9AA0A6 */
     #root {
       position: absolute;
       inset: 0;
       overflow: hidden;
       font-family: "PretendardGOV", sans-serif;
-      letter-spacing: -0.02em;
+      font-size: 26px;
+      line-height: 1.4;
+      font-weight: 400;
+      letter-spacing: 0;
       word-break: keep-all;
       pointer-events: none;
     }
-    /* 연출 배지: 좌상단 y 240. 사양 26px → 가독 하한 28px로 올림 */
-    .badge { position: absolute; left: 60px; top: 240px; height: 44px; padding: 0 18px; border-radius: 10px; background: rgba(22, 22, 22, 0.66); color: #ffffff; font-size: 28px; line-height: 44px; font-weight: 700; white-space: nowrap; }
-    /* 고지 트랙: 흰 글자 + 60% 블랙 박스, 28px, y 1395–1480 */
-    .bar { position: absolute; left: 60px; height: 40px; padding: 0 16px; background: rgba(0, 0, 0, 0.6); color: #ffffff; font-size: 28px; line-height: 40px; font-weight: 600; white-space: nowrap; border-radius: 6px; }
-    #lg-foot { top: 1395px; }
-    #lg-warn { top: 1440px; }
+    .lg { position: absolute; left: 0; width: 1080px; text-align: center; white-space: nowrap; }
+    .lg > span { display: inline-block; }
+    .on-paper { color: var(--color-muted, #5f6368); }
+    .on-navy { color: var(--color-sec, #9aa0a6); }
+    .badge { top: 142px; }
+    #lg-note { top: 1512px; }
+    #lg-l1 { top: 1494px; }
+    #lg-l2 { top: 1530px; }
   </style>
   <div id="root" data-composition-id="legal" data-width="1080" data-height="1920">
-    <!-- 배지 교체·각주·고지 = 브랜드 진입(30초 18.467 = 원곡 크래시, 사양 18.0 ±0.5) -->
-    <div id="lg-badge1" class="clip" data-start="0" data-duration="18.467" data-track-index="1"><div class="badge">가상 챗봇 화면 · 연출</div></div>
-    <div id="lg-badge2" class="clip" data-start="18.467" data-duration="11.533" data-track-index="1"><div class="badge">연출</div></div>
-    <div id="lg-foot-c" class="clip" data-start="18.467" data-duration="11.533" data-track-index="2"><div id="lg-foot" class="bar">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</div></div>
-    <div id="lg-warn-c" class="clip" data-start="18.467" data-duration="11.533" data-track-index="3"><div id="lg-warn" class="bar">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</div></div>
+    <!-- 배지: 챗 화면 동안 "가상 챗봇 화면 · 연출", 버튼이 열려 화면 위쪽까지 덮으면 "연출"로 바꿔 끝까지 -->
+    <div id="lg-b1" class="clip" data-start="0" data-duration="18.85" data-track-index="1"><div class="lg badge on-paper"><span id="b1" data-m="c">가상 챗봇 화면 · 연출</span></div></div>
+    <div id="lg-b2" class="clip" data-start="18.8" data-duration="11.2" data-track-index="2"><div class="lg badge on-navy"><span id="b2" data-m="c">연출</span></div></div>
+    <!-- 연출 대화 고지: 첫 AI 답(C2)부터 버튼이 열릴 때까지 -->
+    <div id="lg-n" class="clip" data-start="3.839" data-duration="14.328" data-track-index="3"><div id="lg-note" class="lg on-paper"><span id="nt" data-m="c">※ 연출된 가상 대화입니다</span></div></div>
+    <!-- '국내 유일' 근거 각주 + 보장 금지 고지: 브랜드 진입(원곡 크래시)부터 끝까지 -->
+    <div id="lg-l" class="clip" data-start="18.476" data-duration="11.524" data-track-index="4">
+      <div id="lg-l1" class="lg on-navy"><span id="l1" data-m="c">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</span></div>
+      <div id="lg-l2" class="lg on-navy"><span id="l2" data-m="c">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</span></div>
+    </div>
   </div>
   <script>
     (function () {
-      const { ms, timeline } = window.HF;
+      const { ms, E, D, timeline, ui } = window.HF;
       const tl = timeline();
-      const T = 18.467; // 브랜드 진입 (build_15s.py 가 8.5로 바꾼다)
-      tl.set(["#lg-foot", "#lg-warn"], { opacity: 0 }, 0);
-      tl.add(["#lg-foot", "#lg-warn"], { opacity: [0, 1], translateY: [30, 0], duration: 350, ease: "outExpo", delay: window.HF.A.stagger(50) }, ms(T + 0.15));
+      // build_15s.py 가 15초 값으로 바꾼다
+      const T = { note: 3.839, win: 536 / 30, brand: 18.476, end: 30 };
+      tl.set(["#nt", "#l1", "#l2", "#b2"], { opacity: 0 }, 0);
+      ui(tl, "#nt", T.note);
+      tl.add("#nt", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(T.win));
+      tl.add("#b1", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(T.win + 0.68));
+      ui(tl, "#b2", T.win + 0.93);
+      ui(tl, "#l1", T.brand);
+      ui(tl, "#l2", T.brand + 0.09);
+      tl.set({ v: 0 }, { v: 1 }, ms(T.end));
       tl.seek(0);
     })();
   </script>

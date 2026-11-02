@@ -1,0 +1,150 @@
+<template>
+  <style>
+    /* Art direction v3 (docs/ads/naver-clip/02-art-direction.md): one axis at x=540, four type sizes,
+       flat colour fields, no ornament. Shared by every scene; generated into each composition. */
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
+      font-weight: 45 930;
+    }
+    #root {
+      --ink: #0e1116;
+      --paper: #f7f6f2;
+      --navy: #0b1a33;
+      --gold: #b8955a;
+      --red: #c8392b;
+      --mute-d: #9aa0a6;   /* secondary text on Ink / Navy */
+      --mute-l: #5f6368;   /* secondary text on Paper */
+      --sheet-2: #eceae4;  /* paper one tone step down (stacked sheets) */
+      --sheet-3: #dfddd6;  /* paper two tone steps down */
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: "PretendardGOV", sans-serif;
+      word-break: keep-all;
+      font-kerning: normal;
+      color: var(--paper);
+    }
+    .field { position: absolute; inset: 0; }
+    /* camera: one linear push per shot, scaled about the frame centre so x=540 stays put */
+    .cam { position: absolute; inset: 0; transform-origin: 540px 960px; }
+
+    /* the only text container: full 840px measure between symmetric 120px margins, centred */
+    .row { position: absolute; left: 120px; width: 840px; text-align: center; margin: 0; }
+
+    /* the four sizes */
+    .t-display { font-size: 112px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.08; }
+    .t-head    { font-size: 72px;  font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
+    .t-body    { font-size: 40px;  font-weight: 500; letter-spacing: -0.01em; line-height: 1.4; }
+    .t-small   { font-size: 26px;  font-weight: 400; letter-spacing: 0;       line-height: 1.4; }
+
+    /* masked line: each line rises from behind its own baseline (padding keeps ascenders/descenders) */
+    .ln { display: block; overflow: hidden; padding: 0.1em 0 0.14em; margin: -0.1em 0 -0.14em; }
+    .li { display: block; }
+    .rise .li, .li.rise { opacity: 0; transform: translateY(110%); }
+    .later { opacity: 0; }
+
+    .au { color: var(--gold); }
+    .on-ink { color: var(--paper); }
+    .on-paper { color: var(--ink); }
+    .m-d { color: var(--mute-d); }
+    .m-l { color: var(--mute-l); }
+
+    /* flat sheet of paper (documents): one tone, square corners, no edge treatment */
+    .sheet { position: absolute; background: var(--paper); color: var(--ink); }
+    /* blank signature line and the caret that waits on it */
+    .rule { position: absolute; height: 3px; background: currentColor; }
+    .caret { position: absolute; width: 3px; background: currentColor; }
+    /* pill control (button, toast): the only rounded shape */
+    .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
+
+
+    #c-ground { background: var(--paper); }
+    #c-sel { position: absolute; left: 120px; top: 679px; width: 840px; height: 124px; background: var(--navy); overflow: hidden; }
+    #c-selin { position: absolute; left: -120px; top: -679px; width: 1080px; height: 1920px; }
+    #c-svg, #c-selsvg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+    .mark { position: absolute; left: 518.4px; width: 43.2px; height: 48px; }
+
+  </style>
+  <div id="root" data-composition-id="cta" data-width="1080" data-height="1920">
+    <div id="c-ground" class="field" data-layout-ignore></div>
+    <div id="c-cam" class="cam" data-layout-allow-overflow>
+      <div id="c-head" class="row t-display on-paper rise" style="top:300px;"><span class="ln"><span id="c-head-0" class="li">서명하는 쪽으로</span></span><span class="ln"><span id="c-head-1" class="li">넘어오세요.</span></span></div>
+      <div id="c-choice">
+        <div id="c-a" class="row t-head m-l" style="top:700px;"><span class="ln"><span id="c-a-0" class="li">생성하는 쪽</span></span></div>
+        <div id="c-b" class="row t-head on-paper" style="top:840px;"><span class="ln"><span id="c-b-0" class="li">서명하는 쪽</span></span></div>
+        <svg id="c-svg" viewBox="0 0 1080 1920" data-layout-ignore><path d="M440 941 C 500 935, 580 946, 640 937" stroke="#b8955a" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
+        <div id="c-sel" data-layout-allow-occlusion data-layout-allow-overlap>
+          <div id="c-selin">
+            <div id="c-a2" class="row t-head on-ink" style="top:700px;"><span class="ln"><span id="c-a2-0" class="li">생성하는 쪽</span></span></div>
+            <div id="c-b2" class="row t-head on-ink" style="top:840px;"><span class="ln"><span id="c-b2-0" class="li">서명하는 쪽</span></span></div>
+            <svg id="c-selsvg" viewBox="0 0 1080 1920" data-layout-ignore><path d="M440 941 C 500 935, 580 946, 640 937" stroke="#b8955a" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
+          </div>
+        </div>
+      </div>
+      <div id="e-slo" class="row t-head on-paper rise" style="top:330px;"><span class="ln"><span id="e-slo-0" class="li">책임지는 자리로,</span></span><span class="ln"><span id="e-slo-1" class="li">지금 있는 자리에서.</span></span></div>
+      <svg id="e-svg" viewBox="0 0 1080 1920" style="position:absolute;left:0;top:0;width:1080px;height:1920px" data-layout-ignore>
+        <path id="e-ul" d="M246 545 C 420 536, 640 551, 834 538" stroke="#b8955a" stroke-width="5" stroke-linecap="round" fill="none" style="opacity:0"/>
+      </svg>
+      <div id="e-info" class="later">
+        <div id="e-u" class="row t-body on-paper" style="top:716px;"><span class="ln"><span id="e-u-0" class="li">국내 유일* 100% 온라인 법학사</span></span></div>
+        <div id="e-u3" class="row t-small m-l" style="top:776px;"><span class="ln"><span id="e-u3-0" class="li">교육부장관 명의 · '법학 전공' 표기</span></span></div>
+        <img class="mark" style="top:856px" src="assets/img/mark.svg" alt="">
+        <div id="e-bn" class="row t-body on-paper" style="top:914px;"><span class="ln"><span id="e-bn-0" class="li">경찰복지사이버평생교육원</span></span></div>
+        <div id="e-tel" class="row t-body on-paper" style="top:1344px;"><span class="ln"><span id="e-tel-0" class="li">070-4006-7128 (평일 10–18시)</span></span></div>
+      </div>
+      <div id="c-btn" class="pill t-body" style="left:180px;top:1150px;width:720px;height:110px;background:var(--navy);color:var(--paper);opacity:0">무료 상담 신청</div>
+      <div id="c-sub" class="row t-small m-l later" style="top:1278px;"><span class="ln"><span id="c-sub-0" class="li">상담만 받아도 돼요.</span></span></div>
+    </div>
+  </div>
+  <script>
+  (function () {
+
+    const tl = anime.createTimeline({ autoplay: false });
+    const ms = (s) => Math.round(s * 1000);
+    const EXPO = anime.cubicBezier(0.16, 1, 0.3, 1);          // masked line rise (800 ms)
+    const UI = anime.cubicBezier(0.22, 1, 0.36, 1);           // interface entrance (320 ms)
+    const EXIT = anime.cubicBezier(0.55, 0.055, 0.675, 0.19); // leaving for good (300 ms)
+    const INOUT = anime.cubicBezier(0.76, 0, 0.24, 1);        // line drawing, things that travel
+    function A(t, sel, props, dur, ease) { tl.add(sel, Object.assign({ duration: Math.max(1, ms(dur)), ease: ease || UI }, props), ms(t)); }
+    function S(t, sel, props) { tl.set(sel, props, ms(t)); }
+    // lines rise from behind their own baseline; 90 ms apart, 4 steps at most
+    function RISE(t, sels, dur) {
+      sels.slice(0, 4).forEach((s, i) => { S(t + i * 0.09, s, { opacity: 1 }); A(t + i * 0.09, s, { translateY: ["110%", "0%"] }, dur || 0.8, EXPO); });
+    }
+    function LEAVE(t, sels, gap) {
+      sels.forEach((s, i) => A(t + i * (gap == null ? 0.09 : gap), s, { opacity: [1, 0], translateY: [0, -8] }, 0.3, EXIT));
+    }
+    function ENTER(t, sel) { A(t, sel, { opacity: [0, 1], translateY: [16, 0] }, 0.32, UI); }
+    // one linear push per shot, about the frame centre
+    function PUSH(t0, t1, sel) { A(t0, sel, { scale: [1, 1.03] }, t1 - t0, "linear"); }
+    // a text caret: standard 530 ms on / off, not tied to the music
+    function CARET(sel, t0, t1) { let on = true; for (let t = t0; t < t1 - 1e-6; t += 0.53) { S(t, sel, { opacity: on ? 1 : 0 }); on = !on; } }
+    // SVG stroke drawing (1100 ms in-out)
+    function DRAW(t0, t, sel, dur) {
+      const d = anime.svg.createDrawable(sel);
+      S(t0, d, { draw: "0 0" });
+      S(t, sel, { opacity: 1 });
+      A(t, d, { draw: ["0 0", "0 1"] }, dur || 1.1, INOUT);
+    }
+
+
+    const T = {"c0": 24.521, "head": 24.571, "slide": 25.35, "btn": 26.274, "sub": 26.364, "e": 27.5, "slo": 27.85, "ul": 28.15, "info": 27.95, "end": 30.0};
+    PUSH(T.c0, T.end, "#c-cam");
+    RISE(T.head, ["#c-head-0", "#c-head-1"]);
+    // the selector travels one row down; its inside counter-moves so the inverted copy stays in register
+    A(T.slide, "#c-sel", { translateY: [0, 140] }, 0.7, INOUT);
+    A(T.slide, "#c-selin", { translateY: [0, -140] }, 0.7, INOUT);
+    ENTER(T.btn, "#c-btn");
+    ENTER(T.sub, "#c-sub");
+    // C8
+    LEAVE(T.e, ["#c-head-0", "#c-head-1", "#c-choice"]);
+    RISE(T.slo, ["#e-slo-0", "#e-slo-1"]);
+    DRAW(T.c0, T.ul, "#e-ul", 1.1);
+    ENTER(T.info, "#e-info");
+
+    window.__hfAnime = window.__hfAnime || [];
+    window.__hfAnime.push(tl);
+  })();
+  </script>
+</template>
