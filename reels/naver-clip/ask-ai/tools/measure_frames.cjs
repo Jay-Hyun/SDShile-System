@@ -9,9 +9,14 @@
  *     바탕색과 다른 전체 폭 필드(입력 독·풋터)는 채움으로 센다
  * 을 표로 낸다. 어느 쪽에도 속하지 않는 보이는 텍스트는 "unannotated" 로 따로 보고한다.
  *
+ * 시간 이동: 렌더러처럼 0 초부터 프레임을 하나씩 앞으로 걸어서 간다(기본, 시각은 오름차순으로 정렬).
+ *   임의의 시각으로 바로 건너뛰면(`--random`, hyperframes snapshot 도 이 방식) 같은 요소에 글라이드 뒤 set 을 건 경우처럼
+ *   anime.js 가 계산하는 값이 달라질 수 있다 — 15초 엔드카드에서 DOM 측정(건너뛰기)은 정상인데 렌더(차례로)는 유도 줄이
+ *   버튼 아래에 있던 사고의 원인이다. `--compare` 는 두 방식을 모두 돌려 위치가 다른 요소를 보고한다.
+ *
  * Usage:
  *   npx hyperframes@0.8.200 preview --background --port 4611        (프로젝트 폴더에서; v15 는 v15/ 에서)
- *   node tools/measure_frames.cjs http://localhost:4611/api/projects/ask-ai/preview 3,6.8,9.5 [--json out.json]
+ *   node tools/measure_frames.cjs http://localhost:4611/api/projects/ask-ai/preview 3,6.8,9.5 [--json out.json] [--compare|--random]
  * 미리보기 서버가 data-hf-id 를 소스에 박으므로, 측정이 끝나면 `preview --stop` 한다.
  */
 let chromium;
@@ -131,7 +136,14 @@ function collect() {
     const name = lr.lastElementChild.getBoundingClientRect();
     logo = { cx: +((a.left + a.right) / 2).toFixed(2), mark: Math.round(m.width) + "×" + Math.round(m.height), gapMarkName: +(name.left - m.right).toFixed(1), sameRow: Math.abs((m.top + m.bottom) / 2 - (name.top + name.bottom) / 2) < 3 };
   }
-  return { centred, cols, sizes, stray, gaps, maxGap, logo };
+  // 모든 id 요소의 보이는 위치 (걷기·건너뛰기 비교용)
+  const pos = {};
+  document.querySelectorAll("[id]").forEach((el) => {
+    if (!el.closest("#root") && !el.id.startsWith("b-") && !el.id.startsWith("ch-")) return;
+    const v = vis(el);
+    if (v) pos[el.id] = [Math.round(v.box.t), Math.round(v.box.l)];
+  });
+  return { centred, cols, sizes, stray, gaps, maxGap, logo, pos };
 }
 
 // 스크린샷(PNG base64)을 빈 페이지 canvas 로 풀어, 바탕색(최빈색)과 다른 픽셀이 없는 행의 최장 연속 구간을 잰다
@@ -168,25 +180,52 @@ function emptyBand(b64) {
   });
 }
 
-(async () => {
-  const browser = await chromium.launch();
-  const decoder = await browser.newPage();
+const random = process.argv.includes("--random");
+const compare = process.argv.includes("--compare");
+
+async function run(browser, decoder, walk) {
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   await page.goto(url, { waitUntil: "load" });
   await page.waitForFunction(() => window.__playerReady === true && window.__player && typeof window.__player.renderSeek === "function", null, { timeout: 60000, polling: 100 }); // 런타임이 rAF 를 쥐고 있어 interval 폴링
   await page.evaluate(() => window.__player.enableRenderMode && window.__player.enableRenderMode());
   await page.evaluate(() => document.fonts.ready);
+  const seek = (t) => page.evaluate(async (t) => { const r = window.__player.renderSeek(t); if (r && r.then) await r; }, t);
   const out = [];
-  const allSizes = new Set();
-  for (const t of times) {
-    await page.evaluate(async (t) => { const r = window.__player.renderSeek(t); if (r && r.then) await r; }, t); // 렌더와 같은 결정적 seek
-    await page.waitForTimeout(150);
+  let cur = 0;
+  if (walk) await seek(0);
+  for (const t of [...times].sort((a, b) => a - b)) {
+    const target = Math.round(t * 30);
+    if (walk) { while (cur < target) { cur++; await seek(cur / 30); } } // 렌더러처럼 프레임을 차례로
+    else await seek(t);
+    await page.waitForTimeout(100);
     const m = await page.evaluate(collect);
-    const shot = (await page.screenshot()).toString("base64");
-    m.band = await decoder.evaluate(emptyBand, shot);
-    Object.keys(m.sizes).forEach((s) => allSizes.add(s));
+    if (decoder) {
+      const shot = (await page.screenshot()).toString("base64");
+      m.band = await decoder.evaluate(emptyBand, shot);
+    }
     out.push({ t, ...m });
   }
+  await page.close();
+  return out;
+}
+
+(async () => {
+  const browser = await chromium.launch();
+  const decoder = await browser.newPage();
+  const out = await run(browser, decoder, !random);
+  if (compare) {
+    const other = await run(browser, null, false);
+    const diffs = [];
+    out.forEach((f, i) => {
+      for (const id of new Set([...Object.keys(f.pos), ...Object.keys(other[i].pos)])) {
+        const a = f.pos[id], b = other[i].pos[id];
+        if (!a || !b || Math.abs(a[0] - b[0]) > 2 || Math.abs(a[1] - b[1]) > 2) diffs.push(`${f.t}s #${id}: walk ${a ? a.join(",") : "hidden"} vs jump ${b ? b.join(",") : "hidden"}`);
+      }
+    });
+    console.log(diffs.length ? "WALK vs JUMP DIFFERENCES (" + diffs.length + "):\n  " + diffs.slice(0, 40).join("\n  ") : "walk vs jump: identical positions for every id'd element at every time");
+  }
+  const allSizes = new Set();
+  out.forEach((f) => Object.keys(f.sizes).forEach((s) => allSizes.add(s)));
   await browser.close();
 
   let worst = 0;

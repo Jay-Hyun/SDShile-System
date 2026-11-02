@@ -128,6 +128,13 @@
       if (CUT === 15) {
         $("#ans-1").textContent = "첫 계단,";
         ["#b-q", "#b-head", "#b-list", "#b-note"].forEach((q) => $(q).remove()); // 15초: 인용·CTA 문장·리스트·안내 줄 없음
+        // 유도 줄: C5·C5b 용은 첫 묶음(#br-p1)에 넣어 C6 하드컷에 함께 사라지게 하고, C6 용은 따로 한 번만 놓는다.
+        // (같은 요소에 글라이드 뒤 set 을 또 거는 방식은 렌더러가 프레임을 차례로 걸을 때와 임의로 건너뛸 때 결과가 달라진다)
+        const push2 = $("#b-push").cloneNode(true);
+        push2.id = "b-push2";
+        push2.querySelector("#push-1").id = "push-2";
+        $("#b-push").after(push2);
+        $("#br-p1").appendChild($("#b-push"));
       }
       // 숫자 롤: 십의 자리 0→6, 일의 자리 0→9→0 (한 바퀴)
       $("#roll-t").innerHTML = [0, 1, 2, 3, 4, 5, 6].map((d) => "<b>" + d + "</b>").join("");
@@ -154,7 +161,6 @@
       const Y = {};
       const place = (q, y) => { Y[q] = y; tl.set(q, { translateY: y }, 0); };
       const move = (q, y, t) => { tl.add(q, { translateY: [Y[q], y], duration: D.glide, ease: E.glide }, ms(t)); Y[q] = y; };
-      const jump = (q, y, t) => { tl.set(q, { translateY: y }, ms(t)); Y[q] = y; };
 
       // ---------- 시작 상태 ----------
       const half = { w: 432.6, h: 61.8 }; // 840×120 버튼 × 1.03 (챗 카메라 푸시 끝 배율)
@@ -171,7 +177,7 @@
       tl.add("#br-win", { clipPath: [winFrom, winTo], duration: D.open, ease: E.draw }, ms(WIN));
       tl.add("#br-label", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(WIN + 0.05));
       ui(tl, "#br-logo-row", BR);
-      rise(tl, ["#tel-1", "#tel-2"], BR + 0.6); // 전화는 브랜드 진입부터 끝까지
+      rise(tl, ["#tel-1", "#tel-2"], BR + 0.3); // 전화는 브랜드 진입부터 끝까지
       const tRoll = (t) => {
         tl.add("#roll-t", { translateY: ["0em", "-6.9em"], duration: D.roll, ease: E.roll }, ms(t + 0.5));
         tl.add("#roll-o", { translateY: ["0em", "-11.5em"], duration: D.roll, ease: E.roll }, ms(t + 0.57));
@@ -206,8 +212,8 @@
         const hH = H("#b-head"), sH = H("#b-slo");
         place("#b-slo", pl[0] + Math.round((hH - sH) / 2)); // 슬로건은 문장 자리의 가운데
         rise(tl, ["#cta-1", "#cta-2", "#cta-3"], C.C9);
-        rise(tl, "#push-1", C.C9 + 0.3);
-        ui(tl, "#btn-face", C.C9 + 0.35);
+        rise(tl, "#push-1", C.C9 + 0.1);
+        ui(tl, "#btn-face", C.C9 + 0.1);
         // 23.99 다운비트: 문장이 위로 비켜나고 증거 리스트가 한 줄씩 (90ms)
         move("#b-head", pl[0], C.LIST - 0.1);
         rise(tl, ["#ls-1", "#ls-2", "#ls-3"], C.LIST + 0.15);
@@ -221,9 +227,8 @@
         const p5 = even(["#b-usp", "#b-push"], FROM, yTel);
         place("#b-usp", p5[0]);
         place("#b-push", p5[1]);
-        place("#b-btn", p5[1]); // 버튼은 C6 에서 제 자리로 (그 전엔 안 보인다)
         rise(tl, ["#usp-0", "#usp-1", "#usp-2"], BR + 0.12);
-        rise(tl, "#push-1", BR + 1.0); // 유도는 전화와 함께 일찍 (끝 장면의 새 글을 슬로건 하나로)
+        rise(tl, "#push-1", BR + 0.5); // 유도는 전화와 함께 일찍 (끝 장면의 새 글을 슬로건 하나로)
         // C5b 다음 다운비트: USP 가 위로 비켜나고 사람의 답이 들어온다, 60 롤
         const tC8 = C.C5b;
         const p8 = even(["#b-usp", "#b-ans", "#b-push"], FROM, yTel);
@@ -233,13 +238,14 @@
         rise(tl, ["#ans-1", "#ans-2"], tC8 + 0.12);
         tRoll(tC8);
         push(tl, "#br-p1", WIN, C.C6);
-        // ===== 15초 C6 하드컷 (마지막 크래시 다운비트): 슬로건 + 유도 + 버튼 =====
+        // ===== 15초 C6 하드컷 (마지막 크래시 다운비트): 슬로건 → 유도 → 버튼 → 전화, 같은 간격 =====
         tl.set("#br-p1", { opacity: 0 }, ms(C.C6));
-        const p6 = even(["#b-slo", "#b-push", "#b-btn"], FROM, yTel);
+        const p6 = even(["#b-slo", "#b-push2", "#b-btn"], FROM, yTel);
         place("#b-slo", p6[0]);
-        jump("#b-push", p6[1], C.C6);
-        jump("#b-btn", p6[2], C.C6);
+        place("#b-push2", p6[1]);
+        place("#b-btn", p6[2]); // 버튼 면은 C6 전까지 안 보인다
         rise(tl, ["#slo-1", "#slo-2"], C.C6);
+        rise(tl, "#push-2", C.C6 + 0.1);
         ui(tl, "#btn-face", C.C6 + 0.1);
         push(tl, "#br-end", C.C6, END);
       }

@@ -55,9 +55,10 @@
 
     /* 입력 독: 전체 폭 한 톤 다른 면. 안에 입력창 알약(Paper)과 ※ 안내(legal 레이어)가 든다 */
     #ch-dock { position: absolute; left: 0; top: 1378px; width: 1080px; height: 542px; background: var(--color-field, #eeebe4); }
-    /* 입력창: 알약. 한 줄 = y 1472–1584. 둘째 줄이 오면 위로 한 줄 자란다(clip-path) */
+    /* 입력창: 두 줄 높이(y 1410–1584)로 처음부터 열려 있다. 글은 윗줄부터, 보내기 버튼은 오른쪽 아래.
+       (한 줄짜리가 위로 자라게 하면 독 위쪽에 아무것도 없는 띠가 94px 생긴다) */
     #ch-bar { position: absolute; left: 120px; top: 1410px; width: 840px; height: 174px; background: var(--color-paper, #f7f6f2); border-radius: 56px; font-size: 44px; line-height: 62px; font-weight: 500; letter-spacing: -0.01em; }
-    #bar-ph { position: absolute; left: 48px; top: 87px; height: 62px; color: #6b6f76; white-space: nowrap; }
+    #bar-ph { position: absolute; left: 48px; top: 25px; height: 62px; color: #6b6f76; white-space: nowrap; }
     #bar-text { position: absolute; left: 48px; top: 25px; width: 700px; }
     .ln2 { display: block; height: 62px; white-space: nowrap; }
     #bar-c2, #bar-c3 { display: none; }
@@ -218,13 +219,7 @@
       tl.set("#a1-dots b", { opacity: 0.3 }, 0);
       tl.set("#ch-a1", { clipPath: clip(ONE, hA1) }, 0);
       uls.forEach((d) => tl.set(d, { draw: "0 0" }, 0));
-      // 입력창: 한 줄(아래 112px)만 보이게. 둘째 줄이 오면 위로 한 줄(62) 더
-      const barClip = (n) => "inset(" + (n === 1 ? LINE : 0) + "px 0px 0px 0px round 56px)";
-      tl.set("#ch-bar", { clipPath: barClip(1) }, 0);
-      if (CUT === 30) {
-        tl.set("#bar-text", { translateY: LINE }, 0);
-        tl.set(["#bar-c1", "#bar-d", "#bar-c2", "#bar-c3"], { opacity: 0 }, 0);
-      }
+      if (CUT === 30) tl.set(["#bar-c1", "#bar-d", "#bar-c2", "#bar-c3"], { opacity: 0 }, 0);
       offNow = fit(0, yA1 + ONE);
       tl.set("#ch-thread", { translateY: offNow }, 0);
       // 카메라: 한 컷(챗 전체)에 한 번, 1.00 → 1.03 선형 푸시. 원점 = 시그니처 버튼 중심
@@ -272,9 +267,7 @@
         tl.set("#bar-c2", { display: "inline" }, ms(k2 + 0.17));
         const k3 = k2 + 0.25; // "고 회사 다니는데,"
         tl.add("#bar-c2", { opacity: [0, 1], duration: 200, ease: E.ui }, ms(k3));
-        const k4 = k3 + 0.5; // 둘째 줄: 입력창이 위로 한 줄 자란다 (독은 처음부터 그만큼 열려 있어 대화는 움직이지 않는다)
-        tl.add("#ch-bar", { clipPath: [barClip(1), barClip(2)], duration: D.glide, ease: E.glide }, ms(k4));
-        tl.add("#bar-text", { translateY: [LINE, 0], duration: D.glide, ease: E.glide }, ms(k4));
+        const k4 = k3 + 0.5; // 둘째 줄 (입력창은 처음부터 두 줄 높이라 대화는 움직이지 않는다)
         tl.set("#bar-c3", { display: "inline" }, ms(k4));
         tl.add("#bar-c3", { opacity: [0, 1], duration: 200, ease: E.ui }, ms(k4 + 0.1));
         const kSend = C.SEND; // 전송: 입력창은 비고 한 줄로 돌아가며, 질문은 대화에 사용자 말풍선으로
@@ -282,7 +275,6 @@
         tl.add("#bar-send", { scale: [0.94, 1], duration: D.press / 2, ease: E.ui }, ms(kSend + D.press / 2000));
         const kOut = C.GAG;
         tl.add("#bar-text", { opacity: [1, 0], duration: 150, ease: E.exit }, ms(kOut));
-        tl.add("#ch-bar", { clipPath: [barClip(2), barClip(1)], duration: D.glide, ease: E.glide }, ms(kOut));
         tl.add("#bar-send", { backgroundColor: ["#0e1116", "#c9c6be"], duration: 200, ease: "inOutSine" }, ms(kOut));
         tl.add("#bar-ph", { opacity: [0, 1], duration: 200, ease: E.ui }, ms(kOut + 0.3));
       } else {
