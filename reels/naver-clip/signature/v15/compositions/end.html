@@ -42,6 +42,11 @@
     /* masked line: each line rises from behind its own baseline (padding keeps ascenders/descenders) */
     .ln { display: block; overflow: hidden; padding: 0.1em 0 0.14em; margin: -0.1em 0 -0.14em; }
     .li { display: block; }
+    /* letter-spacing also trails the last glyph, which pushes centred ink right by half the tracking;
+       a right padding of half that again splits the difference so box and ink both sit within 2px */
+    .t-display .li { padding-right: 0.0225em; }
+    .t-head .li { padding-right: 0.015em; }
+    .t-body .li { padding-right: 0.005em; }
     .rise .li, .li.rise { opacity: 0; transform: translateY(110%); }
     .later { opacity: 0; }
 
@@ -71,12 +76,12 @@
       <svg id="e-svg" viewBox="0 0 1080 1920" style="position:absolute;left:0;top:0;width:1080px;height:1920px" data-layout-ignore>
         <path id="e-ul" d="M120 653 C 360 656, 640 652, 840 646 S 945 640, 960 638" stroke="#b8955a" stroke-width="6" stroke-linecap="round" fill="none" style="opacity:0"/>
       </svg>
+      <img class="mark" style="top:260px" src="assets/img/mark.svg" alt="">
       <div id="e-info" class="later">
-        <img class="mark" style="top:260px" src="assets/img/mark.svg" alt="">
         <div id="e-bn" class="row t-body on-ink" style="top:791px;"><span class="ln"><span id="e-bn-0" class="li">경찰복지사이버평생교육원</span></span></div>
         <div id="e-tel" class="row t-body on-ink" style="top:1243px;"><span class="ln"><span id="e-tel-0" class="li">070-4006-7128 (평일 10–18시)</span></span></div>
       </div>
-      <div id="e-btn" class="pill t-body" style="left:120px;top:988px;width:840px;height:110px;background:var(--paper);color:var(--ink);opacity:0">무료 상담 신청</div>
+      <div id="e-btn" class="pill t-body" style="left:120px;top:988px;width:840px;height:110px;background:var(--paper);color:var(--ink);">무료 상담 신청</div>
     </div>
   </div>
   <script>
@@ -111,12 +116,11 @@
     }
 
 
-    const T = {"c0": 12.261, "slo": 12.311, "info": 12.761, "btn": 12.761, "ul": 13.011, "end": 15.0};
+    const T = {"c0": 12.261, "slo": 12.311, "info": 12.761, "btn": 12.261, "ul": 13.011, "end": 15.0};
     PUSH(T.c0, T.end, "#e-cam");
     RISE(T.slo, ["#e-slo-0", "#e-slo-1"]);
     DRAW(T.c0, T.ul, "#e-ul", 1.1);
     ENTER(T.info, "#e-info");
-    ENTER(T.btn, "#e-btn");
 
     window.__hfAnime = window.__hfAnime || [];
     window.__hfAnime.push(tl);

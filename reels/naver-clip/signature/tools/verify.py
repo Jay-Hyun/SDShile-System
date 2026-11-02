@@ -134,7 +134,7 @@ json.dump(dict(probe=dict(width=vs["width"], height=vs["height"], r=vs["r_frame_
                loudness=dict(I=I, LRA=LRA, TP=TP), detected=rows, planned=pl,
                within2_pct=round(100 * ok / max(1, len(cuts)), 1), on_downbeat=okd,
                centring=dict(frames=CENTRE_FRAMES, max_dom_dx=worst_dom, max_ink_dx=round(worst_ink, 1), lines=centring)),
-          open(os.path.join(ROOT, "renders", f"verify-{V}s.json"), "w"), indent=1)
+          open(os.path.join(ROOT, "renders", f"verify-{V}s.json"), "w"), indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
 
 # contact strip: the frame before and the frame at each planned cut
 tiles = []

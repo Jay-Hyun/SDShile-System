@@ -8,12 +8,13 @@
     "build": "python3 tools/build.py && python3 tools/build.py --variant 15",
     "dev": "npx --yes hyperframes@0.8.200 preview",
     "check": "npx --yes hyperframes@0.8.200 check",
-    "snapshot": "npx --yes hyperframes@0.8.200 snapshot --at 0,0.6,1.9,3.2,4.6,6.4,7.3,8.9,9.9,11,12.5,14.6,15.6,16.9,18.5,19.27,20.2,22,24.4,25.6,26.5,27.9,29.5",
+    "snapshot": "npx --yes hyperframes@0.8.200 snapshot --at 1.5,2.95,6.7,10.35,13.85,17.3,20.95,24.3,27.2,29.8",
     "render": "npx --yes hyperframes@0.8.200 render --quality delivery -o renders/last-signature-30s.mp4",
     "verify": "python3 tools/verify.py renders/last-signature-30s.mp4 30 && python3 tools/verify.py renders/last-signature-15s.mp4 15",
     "publish": "npx --yes hyperframes@0.8.200 publish",
     "check:15": "cd v15 && npx --yes hyperframes@0.8.200 check",
-    "snapshot:15": "cd v15 && npx --yes hyperframes@0.8.200 snapshot --at 0.3,1,1.6,2.5,3.6,4.3,5.5,6.8,8.4,9.6,10.1,10.7,11.6,12.5,14.9",
-    "render:15": "cd v15 && npx --yes hyperframes@0.8.200 render --quality delivery -o ../renders/last-signature-15s.mp4"
+    "snapshot:15": "cd v15 && npx --yes hyperframes@0.8.200 snapshot --at 1.2,4.6,8.1,9.95,12.2,14.8",
+    "render:15": "cd v15 && npx --yes hyperframes@0.8.200 render --quality delivery -o ../renders/last-signature-15s.mp4",
+    "measure": "NODE_PATH=$(npm root -g) node tools/measure.cjs && NODE_PATH=$(npm root -g) node tools/measure.cjs --variant 15"
   }
 }

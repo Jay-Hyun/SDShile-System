@@ -80,17 +80,6 @@
    "within2": true,
    "on_downbeat": true,
    "score": 102.3
-  },
-  {
-   "frame": 830,
-   "t": 27.667,
-   "beat": 63,
-   "downbeat": false,
-   "off_beat_frames": 2.09,
-   "off_downbeat_frames": -11.14,
-   "within2": false,
-   "on_downbeat": false,
-   "score": 23.5
   }
  ],
  "planned": [
@@ -155,5 +144,207 @@
    "beat_off": 0.37
   }
  ],
- "within2_pct": 85.7,
- "on_downbeat": 
+ "within2_pct": 100.0,
+ "on_downbeat": 5,
+ "centring": {
+  "frames": [
+   415,
+   628,
+   816,
+   894
+  ],
+  "max_dom_dx": 1.65,
+  "max_ink_dx": 2.5,
+  "lines": [
+   {
+    "frame": 415,
+    "text": "AI\uac00 \uc77c\uc744 \ub300\uc2e0\ud560\uc218\ub85d,",
+    "size": 88,
+    "dom_dx": -0.67,
+    "ink_dx": -2.0
+   },
+   {
+    "frame": 415,
+    "text": "\ucc45\uc784\uc9c8 \uc790\ub9ac\ub294",
+    "size": 144,
+    "dom_dx": -1.65,
+    "ink_dx": 2.0
+   },
+   {
+    "frame": 415,
+    "text": "\ub354 \uadc0\ud574\uc9d1\ub2c8\ub2e4.",
+    "size": 144,
+    "dom_dx": -1.64,
+    "ink_dx": 2.5
+   },
+   {
+    "frame": 415,
+    "text": "\ubc95\ub960 \uac80\ud1a0\u00b7\ucc45\uc784\uc790 \uc11c\uba85",
+    "size": 44,
+    "dom_dx": -0.11,
+    "ink_dx": -0.5
+   },
+   {
+    "frame": 628,
+    "text": "\uc5f0\ucd9c",
+    "size": 26,
+    "dom_dx": -0.01,
+    "ink_dx": 0.5
+   },
+   {
+    "frame": 628,
+    "text": "\uadf8 \uce78\uc73c\ub85c \uac00\ub294 \uccab \uacc4\ub2e8",
+    "size": 88,
+    "dom_dx": -0.67,
+    "ink_dx": 1.0
+   },
+   {
+    "frame": 816,
+    "text": "\uc0dd\uc131\ud558\ub294 \ucabd",
+    "size": 88,
+    "dom_dx": -0.67,
+    "ink_dx": 0.5
+   },
+   {
+    "frame": 816,
+    "text": "\uac11\uc758 \ud574\uc9c0 \ud1b5\uc9c0\ub294 \uc694\uac74\uc744 \uac16\ucd94\uc5c8\uc2b5\ub2c8\ub2e4.",
+    "size": 44,
+    "dom_dx": -0.12,
+    "ink_dx": -0.5
+   },
+   {
+    "frame": 816,
+    "text": "\ud53c\uace0 \uc744\uc740 \uc6d0\uace0 \uac11\uc5d0\uac8c \uc9c0\uae09\ud558\ub77c.",
+    "size": 44,
+    "dom_dx": -0.12,
+    "ink_dx": -1.0
+   },
+   {
+    "frame": 816,
+    "text": "\ud604 \ub2e8\uacc4\uc5d0\uc11c \ubd84\uc7c1 \uc704\ud5d8\uc740 \ub0ae\uc2b5\ub2c8\ub2e4.",
+    "size": 44,
+    "dom_dx": -0.11,
+    "ink_dx": -1.0
+   },
+   {
+    "frame": 816,
+    "text": "\uc11c\uba85\ud558\ub294 \ucabd\uc73c\ub85c",
+    "size": 88,
+    "dom_dx": -0.67,
+    "ink_dx": 0.5
+   },
+   {
+    "frame": 816,
+    "text": "\ub118\uc5b4\uc624\uc138\uc694.",
+    "size": 88,
+    "dom_dx": -0.67,
+    "ink_dx": 1.0
+   },
+   {
+    "frame": 816,
+    "text": "\uc11c\uba85\ud558\ub294 \ucabd",
+    "size": 88,
+    "dom_dx": -0.67,
+    "ink_dx": 0.5
+   },
+   {
+    "frame": 816,
+    "text": "\ubb34\ub8cc \uc0c1\ub2f4 \uc2e0\uccad",
+    "size": 44,
+    "dom_dx": 0,
+    "ink_dx": -1.5
+   },
+   {
+    "frame": 816,
+    "text": "\uc0c1\ub2f4\ub9cc \ubc1b\uc544\ub3c4 \ub3fc\uc694.",
+    "size": 26,
+    "dom_dx": 0,
+    "ink_dx": -0.5
+   },
+   {
+    "frame": 816,
+    "text": "\ub85c\uc2a4\ucfe8 \uc785\ud559\u00b7\ubcc0\ud638\uc0ac\uc2dc\ud5d8 \ud569\uaca9\u00b7\ucde8\uc5c5\uc744 \ubcf4\uc7a5\ud558\uc9c0 \uc54a\uc2b5\ub2c8",
+    "size": 26,
+    "dom_dx": -0.01,
+    "ink_dx": -0.5
+   },
+   {
+    "frame": 816,
+    "text": "*'\uad6d\ub0b4 \uc720\uc77c': 100% \uc628\ub77c\uc778 \ubc95\ud559\uc0ac \uacfc\uc815, 2",
+    "size": 26,
+    "dom_dx": 0,
+    "ink_dx": 0.5
+   },
+   {
+    "frame": 894,
+    "text": "\ucc45\uc784\uc9c0\ub294 \uc790\ub9ac\ub85c,",
+    "size": 88,
+    "dom_dx": -0.68,
+    "ink_dx": -1.0
+   },
+   {
+    "frame": 894,
+    "text": "\uc9c0\uae08 \uc788\ub294 \uc790\ub9ac\uc5d0\uc11c.",
+    "size": 88,
+    "dom_dx": -0.68,
+    "ink_dx": -1.5
+   },
+   {
+    "frame": 894,
+    "text": "\uad6d\ub0b4 \uc720\uc77c* 100% \uc628\ub77c\uc778 \ubc95\ud559\uc0ac",
+    "size": 44,
+    "dom_dx": -0.12,
+    "ink_dx": 0.5
+   },
+   {
+    "frame": 894,
+    "text": "\uad50\uc721\ubd80\uc7a5\uad00 \uba85\uc758 \u00b7 '\ubc95\ud559 \uc804\uacf5' \ud45c\uae30",
+    "size": 26,
+    "dom_dx": 0,
+    "ink_dx": -1.0
+   },
+   {
+    "frame": 894,
+    "text": "\uacbd\ucc30\ubcf5\uc9c0\uc0ac\uc774\ubc84\ud3c9\uc0dd\uad50\uc721\uc6d0",
+    "size": 44,
+    "dom_dx": -0.11,
+    "ink_dx": -0.5
+   },
+   {
+    "frame": 894,
+    "text": "\ubb34\ub8cc \uc0c1\ub2f4 \uc2e0\uccad",
+    "size": 44,
+    "dom_dx": 0,
+    "ink_dx": -1.0
+   },
+   {
+    "frame": 894,
+    "text": "\uc0c1\ub2f4\ub9cc \ubc1b\uc544\ub3c4 \ub3fc\uc694.",
+    "size": 26,
+    "dom_dx": 0,
+    "ink_dx": -0.5
+   },
+   {
+    "frame": 894,
+    "text": "070-4006-7128 (\ud3c9\uc77c 10\u201318\uc2dc)",
+    "size": 44,
+    "dom_dx": -0.12,
+    "ink_dx": 0.0
+   },
+   {
+    "frame": 894,
+    "text": "\ub85c\uc2a4\ucfe8 \uc785\ud559\u00b7\ubcc0\ud638\uc0ac\uc2dc\ud5d8 \ud569\uaca9\u00b7\ucde8\uc5c5\uc744 \ubcf4\uc7a5\ud558\uc9c0 \uc54a\uc2b5\ub2c8",
+    "size": 26,
+    "dom_dx": -0.01,
+    "ink_dx": -0.5
+   },
+   {
+    "frame": 894,
+    "text": "*'\uad6d\ub0b4 \uc720\uc77c': 100% \uc628\ub77c\uc778 \ubc95\ud559\uc0ac \uacfc\uc815, 2",
+    "size": 26,
+    "dom_dx": 0,
+    "ink_dx": 0.5
+   }
+  ]
+ }
+}

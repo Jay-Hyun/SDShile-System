@@ -461,7 +461,7 @@ def build_cta(T):
     // C8: the Paper field wipes up (its contents go with it), the Navy-side label leaves,
     // the gold signature travels up under the slogan; button and note stay put
     LEAVE(T.e - 0.1, ["#c-b-0"]);
-    A(T.e, "#c-paper", {{ clipPath: ["inset(0px 0px 0px 0px)", "inset(0px 0px {SPLIT}px 0px)"] }}, 0.6, INOUT);
+    A(T.e, "#c-paper", {{ clipPath: ["inset(0px 0px 0px 0px)", "inset(0px 0px {SPLIT}px 0px)"] }}, 0.9, INOUT);
     A(T.e + 0.03, "#c-gold", {{ translateY: [0, -485] }}, 0.8, INOUT);
     RISE(T.slo, ["#e-slo-0", "#e-slo-1"]);
     ENTER(T.info, "#e-info");
@@ -470,6 +470,8 @@ def build_cta(T):
 
 
 # ============================================================ END (C8') — Navy, 15s only
+# The mark and the full-width button are on the frame from the cut (a Navy-to-Navy cut needs something
+# that lands at once); the slogan rises, the underline draws, brand and phone settle.
 def build_end(T):
     css = """
     #e-ground { background: var(--navy); }
@@ -482,12 +484,12 @@ def build_end(T):
       <svg id="e-svg" viewBox="0 0 1080 1920" style="position:absolute;left:0;top:0;width:1080px;height:1920px" data-layout-ignore>
         <path id="e-ul" d="{underline}" stroke="#b8955a" stroke-width="6" stroke-linecap="round" fill="none" style="opacity:0"/>
       </svg>
+      {MARK.replace('class="mark"', 'class="mark" style="top:260px"')}
       <div id="e-info" class="later">
-        {MARK.replace('class="mark"', 'class="mark" style="top:260px"')}
         {text("e-bn", "body", 791, [BRAND], "on-ink")}
         {text("e-tel", "body", 1243, ["070-4006-7128 (평일 10–18시)"], "on-ink")}
       </div>
-      {pill("e-btn", 988, 840, "무료 상담 신청", "var(--paper)", "var(--ink)", "opacity:0")}
+      {pill("e-btn", 988, 840, "무료 상담 신청", "var(--paper)", "var(--ink)")}
     </div>'''
     js = f"""
     const T = {J(T)};
@@ -495,7 +497,6 @@ def build_end(T):
     RISE(T.slo, ["#e-slo-0", "#e-slo-1"]);
     DRAW(T.c0, T.ul, "#e-ul", 1.1);
     ENTER(T.info, "#e-info");
-    ENTER(T.btn, "#e-btn");
 """
     return css, html, js
 
@@ -529,7 +530,7 @@ if VARIANT == "30":
                br=None, end=C["sign"])
     T_s = dict(c0=C["sign"], caret=C["sign"] + 0.28, hit=B(44), oldOut=B(44) + 0.55, newIn=B(44) + 0.65,
                usp=B(48), brand=21.90, end=C["cta"])
-    T_c = dict(c0=C["cta"], head=C["cta"] + 0.05, btn=B(60), sub=B(60) + 0.09, e=27.35, slo=27.68,
+    T_c = dict(c0=C["cta"], head=C["cta"] + 0.05, btn=B(60), sub=B(60) + 0.09, e=27.20, slo=27.75,
                info=27.85, end=C["fin"])
     SCENE_SPECS = [
         ("hook", C["hook"], C["tease"], build_hook(T_h)),
@@ -555,7 +556,7 @@ else:
     T_q = dict(c0=C["quiet"], c1=C["quiet"] + 0.08, c2=6.40, c5=None, br=B(19), brIn=B(19) + 0.3, gold=9.207, end=C["sign"])
     T_s = dict(c0=C["sign"], caret=None, hit=C["sign"], oldOut=C["sign"] + 0.06, newIn=C["sign"] + 0.14,
                usp=10.70, brand=11.17, end=C["end"])
-    T_e = dict(c0=C["end"], slo=C["end"] + 0.05, info=C["end"] + 0.5, btn=C["end"] + 0.5, ul=C["end"] + 0.75, end=C["fin"])
+    T_e = dict(c0=C["end"], slo=C["end"] + 0.05, info=C["end"] + 0.5, btn=C["end"], ul=C["end"] + 0.75, end=C["fin"])
     SCENE_SPECS = [
         ("hook", C["hook"], C["tease"], build_hook(T_h)),
         ("tease", C["tease"], C["quiet"], build_tease(T_t, presses=True)),

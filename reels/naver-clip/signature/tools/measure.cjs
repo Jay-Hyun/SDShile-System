@@ -82,8 +82,14 @@ function collect() {
       const clips = /(hidden|clip)/.test(cs.overflow + cs.overflowX + cs.overflowY) || (cs.clipPath && cs.clipPath !== "none");
       if (!clips) continue;
       const b = e.getBoundingClientRect();
-      left = Math.max(left, b.left); top = Math.max(top, b.top);
-      right = Math.min(right, b.right); bottom = Math.min(bottom, b.bottom);
+      let ins = [0, 0, 0, 0];
+      const m = cs.clipPath && cs.clipPath.match(/^inset\(([^)]*)\)/);
+      if (m) {
+        const v = m[1].split(" round")[0].trim().split(/\s+/).map(parseFloat);
+        ins = [v[0], v[1] ?? v[0], v[2] ?? v[0], v[3] ?? v[1] ?? v[0]];
+      }
+      left = Math.max(left, b.left + ins[3]); top = Math.max(top, b.top + ins[0]);
+      right = Math.min(right, b.right - ins[1]); bottom = Math.min(bottom, b.bottom - ins[2]);
     }
     left = Math.max(left, 0); top = Math.max(top, 0); right = Math.min(right, W); bottom = Math.min(bottom, H);
     return right - left > 1 && bottom - top > 1;

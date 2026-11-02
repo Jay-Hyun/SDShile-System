@@ -42,6 +42,11 @@
     /* masked line: each line rises from behind its own baseline (padding keeps ascenders/descenders) */
     .ln { display: block; overflow: hidden; padding: 0.1em 0 0.14em; margin: -0.1em 0 -0.14em; }
     .li { display: block; }
+    /* letter-spacing also trails the last glyph, which pushes centred ink right by half the tracking;
+       a right padding of half that again splits the difference so box and ink both sit within 2px */
+    .t-display .li { padding-right: 0.0225em; }
+    .t-head .li { padding-right: 0.015em; }
+    .t-body .li { padding-right: 0.005em; }
     .rise .li, .li.rise { opacity: 0; transform: translateY(110%); }
     .later { opacity: 0; }
 

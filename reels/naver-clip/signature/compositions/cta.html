@@ -42,6 +42,11 @@
     /* masked line: each line rises from behind its own baseline (padding keeps ascenders/descenders) */
     .ln { display: block; overflow: hidden; padding: 0.1em 0 0.14em; margin: -0.1em 0 -0.14em; }
     .li { display: block; }
+    /* letter-spacing also trails the last glyph, which pushes centred ink right by half the tracking;
+       a right padding of half that again splits the difference so box and ink both sit within 2px */
+    .t-display .li { padding-right: 0.0225em; }
+    .t-head .li { padding-right: 0.015em; }
+    .t-body .li { padding-right: 0.005em; }
     .rise .li, .li.rise { opacity: 0; transform: translateY(110%); }
     .later { opacity: 0; }
 
@@ -122,7 +127,7 @@
     }
 
 
-    const T = {"c0": 24.521, "head": 24.571, "btn": 26.274, "sub": 26.364, "e": 27.35, "slo": 27.68, "info": 27.85, "end": 30.0};
+    const T = {"c0": 24.521, "head": 24.571, "btn": 26.274, "sub": 26.364, "e": 27.2, "slo": 27.75, "info": 27.85, "end": 30.0};
     PUSH(T.c0, T.end, "#c-cam");
     RISE(T.head, ["#c-h-0", "#c-h-1"]);
     ENTER(T.btn, "#c-btn");
@@ -130,7 +135,7 @@
     // C8: the Paper field wipes up (its contents go with it), the Navy-side label leaves,
     // the gold signature travels up under the slogan; button and note stay put
     LEAVE(T.e - 0.1, ["#c-b-0"]);
-    A(T.e, "#c-paper", { clipPath: ["inset(0px 0px 0px 0px)", "inset(0px 0px 940px 0px)"] }, 0.6, INOUT);
+    A(T.e, "#c-paper", { clipPath: ["inset(0px 0px 0px 0px)", "inset(0px 0px 940px 0px)"] }, 0.9, INOUT);
     A(T.e + 0.03, "#c-gold", { translateY: [0, -485] }, 0.8, INOUT);
     RISE(T.slo, ["#e-slo-0", "#e-slo-1"]);
     ENTER(T.info, "#e-info");
