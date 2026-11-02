@@ -10,9 +10,9 @@
   ]
  },
  "loudness": {
-  "I": -15.1,
-  "LRA": 13.0,
-  "TP": -4.6
+  "I": -15.0,
+  "LRA": 2.6,
+  "TP": -5.4
  },
  "detected": [
   {
@@ -46,7 +46,7 @@
    "off_downbeat_frames": 0.02,
    "within2": true,
    "on_downbeat": true,
-   "score": 27.9
+   "score": 27.2
   },
   {
    "frame": 368,
@@ -57,7 +57,7 @@
    "off_downbeat_frames": 13.43,
    "within2": true,
    "on_downbeat": false,
-   "score": 19.3
+   "score": 15.8
   }
  ],
  "planned": [
@@ -242,6 +242,20 @@
    },
    {
     "frame": 366,
+    "text": "\uc774 \uce78\uc758 \uc774\ub984, \ub2f9\uc2e0.",
+    "size": 88,
+    "dom_dx": -0.68,
+    "ink_dx": 0.0
+   },
+   {
+    "frame": 366,
+    "text": "\uadf8 \uce78\uc73c\ub85c \uac00\ub294 \uccab \uacc4\ub2e8",
+    "size": 44,
+    "dom_dx": -0.12,
+    "ink_dx": 0.5
+   },
+   {
+    "frame": 366,
     "text": "\uad6d\ub0b4 \uc720\uc77c*",
     "size": 44,
     "dom_dx": -0.12,
@@ -264,16 +278,9 @@
    {
     "frame": 366,
     "text": "\uad50\uc721\ubd80\uc7a5\uad00 \uba85\uc758",
-    "size": 44,
-    "dom_dx": -0.12,
-    "ink_dx": -2.0
-   },
-   {
-    "frame": 366,
-    "text": "\uadf8 \uce78\uc73c\ub85c \uac00\ub294 \uccab \uacc4\ub2e8",
-    "size": 88,
-    "dom_dx": -0.68,
-    "ink_dx": 1.5
+    "size": 26,
+    "dom_dx": -0.01,
+    "ink_dx": -1.0
    },
    {
     "frame": 366,

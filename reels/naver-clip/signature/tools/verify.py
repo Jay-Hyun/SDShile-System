@@ -6,7 +6,8 @@ python3 tools/verify.py renders/last-signature-15s.mp4 15
 Cuts are detected from the MP4 itself, on luma AND chroma: each frame is scaled to 160x284 YCbCr and
 the score is mean |dY| + mean |dCb| + mean |dCr| between consecutive frames, so a hue change with
 little luma change (Ink #0E1116 -> Navy #0B1A33) still registers. A frame is a cut when its score is
->= 18 and >= 3x the local median (wipes and entrances spread over many frames do not qualify).
+>= 10 and an isolated spike, >= 8x the median of the 16 frames around it (flat colour fields make a
+real cut a sharp spike; wipes, glides and entrances spread over many frames and do not qualify).
 Every detected cut is matched to the nearest beat and the nearest DOWNBEAT of the excerpt
 (beats/source.json); the planned cuts (beats/cuts*.json) are listed with the measured frame.
 
@@ -55,7 +56,7 @@ cuts = []
 for i in range(len(diff)):
     lo, hi = max(0, i - 8), min(len(diff), i + 9)
     loc = np.median(np.r_[diff[lo:i], diff[i + 1:hi]])
-    if diff[i] >= 18 and diff[i] >= 3 * max(loc, 1.5) and diff[i] == diff[max(0, i - 2):i + 3].max():
+    if diff[i] >= 10 and diff[i] >= 8 * max(loc, 1.5) and diff[i] == diff[max(0, i - 2):i + 3].max():
         cuts.append(i + 1)  # first frame of the new picture
 
 SRC = json.load(open(os.path.join(ROOT, "beats", "source.json")))
