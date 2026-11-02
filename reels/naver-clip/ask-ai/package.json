@@ -9,12 +9,15 @@
     "build15": "python3 tools/build_15s.py",
     "dev": "npx --yes hyperframes@0.8.200 preview",
     "check": "npx --yes hyperframes@0.8.200 check",
-    "snapshot": "npx --yes hyperframes@0.8.200 snapshot --at 3,7,9.5,12.35,13.6,17.3,20.2,22.1,24.8,29.5 --no-end",
+    "snapshot": "npx --yes hyperframes@0.8.200 snapshot --at 1.2,3,4.3,5.1,6.2,7.5,9.5,10.9,11.7,12.6,13.4,14.2,15.2,16.8,19.3,21.4,22.9,24.8,26.9,29.5 --no-end",
     "render": "npx --yes hyperframes@0.8.200 render --quality delivery -o renders/ask-ai-30s.mp4",
     "render15": "cd v15 && npx --yes hyperframes@0.8.200 render --quality delivery -o ../renders/ask-ai-15s.mp4",
     "verify": "python3 tools/verify_cuts.py 30 && python3 tools/verify_cuts.py 15",
-    "snapshot15": "cd v15 && npx --yes hyperframes@0.8.200 snapshot --at 2.8,4.8,5.6,6.3,7.75,9.9,12,14.5 --no-end",
+    "snapshot15": "cd v15 && npx --yes hyperframes@0.8.200 snapshot --at 1.2,2.9,3.7,4.7,5.7,7,7.8,9.9,12.1,13.3,14.6 --no-end",
     "measure": "node tools/measure_frames.cjs",
-    "plan": "python3 tools/verify_cuts.py 30 --plan && python3 tools/verify_cuts.py 15 --plan"
+    "plan": "python3 tools/verify_cuts.py 30 --plan && python3 tools/verify_cuts.py 15 --plan",
+    "audiocheck": "python3 tools/audio_check.py 30 && python3 tools/audio_check.py 15",
+    "reading": "python3 tools/reading_speed.py",
+    "stamp": "python3 tools/stamp_timing.py"
   }
 }

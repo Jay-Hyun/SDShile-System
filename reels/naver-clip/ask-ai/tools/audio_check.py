@@ -2,7 +2,7 @@
 """음악 연속성 점검 (art direction §7-2 "음악은 끊지 않는다").
 
 Usage: python3 tools/audio_check.py 30|15 [audio-or-mp4]      (생략하면 assets/audio 의 bgm+sfx 합)
-  1. 최저 구간: 10 ms RMS 가 −40 dBFS 미만으로 이어지는 가장 긴 구간 (마지막 엔딩 페이드 제외). 50 ms 이상이면 끊김.
+  1. 최저 구간: 10 ms RMS(스테레오 전력)가 −40 dBFS 미만으로 이어지는 가장 긴 구간 (마지막 엔딩 페이드 제외). 50 ms 이상이면 끊김.
   2. 고민 중 구간 RMS 가 앞뒤 구간 평균과 몇 dB 차이인가 (±6 dB 이내여야 함).
   3. 이음새 클릭: 이음새 ±3 ms 안의 최대 샘플 간 차이 ÷ 주변 ±300 ms 의 99.9 백분위 차이 (클릭이면 ≫ 1).
   4. 고역(10 kHz+) 비율: 같은 구간 원곡 대비 dB 차이 (±1 dB 이내여야 함). 효과음(탭)이 든 0.25 s 는 뺀다.
@@ -22,10 +22,9 @@ SR = 48000
 def load(path):
     if path.endswith(".wav"):
         w = wave.open(path)
-        x = np.frombuffer(w.readframes(w.getnframes()), "<i2").reshape(-1, w.getnchannels()).astype(np.float64) / 32768
-        return x.mean(1)
-    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-vn", "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True, check=True).stdout
-    return np.frombuffer(raw, np.float32).astype(np.float64)
+        return np.frombuffer(w.readframes(w.getnframes()), "<i2").reshape(-1, w.getnchannels()).astype(np.float64) / 32768
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-vn", "-ac", "2", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True, check=True).stdout
+    return np.frombuffer(raw, np.float32).reshape(-1, 2).astype(np.float64)
 
 
 def db(x):
@@ -48,7 +47,9 @@ def main():
         suf = "-15s" if cut == 15 else ""
         x = load(os.path.join(ROOT, f"assets/audio/bgm{suf}.wav")) + load(os.path.join(ROOT, f"assets/audio/sfx{suf}.wav"))
         label = f"assets/audio/bgm{suf}.wav + sfx{suf}.wav"
-    src = load(os.path.join(ROOT, "assets/music/source.mp3"))
+    xs = x  # 스테레오(RMS·최저 구간은 두 채널의 전력으로: 모노로 접으면 좌우 반대 위상 성분이 상쇄돼 가짜 홈이 생긴다)
+    x = xs.mean(1)  # 모노(클릭·고역 비율)
+    src = load(os.path.join(ROOT, "assets/music/source.mp3")).mean(1)
     segs = c["music_segments"]
     R = c["R"]
     fade_start = segs[-1]["v1"] - segs[-1].get("fade", 0)
@@ -57,7 +58,7 @@ def main():
     # 1. 최저 구간
     n = int(0.010 * SR)
     m = len(x) // n
-    rms = np.array([20 * np.log10(max(np.sqrt(np.mean(x[i * n:(i + 1) * n] ** 2)), 1e-12)) for i in range(m)])
+    rms = np.array([20 * np.log10(max(np.sqrt(np.mean(xs[i * n:(i + 1) * n] ** 2)), 1e-12)) for i in range(m)])
     lim = int(fade_start / 0.010)
     low = rms[:lim] < -40
     run = best = start = bs = 0
@@ -70,9 +71,9 @@ def main():
     # 2. 고민 중 구간
     g0 = c["chapters"]["gag"]
     w = 2.0
-    pre = x[int((g0 - 0.1 - w) * SR):int((g0 - 0.1) * SR)]
-    gag = x[int(g0 * SR):int(R * SR)]
-    post = x[int(R * SR):int((R + w) * SR)]
+    pre = xs[int((g0 - 0.1 - w) * SR):int((g0 - 0.1) * SR)]
+    gag = xs[int(g0 * SR):int(R * SR)]
+    post = xs[int(R * SR):int((R + w) * SR)]
     a, b, d = db(pre), db(gag), db(post)
     print(f"2. gag window {g0:.3f}–{R:.3f} s RMS {b:.1f} dBFS | before ({w:.0f} s) {a:.1f} | after ({w:.0f} s) {d:.1f} | gag − mean(neighbours) = {b-(a+d)/2:+.1f} dB  -> {'OK' if abs(b-(a+d)/2) <= 6 else 'OFF'}")
 

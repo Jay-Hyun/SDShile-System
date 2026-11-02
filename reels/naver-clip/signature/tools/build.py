@@ -446,8 +446,8 @@ def build_sign(T, compact=False):
       </div>
       {text("s-you2", "head", SENT_T, ['이 칸의 이름, <span class="au">당신.</span>'], "on-ink", rise=True)}
       {text("s-nl", "body", 796, [NEW], "on-ink", rise=True)}
-      {text("s-u1", "body", 910, ["국내 유일*"], "au", rise=True)}
-      {text("s-u2", "display", 978, ["100% 온라인", "법학사"], "on-ink", rise=True)}
+      {text("s-u1", "body", 902, ["국내 유일*"], "au", rise=True)}
+      {text("s-u2", "display", 970, ["100% 온라인", "법학사"], "on-ink", rise=True)}
       {text("s-u3", "small", 1304, [u3], "m-d", rise=True)}
       {lockup("s-lock", 1384, "later")}
     </div>'''
