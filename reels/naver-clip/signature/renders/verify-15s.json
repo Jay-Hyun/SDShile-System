@@ -10,9 +10,9 @@
   ]
  },
  "loudness": {
-  "I": -15.1,
-  "LRA": 12.5,
-  "TP": -2.8
+  "I": -15.0,
+  "LRA": 13.0,
+  "TP": -2.4
  },
  "detected": [
   {
@@ -52,13 +52,13 @@
    "diff": 56.1
   },
   {
-   "frame": 120,
-   "t": 4.0,
-   "beat": 9,
-   "beat_t": 3.948,
-   "off_frames": 1.56,
+   "frame": 106,
+   "t": 3.533,
+   "beat": 8,
+   "beat_t": 3.507,
+   "off_frames": 0.79,
    "within2": true,
-   "diff": 19.5
+   "diff": 19.7
   },
   {
    "frame": 145,
@@ -67,7 +67,7 @@
    "beat_t": 4.825,
    "off_frames": 0.25,
    "within2": true,
-   "diff": 60.1
+   "diff": 60.0
   },
   {
    "frame": 277,
@@ -144,13 +144,13 @@
    "beat_off": 0.15
   },
   {
-   "t": 3.948,
-   "frame": 118,
+   "t": 3.507,
+   "frame": 105,
    "label": "C3' toast",
-   "detected": 120,
-   "detected_off": 2,
-   "beat": 9,
-   "beat_off": -0.44
+   "detected": 106,
+   "detected_off": 1,
+   "beat": 8,
+   "beat_off": -0.21
   },
   {
    "t": 4.825,

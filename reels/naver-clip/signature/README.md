@@ -3,9 +3,9 @@
 1080×1920 · 30fps · 30.0초(프로젝트 루트) / 15.0초(`v15/`). 문구·컷 순서·컴플라이언스는 `docs/ads/naver-clip/01-last-signature.md` 그대로 두고, **컷 경계만 BGM 비트에 맞춰 ±0.5초 안에서 다시 잡았다.**
 렌더: `renders/last-signature-30s.mp4`, `renders/last-signature-15s.mp4` (내레이션 없음, 스톡 대신 벡터 일러스트)
 
-- **엔진:** anime.js v4.5.0만 쓴다(`lib/anime.umd.min.js`, MIT, 로컬 번들). GSAP은 쓰지 않는다.
+- **엔진:** anime.js v4.5.0만 쓴다(`lib/anime.umd.min.js`, MIT, 로컬 번들). 다른 애니메이션 엔진은 쓰지 않는다.
   - 씬마다 `anime.createTimeline({ autoplay: false })`를 하나 만들어 `window.__hfAnime`에 push한다. HyperFrames는 모든 anime 인스턴스를 **루트 시간(ms)**으로 seek하므로 씬 안의 위치도 절대 초로 적는다.
-  - 루트는 `data-no-timeline`이다(GSAP 타임라인 레지스트리 없음).
+  - 루트는 `data-no-timeline`이다(타임라인 레지스트리 없음).
   - 랜덤 요소(셰이크, 그레인, 먼지, 불씨)는 모두 `anime.createSeededRandom` 시드로 고정한다.
   - rAF와 타이머는 쓰지 않는다.
 - **쓰인 anime 기능:**
