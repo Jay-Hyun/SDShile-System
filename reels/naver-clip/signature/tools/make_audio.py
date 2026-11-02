@@ -7,8 +7,8 @@ Usage (project root; numpy + ffmpeg):
 Music: assets/music/source.mp3 = "Breaking News Intro" by kornevmusic (Pixabay 527939), user supplied.
 The excerpt starts on a beat (beats/source.json); automation below is volume and a low-pass
 sweep only (the track has no break where the story needs silence). SFX are short noise/transient
-effects reused from the first draft's make_audio.py (click, error "뚱", pen "톡", swoosh, tick) —
-no tonal music is generated. Master: -15 LUFS integrated target, true peak <= -1 dBTP.
+effects (click, error "뚱", pen "톡", tick) placed at the picture's cue times (beats/cuts*.json "sfx",
+written by tools/build.py — run the builder first). No whips or swipes; no tonal music is generated. Master: -15 LUFS integrated target, true peak <= -1 dBTP.
 """
 import json
 import os
@@ -116,13 +116,6 @@ def norm(x):
     return x / p if p > 0 else x
 
 
-def swoosh(d=0.22, lo=900, hi=7000, level=0.5):
-    n = int(d * SR)
-    x = band(rng.standard_normal(n), lo, hi)
-    tt = np.arange(n) / n
-    return norm(x) * np.sin(np.pi * tt) ** 1.5 * level
-
-
 def tick(level=0.3, f=3200):
     n = int(0.02 * SR)
     tt = np.arange(n) / SR
@@ -167,24 +160,19 @@ def place(sig, at, gain=1.0):
         sfx[i:j] += sig[: j - i] * gain
 
 
-if VARIANT == "30":
-    place(swoosh(0.26), B(3) - 0.1, 0.8)                      # whip tilt
-    for k in (11, 12, 13):
-        place(tick(), B(k), 0.9)                              # ✓ ✓ ✓
-    for k in (17, 18, 18.5, 19):
-        place(click(), B(k), 1.0)                             # 생성 ×4
-    place(error_tone(), B(20), 1.0)                           # toast "뚱"
-    place(error_tone(0.35), B(20) + 0.22, 1.0)
-    place(pen_tok(), B(44), 1.0)                              # pen "톡" = mix peak
-    place(swoosh(0.3, 600, 5000), B(58), 0.8)                 # swipe
-    place(click(0.45), B(60) + 0.05, 1.0)                     # button "톡"
-else:
-    place(swoosh(0.26), B(3) - 0.1, 0.8)
-    for k in (6, 6.5, 7):
-        place(click(), B(k), 1.0)
-    place(error_tone(), B(8), 1.0)
-    place(pen_tok(), B(23), 1.0)
-    place(click(0.45), B(28) + 0.05, 1.0)
+# SFX cues come from the picture (tools/build.py writes them into beats/cuts*.json), so sound and
+# picture cannot drift apart. Art direction v3: restraint — only what the story needs, kept quiet:
+# the generate presses, the error toast (one tone), the pen touch of the signature (on the music's
+# biggest hit, so it rides the hit rather than towering over it), a soft tick when the button arrives.
+CUES = json.load(open(os.path.join(ROOT, "beats", "cuts.json" if VARIANT == "30" else "cuts-15s.json")))["sfx"]
+SOUND = {
+    "click": lambda: click(0.32),
+    "error": lambda: error_tone(0.38),
+    "pen": lambda: pen_tok(0.62),
+    "tick": lambda: tick(0.16, 1900),
+}
+for cue in CUES:
+    place(SOUND[cue["kind"]](), cue["t"], 1.0)
 
 mix = music + sfx[:, None] * 0.5
 

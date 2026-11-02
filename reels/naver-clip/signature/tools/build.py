@@ -412,59 +412,58 @@ def build_sign(T, compact=False):
 
 
 # ============================================================ CTA (C7 + C8) — Paper over Navy, 30s only
-# C7: the frame is split into two full-bleed fields — Paper on top '생성하는 쪽' (what the AI
-# produces, muted), Navy below '서명하는 쪽' with the gold signature. The headline sits on the split:
-# '서명하는 쪽으로' on the Paper side, '넘어오세요.' on the Navy side. S2 on the bar line: the button.
+# C7: the frame is split into two full-bleed fields. Paper on top: '생성하는 쪽' (what the AI produces,
+# muted) and the headline '서명하는 쪽으로 / 넘어오세요.', 100px clear of the split. Navy below, its own
+# evenly spaced stack: '서명하는 쪽' (gold), the gold signature, the button (S2, on the bar line), the note.
 # C8 (a move inside the shot): the Paper field wipes up out of the frame (in-out) so the Navy side
-# takes it all; the gold signature travels up to become the slogan's underline; the slogan (144px)
-# rises, USP / brand / phone settle; the button stays where it is.
+# takes it all; the gold signature travels up to become the slogan's underline; the slogan (88px,
+# two lines) rises, mark / USP / brand / phone settle. The button and its note do not move.
+SPLIT = 940
+
+
 def build_cta(T):
     d = [x["body"][0] for x in DOCS]
-    css = """
-    #c-ground { background: var(--navy); }
-    #c-paper { position: absolute; left: 0; top: 0; width: 1080px; height: 860px; background: var(--paper); overflow: hidden; }
-    #c-svg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
-    .mark { position: absolute; left: 518.4px; width: 43.2px; height: 48px; }
+    css = f"""
+    #c-ground {{ background: var(--navy); }}
+    #c-paper {{ position: absolute; left: 0; top: 0; width: 1080px; height: {SPLIT}px; background: var(--paper); overflow: hidden; }}
+    #c-svg {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }}
+    .mark {{ position: absolute; left: 518.4px; width: 43.2px; height: 48px; }}
 """
-    gold = "M120 1121 C 360 1124, 640 1120, 840 1114 S 945 1108, 960 1106"
+    gold = "M120 1138 C 360 1141, 640 1137, 840 1131 S 945 1125, 960 1123"   # ~y1135, under '서명하는 쪽'
     html = f'''    <div id="c-ground" class="field" data-layout-ignore></div>
     <div id="c-cam" class="cam" data-layout-allow-overflow>
       <div id="c-paper" data-layout-allow-overflow>
-        {text("c-a", "head", 270, ["생성하는 쪽"], "m-l")}
-        {text("c-af", "body", 420, d, "m-l")}
-        {text("c-h1", "head", 759, ["서명하는 쪽으로"], "on-paper", rise=True)}
+        {text("c-a", "head", 260, ["생성하는 쪽"], "m-l")}
+        {text("c-af", "body", 400, d, "m-l")}
+        {text("c-h", "head", 640, ["서명하는 쪽으로", "넘어오세요."], "on-paper", rise=True)}
       </div>
-      <div id="c-navy">
-        {text("c-h2", "head", 860, ["넘어오세요."], "on-ink", rise=True)}
-        {text("c-b", "head", 985, ["서명하는 쪽"], "au")}
-      </div>
+      {text("c-b", "head", 990, ["서명하는 쪽"], "au")}
       <svg id="c-svg" viewBox="0 0 1080 1920" data-layout-ignore>
         <path id="c-gold" d="{gold}" stroke="#b8955a" stroke-width="6" stroke-linecap="round" fill="none"/>
       </svg>
-      {text("e-slo", "display", 236, ["책임지는", "자리로,", "지금 있는", "자리에서."], "on-ink", rise=True)}
+      {text("e-slo", "head", 408, ["책임지는 자리로,", "지금 있는 자리에서."], "on-ink", rise=True)}
       <div id="e-info" class="later">
-        {MARK.replace('class="mark"', 'class="mark" style="top:150px"')}
-        {text("e-u", "body", 918, ["국내 유일* 100% 온라인 법학사"], "on-ink")}
-        {text("e-u3", "small", 982, ["교육부장관 명의 · '법학 전공' 표기"], "m-d")}
-        {text("e-bn", "body", 1046, [BRAND], "on-ink")}
-        {text("e-tel", "body", 1336, ["070-4006-7128 (평일 10–18시)"], "on-ink")}
+        {MARK.replace('class="mark"', 'class="mark" style="top:260px"')}
+        {text("e-u", "body", 776, ["국내 유일* 100% 온라인 법학사"], "on-ink")}
+        {text("e-u3", "small", 842, ["교육부장관 명의 · '법학 전공' 표기"], "m-d")}
+        {text("e-bn", "body", 998, [BRAND], "on-ink")}
+        {text("e-tel", "body", 1380, ["070-4006-7128 (평일 10–18시)"], "on-ink")}
       </div>
-      {pill("c-btn", 1200, 840, "무료 상담 신청", "var(--paper)", "var(--ink)", "opacity:0")}
-      {text("c-sub", "small", 1330, ["상담만 받아도 돼요."], "m-d", cls="later")}
+      {pill("c-btn", 1180, 840, "무료 상담 신청", "var(--paper)", "var(--ink)", "opacity:0")}
+      {text("c-sub", "small", 1312, ["상담만 받아도 돼요."], "m-d", cls="later")}
     </div>'''
     js = f"""
     const T = {J(T)};
     PUSH(T.c0, T.end, "#c-cam");
-    RISE(T.head, ["#c-h1-0", "#c-h2-0"]);
+    RISE(T.head, ["#c-h-0", "#c-h-1"]);
     ENTER(T.btn, "#c-btn");
     ENTER(T.sub, "#c-sub");
-    // C8: the Paper field wipes up (its contents go with it), the Navy-side words leave,
-    // the gold signature travels up under the slogan
-    A(T.e, "#c-paper", {{ clipPath: ["inset(0px 0px 0px 0px)", "inset(0px 0px 860px 0px)"] }}, 0.6, INOUT);
-    LEAVE(T.e - 0.1, ["#c-navy"]);  // the words are gone before the gold line passes their row
-    A(T.e + 0.03, "#c-gold", {{ translateY: [0, -225] }}, 0.6, INOUT);
-    A(T.e, ["#c-btn", "#c-sub"], {{ translateY: [0, -60] }}, 0.6, INOUT);  // the button settles into the end card
-    RISE(T.slo, ["#e-slo-0", "#e-slo-1", "#e-slo-2", "#e-slo-3"]);
+    // C8: the Paper field wipes up (its contents go with it), the Navy-side label leaves,
+    // the gold signature travels up under the slogan; button and note stay put
+    LEAVE(T.e - 0.1, ["#c-b-0"]);
+    A(T.e, "#c-paper", {{ clipPath: ["inset(0px 0px 0px 0px)", "inset(0px 0px {SPLIT}px 0px)"] }}, 0.6, INOUT);
+    A(T.e + 0.03, "#c-gold", {{ translateY: [0, -485] }}, 0.8, INOUT);
+    RISE(T.slo, ["#e-slo-0", "#e-slo-1"]);
     ENTER(T.info, "#e-info");
 """
     return css, html, js
@@ -476,24 +475,24 @@ def build_end(T):
     #e-ground { background: var(--navy); }
     .mark { position: absolute; left: 518.4px; width: 43.2px; height: 48px; }
 """
-    underline = "M120 896 C 360 899, 640 895, 840 889 S 945 883, 960 881"
+    underline = "M120 653 C 360 656, 640 652, 840 646 S 945 640, 960 638"
     html = f'''    <div id="e-ground" class="field" data-layout-ignore></div>
     <div id="e-cam" class="cam" data-layout-allow-overflow>
-      {text("e-slo", "display", 236, ["책임지는", "자리로,", "지금 있는", "자리에서."], "on-ink", rise=True)}
+      {text("e-slo", "head", 408, ["책임지는 자리로,", "지금 있는 자리에서."], "on-ink", rise=True)}
       <svg id="e-svg" viewBox="0 0 1080 1920" style="position:absolute;left:0;top:0;width:1080px;height:1920px" data-layout-ignore>
         <path id="e-ul" d="{underline}" stroke="#b8955a" stroke-width="6" stroke-linecap="round" fill="none" style="opacity:0"/>
       </svg>
       <div id="e-info" class="later">
-        {MARK.replace('class="mark"', 'class="mark" style="top:150px"')}
-        {text("e-bn", "body", 940, [BRAND], "on-ink")}
-        {text("e-tel", "body", 1036, ["070-4006-7128 (평일 10–18시)"], "on-ink")}
+        {MARK.replace('class="mark"', 'class="mark" style="top:260px"')}
+        {text("e-bn", "body", 791, [BRAND], "on-ink")}
+        {text("e-tel", "body", 1243, ["070-4006-7128 (평일 10–18시)"], "on-ink")}
       </div>
-      {pill("e-btn", 1160, 840, "무료 상담 신청", "var(--paper)", "var(--ink)", "opacity:0")}
+      {pill("e-btn", 988, 840, "무료 상담 신청", "var(--paper)", "var(--ink)", "opacity:0")}
     </div>'''
     js = f"""
     const T = {J(T)};
     PUSH(T.c0, T.end, "#e-cam");
-    RISE(T.slo, ["#e-slo-0", "#e-slo-1", "#e-slo-2", "#e-slo-3"]);
+    RISE(T.slo, ["#e-slo-0", "#e-slo-1"]);
     DRAW(T.c0, T.ul, "#e-ul", 1.1);
     ENTER(T.info, "#e-info");
     ENTER(T.btn, "#e-btn");

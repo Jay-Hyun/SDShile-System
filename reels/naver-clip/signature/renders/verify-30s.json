@@ -10,310 +10,150 @@
   ]
  },
  "loudness": {
-  "I": -15.1,
-  "LRA": 15.7,
-  "TP": -2.5
+  "I": -15.0,
+  "LRA": 15.6,
+  "TP": -4.9
  },
  "detected": [
   {
-   "frame": 14,
-   "t": 0.467,
-   "beat": 1,
-   "beat_t": 0.442,
-   "off_frames": 0.74,
+   "frame": 53,
+   "t": 1.767,
+   "beat": 4,
+   "downbeat": true,
+   "off_beat_frames": 0.41,
+   "off_downbeat_frames": 0.41,
    "within2": true,
-   "diff": 78.4
-  },
-  {
-   "frame": 27,
-   "t": 0.9,
-   "beat": 2,
-   "beat_t": 0.883,
-   "off_frames": 0.51,
-   "within2": true,
-   "diff": 37.9
-  },
-  {
-   "frame": 40,
-   "t": 1.333,
-   "beat": 3,
-   "beat_t": 1.312,
-   "off_frames": 0.64,
-   "within2": true,
-   "diff": 100.0
+   "on_downbeat": true,
+   "score": 110.1
   },
   {
    "frame": 92,
    "t": 3.067,
    "beat": 7,
-   "beat_t": 3.065,
-   "off_frames": 0.05,
+   "downbeat": false,
+   "off_beat_frames": 0.05,
+   "off_downbeat_frames": -12.85,
    "within2": true,
-   "diff": 174.1
+   "on_downbeat": false,
+   "score": 119.0
   },
   {
-   "frame": 105,
-   "t": 3.5,
-   "beat": 8,
-   "beat_t": 3.495,
-   "off_frames": 0.15,
+   "frame": 211,
+   "t": 7.033,
+   "beat": 16,
+   "downbeat": true,
+   "off_beat_frames": 0.61,
+   "off_downbeat_frames": 0.61,
    "within2": true,
-   "diff": 51.0
+   "on_downbeat": true,
+   "score": 58.4
   },
   {
-   "frame": 119,
-   "t": 3.967,
-   "beat": 9,
-   "beat_t": 3.948,
-   "off_frames": 0.56,
+   "frame": 316,
+   "t": 10.533,
+   "beat": 24,
+   "downbeat": true,
+   "off_beat_frames": 0.43,
+   "off_downbeat_frames": 0.43,
    "within2": true,
-   "diff": 70.3
+   "on_downbeat": true,
+   "score": 62.3
   },
   {
-   "frame": 132,
-   "t": 4.4,
-   "beat": 10,
-   "beat_t": 4.377,
-   "off_frames": 0.69,
+   "frame": 526,
+   "t": 17.533,
+   "beat": 40,
+   "downbeat": true,
+   "off_beat_frames": 0.4,
+   "off_downbeat_frames": 0.4,
    "within2": true,
-   "diff": 88.4
+   "on_downbeat": true,
+   "score": 30.1
   },
   {
-   "frame": 184,
-   "t": 6.133,
-   "beat": 14,
-   "beat_t": 6.13,
-   "off_frames": 0.1,
+   "frame": 736,
+   "t": 24.533,
+   "beat": 56,
+   "downbeat": true,
+   "off_beat_frames": 0.37,
+   "off_downbeat_frames": 0.37,
    "within2": true,
-   "diff": 106.9
+   "on_downbeat": true,
+   "score": 102.3
   },
   {
-   "frame": 198,
-   "t": 6.6,
-   "beat": 15,
-   "beat_t": 6.572,
-   "off_frames": 0.84,
-   "within2": true,
-   "diff": 26.0
-  },
-  {
-   "frame": 302,
-   "t": 10.067,
-   "beat": 23,
-   "beat_t": 10.066,
-   "off_frames": 0.02,
-   "within2": true,
-   "diff": 63.9
-  },
-  {
-   "frame": 461,
-   "t": 15.367,
-   "beat": 35,
-   "beat_t": 15.349,
-   "off_frames": 0.53,
-   "within2": true,
-   "diff": 21.5
-  },
-  {
-   "frame": 539,
-   "t": 17.967,
-   "beat": 41,
-   "beat_t": 17.961,
-   "off_frames": 0.17,
-   "within2": true,
-   "diff": 107.6
-  },
-  {
-   "frame": 578,
-   "t": 19.267,
-   "beat": 44,
-   "beat_t": 19.261,
-   "off_frames": 0.17,
-   "within2": true,
-   "diff": 110.4
-  },
-  {
-   "frame": 631,
-   "t": 21.033,
-   "beat": 48,
-   "beat_t": 21.014,
-   "off_frames": 0.58,
-   "within2": true,
-   "diff": 111.7
-  },
-  {
-   "frame": 724,
-   "t": 24.133,
-   "beat": 55,
-   "beat_t": 24.091,
-   "off_frames": 1.27,
-   "within2": true,
-   "diff": 144.8
+   "frame": 830,
+   "t": 27.667,
+   "beat": 63,
+   "downbeat": false,
+   "off_beat_frames": 2.09,
+   "off_downbeat_frames": -11.14,
+   "within2": false,
+   "on_downbeat": false,
+   "score": 23.5
   }
  ],
  "planned": [
   {
-   "t": 0.442,
-   "frame": 13,
-   "label": "C1 punch-in 1",
-   "detected": 14,
-   "detected_off": 1,
-   "beat": 1,
-   "beat_off": -0.26
-  },
-  {
-   "t": 0.883,
-   "frame": 26,
-   "label": "C1 punch-in 2",
-   "detected": 27,
-   "detected_off": 1,
-   "beat": 2,
-   "beat_off": -0.49
-  },
-  {
-   "t": 1.312,
-   "frame": 39,
-   "label": "C1 S2 whip",
-   "detected": 40,
-   "detected_off": 1,
-   "beat": 3,
-   "beat_off": -0.36
+   "t": 1.753,
+   "frame": 53,
+   "label": "C1 S2",
+   "beat": 4,
+   "downbeat": true,
+   "detected": 53,
+   "detected_off": 0,
+   "beat_off": 0.41
   },
   {
    "t": 3.065,
    "frame": 92,
    "label": "C2",
+   "beat": 7,
+   "downbeat": false,
    "detected": 92,
    "detected_off": 0,
-   "beat": 7,
    "beat_off": 0.05
   },
   {
-   "t": 3.495,
-   "frame": 105,
-   "label": "C2 col2",
-   "detected": 105,
-   "detected_off": 0,
-   "beat": 8,
-   "beat_off": 0.15
-  },
-  {
-   "t": 3.948,
-   "frame": 118,
-   "label": "C2 col3",
-   "detected": 119,
-   "detected_off": 1,
-   "beat": 9,
-   "beat_off": -0.44
-  },
-  {
-   "t": 4.377,
-   "frame": 131,
-   "label": "C2 wide",
-   "detected": 132,
-   "detected_off": 1,
-   "beat": 10,
-   "beat_off": -0.31
-  },
-  {
-   "t": 6.13,
-   "frame": 184,
+   "t": 7.013,
+   "frame": 210,
    "label": "C3",
-   "detected": 184,
-   "detected_off": 0,
-   "beat": 14,
-   "beat_off": 0.1
+   "beat": 16,
+   "downbeat": true,
+   "detected": 211,
+   "detected_off": 1,
+   "beat_off": -0.39
   },
   {
-   "t": 8.766,
-   "frame": 263,
-   "label": "C3 S3 toast",
-   "detected": 302,
-   "detected_off": 39,
-   "beat": 20,
-   "beat_off": 0.02
-  },
-  {
-   "t": 10.066,
-   "frame": 302,
+   "t": 10.519,
+   "frame": 316,
    "label": "C4",
-   "detected": 302,
+   "beat": 24,
+   "downbeat": true,
+   "detected": 316,
    "detected_off": 0,
-   "beat": 23,
-   "beat_off": 0.02
+   "beat_off": 0.43
   },
   {
-   "t": 14.02,
-   "frame": 421,
-   "label": "C5",
-   "detected": 461,
-   "detected_off": 40,
-   "beat": 32,
+   "t": 17.52,
+   "frame": 526,
+   "label": "C6",
+   "beat": 40,
+   "downbeat": true,
+   "detected": 526,
+   "detected_off": 0,
    "beat_off": 0.4
   },
   {
-   "t": 15.349,
-   "frame": 460,
-   "label": "C5 S2 desk match",
-   "detected": 461,
-   "detected_off": 1,
-   "beat": 35,
-   "beat_off": -0.47
-  },
-  {
-   "t": 17.961,
-   "frame": 539,
-   "label": "C6",
-   "detected": 539,
-   "detected_off": 0,
-   "beat": 41,
-   "beat_off": 0.17
-  },
-  {
-   "t": 19.261,
-   "frame": 578,
-   "label": "C6 S2 pen touch",
-   "detected": 578,
-   "detected_off": 0,
-   "beat": 44,
-   "beat_off": 0.17
-  },
-  {
-   "t": 21.014,
-   "frame": 630,
-   "label": "C6 S3 USP",
-   "detected": 631,
-   "detected_off": 1,
-   "beat": 48,
-   "beat_off": -0.42
-  },
-  {
-   "t": 24.091,
-   "frame": 723,
+   "t": 24.521,
+   "frame": 736,
    "label": "C7",
-   "detected": 724,
-   "detected_off": 1,
-   "beat": 55,
-   "beat_off": 0.27
-  },
-  {
-   "t": 26.274,
-   "frame": 788,
-   "label": "C7 S2",
-   "detected": 724,
-   "detected_off": -64,
-   "beat": 60,
-   "beat_off": -0.22
-  },
-  {
-   "t": 27.597,
-   "frame": 828,
-   "label": "C8",
-   "detected": 724,
-   "detected_off": -104,
-   "beat": 63,
-   "beat_off": 0.09
+   "beat": 56,
+   "downbeat": true,
+   "detected": 736,
+   "detected_off": 0,
+   "beat_off": 0.37
   }
  ],
- "within2_pct": 100.0
-}
+ "within2_pct": 85.7,
+ "on_downbeat": 
