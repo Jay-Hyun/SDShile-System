@@ -4,15 +4,22 @@
  "beat_period": 0.4798848276413661,
  "R_slam": 6.5805,
  "brand": 8.5,
- "cuts": {
+ "win": 7.9,
+ "chapters": {
   "C1": 0.0,
-  "C2": 2.8793,
-  "C3": 4.7988,
+  "C2": 3.0,
+  "C2u": 3.8391,
+  "C3": 4.9,
   "gag": 5.7586,
   "C4": 6.5805,
   "C5": 8.5,
+  "C5b": 10.4195,
   "C6": 12.3391,
   "end": 15.0
+ },
+ "cuts": {
+  "open_mid": 8.5,
+  "C6": 12.3391
  },
  "music_segments": [
   {
@@ -35,8 +42,8 @@
  ],
  "mix": {
   "integrated_lufs": -15.0,
-  "true_peak_dbtp": -1.7,
-  "gain": 0.681,
-  "max_gain_reduction_db": -0.29
+  "true_peak_dbtp": -1.3,
+  "gain": 0.6969,
+  "max_gain_reduction_db": -0.22
  }
 }

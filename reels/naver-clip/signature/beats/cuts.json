@@ -68,8 +68,38 @@
    "label": "C7 S2 button"
   },
   {
-   "t": 27.5,
+   "t": 27.35,
    "label": "C8 end card (in shot)"
+  }
+ ],
+ "sfx": [
+  {
+   "t": 7.62,
+   "kind": "click"
+  },
+  {
+   "t": 7.92,
+   "kind": "click"
+  },
+  {
+   "t": 8.2,
+   "kind": "click"
+  },
+  {
+   "t": 8.46,
+   "kind": "click"
+  },
+  {
+   "t": 8.88,
+   "kind": "error"
+  },
+  {
+   "t": 19.261,
+   "kind": "pen"
+  },
+  {
+   "t": 26.274,
+   "kind": "tick"
   }
  ],
  "scenes": [

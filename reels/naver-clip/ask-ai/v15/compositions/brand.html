@@ -5,7 +5,8 @@
       src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
       font-weight: 45 930;
     }
-    /* 아트 디렉션 v3: Navy 단색 필드, 중심축 x=540, 텍스트 폭 ≤ 840, 크기 4단계(112/72/40/26), 골드 ≤ 5% */
+    /* 아트 디렉션 v3.1: Navy 단색 필드, 중심축 x=540, 텍스트 폭 ≤ 840, 크기 4단계(144/88/44/26), 골드 ≤ 5%.
+       묶음은 안전 영역 y 260–1440 을 채운다 */
     #root {
       position: absolute;
       inset: 0;
@@ -17,33 +18,35 @@
     /* 오프닝 윈도우: [상담사 연결] 버튼 크기의 clip-path inset → 전체 화면 */
     #br-win { position: absolute; inset: 0; background: var(--color-navy, #0b1a33); }
     .row { position: absolute; left: 0; width: 1080px; text-align: center; }
-    .push { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 540px 830px; }
+    .push { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 540px 850px; }
 
     .lnD, .lnH, .lnB { display: block; overflow: hidden; white-space: nowrap; }
     .lnD > span, .lnH > span, .lnB > span { display: inline-block; }
-    /* Display 112 / 700 / −0.04em / 1.08 */
-    .dsp { font-size: 112px; line-height: 1.08; font-weight: 700; letter-spacing: -0.04em; }
-    .dsp span { padding-right: 0.04em; }
-    /* Head 72 / 600 / −0.03em / 1.15 */
-    .hd { font-size: 72px; line-height: 1.15; font-weight: 600; letter-spacing: -0.03em; }
+    /* Display 144 / 700 / −0.045em / 1.05 */
+    .dsp { font-size: 144px; line-height: 1.05; font-weight: 700; letter-spacing: -0.045em; }
+    .dsp .lnD > span { padding-right: 0.045em; }
+    /* Head 88 / 600 / −0.03em / 1.15 */
+    .hd { font-size: 88px; line-height: 1.15; font-weight: 600; letter-spacing: -0.03em; }
     .hd .lnH > span { padding-right: 0.03em; }
-    /* Body 40 / 500 / −0.01em / 1.4 */
-    .bd { font-size: 40px; line-height: 56px; font-weight: 500; letter-spacing: -0.01em; }
-    .bd .lnB > span, .bd > span { padding-right: 0.01em; }
+    /* Body 44 / 500 / −0.01em / 1.4 */
+    .bd { font-size: 44px; line-height: 62px; font-weight: 500; letter-spacing: -0.01em; }
+    .bd .lnB > span { padding-right: 0.01em; }
     .g { font-style: normal; color: var(--color-gold, #b8955a); }
     .sec { color: var(--color-sec, #9aa0a6); }
 
     /* 로고 락업 (상단, 끝까지 유지) */
-    #br-logo { top: 296px; height: 64px; display: flex; align-items: center; justify-content: center; }
-    #br-logo-row { display: flex; align-items: center; gap: 16px; font-size: 40px; line-height: 56px; font-weight: 600; letter-spacing: -0.01em; padding-right: 0.01em; }
-    #br-mark { width: 50px; height: 56px; background: var(--color-gold, #b8955a); -webkit-mask: url("assets/img/mark-gold.svg") center / contain no-repeat; mask: url("assets/img/mark-gold.svg") center / contain no-repeat; }
+    #br-logo { top: 300px; height: 62px; display: flex; align-items: center; justify-content: center; }
+    #br-logo-row { display: flex; align-items: center; gap: 18px; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; padding-right: 0.01em; }
+    #br-mark { display: block; width: 54px; height: 60px; background: var(--color-gold, #b8955a); -webkit-mask: url("assets/img/mark-gold.svg") center / contain no-repeat; mask: url("assets/img/mark-gold.svg") center / contain no-repeat; }
 
-    #br-usp { top: 520px; }
-    #br-q { top: 890px; }
-    #br-ans { top: 978px; }
-    #br-cta { top: 640px; }
-    #br-slo { top: 640px; }
-    #br-sub { top: 838px; }
+    #br-uspg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    #br-kick { top: 452px; }
+    #br-usp { top: 561px; }
+    #br-q { top: 959px; }
+    #br-ans { top: 1045px; }
+    #br-cta { top: 580px; }
+    #br-slo { top: 580px; }
+    #br-sub { top: 830px; }
 
     /* 0 → 60 숫자 롤 (자리마다 한 번, 700ms ease-out) */
     .roll { display: inline-block; color: var(--color-gold, #b8955a); font-variant-numeric: tabular-nums; }
@@ -51,15 +54,15 @@
     .strip { display: block; }
     .strip > b { display: block; height: 1.15em; font-weight: inherit; text-align: center; }
 
-    /* CTA 버튼: 골드 면 + Navy 글자 (골드 면적 ≈ 3%) */
-    #br-btn { position: absolute; left: 260px; top: 1080px; width: 560px; height: 112px; border-radius: 56px; background: var(--color-gold, #b8955a); color: var(--color-navy, #0b1a33); display: flex; align-items: center; justify-content: center; font-size: 40px; line-height: 56px; font-weight: 600; letter-spacing: -0.01em; }
+    /* CTA 버튼: 컬럼 전폭 골드 면 + Navy 글자 (840×112 = 화면의 4.5%) */
+    #br-btn { position: absolute; left: 120px; top: 1110px; width: 840px; height: 112px; border-radius: 56px; background: var(--color-gold, #b8955a); color: var(--color-navy, #0b1a33); display: flex; align-items: center; justify-content: center; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; }
     #br-btn span { padding-right: 0.01em; }
-    #br-tel { top: 1232px; height: 56px; display: flex; align-items: center; justify-content: center; }
-    #br-tel-row { display: flex; align-items: center; gap: 12px; }
-    #br-tel svg { width: 36px; height: 36px; display: block; }
+    #br-tel { top: 1270px; height: 62px; display: flex; align-items: center; justify-content: center; }
+    #br-tel-row { display: flex; align-items: center; gap: 14px; }
+    #br-tel svg { width: 40px; height: 40px; display: block; }
 
     /* 열리기 직전 버튼 라벨 (chat.html 의 #ch-btn 과 같은 자리·같은 배율) */
-    #br-label { position: absolute; left: 340px; width: 400px; height: 112px; display: flex; align-items: center; justify-content: center; font-size: 40px; line-height: 56px; font-weight: 600; letter-spacing: -0.01em; transform: scale(1.03); }
+    #br-label { position: absolute; left: 120px; width: 840px; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; transform: scale(1.03); }
   </style>
   <div id="root" data-composition-id="brand" data-width="1080" data-height="1920">
     <div id="br-win" data-layout-allow-overflow>
@@ -69,9 +72,12 @@
 
       <!-- C7 USP + C8 사람의 답 (한 화면) -->
       <div id="br-p1" class="push">
-        <div id="br-usp" class="row dsp">
-          <div class="lnD"><span id="usp-1" data-m="c">국내 유일 100%</span></div>
-          <div class="lnD"><span id="usp-2" data-m="c">온라인 법학사*</span></div>
+        <div id="br-uspg">
+          <div id="br-kick" class="row hd"><div class="lnH"><span id="kick-1" class="g" data-m="c">국내 유일</span></div></div>
+          <div id="br-usp" class="row dsp">
+            <div class="lnD"><span id="usp-1" data-m="c">100% 온라인</span></div>
+            <div class="lnD"><span id="usp-2" data-m="c">법학사*</span></div>
+          </div>
         </div>
         <div id="br-q" class="row bd sec"><div class="lnB"><span id="q-1" data-m="c">“나 전문대 나왔고 회사 다니는데…”</span></div></div>
         <div id="br-ans" class="row hd">
@@ -80,15 +86,16 @@
         </div>
       </div>
 
-      <!-- C9 CTA -->
+      <!-- C9 CTA (Head 88 로 2행에 담으면 840px 을 넘어 자연스러운 끊김 3행) -->
       <div id="br-p2" class="push">
         <div id="br-cta" class="row hd">
           <div class="lnH"><span id="cta-1" data-m="c">AI도 넘긴 질문,</span></div>
-          <div class="lnH"><span id="cta-2" data-m="c">사람이 <em class="g">1:1</em>로 답해드려요.</span></div>
+          <div class="lnH"><span id="cta-2" data-m="c">사람이 <em class="g">1:1</em>로</span></div>
+          <div class="lnH"><span id="cta-3" data-m="c">답해드려요.</span></div>
         </div>
       </div>
 
-      <!-- C10 슬로건 (Display 112 로는 2행이 840px 을 넘어 Head 72) -->
+      <!-- C10 슬로건 (Display 144 로는 1행이 840px 을 넘어 Head 88) -->
       <div id="br-p3" class="push">
         <div id="br-slo" class="row hd">
           <div class="lnH"><span id="slo-1" data-m="c">책임지는 자리로,</span></div>
@@ -112,41 +119,45 @@
       const EB = (k) => R + k * BAR;
       const BR = EB(CUT === 30 ? 2 : 1); // 원곡 B섹션 크래시 = 브랜드 (30s 18.476 / 15s 8.500)
       const WIN = CUT === 30 ? 536 / 30 : 237 / 30; // 열리기 시작, 1200ms in-out 의 중간점 = 크래시
-      const BTN_CY = CUT === 30 ? 1166 : 1110; // chat.html 과 같은 값
+      const BTN_CY = 1380; // chat.html 과 같은 값 (대화 바닥 1440 − 버튼 높이/2)
       const END = CUT === 30 ? 30 : 15;
 
       if (CUT === 15) {
         $("#ans-1").textContent = "첫 계단,";
-        $("#q-1").textContent = "“전문대 졸 직장인도 법 공부 돼?”";
-        $("#br-p2").remove(); // 15초판은 CTA 카피 없이 버튼이 CTA (05 §3)
+        $("#br-q").remove(); // 15초판은 인용 없이 답만 (05 §3)
+        $("#br-ans").style.top = "959px";
+        $("#br-p2").remove(); // CTA 카피 없이 버튼이 CTA
         $("#br-sub").remove(); // 서브라인 없음
       }
       // 숫자 롤: 십의 자리 0→6, 일의 자리 0→9→0 (한 바퀴)
       $("#roll-t").innerHTML = [0, 1, 2, 3, 4, 5, 6].map((d) => "<b>" + d + "</b>").join("");
       $("#roll-o").innerHTML = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((d) => "<b>" + d + "</b>").join("");
-      $("#br-label").style.top = BTN_CY - 56 + "px";
+      $("#br-label").style.top = BTN_CY - 60 + "px";
 
       // ---------- 시작 상태 ----------
-      const half = { w: 206, h: 57.68 }; // 400×112 버튼 × 1.03 (챗 카메라 푸시 끝 배율)
+      const half = { w: 432.6, h: 61.8 }; // 840×120 버튼 × 1.03 (챗 카메라 푸시 끝 배율)
       const winFrom = "inset(" + (BTN_CY - half.h) + "px " + (540 - half.w) + "px " + (1920 - BTN_CY - half.h) + "px " + (540 - half.w) + "px round " + half.h + "px)";
       const winTo = "inset(0px 0px 0px 0px round 0px)";
       tl.set("#br-win", { clipPath: winFrom }, 0);
-      const lines = ["#usp-1", "#usp-2", "#q-1", "#ans-1", "#ans-2", "#slo-1", "#slo-2"];
-      if (CUT === 30) lines.push("#cta-1", "#cta-2", "#sub-1");
+      const lines = Array.from(document.querySelectorAll(".lnD > span, .lnH > span, .lnB > span"));
       tl.set(lines, { translateY: "105%" }, 0);
       tl.set(["#br-logo-row", "#br-btn", "#br-tel-row"], { opacity: 0 }, 0);
       tl.set(["#roll-t", "#roll-o"], { translateY: "0em" }, 0);
+      // C7 에서는 USP 묶음(국내 유일 + 2행, y 452–863)을 안전 영역 가운데(중심 850)에 둔다
+      const USP_LIFT = Math.round(850 - (452 + 863) / 2);
+      tl.set("#br-uspg", { translateY: USP_LIFT }, 0);
 
-      // ===== C7 시그니처: 눌린 버튼이 열려 상담 화면이 된다 (1200ms in-out) =====
+      // ===== C7 시그니처: 눌린 버튼이 열려 화면 전체가 상담 화면이 된다 (1200ms in-out) =====
       tl.add("#br-win", { clipPath: [winFrom, winTo], duration: D.open, ease: E.draw }, ms(WIN));
       tl.add("#br-label", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(WIN + 0.05));
       ui(tl, "#br-logo-row", BR);
-      rise(tl, ["#usp-1", "#usp-2"], BR + 0.12);
+      rise(tl, ["#kick-1", "#usp-1", "#usp-2"], BR + 0.12);
       if (CUT === 15) ui(tl, "#br-tel-row", BR + 0.9);
 
-      // ===== C8 다음 다운비트: 내 질문 → 사람의 답, 60 롤 =====
+      // ===== C8 다음 다운비트: USP 묶음이 위로 비켜나고(450ms in-out) 내 질문 → 사람의 답, 60 롤 =====
       const tC8 = EB(CUT === 30 ? 3 : 2);
-      rise(tl, "#q-1", tC8);
+      tl.add("#br-uspg", { translateY: [USP_LIFT, 0], duration: D.glide, ease: E.glide }, ms(tC8 - 0.1));
+      if (CUT === 30) rise(tl, "#q-1", tC8);
       rise(tl, ["#ans-1", "#ans-2"], tC8 + 0.12);
       tl.add("#roll-t", { translateY: ["0em", "-6.9em"], duration: D.roll, ease: E.roll }, ms(tC8 + 0.5));
       tl.add("#roll-o", { translateY: ["0em", "-11.5em"], duration: D.roll, ease: E.roll }, ms(tC8 + 0.57));
@@ -156,12 +167,12 @@
       if (CUT === 30) {
         // ===== C9 하드컷 (다운비트): CTA =====
         tl.set("#br-p1", { opacity: 0 }, ms(tCut1));
-        rise(tl, ["#cta-1", "#cta-2"], tCut1);
+        rise(tl, ["#cta-1", "#cta-2", "#cta-3"], tCut1);
         ui(tl, "#br-btn", tCut1 + 0.8);
         ui(tl, "#br-tel-row", tCut1 + 0.9);
         const tPress = tCut1 + 2.9;
-        tl.add("#br-btn", { scale: [1, 0.97], duration: D.press / 2, ease: E.ui }, ms(tPress));
-        tl.add("#br-btn", { scale: [0.97, 1], duration: D.press / 2, ease: E.ui }, ms(tPress + D.press / 2000));
+        tl.add("#br-btn", { scale: [1, 0.985], duration: D.press / 2, ease: E.ui }, ms(tPress));
+        tl.add("#br-btn", { scale: [0.985, 1], duration: D.press / 2, ease: E.ui }, ms(tPress + D.press / 2000));
         const tC10 = EB(6); // 원곡 다운비트 스플라이스
         push(tl, "#br-p2", tCut1, tC10);
         // ===== C10 하드컷 (다운비트): 슬로건. 서브라인은 마지막 크래시에 =====

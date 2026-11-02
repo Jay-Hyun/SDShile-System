@@ -3,6 +3,7 @@
  *   - 가운데 정렬 요소(data-m="c"): 박스 중심 x 와 540 의 차 (|Δx| ≤ 2px 이 기준)
  *   - 말풍선 컬럼(data-m="col"): 좌우 여백 (대칭이면 중심 = 540)
  *   - 계산된 font-size 집합 (4종 이하가 기준)
+ *   - 빈 띠: 글자·오브제 픽셀이 하나도 없는 가장 긴 연속 행 묶음 (프레임 높이 1920 의 %, §7-1 기준 ≤ 35%)
  * 을 표로 낸다. 어느 쪽에도 속하지 않는 보이는 텍스트는 "unannotated" 로 따로 보고한다.
  *
  * Usage:
@@ -101,8 +102,43 @@ function collect() {
   return { centred, cols, sizes, stray };
 }
 
+// 스크린샷(PNG base64)을 빈 페이지 canvas 로 풀어, 바탕색(최빈색)과 다른 픽셀이 없는 행의 최장 연속 구간을 잰다
+function emptyBand(b64) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement("canvas");
+      c.width = img.width;
+      c.height = img.height;
+      const g = c.getContext("2d");
+      g.drawImage(img, 0, 0);
+      const { data, width: w, height: h } = g.getImageData(0, 0, img.width, img.height);
+      const count = new Map();
+      for (let y = 0; y < h; y += 8) for (let x = 0; x < w; x += 8) {
+        const i = (y * w + x) * 4, k = (data[i] << 16) | (data[i + 1] << 8) | data[i + 2];
+        count.set(k, (count.get(k) || 0) + 1);
+      }
+      const bg = [...count.entries()].sort((a, b) => b[1] - a[1])[0][0];
+      const br = bg >> 16, bgc = (bg >> 8) & 255, bb = bg & 255;
+      let run = 0, best = 0, bestEnd = 0;
+      for (let y = 0; y < h; y++) {
+        let empty = true;
+        for (let x = 0; x < w; x += 2) {
+          const i = (y * w + x) * 4;
+          if (Math.abs(data[i] - br) + Math.abs(data[i + 1] - bgc) + Math.abs(data[i + 2] - bb) > 30) { empty = false; break; }
+        }
+        run = empty ? run + 1 : 0;
+        if (run > best) { best = run; bestEnd = y; }
+      }
+      resolve({ px: best, from: bestEnd - best + 1, to: bestEnd + 1, pct: +((100 * best) / h).toFixed(1) });
+    };
+    img.src = "data:image/png;base64," + b64;
+  });
+}
+
 (async () => {
   const browser = await chromium.launch();
+  const decoder = await browser.newPage();
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   await page.goto(url, { waitUntil: "load" });
   await page.waitForFunction(() => window.__playerReady === true && window.__player && typeof window.__player.renderSeek === "function", null, { timeout: 60000, polling: 100 }); // 런타임이 rAF 를 쥐고 있어 interval 폴링
@@ -114,6 +150,8 @@ function collect() {
     await page.evaluate(async (t) => { const r = window.__player.renderSeek(t); if (r && r.then) await r; }, t); // 렌더와 같은 결정적 seek
     await page.waitForTimeout(150);
     const m = await page.evaluate(collect);
+    const shot = (await page.screenshot()).toString("base64");
+    m.band = await decoder.evaluate(emptyBand, shot);
     Object.keys(m.sizes).forEach((s) => allSizes.add(s));
     out.push({ t, ...m });
   }
@@ -135,6 +173,10 @@ function collect() {
     worstCol = Math.max(worstCol, Math.abs(c.dx));
     lines.push(`| ${f.t} | ${c.el} | ${c.text} | ${c.w} | ${c.L} | ${c.R} | ${c.dx >= 0 ? "+" : ""}${c.dx} |`);
   }
+  lines.push("");
+  lines.push("| t (s) | largest empty band (rows y) | px | % of 1920 | ≤ 35% |");
+  lines.push("|---|---|---|---|---|");
+  for (const f of out) lines.push(`| ${f.t} | ${f.band.from}–${f.band.to} | ${f.band.px} | ${f.band.pct} | ${f.band.pct <= 35 ? "✓" : "✗"} |`);
   const strays = out.flatMap((f) => f.stray.map((s) => `${f.t}s ${s.el} "${s.text}" ${s.fs}`));
   const sizeList = [...allSizes].sort((a, b) => parseFloat(a) - parseFloat(b));
   lines.push("");

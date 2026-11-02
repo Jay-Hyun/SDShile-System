@@ -164,7 +164,8 @@ def J(x):
 
 
 # ============================================================ HOOK (C1 S1 / C1' S1) — Ink
-# f0 is complete: headline, status, three stacked sheets (back two show title + watermark strip).
+# f0 is complete: headline, status, a deck of three sheets filling the lower half (the front sheet
+# runs off the bottom of the frame; the back two show their title + watermark strip).
 def build_hook(T):
     d0, d1, d2 = DOCS
     css = """
@@ -172,20 +173,20 @@ def build_hook(T):
 """
     html = f'''    <div id="h-ground" class="field" data-layout-ignore></div>
     <div id="h-cam" class="cam" data-layout-allow-overflow>
-      {sheet("h-s2", 664, 560, 760, "var(--sheet-3)")}
-      {sheet("h-s1", 792, 480, 800, "var(--sheet-2)")}
-      {sheet("h-s0", 920, 370)}
-      {text("h-head", "display", 300, ["AI가", "다 써줍니다."], "on-ink")}
-      {text("h-stat", "small", 590, ['법률 검토 문서 3건 작성 · <span class="on-ink">생성 완료 0.1s</span>'], "m-d")}
-      {text("h-t2", "body", 682, [d2["title"]], "on-paper")}
-      {text("h-w2", "small", 738, [WM], "m-l")}
-      {text("h-t1", "body", 810, [d1["title"]], "on-paper")}
-      {text("h-w1", "small", 866, [WM], "m-l")}
-      {text("h-t0", "body", 938, [d0["title"]], "on-paper")}
-      {text("h-w0", "small", 994, [WM], "m-l")}
-      {text("h-b0", "small", 1046, d0["body"], "on-paper")}
-      {text("h-sg", "small", 1182, [SIG], "m-l")}
-      {rule("h-r0", 1246, 240, "m-l")}
+      {sheet("h-s2", 720, 1300, 760, "var(--sheet-3)")}
+      {sheet("h-s1", 890, 1200, 800, "var(--sheet-2)")}
+      {sheet("h-s0", 1060, 1000)}
+      {text("h-head", "display", 270, ["AI가", "다 써줍니다."], "on-ink")}
+      {text("h-stat", "body", 610, ['법률 검토 문서 3건 작성 · <span class="on-ink">생성 완료 0.1s</span>'], "m-d")}
+      {text("h-t2", "head", 734, [d2["title"]], "on-paper")}
+      {text("h-w2", "small", 838, [WM], "m-l")}
+      {text("h-t1", "head", 904, [d1["title"]], "on-paper")}
+      {text("h-w1", "small", 1008, [WM], "m-l")}
+      {text("h-t0", "head", 1074, [d0["title"]], "on-paper")}
+      {text("h-w0", "small", 1178, [WM], "m-l")}
+      {text("h-b0", "body", 1240, d0["body"], "on-paper")}
+      {text("h-sg", "body", 1468, [SIG], "m-l")}
+      {rule("h-r0", 1580, 420, "m-l")}
     </div>'''
     js = f"""
     const T = {J(T)};
@@ -195,29 +196,31 @@ def build_hook(T):
 
 
 # ============================================================ TEASE (C1 S2 / C1' S2 + C3') — Paper
-# Cut to the page itself: the last lines of the document and the one blank line, caret waiting.
-# 15s continues into C3': '생성' button, three presses (the lines above change, the blank stays), toast.
+# Cut to the page itself: the last lines of the document and the one blank line, full measure,
+# caret waiting. 15s continues into C3': '생성' pressed three times (the lines above change, the
+# blank stays), then the toast.
 def build_tease(T, presses=False):
     d0 = DOCS[0]
+    y0 = 300 if presses else 470  # the content group is centred in y 260–1440
     pairs = [(d0["last"][1], d0["last"][0]), (d0["last"][2], d0["last"][3]), (d0["last"][4], d0["body"][1]), (d0["body"][0], d0["last"][1])]
     css = """
     #t-ground { background: var(--paper); }
 """
     lines = ""
     for v, (a, b) in enumerate(pairs if presses else pairs[:1]):
-        lines += text(f"t-l{v}", "small", 852, [a, b], "on-paper", rise=v > 0)
+        lines += text(f"t-l{v}", "body", y0 + 466, [a, b], "on-paper", rise=v > 0)
     extra = ""
     if presses:
-        extra = (pill("t-btn", 1230, 320, "생성", "var(--ink)", "var(--paper)", "opacity:0") +
-                 pill("t-toast", 1230, 840, "이 항목은 생성할 수 없습니다.", "var(--red)", "var(--paper)", "opacity:0"))
+        extra = (pill("t-btn", y0 + 890, 360, "생성", "var(--ink)", "var(--paper)", "opacity:0") +
+                 pill("t-toast", y0 + 890, 840, "이 항목은 생성할 수 없습니다.", "var(--red)", "var(--paper)", "opacity:0"))
     html = f'''    <div id="t-ground" class="field" data-layout-ignore></div>
     <div id="t-cam" class="cam" data-layout-allow-overflow>
-      {text("t-cap", "display", 300, ["딱 한 칸만", "빼고."], "on-paper", rise=True)}
-      {text("t-wm", "small", 790, [WM], "m-l")}
+      {text("t-cap", "display", y0, ["딱 한 칸만", "빼고."], "on-paper", rise=True)}
+      {text("t-wm", "small", y0 + 410, [WM], "m-l")}
       {lines}
-      {text("t-sg", "body", 980, [SIG], "on-paper")}
-      {rule("t-r", 1100, 600, "on-paper")}
-      {caret("t-c", 240, 1048, 44, "on-paper")}
+      {text("t-sg", "head", y0 + 640, [SIG], "on-paper")}
+      {rule("t-r", y0 + 830, 840, "on-paper")}
+      {caret("t-c", 120, y0 + 752, 70, "on-paper")}
       {extra}
     </div>'''
     js = f"""
@@ -241,23 +244,23 @@ def build_tease(T, presses=False):
 
 
 # ============================================================ FILL (C2) — Ink
-# Three sheets stacked on the axis; each one's body sets line by line, then its check appears.
-# The signature line at the foot of each sheet stays empty.
+# Three full-measure sheets fill the frame; each one's body sets line by line (44px), then its check
+# appears. The signature line at the foot of each sheet stays empty.
 def build_fill(T):
     css = """
     #f-ground { background: var(--ink); }
     .tt { position: relative; }
-    .ok { position: absolute; left: calc(100% + 14px); top: 50%; width: 30px; height: 30px; margin-top: -15px; color: var(--ink); opacity: 0; }
+    .ok { position: absolute; left: calc(100% + 18px); top: 50%; width: 44px; height: 44px; margin-top: -22px; color: var(--ink); opacity: 0; }
 """
     parts = []
     for i, d in enumerate(DOCS):
-        y = 330 + i * 344
-        parts.append(sheet(f"f-s{i}", y, 320))
-        parts.append(text(f"f-t{i}", "body", y + 24, [f'<span class="tt">{d["title"]}<span id="f-k{i}">{CHECK}</span></span>'], "on-paper"))
-        parts.append(text(f"f-w{i}", "small", y + 80, [WM], "m-l"))
-        parts.append(text(f"f-b{i}", "small", y + 136, d["body"][:2], "on-paper", rise=True))
-        parts.append(text(f"f-g{i}", "small", y + 228, [SIG], "m-l"))
-        parts.append(rule(f"f-r{i}", y + 284, 240, "m-l"))
+        y = 244 + i * 410
+        parts.append(sheet(f"f-s{i}", y, 392))
+        parts.append(text(f"f-t{i}", "head", y + 20, [f'<span class="tt">{d["title"]}<span id="f-k{i}">{CHECK}</span></span>'], "on-paper"))
+        parts.append(text(f"f-w{i}", "small", y + 122, [WM], "m-l"))
+        parts.append(text(f"f-b{i}", "body", y + 172, d["body"][:2], "on-paper", rise=True))
+        parts.append(text(f"f-g{i}", "small", y + 312, [SIG], "m-l"))
+        parts.append(rule(f"f-r{i}", y + 362, 300, "m-l"))
     html = f'''    <div id="f-ground" class="field" data-layout-ignore></div>
     <div id="f-cam" class="cam" data-layout-allow-overflow>
       {"".join(parts)}
@@ -272,8 +275,8 @@ def build_fill(T):
 
 
 # ============================================================ BLANK (C3) — Ink
-# Payoff of the teaser: the three signature lines, '생성' pressed four times — the sentence above each
-# line changes every time, the lines stay empty — then the toast (the only red in the film).
+# Payoff of the teaser: three big signature fields, '생성' pressed four times — the sentence above each
+# field changes every time, the fields stay empty — then the toast (the only red in the film).
 def build_blank(T):
     css = """
     #b-ground { background: var(--ink); }
@@ -281,19 +284,19 @@ def build_blank(T):
     parts = []
     nvar = len(T["presses"]) + 1
     for i, d in enumerate(DOCS):
-        y = 630 + i * 214
-        parts.append(sheet(f"b-s{i}", y, 200))
+        y = 591 + i * 240
+        parts.append(sheet(f"b-s{i}", y, 226))
         for v in range(nvar):
-            parts.append(text(f"b-l{i}v{v}", "small", y + 28, [d["last"][v]], "m-l", rise=v > 0))
-        parts.append(text(f"b-g{i}", "body", y + 72, [SIG], "on-paper"))
-        parts.append(rule(f"b-r{i}", y + 166, 360, "on-paper"))
-        parts.append(caret(f"b-c{i}", 360, y + 128, 34, "on-paper"))
+            parts.append(text(f"b-l{i}v{v}", "small", y + 16, [d["last"][v]], "m-l", rise=v > 0))
+        parts.append(text(f"b-g{i}", "head", y + 50, [SIG], "on-paper"))
+        parts.append(rule(f"b-r{i}", y + 202, 600, "on-paper"))
+        parts.append(caret(f"b-c{i}", 240, y + 156, 44, "on-paper"))
     html = f'''    <div id="b-ground" class="field" data-layout-ignore></div>
     <div id="b-cam" class="cam" data-layout-allow-overflow>
-      {text("b-cap", "display", 300, ["딱 한 칸만", "빼고."], "on-ink", rise=True)}
+      {text("b-cap", "display", 253, ["딱 한 칸만", "빼고."], "on-ink", rise=True)}
       {"".join(parts)}
-      {pill("b-btn", 1290, 320, "생성", "var(--paper)", "var(--ink)", "opacity:0")}
-      {pill("b-toast", 1290, 840, "이 항목은 생성할 수 없습니다.", "var(--red)", "var(--paper)", "opacity:0")}
+      {pill("b-btn", 1327, 360, "생성", "var(--paper)", "var(--ink)", "opacity:0")}
+      {pill("b-toast", 1327, 840, "이 항목은 생성할 수 없습니다.", "var(--red)", "var(--paper)", "opacity:0")}
     </div>'''
     js = f"""
     const T = {J(T)};
@@ -317,27 +320,29 @@ def build_blank(T):
 
 
 # ============================================================ QUIET (C4 [+ C5] / C4' + bridge) — Ink
-# Everything but the signature line is gone. Two lines of thought arrive over it.
-# 30s C5 (a move on the bar line, no cut): the thoughts and the label leave, the blank line draws
-# out to the full width of the frame ("그 자리"), the next two lines take the same slots.
+# The thoughts sit over a large blank signature field (one tone step up from Ink: line, caret, and
+# the caption beneath like a signature block), so the frame reads top to bottom. 30s C5 (a move on the bar line, no cut): the thoughts and the field leave, its blank
+# line draws out to the full width of the frame ("그 자리"), the next lines take the same slots.
 # 15s: the bridge line takes the slots, then the caret turns gold (someone is about to sign).
 def build_quiet(T, c1, c2, c3=None, c4=None, bridge=None):
     css = """
     #q-ground { background: var(--ink); }
+    #q-panel { position: absolute; left: 120px; top: 1000px; width: 840px; height: 380px; background: var(--panel); }
 """
-    slots = (text("q-c1", "head", 400, [c1], "on-ink", rise=True) +
-             text("q-c2", "display", 520, list(c2), "on-ink", rise=True))
+    slots = (text("q-c1", "head", 470, [c1], "on-ink", rise=True) +
+             text("q-c2", "display", 607, list(c2), "on-ink", rise=True))
     if c3:
-        slots += (text("q-c3", "head", 400, [c3], "on-ink", rise=True) +
-                  text("q-c4", "display", 520, list(c4), "on-ink", rise=True))
+        slots += (text("q-c3", "head", 470, [c3], "m-d", rise=True) +
+                  text("q-c4", "head", 607, list(c4), "on-ink", rise=True))
     if bridge:
-        slots += text("q-br", "head", 560, list(bridge), "on-ink", rise=True)
+        slots += text("q-br", "head", 607, list(bridge), "on-ink", rise=True)
     html = f'''    <div id="q-ground" class="field" data-layout-ignore></div>
     <div id="q-cam" class="cam" data-layout-allow-overflow>
+      <div id="q-panel"></div>
       {slots}
-      {text("q-sg", "body", 980, [SIG], "m-d")}
-      {rule("q-r", 1100, 600, "on-ink")}
-      {caret("q-c", 240, 1048, 44, "on-ink")}
+      {text("q-sg", "body", 1282, [SIG], "m-d")}
+      {rule("q-r", 1260, 720, "on-ink")}
+      {caret("q-c", 180, 1180, 72, "on-ink")}
     </div>'''
     js = f"""
     const T = {J(T)};
@@ -346,14 +351,15 @@ def build_quiet(T, c1, c2, c3=None, c4=None, bridge=None):
     RISE(T.c2, ["#q-c2-0", "#q-c2-1"]);
     CARET("#q-c", T.c0, T.c5 != null ? T.c5 : T.end);
     if (T.c5 != null) {{
-      LEAVE(T.c5, ["#q-c1-0", "#q-c2-0", "#q-c2-1", "#q-sg-0"]);
+      LEAVE(T.c5, ["#q-c1-0", "#q-c2-0", "#q-c2-1", "#q-sg-0"], 0.05);
       S(T.c5, "#q-c", {{ opacity: 0 }});
-      A(T.ext, "#q-r", {{ scaleX: [1, 1.8] }}, 1.1, INOUT);
+      A(T.ext, "#q-panel", {{ opacity: [1, 0] }}, 0.6, INOUT);
+      A(T.ext, "#q-r", {{ scaleX: [1, 1.5] }}, 1.1, INOUT);
       RISE(T.c3, ["#q-c3-0"]);
       RISE(T.c4, ["#q-c4-0", "#q-c4-1"]);
     }}
     if (T.br != null) {{
-      LEAVE(T.br, ["#q-c1-0", "#q-c2-0", "#q-c2-1"]);
+      LEAVE(T.br, ["#q-c1-0", "#q-c2-0", "#q-c2-1"], 0.05);
       RISE(T.brIn, ["#q-br-0", "#q-br-1"]);
       S(T.gold, "#q-c", {{ backgroundColor: "#b8955a" }});
     }}
@@ -362,30 +368,33 @@ def build_quiet(T, c1, c2, c3=None, c4=None, bridge=None):
 
 
 # ============================================================ SIGN (C6 / C6') — Navy (brand field)
-# THE signature moment: a gold stroke draws across the empty line (1100 ms in-out). The label is
-# replaced by '그 칸으로 가는 첫 계단', then the USP stack rises above it with the stroke as its base,
-# and the brand settles under the line.
+# THE signature moment, in the big signature field (the '칸', one tone step up from Navy): a gold
+# stroke wider than the field (940px) draws across it near the frame centre (1100 ms in-out) while
+# the blank line gives way. The caption under the line becomes '그 칸으로 가는 첫 계단' (88px), then the
+# USP stack (144px) rises above the field and the brand settles under it.
 def build_sign(T, compact=False):
     css = """
     #s-ground { background: var(--navy); }
+    #s-panel { position: absolute; left: 120px; top: 790px; width: 840px; height: 460px; background: #15284a; }
     #s-svg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
     .mark { position: absolute; left: 518.4px; width: 43.2px; height: 48px; }
 """
     u3 = "교육부장관 명의" if compact else "교육부장관 명의 · '법학 전공' 표기"
-    stroke = "M228 1110 C 380 1113, 560 1107, 700 1099 S 826 1085, 856 1079"
+    stroke = "M70 1004 C 300 1010, 600 1002, 820 988 S 980 970, 1010 962"
     html = f'''    <div id="s-ground" class="field" data-layout-ignore></div>
     <div id="s-cam" class="cam" data-layout-allow-overflow>
-      {text("s-u1", "body", 400, ["국내 유일*"], "au", rise=True)}
-      {text("s-u2", "display", 476, ["100% 온라인", "법학사"], "on-ink", rise=True)}
-      {text("s-u3", "body", 764, [u3], "m-d", rise=True)}
-      {text("s-sg", "body", 980, [SIG], "m-d")}
-      {text("s-nl", "head", 958, [NEW], "on-ink", rise=True)}
-      {rule("s-r", 1100, 600, "m-d")}
-      {caret("s-c", 240, 1048, 44, "au")}
+      <div id="s-panel"></div>
+      {text("s-u1", "body", 280, ["국내 유일*"], "au", rise=True)}
+      {text("s-u2", "display", 352, ["100% 온라인", "법학사"], "on-ink", rise=True)}
+      {text("s-u3", "body", 668, [u3], "m-d", rise=True)}
+      {text("s-sg", "body", 1080, [SIG], "m-d")}
+      {text("s-nl", "head", 1062, [NEW], "on-ink", rise=True)}
+      {rule("s-r", 990, 720, "m-d")}
+      {caret("s-c", 180, 910, 72, "au")}
       <svg id="s-svg" viewBox="0 0 1080 1920" data-layout-ignore>
-        <path id="s-ink" d="{stroke}" stroke="#b8955a" stroke-width="6" stroke-linecap="round" fill="none" style="opacity:0"/>
+        <path id="s-ink" d="{stroke}" stroke="#b8955a" stroke-width="8" stroke-linecap="round" fill="none" style="opacity:0"/>
       </svg>
-      <div id="s-br" class="later">{MARK.replace('class="mark"', 'class="mark" style="top:1170px"')}{text("s-bn", "body", 1228, [BRAND], "on-ink")}</div>
+      <div id="s-br" class="later">{MARK.replace('class="mark"', 'class="mark" style="top:1290px"')}{text("s-bn", "body", 1346, [BRAND], "on-ink")}</div>
     </div>'''
     js = f"""
     const T = {J(T)};
@@ -402,92 +411,89 @@ def build_sign(T, compact=False):
     return css, html, js
 
 
-# ============================================================ CTA (C7 + C8) — Paper, 30s only
-# C7: '생성하는 쪽' / '서명하는 쪽' as a two-row choice; a Navy selector travels from the first row to
-# the second (in-out), the text inverts inside it. S2 on the bar line: the consult button.
-# C8 (a move inside the shot): the headline and the choice leave, the slogan rises, its gold
-# underline draws, USP / brand / phone settle; the button stays where it is.
+# ============================================================ CTA (C7 + C8) — Paper over Navy, 30s only
+# C7: the frame is split into two full-bleed fields — Paper on top '생성하는 쪽' (what the AI
+# produces, muted), Navy below '서명하는 쪽' with the gold signature. The headline sits on the split:
+# '서명하는 쪽으로' on the Paper side, '넘어오세요.' on the Navy side. S2 on the bar line: the button.
+# C8 (a move inside the shot): the Paper field wipes up out of the frame (in-out) so the Navy side
+# takes it all; the gold signature travels up to become the slogan's underline; the slogan (144px)
+# rises, USP / brand / phone settle; the button stays where it is.
 def build_cta(T):
+    d = [x["body"][0] for x in DOCS]
     css = """
-    #c-ground { background: var(--paper); }
-    #c-sel { position: absolute; left: 120px; top: 679px; width: 840px; height: 124px; background: var(--navy); overflow: hidden; }
-    #c-selin { position: absolute; left: -120px; top: -679px; width: 1080px; height: 1920px; }
-    #c-svg, #c-selsvg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+    #c-ground { background: var(--navy); }
+    #c-paper { position: absolute; left: 0; top: 0; width: 1080px; height: 860px; background: var(--paper); overflow: hidden; }
+    #c-svg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
     .mark { position: absolute; left: 518.4px; width: 43.2px; height: 48px; }
 """
-    gold_b = "M440 941 C 500 935, 580 946, 640 937"
-    underline = "M246 545 C 420 536, 640 551, 834 538"
+    gold = "M120 1121 C 360 1124, 640 1120, 840 1114 S 945 1108, 960 1106"
     html = f'''    <div id="c-ground" class="field" data-layout-ignore></div>
     <div id="c-cam" class="cam" data-layout-allow-overflow>
-      {text("c-head", "display", 300, ["서명하는 쪽으로", "넘어오세요."], "on-paper", rise=True)}
-      <div id="c-choice">
-        {text("c-a", "head", 700, ["생성하는 쪽"], "m-l")}
-        {text("c-b", "head", 840, ["서명하는 쪽"], "on-paper")}
-        <svg id="c-svg" viewBox="0 0 1080 1920" data-layout-ignore><path d="{gold_b}" stroke="#b8955a" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
-        <div id="c-sel" data-layout-allow-occlusion data-layout-allow-overlap>
-          <div id="c-selin">
-            {text("c-a2", "head", 700, ["생성하는 쪽"], "on-ink")}
-            {text("c-b2", "head", 840, ["서명하는 쪽"], "on-ink")}
-            <svg id="c-selsvg" viewBox="0 0 1080 1920" data-layout-ignore><path d="{gold_b}" stroke="#b8955a" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
-          </div>
-        </div>
+      <div id="c-paper" data-layout-allow-overflow>
+        {text("c-a", "head", 270, ["생성하는 쪽"], "m-l")}
+        {text("c-af", "body", 420, d, "m-l")}
+        {text("c-h1", "head", 759, ["서명하는 쪽으로"], "on-paper", rise=True)}
       </div>
-      {text("e-slo", "head", 330, ["책임지는 자리로,", "지금 있는 자리에서."], "on-paper", rise=True)}
-      <svg id="e-svg" viewBox="0 0 1080 1920" style="position:absolute;left:0;top:0;width:1080px;height:1920px" data-layout-ignore>
-        <path id="e-ul" d="{underline}" stroke="#b8955a" stroke-width="5" stroke-linecap="round" fill="none" style="opacity:0"/>
+      <div id="c-navy">
+        {text("c-h2", "head", 860, ["넘어오세요."], "on-ink", rise=True)}
+        {text("c-b", "head", 985, ["서명하는 쪽"], "au")}
+      </div>
+      <svg id="c-svg" viewBox="0 0 1080 1920" data-layout-ignore>
+        <path id="c-gold" d="{gold}" stroke="#b8955a" stroke-width="6" stroke-linecap="round" fill="none"/>
       </svg>
+      {text("e-slo", "display", 236, ["책임지는", "자리로,", "지금 있는", "자리에서."], "on-ink", rise=True)}
       <div id="e-info" class="later">
-        {text("e-u", "body", 716, ["국내 유일* 100% 온라인 법학사"], "on-paper")}
-        {text("e-u3", "small", 776, ["교육부장관 명의 · '법학 전공' 표기"], "m-l")}
-        {MARK.replace('class="mark"', 'class="mark" style="top:856px"')}
-        {text("e-bn", "body", 914, [BRAND], "on-paper")}
-        {text("e-tel", "body", 1344, ["070-4006-7128 (평일 10–18시)"], "on-paper")}
+        {MARK.replace('class="mark"', 'class="mark" style="top:150px"')}
+        {text("e-u", "body", 918, ["국내 유일* 100% 온라인 법학사"], "on-ink")}
+        {text("e-u3", "small", 982, ["교육부장관 명의 · '법학 전공' 표기"], "m-d")}
+        {text("e-bn", "body", 1046, [BRAND], "on-ink")}
+        {text("e-tel", "body", 1336, ["070-4006-7128 (평일 10–18시)"], "on-ink")}
       </div>
-      {pill("c-btn", 1150, 720, "무료 상담 신청", "var(--navy)", "var(--paper)", "opacity:0")}
-      {text("c-sub", "small", 1278, ["상담만 받아도 돼요."], "m-l", cls="later")}
+      {pill("c-btn", 1200, 840, "무료 상담 신청", "var(--paper)", "var(--ink)", "opacity:0")}
+      {text("c-sub", "small", 1330, ["상담만 받아도 돼요."], "m-d", cls="later")}
     </div>'''
     js = f"""
     const T = {J(T)};
     PUSH(T.c0, T.end, "#c-cam");
-    RISE(T.head, ["#c-head-0", "#c-head-1"]);
-    // the selector travels one row down; its inside counter-moves so the inverted copy stays in register
-    A(T.slide, "#c-sel", {{ translateY: [0, 140] }}, 0.7, INOUT);
-    A(T.slide, "#c-selin", {{ translateY: [0, -140] }}, 0.7, INOUT);
+    RISE(T.head, ["#c-h1-0", "#c-h2-0"]);
     ENTER(T.btn, "#c-btn");
     ENTER(T.sub, "#c-sub");
-    // C8
-    LEAVE(T.e, ["#c-head-0", "#c-head-1", "#c-choice"]);
-    RISE(T.slo, ["#e-slo-0", "#e-slo-1"]);
-    DRAW(T.c0, T.ul, "#e-ul", 1.1);
+    // C8: the Paper field wipes up (its contents go with it), the Navy-side words leave,
+    // the gold signature travels up under the slogan
+    A(T.e, "#c-paper", {{ clipPath: ["inset(0px 0px 0px 0px)", "inset(0px 0px 860px 0px)"] }}, 0.6, INOUT);
+    LEAVE(T.e - 0.1, ["#c-navy"]);  // the words are gone before the gold line passes their row
+    A(T.e + 0.03, "#c-gold", {{ translateY: [0, -225] }}, 0.6, INOUT);
+    A(T.e, ["#c-btn", "#c-sub"], {{ translateY: [0, -60] }}, 0.6, INOUT);  // the button settles into the end card
+    RISE(T.slo, ["#e-slo-0", "#e-slo-1", "#e-slo-2", "#e-slo-3"]);
     ENTER(T.info, "#e-info");
 """
     return css, html, js
 
 
-# ============================================================ END (C8') — Paper, 15s only
+# ============================================================ END (C8') — Navy, 15s only
 def build_end(T):
     css = """
-    #e-ground { background: var(--paper); }
+    #e-ground { background: var(--navy); }
     .mark { position: absolute; left: 518.4px; width: 43.2px; height: 48px; }
 """
-    underline = "M246 545 C 420 536, 640 551, 834 538"
+    underline = "M120 896 C 360 899, 640 895, 840 889 S 945 883, 960 881"
     html = f'''    <div id="e-ground" class="field" data-layout-ignore></div>
     <div id="e-cam" class="cam" data-layout-allow-overflow>
-      {text("e-slo", "head", 330, ["책임지는 자리로,", "지금 있는 자리에서."], "on-paper", rise=True)}
+      {text("e-slo", "display", 236, ["책임지는", "자리로,", "지금 있는", "자리에서."], "on-ink", rise=True)}
       <svg id="e-svg" viewBox="0 0 1080 1920" style="position:absolute;left:0;top:0;width:1080px;height:1920px" data-layout-ignore>
-        <path id="e-ul" d="{underline}" stroke="#b8955a" stroke-width="5" stroke-linecap="round" fill="none" style="opacity:0"/>
+        <path id="e-ul" d="{underline}" stroke="#b8955a" stroke-width="6" stroke-linecap="round" fill="none" style="opacity:0"/>
       </svg>
       <div id="e-info" class="later">
-        {MARK.replace('class="mark"', 'class="mark" style="top:700px"')}
-        {text("e-bn", "body", 758, [BRAND], "on-paper")}
-        {text("e-tel", "body", 1290, ["070-4006-7128 (평일 10–18시)"], "on-paper")}
+        {MARK.replace('class="mark"', 'class="mark" style="top:150px"')}
+        {text("e-bn", "body", 940, [BRAND], "on-ink")}
+        {text("e-tel", "body", 1036, ["070-4006-7128 (평일 10–18시)"], "on-ink")}
       </div>
-      {pill("e-btn", 1150, 720, "무료 상담 신청", "var(--navy)", "var(--paper)", "opacity:0")}
+      {pill("e-btn", 1160, 840, "무료 상담 신청", "var(--paper)", "var(--ink)", "opacity:0")}
     </div>'''
     js = f"""
     const T = {J(T)};
     PUSH(T.c0, T.end, "#e-cam");
-    RISE(T.slo, ["#e-slo-0", "#e-slo-1"]);
+    RISE(T.slo, ["#e-slo-0", "#e-slo-1", "#e-slo-2", "#e-slo-3"]);
     DRAW(T.c0, T.ul, "#e-ul", 1.1);
     ENTER(T.info, "#e-info");
     ENTER(T.btn, "#e-btn");
@@ -496,7 +502,7 @@ def build_end(T):
 
 
 # ============================================================ LEGAL overlay (연출 + 고지 L1·L2), fixed positions
-def build_legal(t0, t1, tag, disc, light_from):
+def build_legal(t0, t1, tag, disc, light_from=None):
     """tag=(start,end) abs; disclaimers from `disc` to the end. Mute tone for Ink/Navy, darker on Paper."""
     css = """
     #root { pointer-events: none; }
@@ -506,7 +512,7 @@ def build_legal(t0, t1, tag, disc, light_from):
       <div id="l-d1" class="row t-small m-d" style="top:1494px">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</div>
       <div id="l-d2" class="row t-small m-d" style="top:1530px">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</div>
     </div>'''
-    js = f"""
+    js = "" if light_from is None else f"""
     S({light_from}, ["#l-d1", "#l-d2"], {{ color: "#5f6368" }});
 """
     return css, html, js
@@ -520,12 +526,12 @@ if VARIANT == "30":
     T_t = dict(c0=C["tease"], cap=C["tease"] + 0.05, end=C["fill"], btn=None)
     T_f = dict(c0=C["fill"], fills=[3.20, 3.85, 4.50], oks=[3.95, 4.60, 5.25], end=C["blank"])
     T_b = dict(c0=C["blank"], cap=C["blank"] + 0.05, btn=7.30, presses=[7.62, 7.92, 8.20, 8.46], toast=8.58, end=C["quiet"])
-    T_q = dict(c0=C["quiet"], c1=C["quiet"] + 0.08, c2=12.12, c5=B(32), ext=B(32) + 0.08, c3=14.62, c4=15.50,
+    T_q = dict(c0=C["quiet"], c1=C["quiet"] + 0.08, c2=12.12, c5=B(32), ext=B(32) + 0.08, c3=14.42, c4=15.50,
                br=None, end=C["sign"])
     T_s = dict(c0=C["sign"], caret=C["sign"] + 0.28, hit=B(44), oldOut=B(44) + 0.55, newIn=B(44) + 0.65,
                usp=B(48), brand=21.90, end=C["cta"])
-    T_c = dict(c0=C["cta"], head=C["cta"] + 0.05, slide=25.35, btn=B(60), sub=B(60) + 0.09, e=27.50, slo=27.85,
-               ul=28.15, info=27.95, end=C["fin"])
+    T_c = dict(c0=C["cta"], head=C["cta"] + 0.05, btn=B(60), sub=B(60) + 0.09, e=27.35, slo=27.68,
+               info=27.85, end=C["fin"])
     SCENE_SPECS = [
         ("hook", C["hook"], C["tease"], build_hook(T_h)),
         ("tease", C["tease"], C["fill"], build_tease(T_t)),
@@ -538,19 +544,19 @@ if VARIANT == "30":
     ]
     TAG = (15.5, C["cta"])   # 연출: spec f465–f719 (15.5–24.0), held to the end of the shot
     DISC = T_s["usp"]        # L1·L2 with the USP (spec f630)
-    LIGHT_FROM = C["cta"]
+    LIGHT_FROM = None        # the disclaimers always sit on a dark field (Navy under C6, C7, C8)
     CUTS = [(C["tease"], "C1 S2"), (C["fill"], "C2"), (C["blank"], "C3"), (C["quiet"], "C4"), (C["sign"], "C6"), (C["cta"], "C7")]
     MOVES = [(T_b["toast"] + 0.3, "C3 S3 toast (entrance)"), (T_q["c5"], "C5 line draws out (in shot)"),
              (T_s["hit"], "C6 S2 signature stroke"), (T_s["usp"], "C6 S3 USP stack"), (T_c["btn"], "C7 S2 button"),
              (T_c["e"], "C8 end card (in shot)")]
 else:
-    C = dict(hook=0, tease=B(3), quiet=B(11), sign=B(23), end=B(27), fin=15.0)
+    C = dict(hook=0, tease=B(3), quiet=B(11), sign=B(23), end=B(28), fin=15.0)  # C8' on B28 (lead: USP >= 1.3 s)
     T_h = dict(c0=C["hook"], end=C["tease"])
     T_t = dict(c0=C["tease"], cap=C["tease"] + 0.05, btn=B(5), presses=[2.40, 2.64, 2.88], toast=2.98, end=C["quiet"])
-    T_q = dict(c0=C["quiet"], c1=C["quiet"] + 0.08, c2=6.40, c5=None, br=B(19), brIn=B(19) + 0.45, gold=9.207, end=C["sign"])
+    T_q = dict(c0=C["quiet"], c1=C["quiet"] + 0.08, c2=6.40, c5=None, br=B(19), brIn=B(19) + 0.3, gold=9.207, end=C["sign"])
     T_s = dict(c0=C["sign"], caret=None, hit=C["sign"], oldOut=C["sign"] + 0.06, newIn=C["sign"] + 0.14,
                usp=10.70, brand=11.17, end=C["end"])
-    T_e = dict(c0=C["end"], slo=C["end"] + 0.05, ul=12.15, info=12.25, btn=12.30, end=C["fin"])
+    T_e = dict(c0=C["end"], slo=C["end"] + 0.05, info=C["end"] + 0.5, btn=C["end"] + 0.5, ul=C["end"] + 0.75, end=C["fin"])
     SCENE_SPECS = [
         ("hook", C["hook"], C["tease"], build_hook(T_h)),
         ("tease", C["tease"], C["quiet"], build_tease(T_t, presses=True)),
@@ -559,12 +565,19 @@ else:
         ("sign", C["sign"], C["end"], build_sign(T_s, compact=True)),
         ("end", C["end"], C["fin"], build_end(T_e)),
     ]
-    TAG = (9.0, 12.0)        # 연출: spec f270–f359
+    TAG = (9.0, C["end"])    # 연출: spec f270–f359 (9.0–12.0), held to the end of the staged shot
     DISC = T_s["usp"]        # spec f321 (10.7)
-    LIGHT_FROM = C["end"]
+    LIGHT_FROM = None
     CUTS = [(C["tease"], "C1' S2"), (C["quiet"], "C4'"), (C["sign"], "C6' (signature)"), (C["end"], "C8'")]
     MOVES = [(T_t["btn"], "C3' button (music returns)"), (T_t["toast"] + 0.3, "C3' toast"), (T_q["br"], "C4' S3 bridge"),
              (T_s["usp"], "C6' S3 USP")]
+
+# sound on the few visible actions (art direction v3: restraint): generate presses, the error toast,
+# the pen touch of the signature, a soft tick when the consult button arrives. No whips or swipes.
+if VARIANT == "30":
+    SFX = ([(t, "click") for t in T_b["presses"]] + [(T_b["toast"] + 0.3, "error"), (T_s["hit"], "pen"), (T_c["btn"], "tick")])
+else:
+    SFX = ([(t, "click") for t in T_t["presses"]] + [(T_t["toast"] + 0.3, "error"), (T_s["hit"], "pen"), (T_e["btn"], "tick")])
 
 SLOTS = []
 for cid, t0, t1, (css, html, js) in SCENE_SPECS:
@@ -581,6 +594,7 @@ def beat_of(t):
 json.dump({"variant": VARIANT, "offset": OFFSET, "bpm": BEATS["bpm"],
            "cuts": [{"t": round(t, 3), "frame": round(t * 30), "label": l, "beat": beat_of(t)[0], "downbeat": is_down(t)} for t, l in CUTS],
            "moves": [{"t": round(t, 3), "label": l} for t, l in MOVES],
+           "sfx": [{"t": round(t, 3), "kind": k} for t, k in SFX],
            "scenes": [{"id": s[0], "start": s[1], "duration": s[2]} for s in SLOTS]},
           open(os.path.join(ROOT, "beats", "cuts.json" if VARIANT == "30" else "cuts-15s.json"), "w"), indent=1)
 

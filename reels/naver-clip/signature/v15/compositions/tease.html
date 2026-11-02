@@ -16,7 +16,8 @@
       --mute-d: #9aa0a6;   /* secondary text on Ink / Navy */
       --mute-l: #5f6368;   /* secondary text on Paper */
       --sheet-2: #eceae4;  /* paper one tone step down (stacked sheets) */
-      --sheet-3: #dfddd6;  /* paper two tone steps down */
+      --sheet-3: #e4e2db;  /* paper two tone steps down */
+      --panel: #181c23;    /* ink one tone step up (the blank signature field) */
       position: absolute;
       inset: 0;
       overflow: hidden;
@@ -32,11 +33,11 @@
     /* the only text container: full 840px measure between symmetric 120px margins, centred */
     .row { position: absolute; left: 120px; width: 840px; text-align: center; margin: 0; }
 
-    /* the four sizes */
-    .t-display { font-size: 112px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.08; }
-    .t-head    { font-size: 72px;  font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
-    .t-body    { font-size: 40px;  font-weight: 500; letter-spacing: -0.01em; line-height: 1.4; }
-    .t-small   { font-size: 26px;  font-weight: 400; letter-spacing: 0;       line-height: 1.4; }
+    /* the four sizes (v3.1 §7-1 density: 144 / 88 / 44 / 26) */
+    .t-display { font-size: 144px; font-weight: 700; letter-spacing: -0.045em; line-height: 1.05; }
+    .t-head    { font-size: 88px;  font-weight: 600; letter-spacing: -0.03em;  line-height: 1.15; }
+    .t-body    { font-size: 44px;  font-weight: 500; letter-spacing: -0.01em;  line-height: 1.4; }
+    .t-small   { font-size: 26px;  font-weight: 400; letter-spacing: 0;        line-height: 1.4; }
 
     /* masked line: each line rises from behind its own baseline (padding keeps ascenders/descenders) */
     .ln { display: block; overflow: hidden; padding: 0.1em 0 0.14em; margin: -0.1em 0 -0.14em; }
@@ -53,8 +54,8 @@
     /* flat sheet of paper (documents): one tone, square corners, no edge treatment */
     .sheet { position: absolute; background: var(--paper); color: var(--ink); }
     /* blank signature line and the caret that waits on it */
-    .rule { position: absolute; height: 3px; background: currentColor; }
-    .caret { position: absolute; width: 3px; background: currentColor; }
+    .rule { position: absolute; height: 4px; background: currentColor; }
+    .caret { position: absolute; width: 4px; background: currentColor; }
     /* pill control (button, toast): the only rounded shape */
     .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
 
@@ -66,12 +67,12 @@
     <div id="t-ground" class="field" data-layout-ignore></div>
     <div id="t-cam" class="cam" data-layout-allow-overflow>
       <div id="t-cap" class="row t-display on-paper rise" style="top:300px;"><span class="ln"><span id="t-cap-0" class="li">딱 한 칸만</span></span><span class="ln"><span id="t-cap-1" class="li">빼고.</span></span></div>
-      <div id="t-wm" class="row t-small m-l" style="top:790px;"><span class="ln"><span id="t-wm-0" class="li">[가상 문서 · 예시]</span></span></div>
-      <div id="t-l0" class="row t-small on-paper" style="top:852px;"><span class="ln"><span id="t-l0-0" class="li">제5조의 해석은 갑에게 유리합니다.</span></span><span class="ln"><span id="t-l0-1" class="li">추가 자료 확인 후 보완을 권합니다.</span></span></div><div id="t-l1" class="row t-small on-paper rise" style="top:852px;"><span class="ln"><span id="t-l1-0" class="li">위약금 조항은 감액될 여지가 있습니다.</span></span><span class="ln"><span id="t-l1-1" class="li">을의 지체 책임은 일부 제한됩니다.</span></span></div><div id="t-l2" class="row t-small on-paper rise" style="top:852px;"><span class="ln"><span id="t-l2-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="t-l2-1" class="li">을의 지체 책임은 일부 제한됩니다.</span></span></div><div id="t-l3" class="row t-small on-paper rise" style="top:852px;"><span class="ln"><span id="t-l3-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="t-l3-1" class="li">제5조의 해석은 갑에게 유리합니다.</span></span></div>
-      <div id="t-sg" class="row t-body on-paper" style="top:980px;"><span class="ln"><span id="t-sg-0" class="li">법률 검토·책임자 서명</span></span></div>
-      <div id="t-r" class="rule on-paper" style="left:240px;top:1100px;width:600px;"></div>
-      <div id="t-c" class="caret on-paper" style="left:240px;top:1048px;height:44px;opacity:0"></div>
-      <div id="t-btn" class="pill t-body" style="left:380px;top:1230px;width:320px;height:110px;background:var(--ink);color:var(--paper);opacity:0">생성</div><div id="t-toast" class="pill t-body" style="left:120px;top:1230px;width:840px;height:110px;background:var(--red);color:var(--paper);opacity:0">이 항목은 생성할 수 없습니다.</div>
+      <div id="t-wm" class="row t-small m-l" style="top:710px;"><span class="ln"><span id="t-wm-0" class="li">[가상 문서 · 예시]</span></span></div>
+      <div id="t-l0" class="row t-body on-paper" style="top:766px;"><span class="ln"><span id="t-l0-0" class="li">제5조의 해석은 갑에게 유리합니다.</span></span><span class="ln"><span id="t-l0-1" class="li">추가 자료 확인 후 보완을 권합니다.</span></span></div><div id="t-l1" class="row t-body on-paper rise" style="top:766px;"><span class="ln"><span id="t-l1-0" class="li">위약금 조항은 감액될 여지가 있습니다.</span></span><span class="ln"><span id="t-l1-1" class="li">을의 지체 책임은 일부 제한됩니다.</span></span></div><div id="t-l2" class="row t-body on-paper rise" style="top:766px;"><span class="ln"><span id="t-l2-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="t-l2-1" class="li">을의 지체 책임은 일부 제한됩니다.</span></span></div><div id="t-l3" class="row t-body on-paper rise" style="top:766px;"><span class="ln"><span id="t-l3-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="t-l3-1" class="li">제5조의 해석은 갑에게 유리합니다.</span></span></div>
+      <div id="t-sg" class="row t-head on-paper" style="top:940px;"><span class="ln"><span id="t-sg-0" class="li">법률 검토·책임자 서명</span></span></div>
+      <div id="t-r" class="rule on-paper" style="left:120px;top:1130px;width:840px;"></div>
+      <div id="t-c" class="caret on-paper" style="left:120px;top:1052px;height:70px;opacity:0"></div>
+      <div id="t-btn" class="pill t-body" style="left:360px;top:1190px;width:360px;height:110px;background:var(--ink);color:var(--paper);opacity:0">생성</div><div id="t-toast" class="pill t-body" style="left:120px;top:1190px;width:840px;height:110px;background:var(--red);color:var(--paper);opacity:0">이 항목은 생성할 수 없습니다.</div>
     </div>
   </div>
   <script>

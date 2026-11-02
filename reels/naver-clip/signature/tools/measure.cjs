@@ -12,7 +12,9 @@
 //   - dx    = box centre x - 540
 // A run counts as visible when the product of ancestor opacities is > 0.02, nothing is display:none
 // or visibility:hidden, and the box survives clipping by every overflow:hidden / clip-path ancestor.
-// Prints one table per time plus the font-size set; exits 1 when any |dx| > 2.
+// Prints one table per time plus the font-size set, then the empty-band measure (tools/density.py:
+// largest contiguous run of flat, object-free rows, % of 1920) from a screenshot of each moment.
+// Exits 1 when any |dx| > 2.
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
@@ -23,9 +25,9 @@ const argv = process.argv.slice(2);
 const opt = (k, d) => (argv.includes(k) ? argv[argv.indexOf(k) + 1] : d);
 const VARIANT = opt("--variant", "30");
 const DIR = VARIANT === "15" ? path.join(ROOT, "v15") : ROOT;
-const DEFAULT_AT = { "30": "1.5,2.95,6.7,10.35,13.85,17.3,20.95,24.3,27.3,29.8", "15": "1.2,4.6,8.1,9.95,11.79,14.8" };
+const DEFAULT_AT = { "30": "1.5,2.95,6.7,10.35,13.85,17.3,20.95,24.3,27.2,29.8", "15": "1.2,4.6,8.1,9.95,12.2,14.8" };
 const TIMES = opt("--at", DEFAULT_AT[VARIANT]).split(",").map(Number);
-const SHOTS = opt("--shots", null);
+const SHOT_DIR = opt("--shots", fs.mkdtempSync(path.join(require("os").tmpdir(), "measure-")));
 const JSON_OUT = opt("--json", null);
 
 function findRuntime() {
@@ -150,16 +152,17 @@ function collect() {
   await page.waitForFunction(() => window.__player && typeof window.__player.renderSeek === "function", null, { timeout: 30000 });
   await page.evaluate(() => document.fonts.ready);
   const report = [];
+  const shotFiles = [];
   const sizes = new Map();
   let worst = 0;
   for (const t of TIMES) {
     await page.evaluate((tt) => window.__player.renderSeek(tt, { exact: true }), t);
     await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
     await page.evaluate(() => document.fonts.ready);
-    if (SHOTS) {
-      fs.mkdirSync(SHOTS, { recursive: true });
-      await page.screenshot({ path: path.join(SHOTS, `t${t.toFixed(2)}.png`) });
-    }
+    fs.mkdirSync(SHOT_DIR, { recursive: true });
+    const shot = path.join(SHOT_DIR, `t${t.toFixed(2)}.png`);
+    await page.screenshot({ path: shot });
+    shotFiles.push(shot);
     const rows = (await page.evaluate(collect)).sort((a, b) => a.top - b.top);
     console.log(`\n t=${t.toFixed(2)}s  (${rows.length} visible text runs)`);
     console.log("  comp     id                       size  wt   top  bottom   width   centre-x      dx   text");
@@ -171,10 +174,21 @@ function collect() {
     }
     report.push({ t, rows: rows.map((r) => ({ ...r, dx: +(r.cx - 540).toFixed(2) })) });
   }
+  // empty-band measure (§7-1): largest contiguous run of flat, object-free rows per frame
+  const dens = require("child_process").spawnSync("python3", [path.join(__dirname, "density.py"), ...shotFiles], { encoding: "utf8" });
+  const bands = dens.stdout.trim().split("\n").filter(Boolean).map((l) => JSON.parse(l));
+  let worstBand = 0;
+  console.log("\n empty band (largest contiguous flat row band, % of 1920; limit 35%)");
+  bands.forEach((b, i) => {
+    worstBand = Math.max(worstBand, b.band_pct);
+    report[i].band = b;
+    console.log(`  t=${TIMES[i].toFixed(2)}s  ${String(b.band_px).padStart(4)} px  ${String(b.band_pct).padStart(5)} %   rows ${b.band_from}-${b.band_to}${b.band_pct > 35 ? "   OVER" : ""}`);
+  });
   console.log(`\nfont-size set (px: count): ${[...sizes.entries()].sort((a, b) => a[0] - b[0]).map(([s, c]) => `${s}: ${c}`).join(", ")}`);
   console.log(`max |centre-x - 540| = ${worst.toFixed(2)} px  -> ${worst <= 2 ? "PASS" : "FAIL"} (limit 2 px)`);
   if (errors.length) console.log("page errors:", errors);
-  if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify({ variant: VARIANT, times: TIMES, sizes: [...sizes.keys()].sort((a, b) => a - b), maxDx: +worst.toFixed(2), report }, null, 1));
+  console.log(`largest empty band = ${worstBand}% of frame height`);
+  if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify({ variant: VARIANT, times: TIMES, sizes: [...sizes.keys()].sort((a, b) => a - b), maxDx: +worst.toFixed(2), maxBandPct: worstBand, report }, null, 1));
   await browser.close();
   server.close();
   process.exit(worst <= 2 ? 0 : 1);

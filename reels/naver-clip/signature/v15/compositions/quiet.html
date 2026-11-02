@@ -16,7 +16,8 @@
       --mute-d: #9aa0a6;   /* secondary text on Ink / Navy */
       --mute-l: #5f6368;   /* secondary text on Paper */
       --sheet-2: #eceae4;  /* paper one tone step down (stacked sheets) */
-      --sheet-3: #dfddd6;  /* paper two tone steps down */
+      --sheet-3: #e4e2db;  /* paper two tone steps down */
+      --panel: #181c23;    /* ink one tone step up (the blank signature field) */
       position: absolute;
       inset: 0;
       overflow: hidden;
@@ -32,11 +33,11 @@
     /* the only text container: full 840px measure between symmetric 120px margins, centred */
     .row { position: absolute; left: 120px; width: 840px; text-align: center; margin: 0; }
 
-    /* the four sizes */
-    .t-display { font-size: 112px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.08; }
-    .t-head    { font-size: 72px;  font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
-    .t-body    { font-size: 40px;  font-weight: 500; letter-spacing: -0.01em; line-height: 1.4; }
-    .t-small   { font-size: 26px;  font-weight: 400; letter-spacing: 0;       line-height: 1.4; }
+    /* the four sizes (v3.1 §7-1 density: 144 / 88 / 44 / 26) */
+    .t-display { font-size: 144px; font-weight: 700; letter-spacing: -0.045em; line-height: 1.05; }
+    .t-head    { font-size: 88px;  font-weight: 600; letter-spacing: -0.03em;  line-height: 1.15; }
+    .t-body    { font-size: 44px;  font-weight: 500; letter-spacing: -0.01em;  line-height: 1.4; }
+    .t-small   { font-size: 26px;  font-weight: 400; letter-spacing: 0;        line-height: 1.4; }
 
     /* masked line: each line rises from behind its own baseline (padding keeps ascenders/descenders) */
     .ln { display: block; overflow: hidden; padding: 0.1em 0 0.14em; margin: -0.1em 0 -0.14em; }
@@ -53,22 +54,24 @@
     /* flat sheet of paper (documents): one tone, square corners, no edge treatment */
     .sheet { position: absolute; background: var(--paper); color: var(--ink); }
     /* blank signature line and the caret that waits on it */
-    .rule { position: absolute; height: 3px; background: currentColor; }
-    .caret { position: absolute; width: 3px; background: currentColor; }
+    .rule { position: absolute; height: 4px; background: currentColor; }
+    .caret { position: absolute; width: 4px; background: currentColor; }
     /* pill control (button, toast): the only rounded shape */
     .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
 
 
     #q-ground { background: var(--ink); }
+    #q-panel { position: absolute; left: 120px; top: 1000px; width: 840px; height: 380px; background: var(--panel); }
 
   </style>
   <div id="root" data-composition-id="quiet" data-width="1080" data-height="1920">
     <div id="q-ground" class="field" data-layout-ignore></div>
     <div id="q-cam" class="cam" data-layout-allow-overflow>
-      <div id="q-c1" class="row t-head on-ink rise" style="top:400px;"><span class="ln"><span id="q-c1-0" class="li">AI가 대신할수록,</span></span></div><div id="q-c2" class="row t-display on-ink rise" style="top:520px;"><span class="ln"><span id="q-c2-0" class="li">책임질 자리는</span></span><span class="ln"><span id="q-c2-1" class="li">더 귀해집니다.</span></span></div><div id="q-br" class="row t-head on-ink rise" style="top:560px;"><span class="ln"><span id="q-br-0" class="li">그 칸은,</span></span><span class="ln"><span id="q-br-1" class="li">법을 아는 <span class="au">사람의 몫</span></span></span></div>
-      <div id="q-sg" class="row t-body m-d" style="top:980px;"><span class="ln"><span id="q-sg-0" class="li">법률 검토·책임자 서명</span></span></div>
-      <div id="q-r" class="rule on-ink" style="left:240px;top:1100px;width:600px;"></div>
-      <div id="q-c" class="caret on-ink" style="left:240px;top:1048px;height:44px;opacity:0"></div>
+      <div id="q-panel"></div>
+      <div id="q-c1" class="row t-head on-ink rise" style="top:470px;"><span class="ln"><span id="q-c1-0" class="li">AI가 대신할수록,</span></span></div><div id="q-c2" class="row t-display on-ink rise" style="top:607px;"><span class="ln"><span id="q-c2-0" class="li">책임질 자리는</span></span><span class="ln"><span id="q-c2-1" class="li">더 귀해집니다.</span></span></div><div id="q-br" class="row t-head on-ink rise" style="top:607px;"><span class="ln"><span id="q-br-0" class="li">그 칸은,</span></span><span class="ln"><span id="q-br-1" class="li">법을 아는 <span class="au">사람의 몫</span></span></span></div>
+      <div id="q-sg" class="row t-body m-d" style="top:1282px;"><span class="ln"><span id="q-sg-0" class="li">법률 검토·책임자 서명</span></span></div>
+      <div id="q-r" class="rule on-ink" style="left:180px;top:1260px;width:720px;"></div>
+      <div id="q-c" class="caret on-ink" style="left:180px;top:1180px;height:72px;opacity:0"></div>
     </div>
   </div>
   <script>
@@ -103,20 +106,21 @@
     }
 
 
-    const T = {"c0": 4.825, "c1": 4.905, "c2": 6.4, "c5": null, "br": 8.325, "brIn": 8.774999999999999, "gold": 9.207, "end": 10.066};
+    const T = {"c0": 4.825, "c1": 4.905, "c2": 6.4, "c5": null, "br": 8.325, "brIn": 8.625, "gold": 9.207, "end": 10.066};
     PUSH(T.c0, T.end, "#q-cam");
     RISE(T.c1, ["#q-c1-0"]);
     RISE(T.c2, ["#q-c2-0", "#q-c2-1"]);
     CARET("#q-c", T.c0, T.c5 != null ? T.c5 : T.end);
     if (T.c5 != null) {
-      LEAVE(T.c5, ["#q-c1-0", "#q-c2-0", "#q-c2-1", "#q-sg-0"]);
+      LEAVE(T.c5, ["#q-c1-0", "#q-c2-0", "#q-c2-1", "#q-sg-0"], 0.05);
       S(T.c5, "#q-c", { opacity: 0 });
-      A(T.ext, "#q-r", { scaleX: [1, 1.8] }, 1.1, INOUT);
+      A(T.ext, "#q-panel", { opacity: [1, 0] }, 0.6, INOUT);
+      A(T.ext, "#q-r", { scaleX: [1, 1.5] }, 1.1, INOUT);
       RISE(T.c3, ["#q-c3-0"]);
       RISE(T.c4, ["#q-c4-0", "#q-c4-1"]);
     }
     if (T.br != null) {
-      LEAVE(T.br, ["#q-c1-0", "#q-c2-0", "#q-c2-1"]);
+      LEAVE(T.br, ["#q-c1-0", "#q-c2-0", "#q-c2-1"], 0.05);
       RISE(T.brIn, ["#q-br-0", "#q-br-1"]);
       S(T.gold, "#q-c", { backgroundColor: "#b8955a" });
     }

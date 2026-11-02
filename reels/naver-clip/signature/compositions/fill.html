@@ -16,7 +16,8 @@
       --mute-d: #9aa0a6;   /* secondary text on Ink / Navy */
       --mute-l: #5f6368;   /* secondary text on Paper */
       --sheet-2: #eceae4;  /* paper one tone step down (stacked sheets) */
-      --sheet-3: #dfddd6;  /* paper two tone steps down */
+      --sheet-3: #e4e2db;  /* paper two tone steps down */
+      --panel: #181c23;    /* ink one tone step up (the blank signature field) */
       position: absolute;
       inset: 0;
       overflow: hidden;
@@ -32,11 +33,11 @@
     /* the only text container: full 840px measure between symmetric 120px margins, centred */
     .row { position: absolute; left: 120px; width: 840px; text-align: center; margin: 0; }
 
-    /* the four sizes */
-    .t-display { font-size: 112px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.08; }
-    .t-head    { font-size: 72px;  font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
-    .t-body    { font-size: 40px;  font-weight: 500; letter-spacing: -0.01em; line-height: 1.4; }
-    .t-small   { font-size: 26px;  font-weight: 400; letter-spacing: 0;       line-height: 1.4; }
+    /* the four sizes (v3.1 §7-1 density: 144 / 88 / 44 / 26) */
+    .t-display { font-size: 144px; font-weight: 700; letter-spacing: -0.045em; line-height: 1.05; }
+    .t-head    { font-size: 88px;  font-weight: 600; letter-spacing: -0.03em;  line-height: 1.15; }
+    .t-body    { font-size: 44px;  font-weight: 500; letter-spacing: -0.01em;  line-height: 1.4; }
+    .t-small   { font-size: 26px;  font-weight: 400; letter-spacing: 0;        line-height: 1.4; }
 
     /* masked line: each line rises from behind its own baseline (padding keeps ascenders/descenders) */
     .ln { display: block; overflow: hidden; padding: 0.1em 0 0.14em; margin: -0.1em 0 -0.14em; }
@@ -53,21 +54,21 @@
     /* flat sheet of paper (documents): one tone, square corners, no edge treatment */
     .sheet { position: absolute; background: var(--paper); color: var(--ink); }
     /* blank signature line and the caret that waits on it */
-    .rule { position: absolute; height: 3px; background: currentColor; }
-    .caret { position: absolute; width: 3px; background: currentColor; }
+    .rule { position: absolute; height: 4px; background: currentColor; }
+    .caret { position: absolute; width: 4px; background: currentColor; }
     /* pill control (button, toast): the only rounded shape */
     .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
 
 
     #f-ground { background: var(--ink); }
     .tt { position: relative; }
-    .ok { position: absolute; left: calc(100% + 14px); top: 50%; width: 30px; height: 30px; margin-top: -15px; color: var(--ink); opacity: 0; }
+    .ok { position: absolute; left: calc(100% + 18px); top: 50%; width: 44px; height: 44px; margin-top: -22px; color: var(--ink); opacity: 0; }
 
   </style>
   <div id="root" data-composition-id="fill" data-width="1080" data-height="1920">
     <div id="f-ground" class="field" data-layout-ignore></div>
     <div id="f-cam" class="cam" data-layout-allow-overflow>
-      <div id="f-s0" class="sheet" style="left:120px;top:330px;width:840px;height:320px;background:var(--paper)"></div><div id="f-t0" class="row t-body on-paper" style="top:354px;"><span class="ln"><span id="f-t0-0" class="li"><span class="tt">계약 검토의견서<span id="f-k0"><svg class="ok" viewBox="0 0 24 24"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></span></span></span></div><div id="f-w0" class="row t-small m-l" style="top:410px;"><span class="ln"><span id="f-w0-0" class="li">[가상 문서 · 예시]</span></span></div><div id="f-b0" class="row t-small on-paper rise" style="top:466px;"><span class="ln"><span id="f-b0-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="f-b0-1" class="li">을의 지체 책임은 일부 제한됩니다.</span></span></div><div id="f-g0" class="row t-small m-l" style="top:558px;"><span class="ln"><span id="f-g0-0" class="li">법률 검토·책임자 서명</span></span></div><div id="f-r0" class="rule m-l" style="left:420px;top:614px;width:240px;"></div><div id="f-s1" class="sheet" style="left:120px;top:674px;width:840px;height:320px;background:var(--paper)"></div><div id="f-t1" class="row t-body on-paper" style="top:698px;"><span class="ln"><span id="f-t1-0" class="li"><span class="tt">소장 초안(가상)<span id="f-k1"><svg class="ok" viewBox="0 0 24 24"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></span></span></span></div><div id="f-w1" class="row t-small m-l" style="top:754px;"><span class="ln"><span id="f-w1-0" class="li">[가상 문서 · 예시]</span></span></div><div id="f-b1" class="row t-small on-paper rise" style="top:810px;"><span class="ln"><span id="f-b1-0" class="li">피고 을은 원고 갑에게 지급하라.</span></span><span class="ln"><span id="f-b1-1" class="li">소송비용은 피고 을이 부담한다.</span></span></div><div id="f-g1" class="row t-small m-l" style="top:902px;"><span class="ln"><span id="f-g1-0" class="li">법률 검토·책임자 서명</span></span></div><div id="f-r1" class="rule m-l" style="left:420px;top:958px;width:240px;"></div><div id="f-s2" class="sheet" style="left:120px;top:1018px;width:840px;height:320px;background:var(--paper)"></div><div id="f-t2" class="row t-body on-paper" style="top:1042px;"><span class="ln"><span id="f-t2-0" class="li"><span class="tt">법률 검토 보고서<span id="f-k2"><svg class="ok" viewBox="0 0 24 24"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></span></span></span></div><div id="f-w2" class="row t-small m-l" style="top:1098px;"><span class="ln"><span id="f-w2-0" class="li">[가상 문서 · 예시]</span></span></div><div id="f-b2" class="row t-small on-paper rise" style="top:1154px;"><span class="ln"><span id="f-b2-0" class="li">현 단계에서 분쟁 위험은 낮습니다.</span></span><span class="ln"><span id="f-b2-1" class="li">합의 조건의 재검토를 권합니다.</span></span></div><div id="f-g2" class="row t-small m-l" style="top:1246px;"><span class="ln"><span id="f-g2-0" class="li">법률 검토·책임자 서명</span></span></div><div id="f-r2" class="rule m-l" style="left:420px;top:1302px;width:240px;"></div>
+      <div id="f-s0" class="sheet" style="left:120px;top:244px;width:840px;height:392px;background:var(--paper)"></div><div id="f-t0" class="row t-head on-paper" style="top:264px;"><span class="ln"><span id="f-t0-0" class="li"><span class="tt">계약 검토의견서<span id="f-k0"><svg class="ok" viewBox="0 0 24 24"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></span></span></span></div><div id="f-w0" class="row t-small m-l" style="top:366px;"><span class="ln"><span id="f-w0-0" class="li">[가상 문서 · 예시]</span></span></div><div id="f-b0" class="row t-body on-paper rise" style="top:416px;"><span class="ln"><span id="f-b0-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="f-b0-1" class="li">을의 지체 책임은 일부 제한됩니다.</span></span></div><div id="f-g0" class="row t-small m-l" style="top:556px;"><span class="ln"><span id="f-g0-0" class="li">법률 검토·책임자 서명</span></span></div><div id="f-r0" class="rule m-l" style="left:390px;top:606px;width:300px;"></div><div id="f-s1" class="sheet" style="left:120px;top:654px;width:840px;height:392px;background:var(--paper)"></div><div id="f-t1" class="row t-head on-paper" style="top:674px;"><span class="ln"><span id="f-t1-0" class="li"><span class="tt">소장 초안(가상)<span id="f-k1"><svg class="ok" viewBox="0 0 24 24"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></span></span></span></div><div id="f-w1" class="row t-small m-l" style="top:776px;"><span class="ln"><span id="f-w1-0" class="li">[가상 문서 · 예시]</span></span></div><div id="f-b1" class="row t-body on-paper rise" style="top:826px;"><span class="ln"><span id="f-b1-0" class="li">피고 을은 원고 갑에게 지급하라.</span></span><span class="ln"><span id="f-b1-1" class="li">소송비용은 피고 을이 부담한다.</span></span></div><div id="f-g1" class="row t-small m-l" style="top:966px;"><span class="ln"><span id="f-g1-0" class="li">법률 검토·책임자 서명</span></span></div><div id="f-r1" class="rule m-l" style="left:390px;top:1016px;width:300px;"></div><div id="f-s2" class="sheet" style="left:120px;top:1064px;width:840px;height:392px;background:var(--paper)"></div><div id="f-t2" class="row t-head on-paper" style="top:1084px;"><span class="ln"><span id="f-t2-0" class="li"><span class="tt">법률 검토 보고서<span id="f-k2"><svg class="ok" viewBox="0 0 24 24"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></span></span></span></div><div id="f-w2" class="row t-small m-l" style="top:1186px;"><span class="ln"><span id="f-w2-0" class="li">[가상 문서 · 예시]</span></span></div><div id="f-b2" class="row t-body on-paper rise" style="top:1236px;"><span class="ln"><span id="f-b2-0" class="li">현 단계에서 분쟁 위험은 낮습니다.</span></span><span class="ln"><span id="f-b2-1" class="li">합의 조건의 재검토를 권합니다.</span></span></div><div id="f-g2" class="row t-small m-l" style="top:1376px;"><span class="ln"><span id="f-g2-0" class="li">법률 검토·책임자 서명</span></span></div><div id="f-r2" class="rule m-l" style="left:390px;top:1426px;width:300px;"></div>
     </div>
   </div>
   <script>

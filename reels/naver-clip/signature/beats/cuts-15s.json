@@ -25,11 +25,11 @@
    "downbeat": true
   },
   {
-   "t": 11.819,
-   "frame": 355,
+   "t": 12.261,
+   "frame": 368,
    "label": "C8'",
-   "beat": 27,
-   "downbeat": true
+   "beat": 28,
+   "downbeat": false
   }
  ],
  "moves": [
@@ -48,6 +48,32 @@
   {
    "t": 10.7,
    "label": "C6' S3 USP"
+  }
+ ],
+ "sfx": [
+  {
+   "t": 2.4,
+   "kind": "click"
+  },
+  {
+   "t": 2.64,
+   "kind": "click"
+  },
+  {
+   "t": 2.88,
+   "kind": "click"
+  },
+  {
+   "t": 3.28,
+   "kind": "error"
+  },
+  {
+   "t": 10.066,
+   "kind": "pen"
+  },
+  {
+   "t": 12.761,
+   "kind": "tick"
   }
  ],
  "scenes": [
@@ -69,12 +95,12 @@
   {
    "id": "sign",
    "start": 10.066,
-   "duration": 1.753
+   "duration": 2.195
   },
   {
    "id": "end",
-   "start": 11.819,
-   "duration": 3.181
+   "start": 12.261,
+   "duration": 2.739
   },
   {
    "id": "legal",
