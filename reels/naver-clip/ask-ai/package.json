@@ -19,6 +19,7 @@
     "audiocheck": "python3 tools/audio_check.py 30 && python3 tools/audio_check.py 15",
     "reading": "python3 tools/reading_speed.py",
     "stamp": "python3 tools/stamp_timing.py",
-    "remux": "python3 tools/remux_audio.py"
+    "remux": "python3 tools/remux_audio.py",
+    "gapscan": "python3 tools/gapscan.py 30 && python3 tools/gapscan.py 15"
   }
 }

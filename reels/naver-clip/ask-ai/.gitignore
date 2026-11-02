@@ -2,3 +2,4 @@
 renders/work-*
 renders/.hf-*
 renders/.*
+__pycache__/

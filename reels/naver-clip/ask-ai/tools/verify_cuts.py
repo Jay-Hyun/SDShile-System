@@ -13,6 +13,8 @@ import sys
 
 import numpy as np
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 cut = int(sys.argv[1])
 plan_only = "--plan" in sys.argv
 c = json.load(open(f"beats/cuts-{cut}.json"))
@@ -45,6 +47,17 @@ if plan_only or not os.path.exists(mp4):
     print("\n(렌더 대조 생략: --plan 또는 MP4 없음)")
     sys.exit(0)
 
+# 픽셀 빈 띠: DOM 이 아니라 렌더된 화면으로 (tools/gapscan.py)
+import gapscan  # noqa: E402
+print()
+gap_fails, _, _ = gapscan.scan(mp4, cut)
+if gap_fails:
+    print("FAIL gapscan:", ", ".join(f"{r[0]:.2f}s({r[1]}px)" for r in gap_fails))
+    GAP_FAIL = True
+else:
+    print("PASS gapscan")
+    GAP_FAIL = False
+
 W, H = 72, 128
 raw = subprocess.run(["ffmpeg", "-v", "error", "-i", mp4, "-vf", f"scale={W}:{H},format=gray", "-f", "rawvideo", "-"], capture_output=True, check=True).stdout
 fr = np.frombuffer(raw, np.uint8).reshape(-1, H, W).astype(np.float32)
@@ -72,3 +85,5 @@ for i, s in enumerate(still):
     if run > worst:
         worst, ws = run, i - run + 1
 print(f"longest static run: {worst} frames ({worst/30:.2f}s) from {ws/30:.2f}s")
+if GAP_FAIL:
+    sys.exit(1)
