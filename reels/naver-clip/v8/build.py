@@ -125,13 +125,13 @@ def film_spec(film, cut):
         if cut == 30:
             T = dict(s1=0, s2=V[3], s3=V[7], s4=V[12], act=V[14], end=30)
             sc = [
-                S(id="s1", t0=T["s1"], img="A-1-hook.png", badge="연출", block=hook),
+                S(id="s1", t0=T["s1"], img="A-1-hook.png", badge="", block=hook),
                 S(id="s2", t0=T["s2"], img="A-2-why.png", badge="",
                   block=eb("AI 시대, 남는 자리") + ld("AI가 일을 대신할수록,")
                   + hx('<span class="ul">책임지는<i class="bar"></i></span> 사람이', "필요해집니다.")
                   + bx("판단과 책임은 사람의 몫, 법학은 그 기초입니다"),
                   accent=("underline", V[5])),
-                S(id="s3", t0=T["s3"], img="A-3-how.png", badge="연출",
+                S(id="s3", t0=T["s3"], img="A-3-how.png", badge="",
                   block=eb("지금 있는 자리에서") + ld("퇴근 후·주말에,") + hx("100% 온라인으로")
                   + '<div class="cks">' + ckf("전문대 졸업이면 60학점부터") + ckf("교육부장관 명의 법학사")
                   + ckf("이미 딴 학점은 기간·비용 절감") + "</div>",
@@ -140,8 +140,8 @@ def film_spec(film, cut):
         else:
             T = dict(s1=0, s3=V[2], s4=V[5], act=V[6], end=15)
             sc = [
-                S(id="s1", t0=T["s1"], img="A-1-hook.png", badge="연출", block=hook),
-                S(id="s3", t0=T["s3"], img="A-3-how.png", badge="연출",
+                S(id="s1", t0=T["s1"], img="A-1-hook.png", badge="", block=hook),
+                S(id="s3", t0=T["s3"], img="A-3-how.png", badge="",
                   block=eb("지금 있는 자리에서") + ld("퇴근 후·주말에,") + hx("100% 온라인으로")
                   + '<div class="cks">' + ckf("전문대 졸업이면 60학점부터") + ckf("교육부장관 명의 법학사") + "</div>",
                   accent=("fill", V[3])),
@@ -153,20 +153,20 @@ def film_spec(film, cut):
             T = dict(s1=0, s2=V[3], sign=V[4], swap=V[5], s3=V[6], usp=V[8] + 0.5 * (V[9] - V[8]), s4=V[11], act=V[12], end=30)
         else:
             T = dict(s1=0, s2=V[2], sign=V[2] + 0.5, swap=V[3], s3=V[4], s4=V[5] + 0.5 * (V[6] - V[5]), act=V[5] + 0.5 * (V[6] - V[5]), end=15)
-        sc = [S(id="s1", t0=T["s1"], img="B-1-hook.png", badge="가상 인물 · 연출",
+        sc = [S(id="s1", t0=T["s1"], img="B-1-hook.png", badge="가상 인물",
                 block=eb("이력서의 첫 줄") + hx("15년 경력.") + ld("이력서 첫 줄에서<br>멈췄습니다.")),
-              S(id="s2", t0=T["s2"], img="B-2b-box.png", badge="가상 인물 · 연출",
+              S(id="s2", t0=T["s2"], img="B-2b-box.png", badge="",
                 block=eb("남은 한 칸") + ld("경력은 증명됐습니다.") + hx("학력 칸만", "남았어요."),
                 swap=(T["swap"], eb("남은 한 칸") + ld("이 칸의 이름,") + hx('<span class="gold">당신.</span>')),
                 accent=("sign", T["sign"]))]
         usp = ld("국내 유일*") + hx("100% 온라인", "법학사") + bx("교육부장관 명의 · '법학 전공' 표기") + foot_line()
         if cut == 30:
-            sc.append(S(id="s3", t0=T["s3"], img="B-3-how.png", badge="가상 인물 · 연출",
+            sc.append(S(id="s3", t0=T["s3"], img="B-3-how.png", badge="",
                         block=eb("퇴근 후·주말에, 100% 온라인으로") + ld("이미 딴 학점이 있으면,") + hx("기간·비용을", "줄일 수 있어요.")
                         + bx("학점 기준으로 남은 과정을 1:1로 짚어 드려요"),
                         swap=(T["usp"], eb("퇴근 후·주말에, 100% 온라인으로") + usp)))
         else:
-            sc.append(S(id="s3", t0=T["s3"], img="B-3-how.png", badge="가상 인물 · 연출",
+            sc.append(S(id="s3", t0=T["s3"], img="B-3-how.png", badge="",
                         block=eb("퇴근 후·주말에, 100% 온라인으로") + usp))
         end = end_card(film, cut, "비어 있던 학력 칸,", FOOT_UNIQUE)
     return V, T, sc, end
@@ -202,7 +202,7 @@ CSS = """
 .plate { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 540px 1920px; }
 .plate img { display: block; width: 1080px; height: 1920px; }
 .col { position: absolute; left: 84px; width: 912px; }
-.badge { position: absolute; left: 84px; top: 160px; font-size: 30px; line-height: 42px; font-weight: 600; color: #6b6660; white-space: nowrap; }
+.badge { position: absolute; left: 84px; top: 140px; font-size: 30px; line-height: 42px; font-weight: 600; color: #6b6660; white-space: nowrap; }
 .eb { display: block; font-size: 30px; line-height: 42px; font-weight: 600; letter-spacing: 0.02em; color: #7d6233; margin-bottom: 14px; white-space: nowrap; }
 .ld { display: block; font-size: 64px; line-height: 82px; font-weight: 500; letter-spacing: -0.03em; color: #7d6233; white-space: nowrap; }
 .hx { display: block; font-size: 120px; line-height: 134px; font-weight: 700; letter-spacing: -0.045em; color: #161616; white-space: nowrap; }
@@ -264,15 +264,18 @@ JS_HEAD = """
   function hide(sel, t) { tl.set(sel, { opacity: 0, visibility: "hidden" }, ms(t)); }
   function push(sel, t0, t1) { tl.add(sel, { scale: [1, 1.06], duration: ms(t1) - ms(t0), ease: INOUT }, ms(t0)); }
   // scene layout: block bottom = drawing start - 56; the plate rises (<= 260 px) so the block top sits near y 300
-  function layout(sid, start) {
+  function layout(sid, start, kmax) {
     const b0 = $("#" + sid + "-b0"), b1 = $("#" + sid + "-b1"), mv = $("#" + sid + "-mv");
     const H = Math.max(b0.offsetHeight, b1 ? b1.offsetHeight : 0);
     // grow the drawing from the bottom edge (<= 1.15x) so it starts higher and still fills the bottom
-    const want = 300 + H + 56;
-    const k = Math.max(1, Math.min(1.15, (1920 - want) > 0 ? (1920 - want) / (1920 - start) : 1.15));
-    const w = 1080 * k, h = 1920 * k, l = -(w - 1080) / 2, t = 1920 - h;
+    const want = ($("#" + sid + " .badge") ? 236 : 176) + H + 56;
+    const k = Math.max(1, Math.min(kmax, (1920 - want) > 0 ? (1920 - want) / (1920 - start) : kmax));
+    // kmax 1 (paper with the empty box): no scaling, slide the sheet up instead; the paper colour fills under it
+    const lift = kmax === 1 ? Math.max(0, Math.min(220, start - want)) : 0;
+    const w = 1080 * k, h = 1920 * k, l = -(w - 1080) / 2, t = 1920 - h - lift;
     mv.querySelectorAll("img, #sig").forEach((el) => { el.style.position = "absolute"; el.style.left = l + "px"; el.style.top = t + "px"; el.style.width = w + "px"; el.style.height = h + "px"; });
-    const bottom = Math.round(1920 - (1920 - start) * k) - 56;
+    if (lift) $("#" + sid).style.background = "#fbefe3";
+    const bottom = Math.round(1920 - (1920 - start) * k) - lift - 56;
     [b0, b1].forEach((b) => { if (b) b.style.top = (bottom - b.offsetHeight) + "px"; });
   }
   // next scene's drawing rises 120 px into place while fading in (0.5 s expo-out); paper never cuts
@@ -339,7 +342,7 @@ def build(film, cut):
         h.append("</div>")
         html.append("\n".join(h))
         # layout: text block sits just above the drawing; the plate rises so the block starts near y 300
-        js.append(f'layout("{sid}", {START[img]});')
+        js.append(f'layout("{sid}", {START[img]}, {1.0 if img.startswith("B-2") else 1.2});')
         js.append(f'show("#{sid}", {t0:.3f}); hide("#{sid}", {t1:.3f}); push("#{sid}-pl", {t0:.3f}, {t1:.3f});')
         if not first:
             js.append(f'rise("#{sid}-mv", {t0:.3f});')
@@ -359,11 +362,11 @@ def build(film, cut):
                 js += sign_js(T, cut)
 
     # ---- end card
-    shift = -150
+    shift = -240
     a = end["act"]
     ec = ['<div id="s4" class="sc" data-layout-allow-overflow style="background:#faf5f3">',
           f'<div id="s4-pl" class="plate" style="top:{shift}px"><img src="assets/img/A-4-stairs.png" alt="" data-fill/></div>',
-          f'<div id="s4-slo" class="col" style="top:830px">{end["slogan"]}</div>',
+          f'<div id="s4-slo" class="col" style="top:560px">{end["slogan"]}</div>',
           '<div id="s4-act" class="col" style="top:0">']
     for k, inner in a:
         ec.append(f'<div id="e-{k}" class="blk">{inner}</div>')
@@ -384,7 +387,7 @@ def build(film, cut):
   // end-card action block stacked from y 600 (logo) downward; gaps fixed
   (function () {{
     const gaps = {{ logo: 0, sl: 18, eb2: 46, hd: 0, ck: 34, link: 40, tel: 10 }};
-    let y = 600;
+    let y = 500;
     ["logo","sl","eb2","hd","ck","link","tel"].forEach((k) => {{ const el = $("#e-" + k); y += gaps[k]; el.style.position = "absolute"; el.style.left = "0px"; el.style.top = y + "px"; y += el.offsetHeight; }});
   }})();
   tl.set("#s4-act", {{ opacity: 0 }}, 0);
