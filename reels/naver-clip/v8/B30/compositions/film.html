@@ -30,28 +30,45 @@
 #tk-row { position: absolute; left: 0; top: 76px; white-space: nowrap; font-size: 40px; line-height: 60px; font-weight: 600; letter-spacing: 0.04em; color: #e0c27e; }
 #tk-row i { font-style: normal; display: inline-block; margin: 0 28px; font-size: 30px; vertical-align: 4px; }
 .small { position: absolute; left: 84px; font-size: 30px; line-height: 42px; font-weight: 400; color: #6b6660; white-space: nowrap; }
+.sc { visibility: hidden; }
+.mv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+.dial { position: absolute; left: 560px; top: 0; width: 520px; height: 520px; overflow: visible; }
+.dial circle { fill: none; stroke: #7d6233; stroke-opacity: 0.35; stroke-width: 1.5; }
+.ul { position: relative; display: inline-block; }
+.bar { position: absolute; left: 0; right: 0; bottom: 4px; height: 8px; background: #7d6233; transform-origin: 0 50%; transform: scaleX(0); }
+.cks { display: block; margin-top: 34px; }
+.hx + .bx { margin-top: 26px; }
 
 #sig { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
 #you { fill: none; stroke: #7d6233; stroke-linecap: round; stroke-linejoin: round; }
 </style>
 <div id="root" data-composition-id="film" data-width="1080" data-height="1920">
 <div id="s1" class="sc" data-layout-allow-overflow>
-<div id="s1-pl" class="plate"><img src="assets/img/B-1-hook.png" alt="" data-fill/></div>
+<svg class="dial" viewBox="0 0 520 520" data-layout-ignore><circle cx="400" cy="120" r="70"/><circle cx="400" cy="120" r="130"/><circle cx="400" cy="120" r="190"/><circle cx="400" cy="120" r="250"/><circle cx="400" cy="120" r="310"/></svg>
+<div id="s1-mv" class="mv" data-layout-allow-overflow>
+<div id="s1-pl" class="plate"><img src="assets/img/B-1-hook.png" alt="" data-fill/>
+</div></div>
 <div class="badge">가상 인물 · 연출</div>
-<div id="s1-b0" class="col blk" style="top:262px"><span class="hx">15년 경력.</span><span class="ld">이력서 첫 줄에서<br>멈췄습니다.</span></div>
+<div id="s1-b0" class="col blk"><span class="eb">이력서의 첫 줄</span><span class="hx">15년 경력.</span><span class="ld">이력서 첫 줄에서<br>멈췄습니다.</span></div>
 </div>
 <div id="s2" class="sc" data-layout-allow-overflow>
-<div id="s2-pl" class="plate"><img src="assets/img/B-2b-box.png" alt="" data-fill/></div>
-<div class="badge">가상 인물 · 연출</div>
+<svg class="dial" viewBox="0 0 520 520" data-layout-ignore><circle cx="400" cy="120" r="70"/><circle cx="400" cy="120" r="130"/><circle cx="400" cy="120" r="190"/><circle cx="400" cy="120" r="250"/><circle cx="400" cy="120" r="310"/></svg>
+<div id="s2-mv" class="mv" data-layout-allow-overflow>
+<div id="s2-pl" class="plate"><img src="assets/img/B-2b-box.png" alt="" data-fill/>
 <svg id="sig" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate(-143.9 816.0) scale(1.1555)"><path id="you" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke-width="5.19"/></g></svg>
-<div id="s2-a" class="col blk" style="top:440px"><span class="ld">경력은 증명됐습니다.</span><span class="hx">학력 칸만</span><span class="hx">남았어요.</span></div>
-<div id="s2-b" class="col blk" style="top:440px"><span class="ld">이 칸의 이름,</span><span class="hx"><span class=gold>당신.</span></span></div>
+</div></div>
+<div class="badge">가상 인물 · 연출</div>
+<div id="s2-b0" class="col blk"><span class="eb">남은 한 칸</span><span class="ld">경력은 증명됐습니다.</span><span class="hx">학력 칸만</span><span class="hx">남았어요.</span></div>
+<div id="s2-b1" class="col blk"><span class="eb">남은 한 칸</span><span class="ld">이 칸의 이름,</span><span class="hx"><span class="gold">당신.</span></span></div>
 </div>
 <div id="s3" class="sc" data-layout-allow-overflow>
-<div id="s3-pl" class="plate"><img src="assets/img/B-3-how.png" alt="" data-fill/></div>
+<svg class="dial" viewBox="0 0 520 520" data-layout-ignore><circle cx="400" cy="120" r="70"/><circle cx="400" cy="120" r="130"/><circle cx="400" cy="120" r="190"/><circle cx="400" cy="120" r="250"/><circle cx="400" cy="120" r="310"/></svg>
+<div id="s3-mv" class="mv" data-layout-allow-overflow>
+<div id="s3-pl" class="plate"><img src="assets/img/B-3-how.png" alt="" data-fill/>
+</div></div>
 <div class="badge">가상 인물 · 연출</div>
-<div id="s3-b0" class="col blk" style="top:262px"><span class="eb">퇴근 후·주말에, 100% 온라인으로</span><span class="ld">이미 딴 학점이 있으면,</span><span class="hx">기간·비용을</span><span class="hx">줄일 수 있어요.</span></div>
-<div id="s3-b1" class="col blk" style="top:262px"><span class="ld">국내 유일*</span><span class="hx">100% 온라인</span><span class="hx">법학사</span><span class="bx ">교육부장관 명의 · '법학 전공' 표기</span><span class="bx" style="font-size:30px;line-height:42px;margin-top:14px">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</span></div>
+<div id="s3-b0" class="col blk"><span class="eb">퇴근 후·주말에, 100% 온라인으로</span><span class="ld">이미 딴 학점이 있으면,</span><span class="hx">기간·비용을</span><span class="hx">줄일 수 있어요.</span><span class="bx ">학점 기준으로 남은 과정을 1:1로 짚어 드려요</span></div>
+<div id="s3-b1" class="col blk"><span class="eb">퇴근 후·주말에, 100% 온라인으로</span><span class="ld">국내 유일*</span><span class="hx">100% 온라인</span><span class="hx">법학사</span><span class="bx ">교육부장관 명의 · '법학 전공' 표기</span><span class="bx" style="font-size:30px;line-height:42px;margin-top:14px">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</span></div>
 </div>
 <div id="s4" class="sc" data-layout-allow-overflow style="background:#faf5f3">
 <div id="s4-pl" class="plate" style="top:-150px"><img src="assets/img/A-4-stairs.png" alt="" data-fill/></div>
@@ -94,22 +111,55 @@
   }
   function words(els, t) { tl.set(els, { opacity: 0 }, 0); els.forEach((el, i) => tl.add(el, { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 130, ease: EXPO }, ms(t + i * 0.067))); }
   function wordsOut(els, t) { els.forEach((el, i) => tl.add(el, { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 180, ease: IN3 }, ms(t + i * 0.03))); }
-  function show(sel, t) { tl.set(sel, { opacity: 1 }, ms(t)); }
-  function hide(sel, t) { tl.set(sel, { opacity: 0 }, ms(t)); }
-  function push(sel, t0, t1) { tl.add(sel, { scale: [1, 1.05], duration: ms(t1) - ms(t0), ease: INOUT }, ms(t0)); }
+  function show(sel, t) { tl.set(sel, { opacity: 1, visibility: "visible" }, ms(t)); }
+  function hide(sel, t) { tl.set(sel, { opacity: 0, visibility: "hidden" }, ms(t)); }
+  function push(sel, t0, t1) { tl.add(sel, { scale: [1, 1.06], duration: ms(t1) - ms(t0), ease: INOUT }, ms(t0)); }
+  // scene layout: block bottom = drawing start - 56; the plate rises (<= 260 px) so the block top sits near y 300
+  function layout(sid, start) {
+    const b0 = $("#" + sid + "-b0"), b1 = $("#" + sid + "-b1"), mv = $("#" + sid + "-mv");
+    const H = Math.max(b0.offsetHeight, b1 ? b1.offsetHeight : 0);
+    // grow the drawing from the bottom edge (<= 1.15x) so it starts higher and still fills the bottom
+    const want = 300 + H + 56;
+    const k = Math.max(1, Math.min(1.15, (1920 - want) > 0 ? (1920 - want) / (1920 - start) : 1.15));
+    const w = 1080 * k, h = 1920 * k, l = -(w - 1080) / 2, t = 1920 - h;
+    mv.querySelectorAll("img, #sig").forEach((el) => { el.style.position = "absolute"; el.style.left = l + "px"; el.style.top = t + "px"; el.style.width = w + "px"; el.style.height = h + "px"; });
+    const bottom = Math.round(1920 - (1920 - start) * k) - 56;
+    [b0, b1].forEach((b) => { if (b) b.style.top = (bottom - b.offsetHeight) + "px"; });
+  }
+  // next scene's drawing rises 120 px into place while fading in (0.5 s expo-out); paper never cuts
+  function rise(sel, t) { tl.add(sel, { translateY: [120, 0], opacity: [0, 1], duration: 500, ease: EXPO }, ms(t)); }
+  // block lands top-down inside 1 s: eyebrow 0, lead .10, head .20 (+.07 per line), body/checks .45 (+.08 each)
+  function land(sel, t) {
+    const kids = Array.from($(sel).children); let hxn = 0, bn = 0;
+    kids.forEach((c) => {
+      let off;
+      if (c.classList.contains("eb")) off = 0;
+      else if (c.classList.contains("ld")) off = 0.10;
+      else if (c.classList.contains("hx")) off = 0.20 + 0.07 * hxn++;
+      else off = 0.45 + 0.08 * bn++;
+      const units = c.classList.contains("cks") ? Array.from(c.children) : split(c);
+      tl.set(units, { opacity: 0 }, 0);
+      units.forEach((u, i) => tl.add(u, { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 130, ease: EXPO }, ms(t + off + i * (c.classList.contains("cks") ? 0.08 : 0.04))));
+    });
+  }
+  function leave(sel, t) { tl.add(sel, { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 180, ease: IN3 }, ms(t)); }
 
-  (function(){ const a=$("#s1-b0"), b=$("#s1-b1"); if (b) b.style.top = (a.offsetTop + a.offsetHeight + 44) + "px"; })();
+  layout("s1", 903);
   show("#s1", 0.000); hide("#s1", 6.000); push("#s1-pl", 0.000, 6.000);
+  leave("#s1-b0", 5.800);
+  layout("s2", 990);
   show("#s2", 6.000); hide("#s2", 12.000); push("#s2-pl", 6.000, 12.000);
-  words(split($("#s2-a")), 6.150);
-  tl.set("#s2-b", { opacity: 0 }, 0); 
+  rise("#s2-mv", 6.000);
+  land("#s2-b0", 6.100);
+  leave("#s2-b1", 11.800);
+  tl.set("#s2-b1", { opacity: 0 }, 0); leave("#s2-b0", 9.750); tl.set("#s2-b1", { opacity: 1 }, ms(10.000)); land("#s2-b1", 10.000);
   { const d = A.svg.createDrawable("#you"); tl.set(d, { draw: "0 0" }, 0); tl.add(d, { draw: ["0 0", "0 1"], duration: 1100, ease: DRAWE }, ms(8.000)); }
-  wordsOut($$("#s2-a .w"), 9.650);
-  tl.set("#s2-b", { opacity: 1 }, ms(10.000)); words(split($("#s2-b")), 10.000);
-  words(split($("#s3-b0")), 12.150);
-  wordsOut($$("#s3-b0 .w, #s3-b0 svg"), 16.700);
-  words(split($("#s3-b1")), 17.000);
+  layout("s3", 905);
   show("#s3", 12.000); hide("#s3", 22.000); push("#s3-pl", 12.000, 22.000);
+  rise("#s3-mv", 12.000);
+  land("#s3-b0", 12.100);
+  leave("#s3-b1", 21.800);
+  tl.set("#s3-b1", { opacity: 0 }, 0); leave("#s3-b0", 16.750); tl.set("#s3-b1", { opacity: 1 }, ms(17.000)); land("#s3-b1", 17.000);
   
   show("#s4", 22.000);
   // end-card action block stacked from y 600 (logo) downward; gaps fixed
@@ -125,7 +175,11 @@
   tl.add(["#e-disc", "#e-foot"], { opacity: [0, 1], duration: 200 }, ms(24.600));
   wordsOut($$("#s4-slo .w"), 23.700);
   tl.set("#s4-act", { opacity: 1 }, ms(24.000));
-  { const ws = []; ["logo","sl","eb2","hd","ck","link","tel"].forEach((k) => { const el = $("#e-" + k); if (k === "logo" || k === "ck") ws.push(...Array.from(el.children)); else ws.push(...split(el)); }); words(ws, 24.000); }
+  // every action block lands within 0.9 s, top to bottom
+  { const off = { logo: 0, sl: 0.08, eb2: 0.16, hd: 0.24, ck: 0.5, link: 0.66, tel: 0.76 };
+    Object.keys(off).forEach((k) => { const el = $("#e-" + k); const u = (k === "logo" || k === "ck") ? Array.from(el.children) : split(el);
+      tl.set(u, { opacity: 0 }, 0); u.forEach((w, i) => tl.add(w, { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 130, ease: EXPO }, ms(24.000 + off[k] + i * (k === "ck" ? 0.08 : 0.03)))); }); }
+  tl.add("#s4-pl", { translateY: [-120, 0], opacity: [0, 1], duration: 500, ease: EXPO }, ms(22.000));
 
   tl.set({ v: 0 }, { v: 1 }, ms(30));
   tl.seek(0);

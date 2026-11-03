@@ -101,24 +101,50 @@ def foot_line():
     return f'<span class="bx" style="font-size:30px;line-height:42px;margin-top:14px">{FOOT_UNIQUE}</span>'
 
 
+def ckf(t):
+    """Check row whose circle starts as an outline and fills later (A3 accent)."""
+    return (f'<div class="ck ckf"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="20.5" fill="none" stroke="#7d6233" stroke-width="3"/>'
+            f'<circle class="fill" cx="22" cy="22" r="22" fill="#7d6233" style="opacity:0"/>'
+            f'<path class="tick" d="M13 22.5l6 5.8L31 16" fill="none" stroke="#7d6233" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+            f'<span>{t}</span></div>')
+
+
+# image start line (first row where the drawing begins), measured: row std > 12
+START = {"A-1-hook.png": 916, "A-2-why.png": 981, "A-3-how.png": 956, "B-1-hook.png": 903, "B-3-how.png": 905, "B-2b-box.png": 990}
+
+
 def film_spec(film, cut):
-    """Scenes: (id, t0, img, badge, blocks[(t_in, html)], extra)."""
+    """Scenes: dict(id, t0, img, badge, block, swap=(t, html) | None, accent=(kind, t) | None)."""
+    def S(**k):
+        k.setdefault("swap", None)
+        k.setdefault("accent", None)
+        return k
     if film == "A":
         V = VA
+        hook = eb("AI에게 물었다") + ld("전문대 나왔는데,") + hx("퇴근하고 법 공부", "할 수 있을까?")
         if cut == 30:
             T = dict(s1=0, s2=V[3], s3=V[7], s4=V[12], act=V[14], end=30)
             sc = [
-                ("s1", T["s1"], "A-1-hook.png", "연출", [(0.15, eb("AI에게 물었다") + ld("전문대 나왔는데,") + hx("퇴근하고 법 공부", "할 수 있을까?"))]),
-                ("s2", T["s2"], "A-2-why.png", "", [(0.15, ld("AI가 일을 대신할수록,") + hx("책임지는 사람이", "필요해집니다."))]),
-                ("s3", T["s3"], "A-3-how.png", "연출", [(0.15, ld("퇴근 후·주말에,") + hx("100% 온라인으로")),
-                                                       (V[9] - V[7], ck("전문대 졸업이면 60학점부터") + ck("교육부장관 명의 법학사"))]),
+                S(id="s1", t0=T["s1"], img="A-1-hook.png", badge="연출", block=hook),
+                S(id="s2", t0=T["s2"], img="A-2-why.png", badge="",
+                  block=eb("AI 시대, 남는 자리") + ld("AI가 일을 대신할수록,")
+                  + hx('<span class="ul">책임지는<i class="bar"></i></span> 사람이', "필요해집니다.")
+                  + bx("판단과 책임은 사람의 몫, 법학은 그 기초입니다"),
+                  accent=("underline", V[5])),
+                S(id="s3", t0=T["s3"], img="A-3-how.png", badge="연출",
+                  block=eb("지금 있는 자리에서") + ld("퇴근 후·주말에,") + hx("100% 온라인으로")
+                  + '<div class="cks">' + ckf("전문대 졸업이면 60학점부터") + ckf("교육부장관 명의 법학사")
+                  + ckf("이미 딴 학점은 기간·비용 절감") + "</div>",
+                  accent=("fill", V[9])),
             ]
         else:
             T = dict(s1=0, s3=V[2], s4=V[5], act=V[6], end=15)
             sc = [
-                ("s1", T["s1"], "A-1-hook.png", "연출", [(0.15, eb("AI에게 물었다") + ld("전문대 나왔는데,") + hx("퇴근하고 법 공부", "할 수 있을까?"))]),
-                ("s3", T["s3"], "A-3-how.png", "연출", [(0.15, ld("퇴근 후·주말에,") + hx("100% 온라인으로")),
-                                                       (V[4] - V[2], ck("전문대 졸업이면 60학점부터"))]),
+                S(id="s1", t0=T["s1"], img="A-1-hook.png", badge="연출", block=hook),
+                S(id="s3", t0=T["s3"], img="A-3-how.png", badge="연출",
+                  block=eb("지금 있는 자리에서") + ld("퇴근 후·주말에,") + hx("100% 온라인으로")
+                  + '<div class="cks">' + ckf("전문대 졸업이면 60학점부터") + ckf("교육부장관 명의 법학사") + "</div>",
+                  accent=("fill", V[3])),
             ]
         end = end_card(film, cut, "내 학점이면,", "")
     else:
@@ -127,17 +153,21 @@ def film_spec(film, cut):
             T = dict(s1=0, s2=V[3], sign=V[4], swap=V[5], s3=V[6], usp=V[8] + 0.5 * (V[9] - V[8]), s4=V[11], act=V[12], end=30)
         else:
             T = dict(s1=0, s2=V[2], sign=V[2] + 0.5, swap=V[3], s3=V[4], s4=V[5] + 0.5 * (V[6] - V[5]), act=V[5] + 0.5 * (V[6] - V[5]), end=15)
-        sc = [("s1", T["s1"], "B-1-hook.png", "가상 인물 · 연출", [(0.15, hx("15년 경력.") + ld("이력서 첫 줄에서<br>멈췄습니다."))])]
-        sc.append(("s2", T["s2"], "B-2b-box.png", "가상 인물 · 연출", []))
+        sc = [S(id="s1", t0=T["s1"], img="B-1-hook.png", badge="가상 인물 · 연출",
+                block=eb("이력서의 첫 줄") + hx("15년 경력.") + ld("이력서 첫 줄에서<br>멈췄습니다.")),
+              S(id="s2", t0=T["s2"], img="B-2b-box.png", badge="가상 인물 · 연출",
+                block=eb("남은 한 칸") + ld("경력은 증명됐습니다.") + hx("학력 칸만", "남았어요."),
+                swap=(T["swap"], eb("남은 한 칸") + ld("이 칸의 이름,") + hx('<span class="gold">당신.</span>')),
+                accent=("sign", T["sign"]))]
+        usp = ld("국내 유일*") + hx("100% 온라인", "법학사") + bx("교육부장관 명의 · '법학 전공' 표기") + foot_line()
         if cut == 30:
-            sc.append(("s3", T["s3"], "B-3-how.png", "가상 인물 · 연출", [
-                (0.15, eb("퇴근 후·주말에, 100% 온라인으로") + ld("이미 딴 학점이 있으면,") + hx("기간·비용을", "줄일 수 있어요.")),
-                (T["usp"] - T["s3"], ld("국내 유일*") + hx("100% 온라인", "법학사") + bx("교육부장관 명의 · '법학 전공' 표기") + foot_line(), "swap"),
-            ]))
+            sc.append(S(id="s3", t0=T["s3"], img="B-3-how.png", badge="가상 인물 · 연출",
+                        block=eb("퇴근 후·주말에, 100% 온라인으로") + ld("이미 딴 학점이 있으면,") + hx("기간·비용을", "줄일 수 있어요.")
+                        + bx("학점 기준으로 남은 과정을 1:1로 짚어 드려요"),
+                        swap=(T["usp"], eb("퇴근 후·주말에, 100% 온라인으로") + usp)))
         else:
-            sc.append(("s3", T["s3"], "B-3-how.png", "가상 인물 · 연출", [
-                (0.15, eb("퇴근 후·주말에,") + ld("국내 유일*") + hx("100% 온라인", "법학사") + bx("교육부장관 명의 · '법학 전공' 표기") + foot_line()),
-            ]))
+            sc.append(S(id="s3", t0=T["s3"], img="B-3-how.png", badge="가상 인물 · 연출",
+                        block=eb("퇴근 후·주말에, 100% 온라인으로") + usp))
         end = end_card(film, cut, "비어 있던 학력 칸,", FOOT_UNIQUE)
     return V, T, sc, end
 
@@ -196,6 +226,14 @@ CSS = """
 #tk-row { position: absolute; left: 0; top: 76px; white-space: nowrap; font-size: 40px; line-height: 60px; font-weight: 600; letter-spacing: 0.04em; color: #e0c27e; }
 #tk-row i { font-style: normal; display: inline-block; margin: 0 28px; font-size: 30px; vertical-align: 4px; }
 .small { position: absolute; left: 84px; font-size: 30px; line-height: 42px; font-weight: 400; color: #6b6660; white-space: nowrap; }
+.sc { visibility: hidden; }
+.mv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+.dial { position: absolute; left: 560px; top: 0; width: 520px; height: 520px; overflow: visible; }
+.dial circle { fill: none; stroke: #7d6233; stroke-opacity: 0.35; stroke-width: 1.5; }
+.ul { position: relative; display: inline-block; }
+.bar { position: absolute; left: 0; right: 0; bottom: 4px; height: 8px; background: #7d6233; transform-origin: 0 50%; transform: scaleX(0); }
+.cks { display: block; margin-top: 34px; }
+.hx + .bx { margin-top: 26px; }
 """
 
 JS_HEAD = """
@@ -222,9 +260,38 @@ JS_HEAD = """
   }
   function words(els, t) { tl.set(els, { opacity: 0 }, 0); els.forEach((el, i) => tl.add(el, { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 130, ease: EXPO }, ms(t + i * 0.067))); }
   function wordsOut(els, t) { els.forEach((el, i) => tl.add(el, { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 180, ease: IN3 }, ms(t + i * 0.03))); }
-  function show(sel, t) { tl.set(sel, { opacity: 1 }, ms(t)); }
-  function hide(sel, t) { tl.set(sel, { opacity: 0 }, ms(t)); }
-  function push(sel, t0, t1) { tl.add(sel, { scale: [1, 1.05], duration: ms(t1) - ms(t0), ease: INOUT }, ms(t0)); }
+  function show(sel, t) { tl.set(sel, { opacity: 1, visibility: "visible" }, ms(t)); }
+  function hide(sel, t) { tl.set(sel, { opacity: 0, visibility: "hidden" }, ms(t)); }
+  function push(sel, t0, t1) { tl.add(sel, { scale: [1, 1.06], duration: ms(t1) - ms(t0), ease: INOUT }, ms(t0)); }
+  // scene layout: block bottom = drawing start - 56; the plate rises (<= 260 px) so the block top sits near y 300
+  function layout(sid, start) {
+    const b0 = $("#" + sid + "-b0"), b1 = $("#" + sid + "-b1"), mv = $("#" + sid + "-mv");
+    const H = Math.max(b0.offsetHeight, b1 ? b1.offsetHeight : 0);
+    // grow the drawing from the bottom edge (<= 1.15x) so it starts higher and still fills the bottom
+    const want = 300 + H + 56;
+    const k = Math.max(1, Math.min(1.15, (1920 - want) > 0 ? (1920 - want) / (1920 - start) : 1.15));
+    const w = 1080 * k, h = 1920 * k, l = -(w - 1080) / 2, t = 1920 - h;
+    mv.querySelectorAll("img, #sig").forEach((el) => { el.style.position = "absolute"; el.style.left = l + "px"; el.style.top = t + "px"; el.style.width = w + "px"; el.style.height = h + "px"; });
+    const bottom = Math.round(1920 - (1920 - start) * k) - 56;
+    [b0, b1].forEach((b) => { if (b) b.style.top = (bottom - b.offsetHeight) + "px"; });
+  }
+  // next scene's drawing rises 120 px into place while fading in (0.5 s expo-out); paper never cuts
+  function rise(sel, t) { tl.add(sel, { translateY: [120, 0], opacity: [0, 1], duration: 500, ease: EXPO }, ms(t)); }
+  // block lands top-down inside 1 s: eyebrow 0, lead .10, head .20 (+.07 per line), body/checks .45 (+.08 each)
+  function land(sel, t) {
+    const kids = Array.from($(sel).children); let hxn = 0, bn = 0;
+    kids.forEach((c) => {
+      let off;
+      if (c.classList.contains("eb")) off = 0;
+      else if (c.classList.contains("ld")) off = 0.10;
+      else if (c.classList.contains("hx")) off = 0.20 + 0.07 * hxn++;
+      else off = 0.45 + 0.08 * bn++;
+      const units = c.classList.contains("cks") ? Array.from(c.children) : split(c);
+      tl.set(units, { opacity: 0 }, 0);
+      units.forEach((u, i) => tl.add(u, { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 130, ease: EXPO }, ms(t + off + i * (c.classList.contains("cks") ? 0.08 : 0.04))));
+    });
+  }
+  function leave(sel, t) { tl.add(sel, { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 180, ease: IN3 }, ms(t)); }
 """
 
 
@@ -237,7 +304,8 @@ def build(film, cut):
     for d in ("compositions", "assets/img", "assets/fonts", "assets/audio", "lib"):
         os.makedirs(os.path.join(out, d), exist_ok=True)
     # assets
-    for _, _, img, _, _ in scenes:
+    for sc_ in scenes:
+        img = sc_["img"]
         src = os.path.join(ILL, img)
         os.link(src, os.path.join(out, "assets/img", img)) if not os.path.exists(os.path.join(out, "assets/img", img)) else None
     for img in ("A-4-stairs.png",):
@@ -248,35 +316,47 @@ def build(film, cut):
     shutil.copy(os.path.join(NC, "ask-ai", "lib", "anime.min.js"), os.path.join(out, "lib", "anime.min.js"))
 
     html, js = [], []
-    order = [s[0] for s in scenes] + ["s4"]
-    starts = [s[1] for s in scenes] + [T["s4"]]
+    order = [s["id"] for s in scenes] + ["s4"]
+    starts = [s["t0"] for s in scenes] + [T["s4"]]
     nxt = dict(zip(order, starts[1:] + [T["end"]]))
-    for sid, t0, img, badge, blocks in scenes:
+    dial = ('<svg class="dial" viewBox="0 0 520 520" data-layout-ignore>'
+            + "".join(f'<circle cx="400" cy="120" r="{r}"/>' for r in (70, 130, 190, 250, 310)) + "</svg>")
+    for k, s in enumerate(scenes):
+        sid, t0, img = s["id"], s["t0"], s["img"]
         t1 = nxt[sid]
-        h = [f'<div id="{sid}" class="sc" data-layout-allow-overflow>',
-             f'<div id="{sid}-pl" class="plate"><img src="assets/img/{img}" alt="" data-fill/></div>']
-        if badge:
-            h.append(f'<div class="badge">{badge}</div>')
-        top = 262
-        for i, blk in enumerate(blocks):
-            dt, inner = blk[0], blk[1]
-            swap = len(blk) > 2
-            bid = f"{sid}-b{i}"
-            h.append(f'<div id="{bid}" class="col blk" style="top:{top}px">{inner}</div>')
-            if swap:
-                js.append(f'wordsOut($$("#{sid}-b{i - 1} .w, #{sid}-b{i - 1} svg"), {t0 + dt - 0.3:.3f});')
-            if not (t0 == 0 and i == 0):
-                js.append(f'words(split($("#{bid}")), {t0 + dt:.3f});')
-            if i == 0 and not (len(blocks) > 1 and len(blocks[1]) > 2):
-                # next block sits under this one; measured at runtime
-                js.append(f'(function(){{ const a=$("#{bid}"), b=$("#{sid}-b1"); if (b) b.style.top = (a.offsetTop + a.offsetHeight + 44) + "px"; }})();')
-        if sid == "s2" and film == "B":
+        first = (t0 == 0)
+        h = [f'<div id="{sid}" class="sc" data-layout-allow-overflow>', dial,
+             f'<div id="{sid}-mv" class="mv" data-layout-allow-overflow>',
+             f'<div id="{sid}-pl" class="plate"><img src="assets/img/{img}" alt="" data-fill/>']
+        if s["accent"] and s["accent"][0] == "sign":
             h += sign_html(cut)
+        h.append("</div></div>")
+        if s["badge"]:
+            h.append(f'<div class="badge">{s["badge"]}</div>')
+        h.append(f'<div id="{sid}-b0" class="col blk">{s["block"]}</div>')
+        if s["swap"]:
+            h.append(f'<div id="{sid}-b1" class="col blk">{s["swap"][1]}</div>')
         h.append("</div>")
         html.append("\n".join(h))
+        # layout: text block sits just above the drawing; the plate rises so the block starts near y 300
+        js.append(f'layout("{sid}", {START[img]});')
         js.append(f'show("#{sid}", {t0:.3f}); hide("#{sid}", {t1:.3f}); push("#{sid}-pl", {t0:.3f}, {t1:.3f});')
-        if sid == "s2" and film == "B":
-            js += sign_js(T, cut)
+        if not first:
+            js.append(f'rise("#{sid}-mv", {t0:.3f});')
+            js.append(f'land("#{sid}-b0", {t0 + 0.1:.3f});')
+        if t1 < T["end"]:
+            js.append(f'leave("#{sid}-b{1 if s["swap"] else 0}", {t1 - 0.2:.3f});')
+        if s["swap"]:
+            ts = s["swap"][0]
+            js.append(f'tl.set("#{sid}-b1", {{ opacity: 0 }}, 0); leave("#{sid}-b0", {ts - 0.25:.3f}); tl.set("#{sid}-b1", {{ opacity: 1 }}, ms({ts:.3f})); land("#{sid}-b1", {ts:.3f});')
+        if s["accent"]:
+            kind, ta = s["accent"]
+            if kind == "underline":
+                js.append(f'tl.add("#{sid} .bar", {{ scaleX: [0, 1], duration: 600, ease: DRAWE }}, ms({ta:.3f}));')
+            elif kind == "fill":
+                js.append(f'$$("#{sid} .ckf").forEach((r, i) => {{ tl.add(r.querySelector(".fill"), {{ opacity: [0, 1], duration: 220, ease: EXPO }}, ms({ta:.3f} + i * 0.2)); tl.add(r.querySelector(".tick"), {{ stroke: ["#7d6233", "#fbf9f4"], duration: 220, ease: EXPO }}, ms({ta:.3f} + i * 0.2)); }});')
+            elif kind == "sign":
+                js += sign_js(T, cut)
 
     # ---- end card
     shift = -150
@@ -314,7 +394,11 @@ def build(film, cut):
   tl.add(["#e-disc"{', "#e-foot"' if end["foot"] else ''}], {{ opacity: [0, 1], duration: 200 }}, ms({ACT + 0.6:.3f}));
   {slo_out}
   tl.set("#s4-act", {{ opacity: 1 }}, ms({ACT:.3f}));
-  {{ const ws = []; ["logo","sl","eb2","hd","ck","link","tel"].forEach((k) => {{ const el = $("#e-" + k); if (k === "logo" || k === "ck") ws.push(...Array.from(el.children)); else ws.push(...split(el)); }}); words(ws, {ACT:.3f}); }}
+  // every action block lands within 0.9 s, top to bottom
+  {{ const off = {{ logo: 0, sl: 0.08, eb2: 0.16, hd: 0.24, ck: 0.5, link: 0.66, tel: 0.76 }};
+    Object.keys(off).forEach((k) => {{ const el = $("#e-" + k); const u = (k === "logo" || k === "ck") ? Array.from(el.children) : split(el);
+      tl.set(u, {{ opacity: 0 }}, 0); u.forEach((w, i) => tl.add(w, {{ opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 130, ease: EXPO }}, ms({ACT:.3f} + off[k] + i * (k === "ck" ? 0.08 : 0.03)))); }}); }}
+  tl.add("#s4-pl", {{ translateY: [-120, 0], opacity: [0, 1], duration: 500, ease: EXPO }}, ms({S4:.3f}));
 """)
     js.append(f"tl.set({{ v: 0 }}, {{ v: 1 }}, ms({END}));\n  tl.seek(0);\n}})();")
 
@@ -366,18 +450,12 @@ def sign_html(cut):
     bxc, byc = (YOU_BOX[0] + YOU_BOX[2]) / 2, YOU_BASE  # baseline sits a bit under the box centre
     tx, ty = cx - bxc * s, (y1 - 18) - byc * s
     return [f'<svg id="sig" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate({tx:.1f} {ty:.1f}) scale({s:.4f})">'
-            f'<path id="you" d="{YOU_PATH}" stroke-width="{6 / s:.2f}"/></g></svg>',
-            f'<div id="s2-a" class="col blk" style="top:440px">{ld("경력은 증명됐습니다.")}{hx("학력 칸만", "남았어요.")}</div>',
-            f'<div id="s2-b" class="col blk" style="top:440px">{ld("이 칸의 이름,")}{hx("<span class=gold>당신.</span>")}</div>']
+            f'<path id="you" d="{YOU_PATH}" stroke-width="{6 / s:.2f}"/></g></svg>']
 
 
 def sign_js(T, cut):
-    return [f'words(split($("#s2-a")), {T["s2"] + 0.15:.3f});',
-            f'tl.set("#s2-b", {{ opacity: 0 }}, 0); ',
-            '{ const d = A.svg.createDrawable("#you"); tl.set(d, { draw: "0 0" }, 0);'
-            f' tl.add(d, {{ draw: ["0 0", "0 1"], duration: 1100, ease: DRAWE }}, ms({T["sign"]:.3f})); }}',
-            f'wordsOut($$("#s2-a .w"), {T["swap"] - 0.35:.3f});',
-            f'tl.set("#s2-b", {{ opacity: 1 }}, ms({T["swap"]:.3f})); words(split($("#s2-b")), {T["swap"]:.3f});']
+    return ['{ const d = A.svg.createDrawable("#you"); tl.set(d, { draw: "0 0" }, 0);'
+            f' tl.add(d, {{ draw: ["0 0", "0 1"], duration: 1100, ease: DRAWE }}, ms({T["sign"]:.3f})); }}']
 
 
 # ---------------------------------------------------------------- audio: one continuous excerpt, -15 LUFS
