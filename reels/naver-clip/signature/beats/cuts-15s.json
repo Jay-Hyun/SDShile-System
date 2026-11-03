@@ -54,7 +54,7 @@
    "label": "S5 card mask reveal"
   },
   {
-   "t": 12.467,
+   "t": 12.6,
    "label": "S6 CTA block (tap sfx)"
   }
  ],
@@ -64,7 +64,7 @@
    "kind": "pen"
   },
   {
-   "t": 12.467,
+   "t": 12.6,
    "kind": "tap"
   }
  ],
@@ -87,7 +87,7 @@
   {
    "id": "usp",
    "start": 10.0,
-   "duration": 2.467
+   "duration": 2.533
   },
   {
    "id": "end",

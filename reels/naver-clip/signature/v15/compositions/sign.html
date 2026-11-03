@@ -1,7 +1,7 @@
 <template>
   <style>
     /* v7 look (docs/ads/naver-clip/04-v7-visual.md §1): daylight paper and ink + photographs. One axis at
-       x=540, four type sizes, no ornament (no shadow, glow, gradient, dim overlay, blur on photos).
+       x=540, four type sizes, no ornament (the BANNED list in SPEC.md).
        Shared by every scene; generated into each composition. */
     @font-face {
       font-family: "PretendardGOV";
@@ -26,7 +26,7 @@
       background: var(--paper);
     }
     .field { position: absolute; inset: 0; }
-    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), never a CSS grain */
+    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), not a CSS effect */
     .paper { position: absolute; background: #f3ead9 url("assets/img/B-02-paper.jpg") 0 0 / 1080px 1920px no-repeat; }
     .plate { position: absolute; display: block; max-width: none; }
     .cam { position: absolute; inset: 0; }
@@ -82,8 +82,8 @@
         <div class="paper field" data-paper></div>
         <div id="s-dock" class="dock" data-fill data-layout-ignore></div>
         <div id="s-h" class="row t-head ink wb" style="top:440px;"><span class="ln"><span id="s-h-0" class="li"><span class="w">이</span> <span class="w">칸의</span> <span class="w">이름,</span></span></span></div>
-        <div id="s-rule" class="rule" style="left:90px;top:912px;width:900px;color:#3b3f46"></div>
-        <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate(-464.70 320.80) scale(1.7)"><path id="s-ink" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke="#b8955a" stroke-width="2.941" stroke-linecap="round" stroke-linejoin="round" fill="none" style="opacity:0" data-gold/></g></svg>
+        <div id="s-rule" class="rule" style="left:90px;top:926px;width:900px;color:#3b3f46"></div>
+        <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate(-405.60 368.40) scale(1.6)"><path id="s-ink" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke="#b8955a" stroke-width="3.125" stroke-linecap="round" stroke-linejoin="round" fill="none" style="opacity:0" data-gold/></g></svg>
         <div id="s-you" class="row t-display ink wb" style="top:1151px;"><span class="ln"><span id="s-you-0" class="li"><span class="w au" data-gold>당신.</span></span></span></div>
       </div>
       <div id="s-dip"></div>

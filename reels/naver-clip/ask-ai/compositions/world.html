@@ -7,7 +7,7 @@
     }
     /* v7 편 A — 마디 8–16. 핸드오프 말풍선이 자라 세계가 된다(0.65 s in-out, 모서리 40→0) → 주말 아침 책상(A-02) 상담사 답 Head 88
        → 딥컷 → 부엌(A-03) 위 종이 카드 840 한 장(마스크 리빌, 근거 3줄) → 딥컷 → 계단(A-04) 위 종이 띠 + 슬로건 Display 144
-       → 컬러 플러드 Paper→Navy(0.4 s in-out) → 엔드카드(락업 · 슬로건 캐리 0.611 · 질문형 CTA · 링크 안내 + 골드 화살표 · 전화).
+       → 컬러 플러드 Paper→Navy(0.4 s in-out) → 엔드카드(락업 · 슬로건 Head 88 두 줄 · 질문형 CTA · 1:1 · 전화 · 링크 안내 + 골드 ↓ 마지막).
        버튼·알약 모양 없음. 사진 위 글자는 하늘·종이 띠 같은 조용한 면에서만. 딤·블러(사진)·그림자·그라데이션 없음. */
     #root { position: absolute; inset: 0; overflow: hidden; color: var(--color-ink, #0e1116); font-family: "PretendardGOV", sans-serif; word-break: keep-all; }
     .layer { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
@@ -25,7 +25,6 @@
 
     /* 주말 책상: 사진 1.06배(팬 −50 px 여유), 말풍선 톤이 사진으로 바뀐다 */
     #w-dk-img { position: absolute; left: -32px; top: -58px; width: 1145px; height: 2036px; display: block; }
-    #w-dk-tone { position: absolute; inset: 0; background: #eae7df; }
     #w-dk-lab { top: 236px; font-weight: 600; }
     #w-ans1, #w-ans2 { top: 322px; }
 
@@ -42,7 +41,7 @@
     #w-st-img { position: absolute; left: 0; top: 510px; width: 1080px; height: 1920px; display: block; }
     #w-band { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: var(--color-paper, #f7f6f2); }
     #w-foot { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; background: var(--color-paper, #f7f6f2); }
-    #w-slo { position: absolute; left: 0; top: 280px; width: 1080px; text-align: center; transform-origin: 540px 0px; }
+    #w-slo { position: absolute; left: 0; top: 280px; width: 1080px; text-align: center; }
 
     /* 엔드카드 */
     #w-logo { height: 62px; display: flex; justify-content: center; }
@@ -61,7 +60,6 @@
       <div id="w-dk-set" class="layer" data-layout-allow-overflow>
         <div id="w-dk-pan" class="layer" data-layout-allow-overflow><img id="w-dk-img" src="assets/img/A-02-weekend-desk.png" alt="" data-fill /></div>
       </div>
-      <div id="w-dk-tone"></div>
       <div id="w-dk-lab" class="row bd mut"><span data-m="c">상담사</span></div>
       <div id="w-ans1" class="row hd">
         <div class="ln"><span data-m="c"><em class="g">퇴근 후·주말에,</em></span></div>
@@ -95,6 +93,10 @@
         <div class="dl"><span data-m="c">지금 있는</span></div>
         <div class="dl"><span data-m="c">자리에서.</span></div>
       </div>
+      <div id="w-slo2" class="row hd on-navy">
+        <div class="ln"><span data-m="c">책임지는 자리로,</span></div>
+        <div class="ln"><span data-m="c">지금 있는 자리에서.</span></div>
+      </div>
       <div id="w-logo" class="row"><div id="w-logo-row" data-m="c"><span id="w-mark"></span><span>경찰복지사이버평생교육원</span></div></div>
       <div id="w-q" class="row hd on-navy">
         <div class="ln"><span data-m="c">내 학점이면,</span></div>
@@ -125,10 +127,10 @@
       }
       // ---------- 엔드카드 세로 배치 (블록 사이 ≤ 140, 위 빈 띠 ≤ 15%) ----------
       const Y = CUT === 30
-        ? { logo: 228, sloTo: 360, q: 809, one: 1047, tel: 1145, act: 1277, arrow: 1375 }
-        : { logo: 260, sloTo: 402, q: 861, tel: 1133, act: 1285, arrow: 1387 };
+        ? { logo: 270, slo: 424, q: 718, one: 1012, tel: 1114, act: 1268, arrow: 1366 }
+        : { logo: 270, slo: 444, q: 758, tel: 1072, act: 1246, arrow: 1348 };
       const pos = (q, y) => { const el = $(q); if (el) el.style.top = y + "px"; };
-      pos("#w-logo", Y.logo); pos("#w-q", Y.q); pos("#w-one", Y.one); pos("#w-tel", Y.tel); pos("#w-act", Y.act); pos("#w-arrow", Y.arrow);
+      pos("#w-logo", Y.logo); pos("#w-slo2", Y.slo); pos("#w-q", Y.q); pos("#w-one", Y.one); pos("#w-tel", Y.tel); pos("#w-act", Y.act); pos("#w-arrow", Y.arrow);
 
       // ---------- 시작 상태 ----------
       const B = L.bub;
@@ -140,9 +142,8 @@
       tl.set(a1, { translateY: "105%" }, 0);
       if (CUT === 30) tl.set("#w-dk-lab", { opacity: 0 }, 0);
 
-      // ===== 말풍선이 세계가 된다 (GROW → WORLD = 다운비트, 0.65 s in-out, 모서리 40 → 0). 톤 면이 사진으로 바뀌고 사진은 살짝 크게 들어와 앉는다 =====
+      // ===== 말풍선이 세계가 된다 (GROW → WORLD = 다운비트, 0.65 s in-out, 모서리 38 → 0). 말풍선 사각 안에 사진이 처음부터 100 % 불투명(크로스페이드 아님), 사진은 1.12 → 1.00 으로 앉는다 =====
       tl.add("#w-dk", { clipPath: [bubClip, "inset(0px 0px 0px 0px round 0px)"], duration: ms(C.WORLD) - ms(C.GROW), ease: E.cam }, ms(C.GROW));
-      tl.add("#w-dk-tone", { opacity: [1, 0], duration: 350, ease: E.exit }, ms(C.GROW + 0.1));
       tl.add("#w-dk-set", { scale: [1.12, 1], duration: 900, ease: E.cam }, ms(C.GROW));
       // 히어로 무브: 팬 −50 px (다음 컷까지)
       const dkEnd = CUT === 30 ? C.DIP1 : C.DIP2;
@@ -192,23 +193,26 @@
       tl.add("#w-band", { clipPath: ["inset(0px 0px 950px 0px)", "inset(0px 0px 0px 0px)"], backgroundColor: [PAPER, NAVY], duration: 400, ease: E.cam }, ms(F));
       tl.add("#w-foot", { backgroundColor: [PAPER, FOOT], duration: 400, ease: E.cam }, ms(F));
       tl.add("#w-slo", { color: [INK, PAPER], duration: 400, ease: E.cam }, ms(F));
-      // 캐리: 슬로건이 0.611배(Display 144 → 시각 88)로 줄며 엔드카드 자리로
-      tl.add("#w-slo", { scale: [1, 0.611], translateY: [0, Y.sloTo - 280], duration: 500, ease: E.cam }, ms(F + 0.25));
-      // 엔드카드 블록: 블러 등장 (슬라이드 없음)
+      // 슬로건 교체: 플러드가 끝나면 Display 네 줄이 단어별로 흐려지며 빠지고, 같은 문장이 Head 88 두 줄로 블러 등장
+      wordsOut(tl, sw, F + 0.25); // 마지막 단어가 F+0.61 에 빠진다
+      const s2 = split($("#w-slo2"));
+      tl.set(s2, { opacity: 0 }, 0);
+      words(tl, s2, F + 0.62);
+      // 엔드카드 블록: 블러 등장 (슬라이드 없음). 순서 = 락업 · 슬로건 · 질문 · (1:1) · 전화 · 행동 줄 · 골드 ↓
       const endEls = ["#w-logo-row", "#w-q", "#w-tel", "#w-act"].concat(CUT === 30 ? ["#w-one"] : []);
       tl.set(endEls, { opacity: 0 }, 0);
       const fade = (q, t) => tl.add(q, { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 200, ease: E.expo }, ms(t));
-      fade("#w-logo-row", F + 0.45);
-      tl.set("#w-q", { opacity: 1 }, ms(F + 0.55));
+      fade("#w-logo-row", F + 0.62);
+      tl.set("#w-q", { opacity: 1 }, ms(F + 0.8));
       const qw = split($("#w-q"));
       tl.set(qw, { opacity: 0 }, 0);
-      words(tl, qw, F + 0.55);
-      if (CUT === 30) fade("#w-one", F + 0.85);
-      fade("#w-tel", F + (CUT === 30 ? 0.95 : 0.85));
-      fade("#w-act", F + (CUT === 30 ? 1.05 : 0.95));
+      words(tl, qw, F + 0.8);
+      if (CUT === 30) fade("#w-one", F + 0.95);
+      fade("#w-tel", F + (CUT === 30 ? 1.0 : 0.95));
+      fade("#w-act", F + (CUT === 30 ? 1.08 : 1.02));
       const arrow = A.svg.createDrawable("#w-arrow path");
       tl.set(arrow, { draw: "0 0" }, 0);
-      tl.add(arrow, { draw: ["0 0", "0 1"], duration: 350, ease: E.expo }, ms(F + (CUT === 30 ? 1.15 : 1.05)));
+      tl.add(arrow, { draw: ["0 0", "0 1"], duration: 300, ease: E.expo }, ms(F + (CUT === 30 ? 1.15 : 1.08)));
       tl.set({ v: 0 }, { v: 1 }, ms(C.END));
       tl.seek(0);
     })();

@@ -1,7 +1,7 @@
 <template>
   <style>
     /* v7 look (docs/ads/naver-clip/04-v7-visual.md §1): daylight paper and ink + photographs. One axis at
-       x=540, four type sizes, no ornament (no shadow, glow, gradient, dim overlay, blur on photos).
+       x=540, four type sizes, no ornament (the BANNED list in SPEC.md).
        Shared by every scene; generated into each composition. */
     @font-face {
       font-family: "PretendardGOV";
@@ -26,7 +26,7 @@
       background: var(--paper);
     }
     .field { position: absolute; inset: 0; }
-    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), never a CSS grain */
+    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), not a CSS effect */
     .paper { position: absolute; background: #f3ead9 url("assets/img/B-02-paper.jpg") 0 0 / 1080px 1920px no-repeat; }
     .plate { position: absolute; display: block; max-width: none; }
     .cam { position: absolute; inset: 0; }
@@ -83,7 +83,7 @@
     </div>
     <div id="b-band" class="paper" data-paper></div>
     <div id="b-week" data-grid data-tx><div class="dl t-body sw" style="left:120px;top:300px"><span class="w">월</span></div><div class="dl t-body sw" style="left:242px;top:300px"><span class="w">화</span></div><div class="dl t-body sw" style="left:364px;top:300px"><span class="w">수</span></div><div class="dl t-body sw" style="left:486px;top:300px"><span class="w">목</span></div><div class="dl t-body sw" style="left:608px;top:300px"><span class="w">금</span></div><div class="dl t-body sw au" data-gold style="left:730px;top:300px"><span class="w">토</span></div><div id="b-u5" class="du" data-gold style="left:752px;top:372px"></div><div class="dl t-body sw au" data-gold style="left:852px;top:300px"><span class="w">일</span></div><div id="b-u6" class="du" data-gold style="left:874px;top:372px"></div></div>
-    <div id="b-l1" class="row t-head ink" data-layout-allow-overlap style="top:520px;"><span class="ln"><span id="b-l1-0" class="li"><span class="w">퇴근</span> <span class="w">후·주말에,</span></span></span><span class="ln"><span id="b-l1-1" class="li"><span class="w">100%</span> <span class="w">온라인으로.</span></span></span></div>
+    <div id="b-l1" class="row t-head ink" data-layout-allow-overlap style="top:495px;"><span class="ln"><span id="b-l1-0" class="li"><span class="w">퇴근</span> <span class="w">후·주말에,</span></span></span><span class="ln"><span id="b-l1-1" class="li"><span class="w">100%</span> <span class="w">온라인으로.</span></span></span></div>
     
     <div id="b-dip"></div>
   </div>

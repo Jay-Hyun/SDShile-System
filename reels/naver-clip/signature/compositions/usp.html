@@ -1,7 +1,7 @@
 <template>
   <style>
     /* v7 look (docs/ads/naver-clip/04-v7-visual.md §1): daylight paper and ink + photographs. One axis at
-       x=540, four type sizes, no ornament (no shadow, glow, gradient, dim overlay, blur on photos).
+       x=540, four type sizes, no ornament (the BANNED list in SPEC.md).
        Shared by every scene; generated into each composition. */
     @font-face {
       font-family: "PretendardGOV";
@@ -26,7 +26,7 @@
       background: var(--paper);
     }
     .field { position: absolute; inset: 0; }
-    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), never a CSS grain */
+    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), not a CSS effect */
     .paper { position: absolute; background: #f3ead9 url("assets/img/B-02-paper.jpg") 0 0 / 1080px 1920px no-repeat; }
     .plate { position: absolute; display: block; max-width: none; }
     .cam { position: absolute; inset: 0; }
@@ -81,13 +81,13 @@
       <img id="u-plate" class="plate" src="assets/img/A-04-stairs.jpg" alt="" style="left:0;top:0;width:1080px;height:1920px">
     </div>
     <div id="u-navy"></div>
-    <div id="u-dock" class="dock" data-layout-ignore></div>
+    <div id="u-dock" class="dock" data-fill data-layout-ignore></div>
     <div id="u-card" data-layout-allow-overflow>
       <div class="paper field" data-paper></div>
       <div id="u-1" class="row t-head ink wb" style="top:692px;"><span class="ln"><span id="u-1-0" class="li"><span class="w au" data-gold>국내</span> <span class="w au" data-gold>유일*</span></span></span></div>
       <div id="u-2" class="row t-display ink rise" style="top:818px;"><span class="ln"><span id="u-2-0" class="li"><span class="w">100%</span> <span class="w">온라인</span></span></span><span class="ln"><span id="u-2-1" class="li"><span class="w">법학사</span></span></span></div>
-      <div id="u-3" class="row t-body ink sw later" style="top:1164px;"><span class="ln"><span id="u-3-0" class="li"><span class="w">교육부장관</span> <span class="w">명의</span> <span class="w">·</span> <span class="w">'법학</span> <span class="w">전공'</span> <span class="w">표기</span></span></span></div>
-      <div id="u-fn" class="row t-small m-l" data-tx style="top:1250px;"><span class="ln"><span id="u-fn-0" class="li"><span class="w">*'국내</span> <span class="w">유일':</span> <span class="w">100%</span> <span class="w">온라인</span> <span class="w">법학사</span> <span class="w">과정,</span> <span class="w">2026.10</span> <span class="w">조회</span> <span class="w">기준</span></span></span></div>
+      <div id="u-3" class="row t-body ink sw later" style="top:1180px;"><span class="ln"><span id="u-3-0" class="li"><span class="w">교육부장관</span> <span class="w">명의</span> <span class="w">·</span> <span class="w">'법학</span> <span class="w">전공'</span> <span class="w">표기</span></span></span></div>
+      <div id="u-fn" class="row t-small m-l" data-tx style="top:1300px;"><span class="ln"><span id="u-fn-0" class="li"><span class="w">*'국내</span> <span class="w">유일':</span> <span class="w">100%</span> <span class="w">온라인</span> <span class="w">법학사</span> <span class="w">과정,</span> <span class="w">2026.10</span> <span class="w">조회</span> <span class="w">기준</span></span></span></div>
     </div>
   </div>
   <script>
@@ -123,17 +123,17 @@
     function DIP(tEnd, sel) { S(tEnd - 0.1, sel, { opacity: 0.4 }); }
 
 
-    const T = {"c0": 18.0, "card": 18.1, "u1": 18.3333, "u2": 18.3333, "u3": 19.0, "flood": 22.0, "lift": 23.7333};
+    const T = {"c0": 18.0, "card": 18.1, "u1": 18.3333, "u2": 18.3333, "u3": 18.8667, "flood": 22.0, "lift": 24.0667};
     A(T.c0, "#u-push", { scale: [1, 1.06] }, T.flood - T.c0, INOUT2);
     // the paper card is laid down from its top edge (mask reveal)
-    A(T.card, "#u-card", { clipPath: ["inset(640px 120px 1280px 120px)", "inset(640px 120px 590px 120px)"] }, 0.6, EXPO);
+    A(T.card, "#u-card", { clipPath: ["inset(640px 120px 1280px 120px)", "inset(640px 120px 500px 120px)"] }, 0.6, EXPO);
     WB(T.u1, "#u-1");
     RISE(T.u2, ["#u-2-0", "#u-2-1"]);
     if (!false) { S(T.u3, "#u-3", { opacity: 1 }); SW(T.u3, "#u-3", "#0e1116"); }
     // colour flood: the card holds while the ground floods to Navy from the bottom; later the card lifts away
     A(T.flood, "#u-navy", { clipPath: ["inset(100% 0px 0px 0px)", "inset(0% 0px 0px 0px)"] }, 0.4, INOUT2);
     A(T.flood, "#u-dock", { clipPath: ["inset(100% 0px 0px 0px)", "inset(0% 0px 0px 0px)"] }, 0.4, INOUT2);
-    A(T.lift, "#u-card", { clipPath: ["inset(640px 120px 590px 120px)", "inset(640px 120px 1280px 120px)"] }, 0.3, IN3);
+    A(T.lift, "#u-card", { clipPath: ["inset(640px 120px 500px 120px)", "inset(640px 120px 1280px 120px)"] }, 0.3, IN3);
 
     window.__hfAnime = window.__hfAnime || [];
     window.__hfAnime.push(tl);

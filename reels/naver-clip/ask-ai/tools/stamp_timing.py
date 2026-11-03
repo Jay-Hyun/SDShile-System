@@ -44,7 +44,7 @@ def stamp(base, cut):
     sw = c["GROW"] + 0.35  # 말풍선이 화면 대부분을 덮으면 배지가 '연출'로
     s = set_clip(s, "lg-b1", 0, sw)
     s = set_clip(s, "lg-b2", sw, c["FLOOD"] + 0.2 - sw)
-    s = set_clip(s, "lg-n", 0, c["GROW"])
+    s = set_clip(s, "lg-n", 0, c["DIVE"])  # 다이브 뒤에는 화면 안 ※ 안내가 맡는다
     s = set_clip(s, "lg-l", c["FLOOD"] + 0.3, end - (c["FLOOD"] + 0.3))
     open(p, "w", encoding="utf-8").write(s)
 

@@ -1,5 +1,5 @@
     /* v7 look (docs/ads/naver-clip/04-v7-visual.md §1): daylight paper and ink + photographs. One axis at
-       x=540, four type sizes, no ornament (no shadow, glow, gradient, dim overlay, blur on photos).
+       x=540, four type sizes, no ornament (the BANNED list in SPEC.md).
        Shared by every scene; generated into each composition. */
     @font-face {
       font-family: "PretendardGOV";
@@ -24,7 +24,7 @@
       background: var(--paper);
     }
     .field { position: absolute; inset: 0; }
-    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), never a CSS grain */
+    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), not a CSS effect */
     .paper { position: absolute; background: #f3ead9 url("assets/img/B-02-paper.jpg") 0 0 / 1080px 1920px no-repeat; }
     .plate { position: absolute; display: block; max-width: none; }
     .cam { position: absolute; inset: 0; }

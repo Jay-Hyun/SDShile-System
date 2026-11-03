@@ -46,35 +46,34 @@
     c.GROW_D = 0.65;
     c.GROW = snap(c.WORLD - c.GROW_D); // 말풍선이 자라기 시작
     c.TRACK_D = 0.6;
-    // ---- 레이아웃 (프레임 좌표, 화면 1080×1920) ----
-    // 채팅: 헤더 y 240–302, 입력 독(전체 폭 필드) y 1440–1920, 사이 302–1440 에 말풍선 스택을 위·아래 같은 틈으로.
-    const HB = 302, DT = 1440, G = 40;
-    const L = { HB, DT, G };
+    // ---- 레이아웃 v7.2 ----
+    // 다이브 뒤 폰 화면(사진 A-01 속 화면)이 똑바로 서서 605×1344 px, 프레임 y 230–1574, 중심 (540, 902). 채팅 UI 는 그 화면 안(화면 좌표).
+    // 화면 좌표: 헤더 y 72–134, 말풍선 영역 y 170–1232, ※ 안내 y 1286 (프레임 1516). 말풍선 폭 549 (좌우 28), 패딩 32.
+    const SW = 605, SH = 1344, STOP = 230, G = 24;
+    const L = { SW, SH, STOP, G, TH0: 170, BW: 549 };
     if (is30) {
-      L.hU = 212; // 사용자 말풍선: Body 44 두 줄 + 패딩 44
-      L.hA1 = 617; // AI 답: Head 88 다섯 줄 + 패딩 56
-      L.hA2 = 298; // 핸드오프: Head 88 두 줄 + 패딩 48
-      const sA = L.hU + G + L.hA1;
-      L.yU = HB + Math.round((DT - HB - sA) / 2);
+      L.hU = 3 * 62 + 56; // 사용자: Body 44 세 줄
+      L.hA1 = 6 * 101 + 64; // AI 답: Head 88 여섯 줄 (앞 문단 2 + 핵심 4)
+      L.hLead = 2 * 101 + 64; // 앞 문단만 보일 때 말풍선 높이
+      L.hA2 = 3 * 101 + 64; // 핸드오프: Head 88 세 줄
+      L.yU = L.TH0;
       L.yA1 = L.yU + L.hU + G;
-      const sB = L.hA1 + G + L.hA2;
-      L.offB = HB + Math.round((DT - HB - sB) / 2) - L.yA1; // HAND 에서 스택이 올라가는 양
-      L.yA2 = L.yA1 + L.hA1 + G; // 스레드 좌표
+      L.yA2 = L.yA1 + L.hA1 + G;
+      L.offB = L.TH0 - L.yA1; // HAND: 질문이 빠지고 스택이 올라간다
     } else {
-      L.hU = 415; // 사용자 말풍선: Head 88 세 줄 + 패딩 56
-      L.hA2 = 415; // 핸드오프: Head 88 세 줄 + 패딩 56
-      const s = L.hU + G + L.hA2;
-      L.yU = HB + Math.round((DT - HB - s) / 2);
+      L.hU = 5 * 101 + 64; // 사용자: Head 88 다섯 줄 (15초는 AI 답이 없어 질문이 크게)
+      L.hA2 = 3 * 101 + 64;
+      L.yU = L.TH0 + Math.round((1062 - (L.hU + G + L.hA2)) / 2);
       L.yA2 = L.yU + L.hU + G;
       L.offB = 0;
     }
-    // 카메라 트랙: 핸드오프 말풍선을 1.10배로 당겨 중심을 y 1060 으로 (위 말풍선이 y 168 위 UI 띠로 밀려나지 않을 만큼만)
-    L.TS = 1.1;
-    const CYT = 1060;
-    const a2c = L.yA2 + L.offB + L.hA2 / 2;
+    // 카메라 트랙: 핸드오프 말풍선 중심을 y 1150 으로, 1.06배 (위 말풍선 글자가 y 168 위로 밀려나지 않게)
+    L.TS = 1.06;
+    const CYT = 1150;
+    const a2c = STOP + L.yA2 + L.offB + L.hA2 / 2; // 프레임 y
     L.trackY = CYT - a2c;
     L.a2c = a2c;
-    const hw = (840 * L.TS) / 2, hh = (L.hA2 * L.TS) / 2;
+    const hw = (L.BW * L.TS) / 2, hh = (L.hA2 * L.TS) / 2;
     L.bub = { t: CYT - hh, b: CYT + hh, l: 540 - hw, r: 540 + hw, rad: 36 * L.TS };
     c.L = L;
     return c;

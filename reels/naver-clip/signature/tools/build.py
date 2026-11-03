@@ -274,13 +274,13 @@ YOU_PATH = ("M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C
             "C 800 342, 850 316, 886 266")
 YOU_BOX = (296, 176, 886, 454)
 YOU_BASE = 341
-SIG_S = 1.7
+SIG_S = 1.6
 SIG_HEAD_T = 440          # "이 칸의 이름,"
-SIG_TOP = 620             # top of the signature's bbox
+SIG_TOP = 650             # top of the signature's bbox
 SIG_CY = SIG_TOP + (YOU_BOX[3] - YOU_BOX[1]) / 2 * SIG_S
 SIG_RULE = round(SIG_CY + (YOU_BASE - (YOU_BOX[1] + YOU_BOX[3]) / 2) * SIG_S + 12)
 SIG_BOTTOM = SIG_CY + (YOU_BOX[3] - YOU_BOX[1]) / 2 * SIG_S
-SIG_YOU_T = round(SIG_BOTTOM + 58)
+SIG_YOU_T = round(SIG_BOTTOM + 56)
 
 
 def you_g(id_, scale, cx, cy):
@@ -353,7 +353,7 @@ def build_benefit(T, compact=False):
     </div>
     <div id="b-band" class="paper" data-paper></div>
     <div id="b-week" data-grid data-tx>{week}</div>
-    {text("b-l1", "head", 520, ["퇴근 후·주말에,", "100% 온라인으로."], "ink", swap=True)}
+    {text("b-l1", "head", 495 if compact else 520, ["퇴근 후·주말에,", "100% 온라인으로."], "ink", swap=True)}
     {"" if compact else text("b-l2", "head", 470, l2, "ink", "wb", swap=True)}
     <div id="b-dip"></div>'''
     js = f"""
@@ -376,7 +376,7 @@ CARD_T = 640
 
 
 def build_usp(T, compact=False):
-    card_b = 1240 if compact else 1330
+    card_b = 1260 if compact else 1420
     ins0 = f"inset({CARD_T}px 120px {1920 - CARD_T}px 120px)"
     ins1 = f"inset({CARD_T}px 120px {1920 - card_b}px 120px)"
     css = f"""
@@ -385,13 +385,13 @@ def build_usp(T, compact=False):
     #u-navy {{ position: absolute; inset: 0; background: #0b1a33; clip-path: inset(100% 0px 0px 0px); }}
     #u-dock {{ background: #102245; clip-path: inset(100% 0px 0px 0px); }}
 """
-    body = "" if compact else text("u-3", "body", CARD_T + 524, ["교육부장관 명의 · '법학 전공' 표기"], "ink", "sw", cls="later")
-    fn_t = CARD_T + (520 if compact else 610)
+    body = "" if compact else text("u-3", "body", CARD_T + 540, ["교육부장관 명의 · '법학 전공' 표기"], "ink", "sw", cls="later")
+    fn_t = CARD_T + (540 if compact else 660)
     html = f'''    <div id="u-push" data-layout-allow-overflow>
       <img id="u-plate" class="plate" src="assets/img/A-04-stairs.jpg" alt="" style="left:0;top:0;width:1080px;height:1920px">
     </div>
     <div id="u-navy"></div>
-    <div id="u-dock" class="dock" data-layout-ignore></div>
+    <div id="u-dock" class="dock" data-fill data-layout-ignore></div>
     <div id="u-card" data-layout-allow-overflow>
       <div class="paper field" data-paper></div>
       {text("u-1", "head", CARD_T + 52, ["!국내 !유일*"], "ink", "wb")}
@@ -460,14 +460,14 @@ def build_legal(t_total, disc, navy_at):
     css = """
     #root { pointer-events: none; }
 """
-    html = f'''    <div id="l-tag" class="clip row t-small m-l" data-start="0" data-duration="{t_total:.3f}" data-track-index="1" style="top:147px">가상 인물 · 연출</div>
+    html = f'''    <div id="l-tag" class="clip row t-small" style="color:#3c4043;top:147px" data-start="0" data-duration="{t_total:.3f}" data-track-index="1">가상 인물 · 연출</div>
     <div id="l-d" class="clip" data-start="{disc:.3f}" data-duration="{t_total - disc:.3f}" data-track-index="2">
       <div id="l-d1" class="row t-small m-d" style="top:1494px">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</div>
       <div id="l-d2" class="row t-small m-d" style="top:1530px">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</div>
     </div>'''
     js = f"""
     // on the Navy end card the compliance text is the light grey (>= 4.5:1 on Navy)
-    A({navy_at}, "#l-tag", {{ color: ["#5f6368", "#9aa0a6"] }}, 0.3, INOUT2);
+    A({navy_at}, "#l-tag", {{ color: ["#3c4043", "#9aa0a6"] }}, 0.3, INOUT2);
 """
     return css, html, js
 
@@ -480,9 +480,9 @@ if VARIANT == "30":
     T_p = dict(c0=C["pen"], end=C["sign"])
     T_s = dict(c0=C["sign"], head=fr(C["sign"] + 0.2), hit=C["sign"], you=fr(C["sign"] + 1.25), end=C["benefit"])
     T_b = dict(c0=C["benefit"], week=fr(C["benefit"] + 0.6), l1=C["benefit"], l2=fr(C["benefit"] + 1.75), end=C["usp"])
-    T_u = dict(c0=C["usp"], card=fr(C["usp"] + 0.1), u1=fr(C["usp"] + 0.35), u2=fr(C["usp"] + 0.35), u3=fr(C["usp"] + 1.0), flood=C["end"], lift=fr(C["end"] + 1.75))
-    T_e = dict(c0=C["end"], ground=fr(T_u["lift"] + 0.3), lock=fr(C["end"] + 0.15), slo=fr(C["end"] + 0.15), q=fr(C["end"] + 2.0), one=fr(C["end"] + 2.1),
-               tel=fr(C["end"] + 2.2), act=fr(C["end"] + 2.3), arr=fr(C["end"] + 2.45))
+    T_u = dict(c0=C["usp"], card=fr(C["usp"] + 0.1), u1=fr(C["usp"] + 0.35), u2=fr(C["usp"] + 0.35), u3=fr(C["usp"] + 0.85), flood=C["end"], lift=fr(C["end"] + 2.05))
+    T_e = dict(c0=C["end"], ground=fr(T_u["lift"] + 0.3), lock=fr(C["end"] + 0.4), slo=fr(C["end"] + 0.4), q=fr(C["end"] + 2.35), one=fr(C["end"] + 2.45),
+               tel=fr(C["end"] + 2.55), act=fr(C["end"] + 2.65), arr=fr(C["end"] + 2.8))
     SCENE_SPECS = [
         ("resume", C["resume"], C["pen"] + OVER, build_resume(T_r), 2),
         ("pen", C["pen"], C["sign"], build_pen(T_p), 3),
@@ -500,9 +500,9 @@ else:
     T_r = dict(push1=D(1), prints=[0, 0, 0], caret=0, out=fr(D(1) - 0.22), c1=D(1), c2=fr(D(1) + 0.2), end=C["sign"])
     T_s = dict(c0=C["sign"], head=fr(C["sign"] + 0.55), hit=B(10), you=fr(B(10) + 1.15), end=C["benefit"])
     T_b = dict(c0=C["benefit"], week=fr(C["benefit"] + 0.5), l1=fr(C["benefit"] + 0.1), l2=99, end=C["usp"])
-    T_u = dict(c0=C["usp"], card=fr(C["usp"] + 0.05), u1=fr(C["usp"] + 0.25), u2=fr(C["usp"] + 0.35), u3=99, flood=C["end"], lift=fr(C["end"] + 0.15))
-    T_e = dict(c0=C["end"], ground=fr(T_u["lift"] + 0.3), lock=fr(C["end"] + 0.05), slo=fr(C["end"] + 0.1), q=fr(C["end"] + 0.3),
-               tel=fr(C["end"] + 0.4), act=fr(C["end"] + 0.45), arr=fr(C["end"] + 0.5))
+    T_u = dict(c0=C["usp"], card=fr(C["usp"] + 0.05), u1=fr(C["usp"] + 0.25), u2=fr(C["usp"] + 0.35), u3=99, flood=C["end"], lift=fr(C["end"] + 0.2))
+    T_e = dict(c0=C["end"], ground=fr(T_u["lift"] + 0.3), lock=fr(C["end"] + 0.35), slo=fr(C["end"] + 0.35), q=fr(C["end"] + 0.5),
+               tel=fr(C["end"] + 0.55), act=fr(C["end"] + 0.6), arr=fr(C["end"] + 0.65))
     SCENE_SPECS = [
         ("resume", C["resume"], C["sign"] + OVER, build_resume(T_r, compact=True), 2),
         ("sign", C["sign"], C["benefit"], build_sign(T_s, grow=True), 3),

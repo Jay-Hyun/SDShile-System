@@ -1,7 +1,7 @@
 <template>
   <style>
     /* v7 look (docs/ads/naver-clip/04-v7-visual.md §1): daylight paper and ink + photographs. One axis at
-       x=540, four type sizes, no ornament (no shadow, glow, gradient, dim overlay, blur on photos).
+       x=540, four type sizes, no ornament (the BANNED list in SPEC.md).
        Shared by every scene; generated into each composition. */
     @font-face {
       font-family: "PretendardGOV";
@@ -26,7 +26,7 @@
       background: var(--paper);
     }
     .field { position: absolute; inset: 0; }
-    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), never a CSS grain */
+    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), not a CSS effect */
     .paper { position: absolute; background: #f3ead9 url("assets/img/B-02-paper.jpg") 0 0 / 1080px 1920px no-repeat; }
     .plate { position: absolute; display: block; max-width: none; }
     .cam { position: absolute; inset: 0; }
@@ -118,7 +118,7 @@
     function DIP(tEnd, sel) { S(tEnd - 0.1, sel, { opacity: 0.4 }); }
 
 
-    const T = {"c0": 22.0, "ground": 24.0333, "lock": 22.1333, "slo": 22.1333, "q": 24.0, "one": 24.1, "tel": 24.2, "act": 24.3, "arr": 24.4667};
+    const T = {"c0": 22.0, "ground": 24.3667, "lock": 22.4, "slo": 22.4, "q": 24.3333, "one": 24.4667, "tel": 24.5333, "act": 24.6667, "arr": 24.8};
     S(T.ground, ["#e-ground", "#e-dock"], { opacity: 1 });   // under the USP layer's own flood until the card has lifted
     A(T.lock, "#e-lock", { opacity: [0, 1], filter: ["blur(8px)", "blur(0px)"] }, 0.2, OUT);
     if (false) WB(T.slo, "#e-slo"); else RISE(T.slo, ["#e-slo-0", "#e-slo-1"]);

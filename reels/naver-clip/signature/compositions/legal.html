@@ -1,7 +1,7 @@
 <template>
   <style>
     /* v7 look (docs/ads/naver-clip/04-v7-visual.md §1): daylight paper and ink + photographs. One axis at
-       x=540, four type sizes, no ornament (no shadow, glow, gradient, dim overlay, blur on photos).
+       x=540, four type sizes, no ornament (the BANNED list in SPEC.md).
        Shared by every scene; generated into each composition. */
     @font-face {
       font-family: "PretendardGOV";
@@ -26,7 +26,7 @@
       background: var(--paper);
     }
     .field { position: absolute; inset: 0; }
-    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), never a CSS grain */
+    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), not a CSS effect */
     .paper { position: absolute; background: #f3ead9 url("assets/img/B-02-paper.jpg") 0 0 / 1080px 1920px no-repeat; }
     .plate { position: absolute; display: block; max-width: none; }
     .cam { position: absolute; inset: 0; }
@@ -74,7 +74,7 @@
 
   </style>
   <div id="root" data-composition-id="legal" data-width="1080" data-height="1920">
-    <div id="l-tag" class="clip row t-small m-l" data-start="0" data-duration="30.000" data-track-index="1" style="top:147px">가상 인물 · 연출</div>
+    <div id="l-tag" class="clip row t-small" style="color:#3c4043;top:147px" data-start="0" data-duration="30.000" data-track-index="1">가상 인물 · 연출</div>
     <div id="l-d" class="clip" data-start="22.000" data-duration="8.000" data-track-index="2">
       <div id="l-d1" class="row t-small m-d" style="top:1494px">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</div>
       <div id="l-d2" class="row t-small m-d" style="top:1530px">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</div>
@@ -114,7 +114,7 @@
 
 
     // on the Navy end card the compliance text is the light grey (>= 4.5:1 on Navy)
-    A(22.1333, "#l-tag", { color: ["#5f6368", "#9aa0a6"] }, 0.3, INOUT2);
+    A(22.1333, "#l-tag", { color: ["#3c4043", "#9aa0a6"] }, 0.3, INOUT2);
 
     window.__hfAnime = window.__hfAnime || [];
     window.__hfAnime.push(tl);

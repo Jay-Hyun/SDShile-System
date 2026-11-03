@@ -4,7 +4,7 @@ Usage (project root; numpy + ffmpeg):
   python3 tools/make_audio.py              -> assets/audio/mix-30s.mp3
   python3 tools/make_audio.py --variant 15 -> assets/audio/mix-15s.mp3 (+ copy in v15/assets/audio/)
 
-Music: assets/music/source.mp3 = "Breaking News Intro" by kornevmusic (Pixabay 527939), user supplied.
+Music (v7): assets/music/source.mp3 = "News - News Music" by NastelBom (Pixabay 629329), user supplied.
 The excerpt starts on a beat (beats/source.json) and plays at its natural level and tone: no filter,
 no ducking (round 4: "먹먹해지는 효과는 빼줘"), and no stop either (round 5: the hook's short music stop
 is gone; the 30s C2 cut moved from B7, where the music used to return, to the downbeat B8). The only
@@ -27,7 +27,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SR = 48000
 VARIANT = sys.argv[sys.argv.index("--variant") + 1] if "--variant" in sys.argv else "30"
 DUR = 15.0 if VARIANT == "15" else 30.0
-OFFSET = {"30": 8.789, "15": 15.796}[VARIANT]
+OFFSET = 1.765   # v7: the track's first downbeat, both cuts (music from frame 0)
 N = int(SR * DUR)
 
 BEATS = json.load(open(os.path.join(ROOT, "beats", "source.json")))
@@ -57,9 +57,8 @@ def curve(points):
 
 
 db = lambda v: 10 ** (v / 20)
-# Music is continuous from the excerpt's first sample: no stop, no duck, no filter (round 5, v6). The only gain
-# automation is the 0.3 s fade at the very end. The excerpt offset puts the track's biggest hit (source 21.037)
-# on the "You" stroke: video 12.248 s in the 30s (offset 8.789), 5.241 s in the 15s (offset 15.796).
+# Music is continuous from the excerpt's first sample: no stop, no duck, no filter. The only gain automation is
+# the 0.3 s fade at the very end (v7: excerpt 1.765 -> 31.765 / 16.765 s of the source, before its fade tail at 65.26 s).
 g = curve([(0, 0), (DUR - 0.3, 0), (DUR, -40)])
 music = mus * db(g)[:, None]
 
