@@ -28,7 +28,7 @@ import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 mp4, V = sys.argv[1], sys.argv[2]
-OFFSET = {"30": 1.776, "15": 10.971}[V]
+OFFSET = {"30": 8.789, "15": 15.796}[V]
 CENTRE_FRAMES = {"30": [415, 628, 816, 894], "15": [36, 243, 366, 444]}[V]
 FPS = 30
 W, H = 160, 284

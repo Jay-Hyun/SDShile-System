@@ -72,36 +72,23 @@
     .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
 
 
-    #c-ground { background: var(--navy); }
-    #c-paper { position: absolute; left: 0; top: 0; width: 1080px; height: 940px; background: var(--paper); overflow: hidden; }
+    #u-ground { background: var(--navy); }
+    #u-field { position: absolute; left: 120px; top: 215px; width: 840px; height: 420px; background: #15284a; }
     .sv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
 
   </style>
-  <div id="root" data-composition-id="cta" data-width="1080" data-height="1920">
-    <div id="c-ground" class="field" data-layout-ignore></div>
+  <div id="root" data-composition-id="usp" data-width="1080" data-height="1920">
+    <div id="u-ground" class="field" data-layout-ignore></div>
     <div class="dock" data-fill data-layout-ignore></div>
-    <div id="c-cam" class="cam" data-layout-allow-overflow>
-      <div id="c-paper" data-layout-allow-overflow>
-        <div id="c-a" class="row t-head m-l" data-tx style="top:250px;"><span class="ln"><span id="c-a-0" class="li">생성하는 쪽</span></span></div>
-        <div id="c-af" class="row t-body m-l" data-tx style="top:410px;"><span class="ln"><span id="c-af-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="c-af-1" class="li">피고 을은 원고 갑에게 지급하라.</span></span><span class="ln"><span id="c-af-2" class="li">현 단계에서 분쟁 위험은 낮습니다.</span></span></div>
-        <div id="c-h" class="row t-head on-paper rise" style="top:660px;"><span class="ln"><span id="c-h-0" class="li">서명하는 쪽으로</span></span><span class="ln"><span id="c-h-1" class="li">넘어오세요.</span></span></div>
-      </div>
-      <div id="c-b" class="row t-head au rise" style="top:1000px;"><span class="ln"><span id="c-b-0" class="li">서명하는 쪽</span></span></div>
-      <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate(-51.00 965.00) scale(1.0)"><path id="c-you" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke="#b8955a" stroke-width="4.000" stroke-linecap="round" stroke-linejoin="round" fill="none" style="opacity:1"/></g></svg>
-      <div id="e-lock" class="row lock later" style="top:282px"><div class="lockrow" data-lockup><span class="lmark"></span><span>경찰복지사이버평생교육원</span></div></div>
-      <div id="e-slo" class="row t-head on-ink rise" style="top:394px;"><span class="ln"><span id="e-slo-0" class="li">책임지는 자리로,</span></span><span class="ln"><span id="e-slo-1" class="li">지금 있는 자리에서.</span></span></div>
-      <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore><path id="e-ul" d="M120 622 C 360 625, 640 621, 840 615 S 945 609, 960 607" stroke="#b8955a" stroke-width="5" stroke-linecap="round" fill="none" style="opacity:0"/></svg>
-      <div id="e-info" class="later">
-        <div id="e-ug" class="row t-body au" style="top:684px;"><span class="ln"><span id="e-ug-0" class="li">국내 유일*</span></span></div>
-        <div id="e-uh" class="row t-head on-ink" style="top:746px;"><span class="ln"><span id="e-uh-0" class="li">100% 온라인 법학사</span></span></div>
-        <div id="e-u3" class="row t-small m-d" style="top:854px;"><span class="ln"><span id="e-u3-0" class="li">교육부장관 명의 · '법학 전공' 표기</span></span></div>
-      </div>
-      <div id="c-btn" class="pill t-body" data-tx style="left:120px;top:1160px;width:840px;height:136px;background:var(--paper);color:var(--ink);opacity:0">무료 상담 신청</div>
-      <div id="c-sub" class="row t-small m-d later" style="top:1330px;"><span class="ln"><span id="c-sub-0" class="li">상담만 받아도 돼요.</span></span></div>
-      <div id="e-tel" class="later" data-tx>
-        <div id="e-tn" class="row t-head on-ink" style="top:1200px;"><span class="ln"><span id="e-tn-0" class="li">070-4006-7128</span></span></div>
-        <div id="e-th" class="row t-body m-d" style="top:1310px;"><span class="ln"><span id="e-th-0" class="li">(평일 10–18시)</span></span></div>
-      </div>
+    <div id="u-cam" class="cam" data-layout-allow-overflow>
+      <div id="u-field"></div>
+      <div id="u-r" class="rule " style="left:180px;top:466px;width:720px;color:#43578a"></div>
+      <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate(-169.20 47.00) scale(1.2)"><path id="u-ink" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke="#b8955a" stroke-width="3.333" stroke-linecap="round" stroke-linejoin="round" fill="none" style="opacity:1"/></g></svg>
+      <div id="u-nl" class="row t-body on-ink rise" style="top:695px;"><span class="ln"><span id="u-nl-0" class="li">그 칸으로 가는 <span class="au">첫 계단</span></span></span></div>
+      <div id="u-u1" class="row t-body au rise" style="top:818px;"><span class="ln"><span id="u-u1-0" class="li">국내 유일*</span></span></div>
+      <div id="u-u2" class="row t-display on-ink rise" style="top:886px;"><span class="ln"><span id="u-u2-0" class="li">100% 온라인</span></span><span class="ln"><span id="u-u2-1" class="li">법학사</span></span></div>
+      <div id="u-u3" class="row t-small m-d rise" style="top:1204px;"><span class="ln"><span id="u-u3-0" class="li">교육부장관 명의 · '법학 전공' 표기</span></span></div>
+      <div id="u-lock" class="row lock later" style="top:1330px"><div class="lockrow" data-lockup><span class="lmark"></span><span>경찰복지사이버평생교육원</span></div></div>
     </div>
   </div>
   <script>
@@ -136,24 +123,11 @@
     }
 
 
-    const T = {"c0": 24.521, "head": 24.571, "label": 24.581, "you": 24.601, "btn": 26.274, "sub": 26.364, "e": 27.2, "lock": 27.7, "slo": 27.6, "ul": 28.0, "info": 27.5, "tel": 27.74, "end": 30.0};
-    PUSH(T.c0, T.end, "#c-cam");
-    RISE(T.head, ["#c-h-0", "#c-h-1"]);
-    RISE(T.label, ["#c-b-0"]);
-    // S2 on the bar line: the signature gives way to the button
-    A(T.btn - 0.05, "#c-you", { opacity: [1, 0] }, 0.3, EXIT);
-    ENTER(T.btn, "#c-btn");
-    ENTER(T.sub, "#c-sub");
-    // C8: the Paper field wipes up, the label leaves, button and note settle up into the end card
-    LEAVE(T.e - 0.1, ["#c-b-0"]);
-    A(T.e, "#c-paper", { clipPath: ["inset(0px 0px 0px 0px)", "inset(0px 0px 940px 0px)"] }, 0.9, INOUT);
-    A(T.e, "#c-btn", { translateY: [0, -200] }, 0.9, INOUT);
-    A(T.e, "#c-sub", { translateY: [0, -216] }, 0.9, INOUT);
-    ENTER(T.lock, "#e-lock");
-    RISE(T.slo, ["#e-slo-0", "#e-slo-1"]);
-    DRAW(T.c0, T.ul, "#e-ul", 1.1);
-    ENTER(T.info, "#e-info");
-    ENTER(T.tel, "#e-tel");
+    const T = {"c0": 22.767, "step": 22.807, "usp": 22.887, "lock": 23.217, "end": 27.155};
+    PUSH(T.c0, T.end, "#u-cam");
+    RISE(T.step, ["#u-nl-0"]);
+    RISE(T.usp, ["#u-u1-0", "#u-u2-0", "#u-u2-1", "#u-u3-0"]);
+    ENTER(T.lock, "#u-lock");
 
     window.__hfAnime = window.__hfAnime || [];
     window.__hfAnime.push(tl);

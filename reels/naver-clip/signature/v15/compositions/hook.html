@@ -78,20 +78,16 @@
   <div id="root" data-composition-id="hook" data-width="1080" data-height="1920">
     <div id="h-ground" class="field" data-layout-ignore></div>
     <div id="h-cam" class="cam" data-layout-allow-overflow>
-      <div id="h-s2" class="sheet" style="left:160px;top:660px;width:760px;height:1300px;background:var(--sheet-3)"></div>
-      <div id="h-s1" class="sheet" style="left:140px;top:860px;width:800px;height:1200px;background:var(--sheet-2)"></div>
-      <div id="h-s0" class="sheet" style="left:120px;top:1060px;width:840px;height:1000px;background:var(--paper)"></div>
-      <div id="h-head" class="row t-display on-ink" style="top:235px;"><span class="ln"><span id="h-head-0" class="li">AI가</span></span><span class="ln"><span id="h-head-1" class="li">다 써줍니다.</span></span></div>
-      <div id="h-stat" class="row t-body m-d" data-tx style="top:560px;"><span class="ln"><span id="h-stat-0" class="li">법률 검토 문서 3건 작성 · <span class="on-ink">생성 완료 0.1s</span></span></span></div>
-      <div id="h-t2" class="row t-head on-paper" data-tx style="top:676px;"><span class="ln"><span id="h-t2-0" class="li">법률 검토 보고서</span></span></div>
-      <div id="h-w2" class="row t-small m-l" data-tx style="top:780px;"><span class="ln"><span id="h-w2-0" class="li">[가상 문서 · 예시]</span></span></div>
-      <div id="h-t1" class="row t-head on-paper" data-tx style="top:876px;"><span class="ln"><span id="h-t1-0" class="li">소장 초안(가상)</span></span></div>
-      <div id="h-w1" class="row t-small m-l" data-tx style="top:980px;"><span class="ln"><span id="h-w1-0" class="li">[가상 문서 · 예시]</span></span></div>
-      <div id="h-t0" class="row t-head on-paper" data-tx style="top:1076px;"><span class="ln"><span id="h-t0-0" class="li">계약 검토의견서</span></span></div>
-      <div id="h-w0" class="row t-small m-l" data-tx style="top:1180px;"><span class="ln"><span id="h-w0-0" class="li">[가상 문서 · 예시]</span></span></div>
-      <div id="h-b0" class="row t-body on-paper" data-tx style="top:1240px;"><span class="ln"><span id="h-b0-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="h-b0-1" class="li">을의 지체 책임은 일부 제한됩니다.</span></span><span class="ln"><span id="h-b0-2" class="li">위약금 조항은 감액될 여지가 있습니다.</span></span></div>
-      <div id="h-sg" class="row t-body m-l" data-tx style="top:1480px;"><span class="ln"><span id="h-sg-0" class="li">법률 검토·책임자 서명</span></span></div>
-      <div id="h-r0" class="rule m-l" style="left:330px;top:1640px;width:420px;"></div>
+      <div id="h-sh" class="sheet" style="left:120px;top:640px;width:840px;height:1400px;background:var(--paper)"></div>
+      <div id="h-c1" class="row t-display on-ink" style="top:235px;"><span class="ln"><span id="h-c1-0" class="li">15년 경력.</span></span></div>
+      <div id="h-c2" class="row t-head on-ink" style="top:398px;"><span class="ln"><span id="h-c2-0" class="li">이력서 첫 줄에서</span></span><span class="ln"><span id="h-c2-1" class="li">멈췄습니다.</span></span></div>
+      <div id="h-rt" class="row t-body m-l" data-tx style="top:664px;"><span class="ln"><span id="h-rt-0" class="li">이력서</span></span></div>
+      <div id="h-ed" class="row t-head on-paper" data-tx style="top:742px;"><span class="ln"><span id="h-ed-0" class="li">학력</span></span></div>
+      <div id="h-pn" class="sheet" style="left:160px;top:870px;width:760px;height:330px;background:var(--sheet-2)"></div>
+      <div id="h-r" class="rule on-paper" style="left:220px;top:1130px;width:640px;"></div>
+      <div id="h-c" class="caret on-paper" style="left:200px;top:1040px;height:84px;opacity:0"></div>
+      <div id="h-cr" class="row t-head on-paper" data-tx style="top:1240px;"><span class="ln"><span id="h-cr-0" class="li">경력</span></span></div>
+      <div id="h-cl" class="row t-body m-l" data-tx style="top:1352px;"><span class="ln"><span id="h-cl-0" class="li">영업관리 팀장 · 8년</span></span><span class="ln"><span id="h-cl-1" class="li">현장 운영 총괄 · 5년</span></span><span class="ln"><span id="h-cl-2" class="li">고객 상담 리더 · 2년</span></span></div>
     </div>
   </div>
   <script>
@@ -126,8 +122,9 @@
     }
 
 
-    const T = {"c0": 0, "end": 1.324};
+    const T = {"c0": 0, "end": 3.5};
     PUSH(T.c0, T.end, "#h-cam");
+    CARET("#h-c", T.c0, T.end);
 
     window.__hfAnime = window.__hfAnime || [];
     window.__hfAnime.push(tl);

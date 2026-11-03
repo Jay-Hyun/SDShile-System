@@ -9,8 +9,8 @@ The excerpt starts on a beat (beats/source.json) and plays at its natural level 
 no ducking (round 4: "먹먹해지는 효과는 빼줘"), and no stop either (round 5: the hook's short music stop
 is gone; the 30s C2 cut moved from B7, where the music used to return, to the downbeat B8). The only
 automation is the fade into the end. The quiet of C4/C5 is carried by the track's own drumless build.
-SFX (client: "조잡한 효과음도 줄여봐"): exactly two per cut, both clean tones without noise — the error
-toast (one sine, -20 dB under the music around it) and the pen touch of the signature (a soft wood
+SFX (client: "조잡한 효과음도 줄여봐"): exactly two per cut, both clean tones without noise — the CTA
+tap (one sine, -20 dB under the music around it) and the pen touch of the signature (a soft wood
 tone, -18 dB, riding the music's biggest hit). Cue times come from the picture (beats/cuts*.json
 "sfx", written by tools/build.py — run the builder first). Master: -15 LUFS, true peak <= -1 dBTP.
 """
@@ -27,7 +27,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SR = 48000
 VARIANT = sys.argv[sys.argv.index("--variant") + 1] if "--variant" in sys.argv else "30"
 DUR = 15.0 if VARIANT == "15" else 30.0
-OFFSET = {"30": 1.776, "15": 10.971}[VARIANT]
+OFFSET = {"30": 8.789, "15": 15.796}[VARIANT]
 N = int(SR * DUR)
 
 BEATS = json.load(open(os.path.join(ROOT, "beats", "source.json")))
@@ -57,12 +57,10 @@ def curve(points):
 
 
 db = lambda v: 10 ** (v / 20)
-# Music is continuous from the excerpt's first sample (client round 5: "브금 끊지 마"): no stop, no
-# duck, no filter. The only gain automation is the ending fade onto the final hit.
-if VARIANT == "30":
-    g = curve([(0, 0), (B(68), 0), (DUR, -40)])      # lands on the downbeat hit B68 (29.78 s), 0.2 s fade to 30.0
-else:
-    g = curve([(0, 0), (B(34), 0), (DUR, -40)])      # lands on the accent hit B34 (14.90 s), fade to 15.0
+# Music is continuous from the excerpt's first sample: no stop, no duck, no filter (round 5, v6). The only gain
+# automation is the 0.3 s fade at the very end. The excerpt offset puts the track's biggest hit (source 21.037)
+# on the "You" stroke: video 12.248 s in the 30s (offset 8.789), 5.241 s in the 15s (offset 15.796).
+g = curve([(0, 0), (DUR - 0.3, 0), (DUR, -40)])
 music = mus * db(g)[:, None]
 
 
@@ -71,10 +69,10 @@ def t_arr(d):
     return np.arange(int(d * SR)) / SR
 
 
-def toast_tone():
-    """the error toast: one sine (330 Hz), 6 ms attack, short exponential decay — no square, no noise"""
-    tt = t_arr(0.28)
-    return np.sin(2 * np.pi * 330 * tt) * np.minimum(1, tt / 0.006) * np.exp(-tt / 0.09)
+def tap_tone():
+    """the CTA tap: one soft sine (660 Hz), 5 ms attack, short decay — no square, no noise"""
+    tt = t_arr(0.2)
+    return np.sin(2 * np.pi * 660 * tt) * np.minimum(1, tt / 0.005) * np.exp(-tt / 0.05)
 
 
 def pen_wood():
@@ -84,11 +82,11 @@ def pen_wood():
     return wood * np.minimum(1, tt / 0.002)
 
 
-REL_DB = {"error": -20.0, "pen": -18.0}   # level of the tone's first 80 ms against the music's RMS around it
-SOUND = {"error": toast_tone, "pen": pen_wood}
+REL_DB = {"tap": -20.0, "pen": -18.0}   # level of the tone's first 80 ms against the music's RMS around it
+SOUND = {"tap": tap_tone, "pen": pen_wood}
 sfx = np.zeros(N)
 CUES = json.load(open(os.path.join(ROOT, "beats", "cuts.json" if VARIANT == "30" else "cuts-15s.json")))["sfx"]
-assert len(CUES) == 2 and {c["kind"] for c in CUES} == {"error", "pen"}, CUES
+assert len(CUES) == 2 and {c["kind"] for c in CUES} == {"tap", "pen"}, CUES
 for cue in CUES:
     sig = SOUND[cue["kind"]]()
     at = cue["t"] + 1 / 30                       # sound lands one frame after its picture

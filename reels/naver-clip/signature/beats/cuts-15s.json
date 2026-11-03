@@ -1,103 +1,83 @@
 {
  "variant": "15",
- "offset": 10.971,
+ "offset": 15.796,
  "bpm": 137.023,
  "cuts": [
   {
-   "t": 1.324,
-   "frame": 40,
-   "label": "C1' S2",
-   "beat": 3,
+   "t": 3.5,
+   "frame": 105,
+   "label": "S3 signature field",
+   "beat": 8,
    "downbeat": true
   },
   {
-   "t": 4.825,
-   "frame": 145,
-   "label": "C4'",
-   "beat": 11,
+   "t": 8.747,
+   "frame": 262,
+   "label": "S4 benefit line",
+   "beat": 20,
    "downbeat": true
   },
   {
-   "t": 10.066,
-   "frame": 302,
-   "label": "C6' (signature)",
-   "beat": 23,
-   "downbeat": true
-  },
-  {
-   "t": 12.261,
+   "t": 12.254,
    "frame": 368,
-   "label": "C8'",
+   "label": "S6 end card",
    "beat": 28,
-   "downbeat": false
+   "downbeat": true
   }
  ],
  "moves": [
   {
-   "t": 3.28,
-   "label": "C3' toast"
+   "t": 5.241,
+   "label": "S3 signature stroke (biggest hit)"
   },
   {
-   "t": 6.4,
-   "label": "C4' statement + panel glide"
+   "t": 6.341,
+   "label": "S3 sentence"
   },
   {
-   "t": 8.325,
-   "label": "C4' S3 bridge"
+   "t": 10.047,
+   "label": "S4 earned credits turn gold"
   },
   {
-   "t": 10.2,
-   "label": "C6' sentence"
-  },
-  {
-   "t": 10.45,
-   "label": "C6' glide"
-  },
-  {
-   "t": 10.79,
-   "label": "C6' S3 USP"
+   "t": 12.504,
+   "label": "S6 phone"
   }
  ],
  "sfx": [
   {
-   "t": 3.28,
-   "kind": "error"
+   "t": 5.241,
+   "kind": "pen"
   },
   {
-   "t": 10.066,
-   "kind": "pen"
+   "t": 12.254,
+   "kind": "tap"
   }
  ],
  "scenes": [
   {
    "id": "hook",
    "start": 0,
-   "duration": 1.324
-  },
-  {
-   "id": "tease",
-   "start": 1.324,
-   "duration": 3.501
-  },
-  {
-   "id": "quiet",
-   "start": 4.825,
-   "duration": 5.241
+   "duration": 3.5
   },
   {
    "id": "sign",
-   "start": 10.066,
-   "duration": 2.195
+   "start": 3.5,
+   "duration": 5.247
+  },
+  {
+   "id": "benefit",
+   "start": 8.747,
+   "duration": 3.507
   },
   {
    "id": "end",
-   "start": 12.261,
-   "duration": 2.739
+   "start": 12.254,
+   "duration": 2.746
   },
   {
    "id": "legal",
-   "start": 9.0,
-   "duration": 6.0
+   "start": 0,
+   "duration": 15.0
   }
  ]
 }

@@ -72,18 +72,21 @@
     .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
 
 
-    #q-ground { background: var(--ink); }
-    #q-panel { position: absolute; left: 120px; top: 560px; width: 840px; height: 1090px; background: var(--panel); }
+    #k-ground { background: var(--ink); }
+    .tt { position: relative; }
+    .ok { position: absolute; left: calc(100% + 20px); top: 50%; width: 56px; height: 56px; margin-top: -28px; color: var(--ink); opacity: 0; }
+    .kc { opacity: 0; }
 
   </style>
-  <div id="root" data-composition-id="quiet" data-width="1080" data-height="1920">
-    <div id="q-ground" class="field" data-layout-ignore></div>
-    <div id="q-cam" class="cam" data-layout-allow-overflow>
-      <div id="q-panel"></div>
-      <div id="q-c1" class="row t-head m-d rise" style="top:250px;"><span class="ln"><span id="q-c1-0" class="li">AI가</span></span><span class="ln"><span id="q-c1-1" class="li">대신할수록,</span></span></div><div id="q-c2" class="row t-display on-ink rise" style="top:472px;"><span class="ln"><span id="q-c2-0" class="li">책임질 자리는</span></span><span class="ln"><span id="q-c2-1" class="li">더 귀해집니다.</span></span></div><div id="q-br" class="row t-head on-ink rise" style="top:250px;"><span class="ln"><span id="q-br-0" class="li">그 칸은,</span></span><span class="ln"><span id="q-br-1" class="li">법을 아는 <span class="au">사람의 몫</span></span></span></div>
-      <div id="q-r" class="rule on-ink" style="left:180px;top:1520px;width:720px;"></div>
-      <div id="q-c" class="caret on-ink" style="left:180px;top:1440px;height:80px;opacity:0"></div>
-      <div id="q-sg" class="row t-body m-d" data-tx style="top:1556px;"><span class="ln"><span id="q-sg-0" class="li">법률 검토·책임자 서명</span></span></div>
+  <div id="root" data-composition-id="cards" data-width="1080" data-height="1920">
+    <div id="k-ground" class="field" data-layout-ignore></div>
+    <div id="k-cam" class="cam" data-layout-allow-overflow>
+      <div id="k-cap" class="row t-head on-ink rise" style="top:250px;"><span class="ln"><span id="k-cap-0" class="li">경력은 증명됐습니다.</span></span><span class="ln"><span id="k-cap-1" class="li">학력 칸만 남았어요.</span></span></div>
+      <div id="k-s0" class="sheet kc" style="left:120px;top:470px;width:840px;height:200px;background:var(--paper)"></div><div id="k-r0" class="row t-head on-paper kc" data-tx style="top:482px;"><span class="ln"><span id="k-r0-0" class="li"><span class="tt">영업관리 팀장<span id="k-k0"><svg class="ok" viewBox="0 0 24 24"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></span></span></span></div><div id="k-y0" class="row t-body m-l kc" data-tx style="top:592px;"><span class="ln"><span id="k-y0-0" class="li">8년</span></span></div><div id="k-s1" class="sheet kc" style="left:120px;top:684px;width:840px;height:200px;background:var(--paper)"></div><div id="k-r1" class="row t-head on-paper kc" data-tx style="top:696px;"><span class="ln"><span id="k-r1-0" class="li"><span class="tt">현장 운영 총괄<span id="k-k1"><svg class="ok" viewBox="0 0 24 24"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></span></span></span></div><div id="k-y1" class="row t-body m-l kc" data-tx style="top:806px;"><span class="ln"><span id="k-y1-0" class="li">5년</span></span></div><div id="k-s2" class="sheet kc" style="left:120px;top:898px;width:840px;height:200px;background:var(--paper)"></div><div id="k-r2" class="row t-head on-paper kc" data-tx style="top:910px;"><span class="ln"><span id="k-r2-0" class="li"><span class="tt">고객 상담 리더<span id="k-k2"><svg class="ok" viewBox="0 0 24 24"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></span></span></span></div><div id="k-y2" class="row t-body m-l kc" data-tx style="top:1020px;"><span class="ln"><span id="k-y2-0" class="li">2년</span></span></div>
+      <div id="k-sl" class="sheet" style="left:120px;top:1112px;width:840px;height:536px;background:var(--paper)"></div>
+      <div id="k-lb" class="row t-head on-paper" data-tx style="top:1140px;"><span class="ln"><span id="k-lb-0" class="li">학력</span></span></div>
+      <div id="k-rl" class="rule on-paper" style="left:180px;top:1584px;width:720px;"></div>
+      <div id="k-c" class="caret on-paper" style="left:180px;top:1500px;height:80px;opacity:0"></div>
     </div>
   </div>
   <script>
@@ -118,27 +121,13 @@
     }
 
 
-    const T = {"c0": 4.825, "c1": 4.905, "c2": 6.4, "c5": null, "br": 8.325, "brIn": 8.625, "gold": 9.207, "end": 10.066};
-    PUSH(T.c0, T.end, "#q-cam");
-    RISE(T.c1, ["#q-c1-0", "#q-c1-1"]);
-    A(T.c2 - 0.18, "#q-panel", { clipPath: ["inset(0px 0px 0px 0px)", "inset(300px 0px 0px 0px)"] }, 0.45, INOUT);   // clears the way first
-    RISE(T.c2, ["#q-c2-0", "#q-c2-1"]);
-    CARET("#q-c", T.c0, T.c5 != null ? T.c5 : T.end);
-    if (T.c5 != null) {
-      LEAVE(T.c5, ["#q-c1-0", "#q-c1-1", "#q-c2-0", "#q-c2-1"], 0.04);
-      S(T.c5, "#q-c", { opacity: 0 });
-      A(T.c5, "#q-panel", { clipPath: ["inset(300px 0px 0px 0px)", "inset(0px 0px 0px 0px)"] }, 0.45, INOUT);
-      A(T.ext, "#q-r", { scaleX: [1, 1.5] }, 1.1, INOUT);
-      RISE(T.c3, ["#q-c3-0", "#q-c3-1"]);
-      A(T.c4 - 0.18, "#q-panel", { clipPath: ["inset(0px 0px 0px 0px)", "inset(220px 0px 0px 0px)"] }, 0.45, INOUT);
-      RISE(T.c4, ["#q-c4-0", "#q-c4-1"]);
-    }
-    if (T.br != null) {
-      LEAVE(T.br, ["#q-c1-0", "#q-c1-1", "#q-c2-0", "#q-c2-1"], 0.04);
-      A(T.br, "#q-panel", { clipPath: ["inset(300px 0px 0px 0px)", "inset(0px 0px 0px 0px)"] }, 0.45, INOUT);
-      RISE(T.brIn, ["#q-br-0", "#q-br-1"]);
-      S(T.gold, "#q-c", { backgroundColor: "#b8955a" });
-    }
+    const T = {"c0": 3.506, "cap1": 3.626, "stack": 3.8059999999999996, "oks": [4.818, 5.689, 6.559], "cap2": 7.0569999999999995, "end": 10.507};
+    PUSH(T.c0, T.end, "#k-cam");
+    CARET("#k-c", T.c0, T.end);
+    RISE(T.cap1, ["#k-cap-0"]);
+    [0, 1, 2].forEach((i) => A(T.stack + i * 0.07, ["#k-s" + i, "#k-r" + i, "#k-y" + i], { opacity: [0, 1], translateY: [16, 0] }, 0.32, UI));
+    T.oks.forEach((t, i) => A(t, "#k-k" + i + " .ok", { opacity: [0, 1] }, 0.32, UI));
+    RISE(T.cap2, ["#k-cap-1"]);
 
     window.__hfAnime = window.__hfAnime || [];
     window.__hfAnime.push(tl);

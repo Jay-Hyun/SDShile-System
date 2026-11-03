@@ -1,147 +1,119 @@
 {
  "variant": "30",
- "offset": 1.776,
+ "offset": 8.789,
  "bpm": 137.023,
  "cuts": [
   {
-   "t": 1.753,
-   "frame": 53,
-   "label": "C1 S2",
-   "beat": 4,
-   "downbeat": true
-  },
-  {
-   "t": 3.495,
+   "t": 3.506,
    "frame": 105,
-   "label": "C2",
+   "label": "S2 cards",
    "beat": 8,
    "downbeat": true
   },
   {
-   "t": 7.013,
-   "frame": 210,
-   "label": "C3",
-   "beat": 16,
-   "downbeat": true
-  },
-  {
-   "t": 10.519,
-   "frame": 316,
-   "label": "C4",
+   "t": 10.507,
+   "frame": 315,
+   "label": "S3 signature field",
    "beat": 24,
    "downbeat": true
   },
   {
-   "t": 17.52,
-   "frame": 526,
-   "label": "C6",
-   "beat": 40,
+   "t": 15.754,
+   "frame": 473,
+   "label": "S4 benefit",
+   "beat": 36,
    "downbeat": true
   },
   {
-   "t": 24.521,
-   "frame": 736,
-   "label": "C7",
-   "beat": 56,
+   "t": 22.767,
+   "frame": 683,
+   "label": "S5 USP",
+   "beat": 52,
    "downbeat": true
+  },
+  {
+   "t": 27.155,
+   "frame": 815,
+   "label": "S6 end card",
+   "beat": 62,
+   "downbeat": false
   }
  ],
  "moves": [
   {
-   "t": 7.3,
-   "label": "C3 button"
+   "t": 3.806,
+   "label": "S2 career cards"
   },
   {
-   "t": 8.88,
-   "label": "C3 S3 toast (entrance)"
+   "t": 7.057,
+   "label": "S2 caption 2 + build"
   },
   {
-   "t": 12.12,
-   "label": "C4 statement + panel glide"
+   "t": 12.248,
+   "label": "S3 signature stroke (biggest hit)"
   },
   {
-   "t": 14.02,
-   "label": "C5 line draws out (in shot)"
-  },
-  {
-   "t": 15.5,
-   "label": "C5 statement + panel glide"
+   "t": 13.448,
+   "label": "S3 sentence"
   },
   {
    "t": 19.261,
-   "label": "C6 S2 signature stroke"
+   "label": "S4 earned credits turn gold (2nd hit)"
   },
   {
-   "t": 20.3,
-   "label": "C6 sentence"
+   "t": 22.807,
+   "label": "S5 stack"
   },
   {
-   "t": 21.014,
-   "label": "C6 glide"
-  },
-  {
-   "t": 21.354,
-   "label": "C6 S3 USP stack"
-  },
-  {
-   "t": 26.274,
-   "label": "C7 S2 button"
-  },
-  {
-   "t": 27.2,
-   "label": "C8 wipe + end card (in shot)"
+   "t": 27.405,
+   "label": "S6 phone"
   }
  ],
  "sfx": [
   {
-   "t": 8.88,
-   "kind": "error"
+   "t": 12.248,
+   "kind": "pen"
   },
   {
-   "t": 19.261,
-   "kind": "pen"
+   "t": 27.155,
+   "kind": "tap"
   }
  ],
  "scenes": [
   {
    "id": "hook",
    "start": 0,
-   "duration": 1.753
-  },
-  {
-   "id": "tease",
-   "start": 1.753,
-   "duration": 1.742
-  },
-  {
-   "id": "fill",
-   "start": 3.495,
-   "duration": 3.518
-  },
-  {
-   "id": "blank",
-   "start": 7.013,
    "duration": 3.506
   },
   {
-   "id": "quiet",
-   "start": 10.519,
+   "id": "cards",
+   "start": 3.506,
    "duration": 7.001
   },
   {
    "id": "sign",
-   "start": 17.52,
-   "duration": 7.001
+   "start": 10.507,
+   "duration": 5.247
   },
   {
-   "id": "cta",
-   "start": 24.521,
-   "duration": 5.479
+   "id": "benefit",
+   "start": 15.754,
+   "duration": 7.013
+  },
+  {
+   "id": "usp",
+   "start": 22.767,
+   "duration": 4.388
+  },
+  {
+   "id": "end",
+   "start": 27.155,
+   "duration": 2.845
   },
   {
    "id": "legal",
-   "start": 15.5,
-   "duration": 14.5
+   "start": 0,
+   "duration": 30.0
   }
  ]
 }

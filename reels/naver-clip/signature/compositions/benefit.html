@@ -72,15 +72,25 @@
     .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
 
 
-    #f-ground { background: var(--ink); }
-    .tt { position: relative; }
-    .ok { position: absolute; left: calc(100% + 20px); top: 50%; width: 56px; height: 56px; margin-top: -28px; color: var(--ink); opacity: 0; }
+    #g-ground { background: var(--navy); }
+    #g-paper { position: absolute; left: 0; top: 0; width: 1080px; height: 980px; background: var(--paper); overflow: hidden; }
+    .gb { position: absolute; }
+    .dl { position: absolute; width: 108px; text-align: center; }
+    .bar { position: absolute; width: 108px; background: var(--sheet-3); overflow: hidden; }
+    .bar i { position: absolute; left: 0; bottom: 0; width: 100%; height: 110px; background: var(--navy); }
+    .bar.we { background: var(--gold); }
 
   </style>
-  <div id="root" data-composition-id="fill" data-width="1080" data-height="1920">
-    <div id="f-ground" class="field" data-layout-ignore></div>
-    <div id="f-cam" class="cam" data-layout-allow-overflow>
-      <div id="f-s0" class="sheet" style="left:120px;top:262px;width:840px;height:450px;background:var(--paper)"></div><div id="f-t0" class="row t-head on-paper" data-tx style="top:280px;"><span class="ln"><span id="f-t0-0" class="li"><span class="tt">계약 검토의견서<span id="f-k0"><svg class="ok" viewBox="0 0 24 24"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></span></span></span></div><div id="f-w0" class="row t-small m-l" data-tx style="top:386px;"><span class="ln"><span id="f-w0-0" class="li">[가상 문서 · 예시]</span></span></div><div id="f-b0" class="row t-body on-paper rise" data-tx style="top:438px;"><span class="ln"><span id="f-b0-0" class="li">갑의 해지 통지는 요건을 갖추었습니다.</span></span><span class="ln"><span id="f-b0-1" class="li">을의 지체 책임은 일부 제한됩니다.</span></span></div><div id="f-g0" class="row t-body m-l" data-tx style="top:580px;"><span class="ln"><span id="f-g0-0" class="li">법률 검토·책임자 서명</span></span></div><div id="f-r0" class="rule m-l" style="left:330px;top:676px;width:420px;"></div><div id="f-s1" class="sheet" style="left:120px;top:730px;width:840px;height:450px;background:var(--paper)"></div><div id="f-t1" class="row t-head on-paper" data-tx style="top:748px;"><span class="ln"><span id="f-t1-0" class="li"><span class="tt">소장 초안(가상)<span id="f-k1"><svg class="ok" viewBox="0 0 24 24"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></span></span></span></div><div id="f-w1" class="row t-small m-l" data-tx style="top:854px;"><span class="ln"><span id="f-w1-0" class="li">[가상 문서 · 예시]</span></span></div><div id="f-b1" class="row t-body on-paper rise" data-tx style="top:906px;"><span class="ln"><span id="f-b1-0" class="li">피고 을은 원고 갑에게 지급하라.</span></span><span class="ln"><span id="f-b1-1" class="li">소송비용은 피고 을이 부담한다.</span></span></div><div id="f-g1" class="row t-body m-l" data-tx style="top:1048px;"><span class="ln"><span id="f-g1-0" class="li">법률 검토·책임자 서명</span></span></div><div id="f-r1" class="rule m-l" style="left:330px;top:1144px;width:420px;"></div><div id="f-s2" class="sheet" style="left:120px;top:1198px;width:840px;height:450px;background:var(--paper)"></div><div id="f-t2" class="row t-head on-paper" data-tx style="top:1216px;"><span class="ln"><span id="f-t2-0" class="li"><span class="tt">법률 검토 보고서<span id="f-k2"><svg class="ok" viewBox="0 0 24 24"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></span></span></span></div><div id="f-w2" class="row t-small m-l" data-tx style="top:1322px;"><span class="ln"><span id="f-w2-0" class="li">[가상 문서 · 예시]</span></span></div><div id="f-b2" class="row t-body on-paper rise" data-tx style="top:1374px;"><span class="ln"><span id="f-b2-0" class="li">현 단계에서 분쟁 위험은 낮습니다.</span></span><span class="ln"><span id="f-b2-1" class="li">합의 조건의 재검토를 권합니다.</span></span></div><div id="f-g2" class="row t-body m-l" data-tx style="top:1516px;"><span class="ln"><span id="f-g2-0" class="li">법률 검토·책임자 서명</span></span></div><div id="f-r2" class="rule m-l" style="left:330px;top:1612px;width:420px;"></div>
+  <div id="root" data-composition-id="benefit" data-width="1080" data-height="1920">
+    <div id="g-ground" class="field" data-layout-ignore></div>
+    <div id="g-cam" class="cam" data-layout-allow-overflow>
+      
+      <div id="g-paper" data-layout-allow-overflow>
+        <div id="g-s1" class="row t-head on-paper rise" style="top:250px;"><span class="ln"><span id="g-s1-0" class="li">퇴근 후·주말에,</span></span><span class="ln"><span id="g-s1-1" class="li">100% 온라인으로.</span></span></div>
+        <div id="g-week" data-grid><div class="dl t-body m-l" data-tx style="left:120px;top:520px">월</div><div class="bar" style="left:120px;top:590px;height:280px"><i></i></div><div class="dl t-body m-l" data-tx style="left:242px;top:520px">화</div><div class="bar" style="left:242px;top:590px;height:280px"><i></i></div><div class="dl t-body m-l" data-tx style="left:364px;top:520px">수</div><div class="bar" style="left:364px;top:590px;height:280px"><i></i></div><div class="dl t-body m-l" data-tx style="left:486px;top:520px">목</div><div class="bar" style="left:486px;top:590px;height:280px"><i></i></div><div class="dl t-body m-l" data-tx style="left:608px;top:520px">금</div><div class="bar" style="left:608px;top:590px;height:280px"><i></i></div><div class="dl t-body on-paper" data-tx style="left:730px;top:520px">토</div><div class="bar we" style="left:730px;top:590px;height:280px"></div><div class="dl t-body on-paper" data-tx style="left:852px;top:520px">일</div><div class="bar we" style="left:852px;top:590px;height:280px"></div></div>
+      </div>
+      <div id="g-s2" class="row t-head on-ink rise" style="top:1040px;"><span class="ln"><span id="g-s2-0" class="li">이미 딴 학점이 있으면</span></span><span class="ln"><span id="g-s2-1" class="li">기간·비용을</span></span><span class="ln"><span id="g-s2-2" class="li">줄일 수 있어요.</span></span></div>
+      <div id="g-grid"><div id="g-0" class="gb" style="left:120px;top:1400px;width:156px;height:125px;background:#15284a"></div><div id="g-1" class="gb" style="left:291px;top:1400px;width:156px;height:125px;background:#15284a"></div><div id="g-2" class="gb" style="left:462px;top:1400px;width:156px;height:125px;background:#15284a"></div><div id="g-3" class="gb" style="left:633px;top:1400px;width:156px;height:125px;background:#15284a"></div><div id="g-4" class="gb" style="left:804px;top:1400px;width:156px;height:125px;background:#15284a"></div><div id="g-5" class="gb" style="left:120px;top:1537px;width:156px;height:125px;background:#15284a"></div><div id="g-6" class="gb" style="left:291px;top:1537px;width:156px;height:125px;background:#15284a"></div><div id="g-7" class="gb" style="left:462px;top:1537px;width:156px;height:125px;background:#15284a"></div><div id="g-8" class="gb" style="left:633px;top:1537px;width:156px;height:125px;background:#15284a"></div><div id="g-9" class="gb" style="left:804px;top:1537px;width:156px;height:125px;background:#15284a"></div></div>
     </div>
   </div>
   <script>
@@ -115,10 +125,16 @@
     }
 
 
-    const T = {"c0": 3.495, "fills": [3.72, 4.32, 4.92], "oks": [4.47, 5.07, 5.67], "end": 7.013};
-    PUSH(T.c0, T.end, "#f-cam");
-    T.fills.forEach((t, i) => RISE(t, ["#f-b" + i + "-0", "#f-b" + i + "-1"]));
-    T.oks.forEach((t, i) => A(t, "#f-k" + i + " .ok", { opacity: [0, 1] }, 0.32, UI));
+    const T = {"c0": 15.754, "s1": 15.834, "s2": 15.953999999999999, "week": 16.054, "grid": 16.134, "gold": 19.261, "end": 22.767};
+    PUSH(T.c0, T.end, "#g-cam");
+    if (!false) {
+      RISE(T.s1, ["#g-s1-0", "#g-s1-1"]);
+      ENTER(T.week, "#g-week");
+    }
+    RISE(T.s2, ["#g-s2-0", "#g-s2-1", "#g-s2-2"]);
+    ENTER(T.grid, "#g-grid");
+    // the credits already earned turn gold, one after another
+    A(T.gold, ["#g-0", "#g-1", "#g-2"], { backgroundColor: ["#15284a", "#b8955a"] }, 0.5, UI, { delay: anime.stagger(90) });
 
     window.__hfAnime = window.__hfAnime || [];
     window.__hfAnime.push(tl);

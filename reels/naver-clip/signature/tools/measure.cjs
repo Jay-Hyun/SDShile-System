@@ -162,7 +162,7 @@ function collect() {
       chars,
       tx: !!blk.closest("[data-tx]"),
       legal: comp === "legal",
-      inLock: !!blk.closest("[data-lockup]"),
+      inLock: !!blk.closest("[data-lockup],[data-grid]"),
     });
   }
   // a lockup is measured as one unit (its flex box: mark + gap + name)
@@ -174,6 +174,17 @@ function collect() {
     if (frac <= 0.001) continue;
     out.push({ comp: hostOf(el), id: "lockup", key: hostOf(el) + ":lockup", text: "[mark] " + el.textContent.trim().slice(0, 12), size: 44, sizes: [44], weight: "600",
       cx: +((r.left + r.right) / 2).toFixed(2), top: Math.round(r.top), bottom: Math.round(r.bottom), w: Math.round(r.width), opacity: +op.toFixed(2), vis: +(frac * Math.min(1, op)).toFixed(3),
+      chars: 0, tx: true, legal: false, inLock: false, lockup: true });
+  }
+  // a row of cells ([data-grid], e.g. the week strip) is measured as one unit: the union of its cells
+  for (const el of document.querySelectorAll("[data-grid]")) {
+    const op = visibleChain(el);
+    if (op <= 0.02) continue;
+    const rs = [...el.children].map((c) => c.getBoundingClientRect()).filter((r) => r.width > 0);
+    if (!rs.length) continue;
+    const L = Math.min(...rs.map((r) => r.left)), R = Math.max(...rs.map((r) => r.right));
+    out.push({ comp: hostOf(el), id: "grid:" + el.id, key: hostOf(el) + ":grid", text: "[row of " + rs.length + " cells]", size: 44, sizes: [44], weight: "500",
+      cx: +((L + R) / 2).toFixed(2), top: Math.round(Math.min(...rs.map((r) => r.top))), bottom: Math.round(Math.max(...rs.map((r) => r.bottom))), w: Math.round(R - L), opacity: +op.toFixed(2), vis: 1,
       chars: 0, tx: true, legal: false, inLock: false, lockup: true });
   }
   for (const el of document.querySelectorAll("[data-fill]")) {
