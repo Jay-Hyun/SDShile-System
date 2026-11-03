@@ -6,7 +6,7 @@
       font-weight: 45 930;
     }
     /* 컴플라이언스 레이어 (02-art-direction.md §7): Small 26 / 400 / 1.4, x=540 가운데.
-       배지 y 160, 고지 y 1494–1567 (브랜드 풋터 필드 y 1580 위). Paper 바탕 #5F6368, Navy 바탕 #9AA0A6 */
+       배지 y 160, 고지 y 1520–1557 (브랜드 풋터 필드 y 1580 위). Paper 바탕 #5F6368, Navy 바탕 #9AA0A6 */
     #root {
       position: absolute;
       inset: 0;
@@ -26,8 +26,7 @@
     .badge { top: 142px; }
     /* 챗 입력 독 안, 입력창(y 1472–1584) 바로 아래 */
     #lg-note { top: 1604px; }
-    #lg-l1 { top: 1494px; }
-    #lg-l2 { top: 1530px; }
+    #lg-l2 { top: 1520px; }
   </style>
   <div id="root" data-composition-id="legal" data-width="1080" data-height="1920">
     <!-- 배지: 챗 화면 동안 "가상 챗봇 화면 · 연출", 버튼이 열려 화면 위쪽까지 덮으면 "연출"로 바꿔 끝까지 -->
@@ -35,9 +34,8 @@
     <div id="lg-b2" class="clip" data-start="8.966" data-duration="6.034" data-track-index="2"><div class="lg badge on-navy"><span id="b2" data-m="c">연출</span></div></div>
     <!-- 연출 대화 고지: 처음부터(입력 독과 AI 말풍선이 첫 프레임에 있다) 버튼이 열릴 때까지, 입력창 바로 아래 -->
     <div id="lg-n" class="clip" data-start="0" data-duration="8.333" data-track-index="3"><div id="lg-note" class="lg on-paper"><span id="nt" data-m="c">※ 연출된 가상 대화입니다</span></div></div>
-    <!-- '국내 유일' 근거 각주 + 보장 금지 고지: 브랜드 진입(원곡 크래시)부터 끝까지 -->
+    <!-- 보장 금지 고지: 브랜드 진입(원곡 크래시)부터 끝까지. (편 A 에는 '국내 유일' 표현이 없어 각주 *'국내 유일' 줄은 뺐다) -->
     <div id="lg-l" class="clip" data-start="8.638" data-duration="6.362" data-track-index="4">
-      <div id="lg-l1" class="lg on-navy"><span id="l1" data-m="c">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</span></div>
       <div id="lg-l2" class="lg on-navy"><span id="l2" data-m="c">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</span></div>
     </div>
   </div>
@@ -47,12 +45,11 @@
       const { ms, E, D, timeline, ui } = window.HF;
       const C = window.HFCUE(CUT);
       const tl = timeline();
-      tl.set(["#l1", "#l2", "#b2"], { opacity: 0 }, 0);
+      tl.set(["#l2", "#b2"], { opacity: 0 }, 0);
       tl.add("#nt", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(C.WIN));
       tl.add("#b1", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(C.WIN + 0.68));
       ui(tl, "#b2", C.WIN + 0.93);
-      ui(tl, "#l1", C.BR);
-      ui(tl, "#l2", C.BR + 0.09);
+      ui(tl, "#l2", C.BR);
       tl.set({ v: 0 }, { v: 1 }, ms(C.END));
       tl.seek(0);
     })();
