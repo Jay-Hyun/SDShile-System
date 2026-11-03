@@ -447,7 +447,7 @@ def build_end(T):
 
 
 # ============================================================ LEGAL overlay (가상 인물 · 연출 badge + 고지 L1·L2), fixed positions
-def build_legal(t0, t1, tag, disc, tag_text="가상 인물 · 연출"):
+def build_legal(t0, t1, tag, disc, tag_text="가상 인물 · 연출", on_paper=None):
     """tag=(start,end) abs, always on; disclaimers from `disc` to the end (Small 26, y 1494 / 1530, above the footer field)."""
     css = """
     #root { pointer-events: none; }
@@ -457,7 +457,12 @@ def build_legal(t0, t1, tag, disc, tag_text="가상 인물 · 연출"):
       <div id="l-d1" class="row t-small m-d" style="top:1494px">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</div>
       <div id="l-d2" class="row t-small m-d" style="top:1530px">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</div>
     </div>'''
-    return css, html, ""
+    js = "" if not on_paper else f"""
+    // the badge sits on the Paper half during the benefit scene: darker grey there (>= 3:1)
+    S({on_paper[0]}, "#l-tag", {{ color: "#5f6368" }});
+    S({on_paper[1]}, "#l-tag", {{ color: "#9aa0a6" }});
+"""
+    return css, html, js
 
 
 # ============================================================ assemble
@@ -509,7 +514,7 @@ SFX = [(T_s["hit"], "pen"), (T_e["c0"], "tap")]
 SLOTS = []
 for cid, t0, t1, (css, html, js) in SCENE_SPECS:
     SLOTS.append(scene(cid, t0, t1, css, html, js))
-lc, lh, lj = build_legal(0, TOTAL, (0, TOTAL), DISC)
+lc, lh, lj = build_legal(0, TOTAL, (0, TOTAL), DISC, on_paper=(C["benefit"], C["usp"]) if VARIANT == "30" else None)
 SLOTS.append(scene("legal", 0, TOTAL, lc, lh, lj))
 
 
