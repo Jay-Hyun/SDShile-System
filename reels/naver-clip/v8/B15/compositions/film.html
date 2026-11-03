@@ -6,38 +6,39 @@
 .plate { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 540px 1920px; }
 .plate img { display: block; width: 1080px; height: 1920px; }
 .col { position: absolute; left: 84px; width: 912px; }
-.badge { position: absolute; left: 84px; top: 140px; font-size: 30px; line-height: 42px; font-weight: 600; color: #6b6660; white-space: nowrap; }
-.eb { display: block; font-size: 30px; line-height: 42px; font-weight: 600; letter-spacing: 0.02em; color: #7d6233; margin-bottom: 14px; white-space: nowrap; }
+.badge { position: absolute; right: 84px; top: 126px; font-size: 36px; line-height: 50px; font-weight: 600; color: #6b6660; white-space: nowrap; }
+#dl { position: absolute; left: 84px; top: 120px; z-index: 20; background: #0b1a33; color: #e0c27e; font-size: 36px; line-height: 50px; font-weight: 700; letter-spacing: 0.01em; padding: 6px 18px; border-radius: 8px; white-space: nowrap; }
+.eb { display: block; font-size: 36px; line-height: 50px; font-weight: 600; letter-spacing: 0.02em; color: #7d6233; margin-bottom: 16px; white-space: nowrap; }
 .ld { display: block; font-size: 64px; line-height: 82px; font-weight: 500; letter-spacing: -0.03em; color: #7d6233; white-space: nowrap; }
 .hx { display: block; font-size: 120px; line-height: 134px; font-weight: 700; letter-spacing: -0.045em; color: #161616; white-space: nowrap; }
 .ld + .hx { margin-top: 12px; }
 .hx + .ld { margin-top: 20px; }
-.hx + .bx { margin-top: 26px; }
-.bx { display: block; font-size: 40px; line-height: 58px; font-weight: 400; letter-spacing: -0.01em; color: #6b6660; white-space: nowrap; }
+.hx + .bx { margin-top: 30px; }
+.bx { display: block; font-size: 46px; line-height: 64px; font-weight: 400; letter-spacing: -0.01em; color: #6b6660; white-space: nowrap; }
 .bx b { font-weight: 600; color: #161616; }
 .bx.ink { color: #161616; }
-.ck { display: flex; align-items: center; gap: 20px; font-size: 40px; line-height: 58px; font-weight: 500; letter-spacing: -0.01em; color: #161616; white-space: nowrap; }
-.ck svg { width: 44px; height: 44px; flex: none; display: block; }
-.ck + .ck { margin-top: 16px; }
+.ck { display: flex; align-items: center; gap: 20px; font-size: 46px; line-height: 64px; font-weight: 500; letter-spacing: -0.01em; color: #161616; white-space: nowrap; }
+.ck svg { width: 50px; height: 50px; flex: none; display: block; }
+.ck + .ck { margin-top: 18px; }
 .hx + .ck, .blk > .ck:first-child { margin-top: 0; }
 .w { display: inline-block; }
 .gold { color: #7d6233; }
 .arr { display: inline-block; width: 32px; height: 40px; vertical-align: -8px; margin-left: 12px; overflow: visible; }
 .arr path { fill: none; stroke: #7d6233; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-#e-logo { display: flex; align-items: center; gap: 18px; font-size: 40px; line-height: 62px; font-weight: 700; letter-spacing: -0.02em; color: #161616; white-space: nowrap; }
+#e-logo { display: flex; align-items: center; gap: 18px; font-size: 46px; line-height: 62px; font-weight: 700; letter-spacing: -0.02em; color: #161616; white-space: nowrap; }
 .mark { display: block; width: 56px; height: 62px; background: #161616; -webkit-mask: url("assets/img/mark.svg") center / contain no-repeat; mask: url("assets/img/mark.svg") center / contain no-repeat; }
 #tk { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; background: #0b1a33; overflow: hidden; }
 #tk-row { position: absolute; left: 0; top: 76px; white-space: nowrap; font-size: 40px; line-height: 60px; font-weight: 600; letter-spacing: 0.04em; color: #e0c27e; }
 #tk-row i { font-style: normal; display: inline-block; margin: 0 28px; font-size: 30px; vertical-align: 4px; }
-.small { position: absolute; left: 84px; font-size: 30px; line-height: 42px; font-weight: 400; color: #6b6660; white-space: nowrap; }
+.small { position: absolute; left: 84px; font-size: 36px; line-height: 50px; font-weight: 400; color: #6b6660; white-space: nowrap; }
 .sc { visibility: hidden; }
 .mv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
 .dial { position: absolute; left: 560px; top: 0; width: 520px; height: 520px; overflow: visible; }
 .dial circle { fill: none; stroke: #7d6233; stroke-opacity: 0.35; stroke-width: 1.5; }
 .ul { position: relative; display: inline-block; }
 .bar { position: absolute; left: 0; right: 0; bottom: 4px; height: 8px; background: #7d6233; transform-origin: 0 50%; transform: scaleX(0); }
-.cks { display: block; margin-top: 26px; }
-.hx + .bx { margin-top: 26px; }
+.cks { display: block; margin-top: 30px; }
+.hx + .bx { margin-top: 30px; }
 
 #sig { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
 #you { fill: none; stroke: #7d6233; stroke-linecap: round; stroke-linejoin: round; }
@@ -65,7 +66,7 @@
 <div id="s3-mv" class="mv" data-layout-allow-overflow>
 <div id="s3-pl" class="plate"><img src="assets/img/B-3-how.png" alt="" data-fill/>
 </div></div>
-<div id="s3-b0" class="col blk"><span class="eb">퇴근 후·주말에, 100% 온라인으로</span><span class="ld">국내 유일*</span><span class="hx">100% 온라인</span><span class="hx">법학사</span><span class="bx ">교육부장관 명의 · '법학 전공' 표기</span><span class="bx" style="font-size:30px;line-height:42px;margin-top:14px">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</span></div>
+<div id="s3-b0" class="col blk"><span class="eb">퇴근 후·주말에, 100% 온라인으로</span><span class="ld">국내 유일*</span><span class="hx">100% 온라인</span><span class="hx">법학사</span><span class="bx ">교육부장관 명의 · '법학 전공' 표기</span><span class="bx" style="font-size:36px;line-height:50px;margin-top:16px">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</span></div>
 </div>
 <div id="s4" class="sc" data-layout-allow-overflow style="background:#faf5f3">
 <div id="s4-pl" class="plate" style="top:-240px"><img src="assets/img/A-4-stairs.png" alt="" data-fill style="-webkit-mask-image:linear-gradient(to bottom,#000 0px,#000 453px,transparent 653px);mask-image:linear-gradient(to bottom,#000 0px,#000 453px,transparent 653px)"/></div>
@@ -83,6 +84,7 @@
 <div id="e-disc" class="small" style="top:1500px">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</div>
 <div id="tk"><div id="tk-row">헌법<i>◆</i>민법<i>◆</i>형법<i>◆</i>행정법<i>◆</i>상법<i>◆</i>민사소송법<i>◆</i>헌법<i>◆</i>민법<i>◆</i>형법<i>◆</i>행정법<i>◆</i>상법<i>◆</i>민사소송법</div></div>
 </div>
+<div id="dl">정규모집 마감 임박</div>
 </div>
 <script>
 (function () {
@@ -119,7 +121,8 @@
     const b0 = $("#" + sid + "-b0"), b1 = $("#" + sid + "-b1"), mv = $("#" + sid + "-mv");
     const H = Math.max(b0.offsetHeight, b1 ? b1.offsetHeight : 0);
     const focal = paper ? 300 : 640;
-    const top = Math.round(OC - (H + GAP + focal) / 2);
+    // never above y 220: the fixed '정규모집 마감 임박' badge lives at y 120–182
+    const top = Math.max(220, Math.round(OC - (H + GAP + focal) / 2));
     const need = top + H + GAP; // where the drawing should start
     let k = 1, dy = 0;
     if (paper) dy = Math.max(-420, Math.min(420, need - start));
@@ -139,7 +142,6 @@
     const btop = actual - GAP - H;
     [b0, b1].forEach((b) => { if (b) b.style.top = (btop + (H - b.offsetHeight)) + "px"; });
     const dial = $("#" + sid + " .dial"); if (dial) dial.style.top = (btop - 230) + "px";
-    const badge = $("#" + sid + " .badge"); if (badge) badge.style.top = Math.max(120, btop - 96) + "px";
   }
   // next scene's drawing rises 120 px into place while fading in (0.5 s expo-out); paper never cuts
   function rise(sel, t) { tl.add(sel, { translateY: [120, 0], opacity: [0, 1], duration: 500, ease: EXPO }, ms(t)); }
@@ -180,7 +182,7 @@
   // v8.4: the whole action stack (logo .. disclaimer) is centred on the optical centre y 845; the stairs band ends 60 px above it
   (function () {
     const keys = ["logo","sl","eb2","hd","ck","link","tel","foot","disc"];
-    const gaps = { logo: 0, sl: 18, eb2: 40, hd: 0, ck: 26, link: 34, tel: 10, foot: 30, disc: 6 };
+    const gaps = { logo: 0, sl: 18, eb2: 40, hd: 0, ck: 30, link: 36, tel: 12, foot: 30, disc: 8 };
     const els = keys.map((k) => $("#e-" + k)).filter(Boolean);
     let total = 0; els.forEach((el, i) => { total += (i ? gaps[keys[keys.indexOf(el.id.slice(2))]] : 0) + el.offsetHeight; });
     let y = Math.round(845 - total / 2);
