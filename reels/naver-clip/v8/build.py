@@ -274,6 +274,12 @@ JS_HEAD = """
     const lift = kmax === 1 ? Math.max(0, Math.min(220, start - want)) : 0;
     const w = 1080 * k, h = 1920 * k, l = -(w - 1080) / 2, t = 1920 - h - lift;
     mv.querySelectorAll("img, #sig").forEach((el) => { el.style.position = "absolute"; el.style.left = l + "px"; el.style.top = t + "px"; el.style.width = w + "px"; el.style.height = h + "px"; });
+    // soften the drawing's straight top edge into the paper (user request): fade from 40 px above the edge to 160 px below
+    if (kmax !== 1) {
+      const img = mv.querySelector("img"); const a = Math.round(start * k - 60), b = a + 320;
+      const m = "linear-gradient(to bottom, transparent 0px, transparent " + a + "px, #000 " + b + "px)";
+      img.style.webkitMaskImage = m; img.style.maskImage = m;
+    }
     if (lift) $("#" + sid).style.background = "#fbefe3";
     const bottom = Math.round(1920 - (1920 - start) * k) - lift - 56;
     [b0, b1].forEach((b) => { if (b) b.style.top = (bottom - b.offsetHeight) + "px"; });
@@ -365,7 +371,8 @@ def build(film, cut):
     shift = -240
     a = end["act"]
     ec = ['<div id="s4" class="sc" data-layout-allow-overflow style="background:#faf5f3">',
-          f'<div id="s4-pl" class="plate" style="top:{shift}px"><img src="assets/img/A-4-stairs.png" alt="" data-fill/></div>',
+          f'<div id="s4-pl" class="plate" style="top:{shift}px"><img src="assets/img/A-4-stairs.png" alt="" data-fill '
+          f'style="-webkit-mask-image:linear-gradient(to bottom,#000 0px,#000 453px,transparent 653px);mask-image:linear-gradient(to bottom,#000 0px,#000 453px,transparent 653px)"/></div>',
           f'<div id="s4-slo" class="col" style="top:560px">{end["slogan"]}</div>',
           '<div id="s4-act" class="col" style="top:0">']
     for k, inner in a:
