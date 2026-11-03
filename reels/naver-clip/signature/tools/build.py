@@ -471,11 +471,11 @@ if VARIANT == "30":
     # nearest the spec's 27 s. The biggest hit of the track (source 21.037) lands on B28 = the "You" stroke.
     C = dict(hook=0, cards=B(8), sign=B(24), benefit=B(36), usp=B(52), end=B(62), fin=30.0)
     T_h = dict(c0=C["hook"], end=C["cards"])
-    T_k = dict(c0=C["cards"], cap1=C["cards"] + 0.12, stack=C["cards"] + 0.30, oks=[B(11), B(13), B(15)], cap2=B(16) + 0.05, end=C["sign"])
+    T_k = dict(c0=C["cards"], cap1=C["cards"] + 0.04, stack=C["cards"] + 0.08, oks=[B(11), B(13), B(15)], cap2=B(16) + 0.05, end=C["sign"])
     T_s = dict(c0=C["sign"], hit=B(28), draw=1.1, you=B(28) + 1.2, end=C["benefit"])
     T_g = dict(c0=C["benefit"], s1=C["benefit"] + 0.08, s2=C["benefit"] + 0.20, week=C["benefit"] + 0.30, grid=C["benefit"] + 0.38,
                gold=B(44), end=C["usp"])
-    T_u = dict(c0=C["usp"], step=C["usp"] + 0.04, usp=C["usp"] + 0.12, lock=C["usp"] + 0.45, end=C["end"])
+    T_u = dict(c0=C["usp"], step=C["usp"] + 0.04, usp=C["usp"] + 0.12, lock=C["usp"] + 0.18, end=C["end"])
     T_e = dict(c0=C["end"], slo=C["end"] + 0.05, tel=C["end"] + 0.25, ul=C["end"] + 0.60, end=C["fin"])
     SCENE_SPECS = [
         ("hook", C["hook"], C["cards"], build_hook(T_h)),
