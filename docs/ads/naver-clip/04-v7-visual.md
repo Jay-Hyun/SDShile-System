@@ -78,3 +78,8 @@
   - 편 B `_shared/music/D-nastelbom-news-news-music-629329.mp3` → `_shared/beats/D-nastel.json`: 119.969 BPM, 주기 0.5001s, 다운비트 1.765, 3.750, 5.747 …. 65.26s부터 페이드 꼬리.
 - 레지스트리 후보(`npx hyperframes catalog --tag transition`): `parallax-device-dive`(편 A 폰 → 채팅 다이브), `cut-the-curve`(속도 맞춘 하드컷), `text-match-cut`, `morph-swap`, `iris-reveal`, `fade-through`. 셰이더·글리치·플래시·라이트릭·스크리블 계열은 BANNED.
 - 상담은 무료(사용자 확인 2026-11-03).
+
+## 부록 B. CTA 변경 (사용자 지시 2026-11-03)
+- 영상 속 버튼은 눌리지 않으므로 **버튼·알약 모양 요소는 전부 금지**(편 A [상담사 연결] 버튼, 엔드카드 골드 CTA 버튼 삭제).
+- 편 A 핸드오프는 버튼 없이: AI 말풍선 → 말풍선/폰이 다음 세계가 되는 전환.
+- 엔드카드는 실제 광고 링크(영상 아래 네이버 클립 링크/CTA)로 유도: "내 학점으로 남은 기간, / 무료로 진단받으세요"(Head 88, '무료로 진단받으세요' 골드) + "아래 링크에서 무료 상담 신청"(Body 44) + 아래를 가리키는 얇은 골드 화살표(착지 후 정지) + "전화 상담 070-4006-7128 (평일 10–18시)". 선택: 텍스트 줄 "policecyber.iwinv.net". 상담은 무료(사용자 확인).
