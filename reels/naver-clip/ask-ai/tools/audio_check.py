@@ -68,14 +68,16 @@ def main():
             best, bs = run, i - run + 1
     print(f"1. longest run below −40 dBFS (10 ms RMS, 0–{fade_start:.2f} s): {best*10} ms" + (f" at {bs*0.010:.2f} s" if best else "") + f"   [min 10 ms RMS = {rms[:lim].min():.1f} dBFS at {rms[:lim].argmin()*0.010:.2f} s]  -> {'OK' if best*10 < 50 else 'BREAK'}")
 
-    # 2. 고민 중 구간
-    g0 = c["chapters"]["gag"]
+    # 2. v6: 고민 중… 개그가 없다. 대신 질문 전송 구간(C2±1 s)과 첫 이음새 R 앞뒤 2초의 RMS 가 이웃과 ±6 dB 안인지 본다
     w = 2.0
-    pre = xs[int((g0 - 0.1 - w) * SR):int((g0 - 0.1) * SR)]
-    gag = xs[int(g0 * SR):int(R * SR)]
+    pre = xs[int((R - w) * SR):int(R * SR)]
     post = xs[int(R * SR):int((R + w) * SR)]
-    a, b, d = db(pre), db(gag), db(post)
-    print(f"2. gag window {g0:.3f}–{R:.3f} s RMS {b:.1f} dBFS | before ({w:.0f} s) {a:.1f} | after ({w:.0f} s) {d:.1f} | gag − mean(neighbours) = {b-(a+d)/2:+.1f} dB  -> {'OK' if abs(b-(a+d)/2) <= 6 else 'OFF'}")
+    a, d = db(pre), db(post)
+    print(f"2. around splice R={R:.3f} s: RMS before ({w:.0f} s) {a:.1f} dBFS | after ({w:.0f} s) {d:.1f} | diff {d-a:+.1f} dB  -> {'OK' if abs(d-a) <= 6 else 'OFF'}")
+    snd = c["chapters"]["send"]
+    sw = xs[int((snd - 1.0) * SR):int((snd + 1.0) * SR)]
+    nb = np.concatenate([xs[int((snd - 3.0) * SR):int((snd - 1.0) * SR)], xs[int((snd + 1.0) * SR):int((snd + 3.0) * SR)]])
+    print(f"   send window {snd-1:.2f}–{snd+1:.2f} s RMS {db(sw):.1f} dBFS vs neighbours {db(nb):.1f} -> diff {db(sw)-db(nb):+.1f} dB  -> {'OK' if abs(db(sw)-db(nb)) <= 6 else 'OFF'}")
 
     # 3. 이음새 클릭
     seams = [segs[1]["v0"], segs[2]["v0"]]

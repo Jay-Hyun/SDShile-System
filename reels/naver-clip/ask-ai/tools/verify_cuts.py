@@ -67,6 +67,10 @@ for name, t in c["cuts"].items():
     f0 = round(t * 30)
     win = range(max(1, f0 - 3), min(len(d) - 1, f0 + 3) + 1)
     pk = max(win, key=lambda i: d[i])
+    # 오프닝 윈도우처럼 넓게 퍼진 변화는 최댓값 한 프레임이 내용물에 따라 치우친다 → 절반 이상인 연속 프레임의 무게중심을 쓴다
+    near = [i for i in range(max(1, pk - 8), min(len(d) - 1, pk + 8) + 1) if d[i] >= 0.5 * d[pk]]
+    if name.startswith('open') and len(near) > 1:  # 하드컷은 한 프레임 스파이크라 최댓값 그대로
+        pk = int(round(sum(i * d[i] for i in near) / sum(d[i] for i in near)))
     nb = beats[np.argmin(np.abs(beats - pk / 30))]
     off = pk - nb * 30
     good = abs(off) <= 2
