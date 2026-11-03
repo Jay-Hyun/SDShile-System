@@ -45,12 +45,15 @@ def empty_runs(img, tol=10):
 
 
 def excused_windows(cut):
+    """v7: 0.5 s 미만 전환과 그 앞뒤 0.4 s 만 면제 (질문 점프, 디바이스 다이브, 카메라 트랙 + 말풍선이 세계가 됨, 딥컷, 플러드+캐리)."""
     c = cue(cut)
-    w = [(c["WIN"] - 0.4, c["WIN"] + 1.2 + 0.4, "opening window %.3f–%.3f" % (c["WIN"], c["WIN"] + 1.2))]
-    # 입력 시트가 접히는 0.8초(전송 → 질문이 말풍선으로): 비어 보이는 흰 입력창이 내려가는 중이라 면제 (리드 승인)
-    w.append((c["C2"] - 0.1, c["C2"] + 0.8 + 0.2, "input sheet fold %.3f–%.3f" % (c["C2"], c["C2"] + 0.8)))
-    if cut == 15:  # v6: 30초엔 하드컷이 없다(한 컷 안에서 블록이 바뀐다). 15초는 C6 하드컷
-        w.append((c["C6"] - 0.4, c["C6"] + 0.4, "hard cut %.3f" % c["C6"]))
+    w = [(c["JUMP"] - 0.1, c["JUMP"] + 0.8, "question jump %.3f" % c["JUMP"]),
+         (c["DIVE"] - 0.4, c["DIVE"] + c["DIVE_D"] + 0.4, "device dive %.3f" % c["DIVE"]),
+         (c["TRACK"] - 0.1, c["WORLD"] + 0.4, "track + bubble becomes world %.3f–%.3f" % (c["TRACK"], c["WORLD"])),
+         (c["DIP2"] - 0.4, c["DIP2"] + 0.4, "dip cut %.3f" % c["DIP2"]),
+         (c["FLOOD"] - 0.1, c["FLOOD"] + 1.0, "flood + carry %.3f" % c["FLOOD"])]
+    if cut == 30:
+        w.append((c["DIP1"] - 0.4, c["DIP1"] + 0.9, "dip cut + card reveal %.3f" % c["DIP1"]))
     return w
 
 

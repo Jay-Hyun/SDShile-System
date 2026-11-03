@@ -1,5 +1,6 @@
-    /* Art direction v3 (docs/ads/naver-clip/02-art-direction.md): one axis at x=540, four type sizes,
-       flat colour fields, no ornament. Shared by every scene; generated into each composition. */
+    /* v7 look (docs/ads/naver-clip/04-v7-visual.md §1): daylight paper and ink + photographs. One axis at
+       x=540, four type sizes, no ornament (no shadow, glow, gradient, dim overlay, blur on photos).
+       Shared by every scene; generated into each composition. */
     @font-face {
       font-family: "PretendardGOV";
       src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
@@ -10,61 +11,57 @@
       --paper: #f7f6f2;
       --navy: #0b1a33;
       --gold: #b8955a;
-      --red: #c8392b;
-      --mute-d: #9aa0a6;   /* secondary text on Ink / Navy */
-      --mute-l: #5f6368;   /* secondary text on Paper */
-      --sheet-2: #eceae4;  /* paper one tone step down (stacked sheets) */
-      --sheet-3: #e4e2db;  /* paper two tone steps down */
-      --panel: #181c23;    /* ink one tone step up (the blank signature field) */
+      --mute-d: #9aa0a6;   /* secondary text on Navy */
+      --mute-l: #5f6368;   /* secondary text on paper / photos */
+      --pre: #c9c3b6;      /* a word before it is inked (grey -> ink sweep) */
       position: absolute;
       inset: 0;
       overflow: hidden;
       font-family: "PretendardGOV", sans-serif;
       word-break: keep-all;
       font-kerning: normal;
-      color: var(--paper);
+      color: var(--ink);
+      background: var(--paper);
     }
     .field { position: absolute; inset: 0; }
-    /* camera: one linear push per shot, scaled about the frame centre so x=540 stays put */
-    .cam { position: absolute; inset: 0; transform-origin: 540px 960px; }
+    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), never a CSS grain */
+    .paper { position: absolute; background: #f3ead9 url("assets/img/B-02-paper.jpg") 0 0 / 1080px 1920px no-repeat; }
+    .plate { position: absolute; display: block; max-width: none; }
+    .cam { position: absolute; inset: 0; }
 
     /* the only text container: full 840px measure between symmetric 120px margins, centred */
     .row { position: absolute; left: 120px; width: 840px; text-align: center; margin: 0; }
 
-    /* the four sizes (v3.1 §7-1 density: 144 / 88 / 44 / 26) */
     .t-display { font-size: 144px; font-weight: 700; letter-spacing: -0.045em; line-height: 1.05; }
     .t-head    { font-size: 88px;  font-weight: 600; letter-spacing: -0.03em;  line-height: 1.15; }
     .t-body    { font-size: 44px;  font-weight: 500; letter-spacing: -0.01em;  line-height: 1.4; }
     .t-small   { font-size: 26px;  font-weight: 400; letter-spacing: 0;        line-height: 1.4; }
 
-    /* masked line: each line rises from behind its own baseline (padding keeps ascenders/descenders) */
+    /* masked line (used twice per film): each line rises from behind its own baseline */
     .ln { display: block; overflow: hidden; padding: 0.1em 0 0.14em; margin: -0.1em 0 -0.14em; }
     .li { display: block; }
-    /* letter-spacing also trails the last glyph, which pushes centred ink right by half the tracking;
-       a right padding of half that again splits the difference so box and ink both sit within 2px */
+    /* trailing letter-spacing pushes centred ink right by half the tracking: pad half of it back */
     .t-display .li { padding-right: 0.0225em; }
     .t-head .li { padding-right: 0.015em; }
     .t-body .li { padding-right: 0.005em; }
-    .rise .li, .li.rise { opacity: 0; transform: translateY(110%); }
+    .rise .li { opacity: 0; transform: translateY(110%); }
+    .w { display: inline-block; white-space: pre; }
+    .wb .w { opacity: 0; }                 /* per-word blur-in: starts hidden */
+    .sw .w { color: var(--pre); }          /* grey -> ink sweep: starts grey */
     .later { opacity: 0; }
 
     .au { color: var(--gold); }
-    .on-ink { color: var(--paper); }
-    .on-paper { color: var(--ink); }
+    .ink { color: var(--ink); }
+    .on-navy { color: var(--paper); }
     .m-d { color: var(--mute-d); }
     .m-l { color: var(--mute-l); }
 
-    /* flat sheet of paper (documents): one tone, square corners, no edge treatment */
-    .sheet { position: absolute; background: var(--paper); color: var(--ink); }
-    /* blank signature line and the caret that waits on it */
-    .rule { position: absolute; height: 4px; background: currentColor; }
+    .rule { position: absolute; height: 3px; background: currentColor; }
     .caret { position: absolute; width: 4px; background: currentColor; }
-    /* logo lockup (v3.2 §7-2): gold mark (height 62) + 18px gap + name (Body 44 / 600), one inline row,
-       the whole lockup centred on x=540 (same as ask-ai brand.html #br-logo-row) */
+    .sv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+    /* logo lockup: gold mark (62px high) + 18px gap + name (Body 44 / 600), centred on x=540 as one unit */
     .lock { height: 62px; display: flex; align-items: center; justify-content: center; }
     .lockrow { display: flex; align-items: center; gap: 18px; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; padding-right: 0.01em; color: var(--paper); }
-    .lmark { display: block; width: 56px; height: 62px; background: var(--gold); -webkit-mask: url("assets/img/mark.svg") center / contain no-repeat; mask: url("assets/img/mark.svg") center / contain no-repeat; }
-    /* full-width footer field on the dark brand / end scenes: one tone off the ground, y 1580-1920 */
-    .dock { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; background: #102245; }
-    /* pill control (button, toast): the only rounded shape */
-    .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
+    .lmark { display: block; width: 56px; height: 62px; background: var(--gold); -webkit-mask: url("assets/img/mark-gold.svg") center / contain no-repeat; mask: url("assets/img/mark-gold.svg") center / contain no-repeat; }
+    /* full-width footer field, y 1580-1920, one tone off the ground */
+    .dock { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; }

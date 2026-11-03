@@ -1,58 +1,50 @@
 {
  "cut": 15,
- "bpm": 125.03,
- "beat_period": 0.4798848276413661,
- "R": 6.7184,
- "brand": 8.6379,
- "win": 8.0333,
+ "bpm": 130.002,
+ "beat_period": 0.46153136105598375,
+ "in_point_src": 3.239,
  "chapters": {
   "hook": 0.0,
-  "send": 3.8391,
-  "hand": 5.7586,
-  "S1": 8.6379,
-  "C6": 12.477,
+  "jump": 1.8333,
+  "dive": 3.7,
+  "world": 7.4,
+  "dip2": 9.2333,
+  "flood": 11.0667,
   "end": 15.0
  },
  "cuts": {
-  "open_mid": 8.6333,
-  "C6": 12.477
+  "jump": 1.8333,
+  "dive": 3.7,
+  "world_lands": 7.4,
+  "dip2": 9.2333,
+  "flood": 11.0667
  },
  "sfx": [
   {
-   "t": 3.699,
-   "sfx": "질문 전송 탭",
+   "t": 1.2,
+   "sfx": "셋째 덩어리 입력 탭",
    "rel_db": -20.0,
-   "music_rms_dbfs": -14.8
+   "music_rms_dbfs": -15.5
   },
   {
-   "t": 7.613,
-   "sfx": "[상담사 연결] 누름 탭",
+   "t": 1.793,
+   "sfx": "질문 전송 탭",
    "rel_db": -20.0,
-   "music_rms_dbfs": -15.4
+   "music_rms_dbfs": -16.2
   }
  ],
  "music_segments": [
   {
    "v0": 0.0,
-   "v1": 6.7184,
-   "src": 1.007
-  },
-  {
-   "v0": 6.7184,
-   "v1": 10.5575,
-   "src": 14.4434
-  },
-  {
-   "v0": 10.5575,
    "v1": 15.0,
-   "src": 29.7998,
-   "fade": 0.4
+   "src": 3.239,
+   "fade": 0.3
   }
  ],
  "mix": {
   "integrated_lufs": -15.0,
-  "true_peak_dbtp": -3.1,
-  "gain": 0.6969,
+  "true_peak_dbtp": -1.8,
+  "gain": 0.7729,
   "max_gain_reduction_db": 0.0
  }
 }

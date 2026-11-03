@@ -1,0 +1,226 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
+      font-weight: 45 930;
+    }
+    /* v7 편 A — 훅 + 디바이스 다이브 + 가상 챗봇 (04-v7-visual.md §2 마디 1–7).
+       세계 1: 퇴근 버스 창가, 손에 든 폰(사진 A-01, 연출). 폰 화면에 가상 챗봇 UI 를 합성한다(사진 속 빈 회색 화면 254×546 src px, 8° 기울기).
+       #rig = 사진 + 화면을 함께 움직이는 카메라. 원점 = 화면 중심(src 604, 878). 마디 3 에서 화면이 프레임 전체가 될 때까지 함께 밀고 들어간다.
+       종이 Paper #F7F6F2, Ink #0E1116, 골드는 '법적 책임' 밑줄 한 줄만. 크기 144/88/44/26. 그림자·그라데이션·딤·사진 블러 없음. */
+    #root { position: absolute; inset: 0; overflow: hidden; background: var(--color-paper, #f7f6f2); color: var(--color-ink, #0e1116); font-family: "PretendardGOV", sans-serif; word-break: keep-all; }
+    #ph-rig { position: absolute; left: 0; top: 0; width: 1152px; height: 2048px; transform-origin: 604px 878px; }
+    #ph-plate { position: absolute; left: 0; top: 0; width: 1152px; height: 2048px; display: block; }
+    /* 폰 화면: 1080×2322 (사진 속 화면 비율 0.465). 프레임 좌표 = 화면 좌표 − 222 (다이브가 끝났을 때) */
+    #ph-scr { position: absolute; left: 64px; top: -283px; width: 1080px; height: 2322px; transform-origin: 540px 1161px; transform: rotate(8deg) scale(0.23519); clip-path: inset(0px round 119px); background: var(--color-paper, #f7f6f2); overflow: hidden; }
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 2322px; }
+    #ph-hd { position: absolute; left: 0; top: 462px; width: 1080px; height: 62px; display: flex; justify-content: center; }
+    #ph-hd-row { display: flex; align-items: center; gap: 18px; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; }
+    #ph-hd svg { width: 52px; height: 52px; display: block; }
+    #ph-th { position: absolute; left: 120px; top: 222px; width: 840px; height: 1700px; }
+    .b { position: absolute; left: 0; width: 840px; border-radius: 36px; font-size: 44px; line-height: 62px; font-weight: 500; letter-spacing: -0.01em; text-align: center; }
+    .u { background: var(--color-ink, #0e1116); color: var(--color-paper, #f7f6f2); padding: 44px 48px; }
+    .a { background: #eae7df; color: var(--color-ink, #0e1116); }
+    .hd { font-size: 88px; line-height: 101px; font-weight: 600; letter-spacing: -0.03em; }
+    .ln { display: block; overflow: hidden; white-space: nowrap; }
+    .ln > span { display: inline-block; }
+    .pre { color: #5f6368; }
+    #ph-a1 { padding: 56px 40px; height: 617px; }
+    #ph-a2 { padding: 48px 40px; height: 298px; }
+    .ul { font-style: normal; position: relative; display: inline-block; }
+    .uls { position: absolute; left: 0; bottom: 8px; height: 6px; overflow: visible; }
+    .uls path { fill: none; stroke: var(--color-gold, #b8955a); stroke-width: 6; }
+    .emo { display: inline-block; width: 72px; height: 72px; vertical-align: -10px; margin-left: 14px; }
+    #ph-dots { position: absolute; left: 0; width: 840px; top: 260px; display: flex; justify-content: center; gap: 16px; }
+    #ph-dots b { display: block; width: 18px; height: 18px; border-radius: 9px; background: #5f6368; }
+    /* 입력: 훅에서는 화면 전체가 입력 시트(화면 y 560–2322)이고 질문이 Display 144 로 들어간다. 전송하면 시트가 접혀 입력 독(프레임 y 1440–1920)이 된다 */
+    #ph-dock { position: absolute; left: 0; top: 560px; width: 1080px; height: 1762px; background: #eeebe4; }
+    #ph-inp { position: absolute; left: 120px; top: 620px; width: 840px; height: 1642px; background: var(--color-paper, #f7f6f2); clip-path: inset(0px round 56px); }
+    .dsp { font-size: 144px; line-height: 151px; font-weight: 700; letter-spacing: -0.045em; text-align: center; }
+    .dl { display: block; height: 151px; white-space: nowrap; }
+    .dl > span { display: inline-block; padding-right: 0.045em; }
+    #ph-sq { position: absolute; left: 0; top: 380px; width: 840px; }
+    #ph-cam { transform-origin: 540px 1161px; }
+    /* 프레임 위: 종이 띠 + 크게 튀어 오른 질문 */
+    #ph-band { position: absolute; left: 0; top: 0; width: 1080px; height: 985px; background: var(--color-paper, #f7f6f2); }
+    #ph-bq { position: absolute; left: 120px; top: 200px; width: 840px; transform-origin: 420px 377.5px; }
+  </style>
+  <div id="root" data-composition-id="phone" data-width="1080" data-height="1920" data-motion-blur="on">
+    <div id="ph-rig" data-layout-allow-overflow>
+      <img id="ph-plate" src="assets/img/A-01-commute.png" alt="" data-fill />
+      <div id="ph-scr" data-layout-allow-overflow>
+        <div id="ph-cam" class="full">
+          <div id="ph-hd"><div id="ph-hd-row" data-m="c"><svg viewBox="0 0 52 52"><rect width="52" height="52" rx="15" fill="#c9c6be" /><circle cx="19.5" cy="26" r="4.4" fill="#0e1116" /><circle cx="32.5" cy="26" r="4.4" fill="#0e1116" /></svg><span>AI 어시스턴트</span></div></div>
+          <div id="ph-th" data-layout-allow-overflow>
+            <div id="ph-u" class="b u" data-m="col"><div class="ln"><span>전문대 나왔는데, 퇴근하고 법 공부</span></div><div class="ln"><span>할 수 있을까?</span></div></div>
+            <div id="ph-a1" class="b a hd" data-m="col">
+              <i id="ph-dots"><b></b><b></b><b></b></i>
+              <div class="ln"><span id="a1-p1" class="pre">반복 업무는</span></div>
+              <div class="ln"><span id="a1-p2" class="pre">자동화되고,</span></div>
+              <div class="ln"><span id="a1-l1">최종 판단과</span></div>
+              <div class="ln"><span id="a1-l2"><em class="ul">법적 책임<svg class="uls"><path d="M0 3H10" /></svg></em>은</span></div>
+              <div class="ln"><span id="a1-l3">사람이 맡게 됩니다.</span></div>
+            </div>
+            <div id="ph-a2" class="b a hd" data-m="col">
+              <div class="ln"><span id="a2-l1">이건 책임지고 답할</span></div>
+              <div class="ln"><span id="a2-l2">분께 넘길게요<svg class="emo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8" /><circle cx="8.7" cy="10" r="1.35" fill="currentColor" /><circle cx="15.3" cy="10" r="1.35" fill="currentColor" /><path d="M8 14.3c1 1.5 2.4 2.3 4 2.3s3-.8 4-2.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg></span></div>
+            </div>
+          </div>
+          <div id="ph-dock" data-fill data-layout-ignore></div>
+          <div id="ph-inp" data-layout-ignore>
+            <div id="ph-sq" class="dsp">
+              <div class="dl"><span id="sq-1">전문대</span></div>
+              <div class="dl"><span id="sq-2">나왔는데,</span></div>
+              <div class="dl"><span id="sq-3">퇴근하고</span></div>
+              <div class="dl"><span id="sq-4">법 공부</span></div>
+              <div class="dl"><span id="sq-5">할 수 있을까?</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="ph-band" data-fill data-layout-ignore></div>
+    <div id="ph-bq" class="dsp">
+      <div class="dl"><span data-m="c">전문대</span></div>
+      <div class="dl"><span data-m="c">나왔는데,</span></div>
+      <div class="dl"><span data-m="c">퇴근하고</span></div>
+      <div class="dl"><span data-m="c">법 공부</span></div>
+      <div class="dl"><span data-m="c">할 수 있을까?</span></div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const CUT = 30; // tools/build_15s.py 가 v15에서 15로 바꾼다
+      const { A, ms, E, D, timeline, rise, ui, exit, words, wordsOut, split } = window.HF;
+      const C = window.HFCUE(CUT);
+      const L = C.L;
+      const $ = (s) => document.querySelector(s);
+      const tl = timeline();
+      const OFF = 222; // 화면 좌표 − 프레임 좌표 (다이브 뒤)
+      const EMO = $("#ph-a2 .emo").outerHTML;
+
+      // ---------- 15초: AI 답 없음. 질문 말풍선과 핸드오프 말풍선 모두 Head 88 세 줄 ----------
+      if (CUT === 15) {
+        $("#ph-a1").remove();
+        const u = $("#ph-u");
+        u.className = "b u hd";
+        u.style.padding = "56px 40px";
+        u.innerHTML = '<div class="ln"><span>전문대 나왔는데,</span></div><div class="ln"><span>퇴근하고 법 공부</span></div><div class="ln"><span>할 수 있을까?</span></div>';
+        const a2 = $("#ph-a2");
+        a2.style.padding = "56px 40px";
+        a2.style.height = L.hA2 + "px";
+        a2.innerHTML = '<i id="ph-dots"><b></b><b></b><b></b></i><div class="ln"><span id="a2-l1">이건 책임지고</span></div><div class="ln"><span id="a2-l2">답할 분께</span></div><div class="ln"><span id="a2-l3">넘길게요' + EMO + "</span></div>";
+        $("#ph-dots").style.top = "198px";
+      }
+      // 말풍선 위치 (스레드 좌표 = 프레임 y; #ph-th 는 화면 y 222 에 있다)
+      const top = (q, v) => ($(q).style.top = Math.round(v) + "px");
+      top("#ph-u", L.yU);
+      if (CUT === 30) top("#ph-a1", L.yA1);
+      top("#ph-a2", L.yA2);
+      if (CUT === 30 && Math.abs($("#ph-u").offsetHeight - L.hU) > 1) console.warn("hU mismatch", $("#ph-u").offsetHeight);
+
+      // 밑줄: 단어 폭에 맞춘 SVG 선 (30초만)
+      let ul = null;
+      const ulsvg = document.querySelector(".uls");
+      if (ulsvg) {
+        const w = ulsvg.parentNode.offsetWidth;
+        ulsvg.setAttribute("viewBox", "0 0 " + w + " 6");
+        ulsvg.style.width = w + "px";
+        ulsvg.firstElementChild.setAttribute("d", "M0 3H" + w);
+        ul = A.svg.createDrawable(ulsvg.firstElementChild);
+      }
+
+      // ---------- 카메라(rig) 상태 ----------
+      // rig 변환: translate(cx−604, cy−878) rotate(r) scale(P), 원점 = 화면 중심. 화면 자체는 rotate(8°) scale(254/1080)
+      const S0 = 0.23519, TH = (8 * Math.PI) / 180;
+      const P0 = 1.15, P1 = 1.2; // 마디 1–2 푸시 1.15 → 1.20 (= 1.00 → 1.043)
+      const CY0 = 930, GLIDE = 370; // 마디 2: 카메라가 들려 폰이 아래로 (질문이 올라갈 자리)
+      const Pat = (t) => P0 + (P1 - P0) * (t / C.DIVE);
+      tl.set("#ph-rig", { translateX: -64, translateY: CY0 - 878, rotate: 0, scale: P0 }, 0);
+      tl.add("#ph-rig", { scale: [P0, P1], duration: ms(C.DIVE), ease: "linear" }, 0);
+      tl.add("#ph-rig", { translateY: [CY0 - 878, CY0 + GLIDE - 878], duration: 600, ease: E.cam }, ms(C.JUMP + 0.12));
+      // 마디 3 다이브: 화면이 프레임 전체(화면 중심 → (540, 939), 배율 1, 기울기 0)가 될 때까지 밀고 들어간다
+      const PF = 1 / S0;
+      tl.add("#ph-rig", { translateY: [CY0 + GLIDE - 878, 939 - 878], scale: [P1, PF], rotate: [0, -8], duration: ms(C.DIVE + C.DIVE_D) - ms(C.DIVE), ease: E.cam }, ms(C.DIVE));
+
+      // ---------- 마디 1: 질문이 폰 안 입력 시트에 세 덩어리로 ----------
+      tl.set(["#sq-3", "#sq-4", "#sq-5"], { opacity: 0 }, 0);
+      tl.add(["#sq-3", "#sq-4"], { opacity: [0, 1], duration: 120, ease: "linear" }, ms(0.55));
+      tl.add("#sq-5", { opacity: [0, 1], duration: 120, ease: "linear" }, ms(C.TAP1));
+      // 시작 상태: 말풍선 숨김
+      const hidden = ["#ph-u", "#ph-a2"].concat(CUT === 30 ? ["#ph-a1"] : []);
+      tl.set(hidden, { opacity: 0 }, 0);
+
+      // ---------- 마디 2: 전송 → 질문이 폰에서 튀어 올라 Display 144, 뒤에 종이 띠가 내려온다 ----------
+      // 시작 변환 = 폰 속 질문(#ph-sq)과 같은 자리·각·배율
+      const sqC = 620 + 380 + 377.5; // 화면 y, 질문 묶음 중심
+      const P = Pat(C.JUMP);
+      const dy = sqC - 1161;
+      const fx = 540 + P * S0 * (-Math.sin(TH) * dy);
+      const fy = CY0 + P * S0 * (Math.cos(TH) * dy);
+      tl.set("#ph-bq", { translateX: fx - 540, translateY: fy - 577.5, rotate: 8, scale: P * S0, opacity: 0 }, 0);
+      tl.set("#ph-bq", { opacity: 1 }, ms(C.JUMP));
+      tl.set("#ph-sq", { opacity: 0 }, ms(C.JUMP));
+      tl.add("#ph-bq", { translateX: [fx - 540, 0], translateY: [fy - 577.5, 0], rotate: [8, 0], scale: [P * S0, 1], duration: 700, ease: E.expo }, ms(C.JUMP));
+      tl.set("#ph-band", { clipPath: "inset(0px 0px 985px 0px)" }, 0);
+      tl.add("#ph-band", { clipPath: ["inset(0px 0px 985px 0px)", "inset(0px 0px 0px 0px)"], duration: 600, ease: E.cam }, ms(C.JUMP + 0.08));
+      // 폰 안: 시트가 접혀 입력 독이 되고 질문은 사용자 말풍선으로
+      const DOCK = L.DT + OFF; // 화면 y 1662
+      tl.add("#ph-dock", { clipPath: ["inset(0px 0px 0px 0px)", "inset(" + (DOCK - 560) + "px 0px 0px 0px)"], duration: 700, ease: E.cam }, ms(C.JUMP));
+      tl.add("#ph-inp", { clipPath: ["inset(0px 0px 0px 0px round 56px)", "inset(" + (1580 + OFF - 620) + "px 0px " + (2262 - (1680 + OFF)) + "px 0px round 24px)"], duration: 700, ease: E.cam }, ms(C.JUMP));
+      tl.add("#ph-u", { opacity: [0, 1], duration: 200, ease: E.ui }, ms(C.JUMP + 0.35));
+
+      // ---------- 마디 3: 다이브. 띠와 큰 질문은 단어별로 흐려지며 빠진다 ----------
+      const bqWords = split($("#ph-bq"));
+      wordsOut(tl, bqWords, C.DIVE - 0.1);
+      tl.add("#ph-band", { opacity: [1, 0], duration: 170, ease: E.exit }, ms(C.DIVE + 0.03));
+
+      const dots = document.querySelectorAll("#ph-dots b");
+      function breathe(t0, t1) {
+        for (let t = t0; t < t1 - 0.5; t += 0.9) dots.forEach((d, i) => {
+          tl.add(d, { opacity: [0.3, 1], duration: 300, ease: "inOutSine" }, ms(t + i * 0.15));
+          tl.add(d, { opacity: [1, 0.3], duration: 300, ease: "inOutSine" }, ms(t + i * 0.15 + 0.3));
+        });
+      }
+      tl.set(dots, { opacity: 0.3 }, 0);
+
+      if (CUT === 30) {
+        // AI 답: 말풍선 + 점 → 앞 문단(흐린 회색, 단어별 블러) → 핵심 문장(마스크 줄 상승, 이 영화의 1/2) → 골드 밑줄
+        const pre = split($("#a1-p1")).concat(split($("#a1-p2")));
+        tl.set(pre, { opacity: 0 }, 0);
+        tl.set(["#a1-l1", "#a1-l2", "#a1-l3"], { translateY: "105%" }, 0);
+        if (ul) tl.set(ul, { draw: "0 0" }, 0);
+        tl.add("#ph-a1", { opacity: [0, 1], duration: 250, ease: E.ui }, ms(C.DIVE + 0.6));
+        breathe(C.DIVE + 0.8, C.LEAD);
+        tl.add("#ph-dots", { opacity: [1, 0], duration: 150, ease: E.exit }, ms(C.LEAD));
+        words(tl, pre, C.LEAD + 0.03);
+        rise(tl, ["#a1-l1", "#a1-l2", "#a1-l3"], C.KEY + 0.03);
+        if (ul) tl.add(ul, { draw: ["0 0", "0 1"], duration: D.draw, ease: E.draw }, ms(C.KEY + 0.9));
+        // 핸드오프: 질문 말풍선이 빠지고 스택이 올라가며 핸드오프 말풍선
+        exit(tl, "#ph-u", C.HAND);
+        tl.add("#ph-th", { translateY: [0, L.offB], duration: D.glide, ease: E.glide }, ms(C.HAND));
+        const a2w = split($("#ph-a2"));
+        tl.set(a2w, { opacity: 0 }, 0);
+        tl.add("#ph-a2", { opacity: [0, 1], duration: 250, ease: E.ui }, ms(C.HAND + 0.1));
+        words(tl, a2w, C.HAND + 0.35);
+      } else {
+        const a2w = split($("#ph-a2 .ln").parentNode).filter((w) => !w.closest("#ph-dots"));
+        tl.set(a2w, { opacity: 0 }, 0);
+        tl.add("#ph-a2", { opacity: [0, 1], duration: 250, ease: E.ui }, ms(C.DIVE + 0.55));
+        breathe(C.DIVE + 0.7, C.HAND);
+        tl.add("#ph-dots", { opacity: [1, 0], duration: 150, ease: E.exit }, ms(C.HAND));
+        words(tl, a2w, C.HAND + 0.03);
+      }
+      // 카메라가 핸드오프 말풍선으로 (0.6 s in-out): 말풍선 중심 → (540, 960), 1.12배
+      $("#ph-cam").style.transformOrigin = "540px " + (L.a2c + OFF) + "px";
+      tl.add("#ph-cam", { translateY: [0, L.trackY], scale: [1, L.TS], duration: ms(C.TRACK + C.TRACK_D) - ms(C.TRACK), ease: E.cam }, ms(C.TRACK));
+      // 앱 헤더는 카메라가 들어가는 동안 빠진다 (배지 y 160 과 겹치지 않게)
+      tl.add("#ph-hd-row", { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 200, ease: E.exit }, ms(C.TRACK));
+      // 말풍선이 세계가 되기 시작하면 글은 먼저 빠진다
+      tl.add("#ph-a2 .ln", { opacity: [1, 0], duration: 150, ease: E.exit }, ms(C.GROW));
+      tl.set({ v: 0 }, { v: 1 }, ms(C.WORLD + 0.1));
+      tl.seek(0);
+    })();
+  </script>
+</template>

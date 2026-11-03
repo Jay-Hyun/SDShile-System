@@ -1,7 +1,8 @@
 <template>
   <style>
-    /* Art direction v3 (docs/ads/naver-clip/02-art-direction.md): one axis at x=540, four type sizes,
-       flat colour fields, no ornament. Shared by every scene; generated into each composition. */
+    /* v7 look (docs/ads/naver-clip/04-v7-visual.md §1): daylight paper and ink + photographs. One axis at
+       x=540, four type sizes, no ornament (no shadow, glow, gradient, dim overlay, blur on photos).
+       Shared by every scene; generated into each composition. */
     @font-face {
       font-family: "PretendardGOV";
       src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
@@ -12,81 +13,80 @@
       --paper: #f7f6f2;
       --navy: #0b1a33;
       --gold: #b8955a;
-      --red: #c8392b;
-      --mute-d: #9aa0a6;   /* secondary text on Ink / Navy */
-      --mute-l: #5f6368;   /* secondary text on Paper */
-      --sheet-2: #eceae4;  /* paper one tone step down (stacked sheets) */
-      --sheet-3: #e4e2db;  /* paper two tone steps down */
-      --panel: #181c23;    /* ink one tone step up (the blank signature field) */
+      --mute-d: #9aa0a6;   /* secondary text on Navy */
+      --mute-l: #5f6368;   /* secondary text on paper / photos */
+      --pre: #c9c3b6;      /* a word before it is inked (grey -> ink sweep) */
       position: absolute;
       inset: 0;
       overflow: hidden;
       font-family: "PretendardGOV", sans-serif;
       word-break: keep-all;
       font-kerning: normal;
-      color: var(--paper);
+      color: var(--ink);
+      background: var(--paper);
     }
     .field { position: absolute; inset: 0; }
-    /* camera: one linear push per shot, scaled about the frame centre so x=540 stays put */
-    .cam { position: absolute; inset: 0; transform-origin: 540px 960px; }
+    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), never a CSS grain */
+    .paper { position: absolute; background: #f3ead9 url("assets/img/B-02-paper.jpg") 0 0 / 1080px 1920px no-repeat; }
+    .plate { position: absolute; display: block; max-width: none; }
+    .cam { position: absolute; inset: 0; }
 
     /* the only text container: full 840px measure between symmetric 120px margins, centred */
     .row { position: absolute; left: 120px; width: 840px; text-align: center; margin: 0; }
 
-    /* the four sizes (v3.1 §7-1 density: 144 / 88 / 44 / 26) */
     .t-display { font-size: 144px; font-weight: 700; letter-spacing: -0.045em; line-height: 1.05; }
     .t-head    { font-size: 88px;  font-weight: 600; letter-spacing: -0.03em;  line-height: 1.15; }
     .t-body    { font-size: 44px;  font-weight: 500; letter-spacing: -0.01em;  line-height: 1.4; }
     .t-small   { font-size: 26px;  font-weight: 400; letter-spacing: 0;        line-height: 1.4; }
 
-    /* masked line: each line rises from behind its own baseline (padding keeps ascenders/descenders) */
+    /* masked line (used twice per film): each line rises from behind its own baseline */
     .ln { display: block; overflow: hidden; padding: 0.1em 0 0.14em; margin: -0.1em 0 -0.14em; }
     .li { display: block; }
-    /* letter-spacing also trails the last glyph, which pushes centred ink right by half the tracking;
-       a right padding of half that again splits the difference so box and ink both sit within 2px */
+    /* trailing letter-spacing pushes centred ink right by half the tracking: pad half of it back */
     .t-display .li { padding-right: 0.0225em; }
     .t-head .li { padding-right: 0.015em; }
     .t-body .li { padding-right: 0.005em; }
-    .rise .li, .li.rise { opacity: 0; transform: translateY(110%); }
+    .rise .li { opacity: 0; transform: translateY(110%); }
+    .w { display: inline-block; white-space: pre; }
+    .wb .w { opacity: 0; }                 /* per-word blur-in: starts hidden */
+    .sw .w { color: var(--pre); }          /* grey -> ink sweep: starts grey */
     .later { opacity: 0; }
 
     .au { color: var(--gold); }
-    .on-ink { color: var(--paper); }
-    .on-paper { color: var(--ink); }
+    .ink { color: var(--ink); }
+    .on-navy { color: var(--paper); }
     .m-d { color: var(--mute-d); }
     .m-l { color: var(--mute-l); }
 
-    /* flat sheet of paper (documents): one tone, square corners, no edge treatment */
-    .sheet { position: absolute; background: var(--paper); color: var(--ink); }
-    /* blank signature line and the caret that waits on it */
-    .rule { position: absolute; height: 4px; background: currentColor; }
+    .rule { position: absolute; height: 3px; background: currentColor; }
     .caret { position: absolute; width: 4px; background: currentColor; }
-    /* logo lockup (v3.2 §7-2): gold mark (height 62) + 18px gap + name (Body 44 / 600), one inline row,
-       the whole lockup centred on x=540 (same as ask-ai brand.html #br-logo-row) */
+    .sv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+    /* logo lockup: gold mark (62px high) + 18px gap + name (Body 44 / 600), centred on x=540 as one unit */
     .lock { height: 62px; display: flex; align-items: center; justify-content: center; }
     .lockrow { display: flex; align-items: center; gap: 18px; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; padding-right: 0.01em; color: var(--paper); }
-    .lmark { display: block; width: 56px; height: 62px; background: var(--gold); -webkit-mask: url("assets/img/mark.svg") center / contain no-repeat; mask: url("assets/img/mark.svg") center / contain no-repeat; }
-    /* full-width footer field on the dark brand / end scenes: one tone off the ground, y 1580-1920 */
-    .dock { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; background: #102245; }
-    /* pill control (button, toast): the only rounded shape */
-    .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
+    .lmark { display: block; width: 56px; height: 62px; background: var(--gold); -webkit-mask: url("assets/img/mark-gold.svg") center / contain no-repeat; mask: url("assets/img/mark-gold.svg") center / contain no-repeat; }
+    /* full-width footer field, y 1580-1920, one tone off the ground */
+    .dock { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; }
 
+    #root { background: transparent; }
 
-    #s-ground { background: var(--navy); }
-    #s-field { position: absolute; left: 120px; top: 420px; width: 840px; height: 950px; background: #15284a; }
-    .sv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+    #s-win { position: absolute; inset: 0; }
+    #s-world { position: absolute; inset: 0; }
+    #s-dock { background: #e6dac5; }
+    #s-dip { position: absolute; inset: 0; background: #000; opacity: 0; }
 
   </style>
   <div id="root" data-composition-id="sign" data-width="1080" data-height="1920">
-    <div id="s-ground" class="field" data-layout-ignore></div>
-    <div class="dock" data-fill data-layout-ignore></div>
-    <div id="s-cam" class="cam" data-layout-allow-overflow>
-      <div id="s-lab" class="row t-body m-d" data-tx style="top:330px;"><span class="ln"><span id="s-lab-0" class="li">법률 검토·책임자 서명</span></span></div>
-      <div id="s-field"></div>
-      <div id="s-r" class="rule " style="left:180px;top:936px;width:720px;color:#43578a"></div>
-      <div id="s-c" class="caret au" style="left:180px;top:852px;height:80px;opacity:0"></div>
-      <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate(-169.20 517.00) scale(1.2)"><path id="s-ink" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke="#b8955a" stroke-width="3.333" stroke-linecap="round" stroke-linejoin="round" fill="none" style="opacity:0"/></g></svg>
-      <div id="s-you2" class="row t-head on-ink rise" style="top:1398px;"><span class="ln"><span id="s-you2-0" class="li">이 칸의 이름, <span class="au">당신.</span></span></span></div>
+    <div id="s-win" data-layout-allow-overflow>
+      <div id="s-world">
+        <div class="paper field" data-paper></div>
+        <div id="s-dock" class="dock" data-fill data-layout-ignore></div>
+        <div id="s-h" class="row t-head ink wb" style="top:440px;"><span class="ln"><span id="s-h-0" class="li"><span class="w">이</span> <span class="w">칸의</span> <span class="w">이름,</span></span></span></div>
+        <div id="s-rule" class="rule" style="left:90px;top:912px;width:900px;color:#3b3f46"></div>
+        <svg class="sv" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate(-464.70 320.80) scale(1.7)"><path id="s-ink" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke="#b8955a" stroke-width="2.941" stroke-linecap="round" stroke-linejoin="round" fill="none" style="opacity:0" data-gold/></g></svg>
+        <div id="s-you" class="row t-display ink wb" style="top:1151px;"><span class="ln"><span id="s-you-0" class="li"><span class="w au" data-gold>당신.</span></span></span></div>
+      </div>
+      <div id="s-dip"></div>
     </div>
   </div>
   <script>
@@ -94,39 +94,43 @@
 
     const tl = anime.createTimeline({ autoplay: false });
     const ms = (s) => Math.round(s * 1000);
-    const EXPO = anime.cubicBezier(0.16, 1, 0.3, 1);          // masked line rise (800 ms)
-    const UI = anime.cubicBezier(0.22, 1, 0.36, 1);           // interface entrance (320 ms)
-    const EXIT = anime.cubicBezier(0.55, 0.055, 0.675, 0.19); // leaving for good (300 ms)
-    const INOUT = anime.cubicBezier(0.76, 0, 0.24, 1);        // line drawing, things that travel
-    function A(t, sel, props, dur, ease) { tl.add(sel, Object.assign({ duration: Math.max(1, ms(dur)), ease: ease || UI }, props), ms(t)); }
+    const EXPO = anime.cubicBezier(0.16, 1, 0.3, 1);            // arrivals: long tail
+    const INOUT2 = anime.cubicBezier(0.45, 0, 0.55, 1);         // camera, colour flood (power2.inOut)
+    const INOUT = anime.cubicBezier(0.76, 0, 0.24, 1);          // object -> world, line drawing
+    const IN3 = anime.cubicBezier(0.32, 0, 0.67, 0);            // exits accelerate (power3.in)
+    const OUT = anime.cubicBezier(0.22, 1, 0.36, 1);
+    function A(t, sel, props, dur, ease) { tl.add(sel, Object.assign({ duration: Math.max(1, ms(dur)), ease: ease || OUT }, props), ms(t)); }
     function S(t, sel, props) { tl.set(sel, props, ms(t)); }
-    // lines rise from behind their own baseline; 90 ms apart, 4 steps at most
-    function RISE(t, sels, dur) {
-      sels.slice(0, 4).forEach((s, i) => { S(t + i * 0.09, s, { opacity: 1 }); A(t + i * 0.09, s, { translateY: ["110%", "0%"] }, dur || 0.8, EXPO); });
-    }
-    function LEAVE(t, sels, gap) {
-      sels.forEach((s, i) => A(t + i * (gap == null ? 0.09 : gap), s, { opacity: [1, 0], translateY: [0, -8] }, 0.3, EXIT));
-    }
-    function ENTER(t, sel) { A(t, sel, { opacity: [0, 1], translateY: [16, 0] }, 0.32, UI); }
-    // one linear push per shot, about the frame centre
-    function PUSH(t0, t1, sel) { A(t0, sel, { scale: [1, 1.03] }, t1 - t0, "linear"); }
-    // a text caret: standard 530 ms on / off, not tied to the music
-    function CARET(sel, t0, t1) { let on = true; for (let t = t0; t < t1 - 1e-6; t += 0.53) { S(t, sel, { opacity: on ? 1 : 0 }); on = !on; } }
-    // SVG stroke drawing (1100 ms in-out)
-    function DRAW(t0, t, sel, dur) {
+    // masked line rise (800 ms expo-out, 90 ms between lines) -- used twice per film
+    function RISE(t, sels) { sels.forEach((s, i) => { S(t + i * 0.09, s, { opacity: 1 }); A(t + i * 0.09, s, { translateY: ["110%", "0%"] }, 0.8, EXPO); }); }
+    // per-word blur-in: blur 6px -> 0 and opacity 0 -> 1 in 0.13 s, 67 ms apart, no translate
+    function WB(t, sel) { tl.add(sel + " .w", { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 130, delay: anime.stagger(67), ease: OUT }, ms(t)); }
+    // per-word exit: blur-out and fade, 0.18 s, 40 ms apart
+    function WOUT(t, sel) { tl.add(sel + " .w", { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 180, delay: anime.stagger(40), ease: IN3 }, ms(t)); }
+    // grey -> ink sweep, 85 ms apart
+    function SW(t, sel, to) { tl.add(sel + " .w", { color: ["#c9c3b6", to], duration: 120, delay: anime.stagger(85), ease: OUT }, ms(t)); }
+    // ink printing into a box: a left -> right clip reveal
+    function PRINT(t, sel) { S(t, sel, { opacity: 1 }); A(t, sel, { clipPath: ["inset(0px 100% 0px 0px)", "inset(0px 0% 0px 0px)"] }, 0.45, EXPO); }
+    function CARET(sel, t0, t1) { let on = true; for (let t = t0; t < t1 - 1e-6; t += 0.5) { S(t, sel, { opacity: on ? 1 : 0 }); on = !on; } }
+    function DRAW(t0, t, sel, dur, ease) {
       const d = anime.svg.createDrawable(sel);
       S(t0, d, { draw: "0 0" });
       S(t, sel, { opacity: 1 });
-      A(t, d, { draw: ["0 0", "0 1"] }, dur || 1.1, INOUT);
+      A(t, d, { draw: ["0 0", "0 1"] }, dur, ease || INOUT);
     }
+    // dip cut: the outgoing frame darkens ~40% for its last 3 frames
+    function DIP(tEnd, sel) { S(tEnd - 0.1, sel, { opacity: 0.4 }); }
 
 
-    const T = {"c0": 10.507, "hit": 12.248, "draw": 1.1, "you": 13.447999999999999, "end": 15.754};
-    PUSH(T.c0, T.end, "#s-cam");
-    CARET("#s-c", T.c0, T.hit);
-    S(T.hit, "#s-c", { opacity: 0 });
-    DRAW(T.c0, T.hit, "#s-ink", T.draw);
-    RISE(T.you, ["#s-you2-0"]);
+    const T = {"c0": 10.0, "head": 10.2, "hit": 10.0, "you": 11.2667, "end": 14.0};
+    if (false) {
+      A(T.c0, "#s-win", { clipPath: ["inset(1205.9px 64.9px 422.9px 0.0px)", "inset(0px 0px 0px 0px)"] }, 0.65, INOUT);
+      A(T.c0 + 0.15, "#s-world", { opacity: [0, 1] }, 0.4, OUT);
+    }
+    WB(T.head, "#s-h");
+    DRAW(T.c0, T.hit, "#s-ink", 1.1, INOUT);
+    WB(T.you, "#s-you");
+    DIP(T.end, "#s-dip");
 
     window.__hfAnime = window.__hfAnime || [];
     window.__hfAnime.push(tl);

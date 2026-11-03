@@ -51,7 +51,7 @@ def main():
     x = xs.mean(1)  # 모노(클릭·고역 비율)
     src = load(os.path.join(ROOT, "assets/music/source.mp3")).mean(1)
     segs = c["music_segments"]
-    R = c["R"]
+    R = c.get("R")
     fade_start = segs[-1]["v1"] - segs[-1].get("fade", 0)
     print(f"## {cut}s audio check — {label} ({len(x)/SR:.3f} s)")
 
@@ -70,17 +70,22 @@ def main():
 
     # 2. v6: 고민 중… 개그가 없다. 대신 질문 전송 구간(C2±1 s)과 첫 이음새 R 앞뒤 2초의 RMS 가 이웃과 ±6 dB 안인지 본다
     w = 2.0
-    pre = xs[int((R - w) * SR):int(R * SR)]
-    post = xs[int(R * SR):int((R + w) * SR)]
-    a, d = db(pre), db(post)
-    print(f"2. around splice R={R:.3f} s: RMS before ({w:.0f} s) {a:.1f} dBFS | after ({w:.0f} s) {d:.1f} | diff {d-a:+.1f} dB  -> {'OK' if abs(d-a) <= 6 else 'OFF'}")
-    snd = c["chapters"]["send"]
+    if R is None:
+        print("2. (v7) 이음새 없음 — 음악 한 구간 그대로")
+    else:
+      pre = xs[int((R - w) * SR):int(R * SR)]
+      post = xs[int(R * SR):int((R + w) * SR)]
+      a, d = db(pre), db(post)
+      print(f"2. around splice R={R:.3f} s: RMS before ({w:.0f} s) {a:.1f} dBFS | after ({w:.0f} s) {d:.1f} | diff {d-a:+.1f} dB  -> {'OK' if abs(d-a) <= 6 else 'OFF'}")
+    snd = c["chapters"].get("send", c["chapters"].get("jump"))
     sw = xs[int((snd - 1.0) * SR):int((snd + 1.0) * SR)]
     nb = np.concatenate([xs[int((snd - 3.0) * SR):int((snd - 1.0) * SR)], xs[int((snd + 1.0) * SR):int((snd + 3.0) * SR)]])
     print(f"   send window {snd-1:.2f}–{snd+1:.2f} s RMS {db(sw):.1f} dBFS vs neighbours {db(nb):.1f} -> diff {db(sw)-db(nb):+.1f} dB  -> {'OK' if abs(db(sw)-db(nb)) <= 6 else 'OFF'}")
 
     # 3. 이음새 클릭
-    seams = [segs[1]["v0"], segs[2]["v0"]]
+    seams = [sg["v0"] for sg in segs[1:]]
+    if not seams:
+        print("3. seams: none (one continuous excerpt)")
     for t in seams:
         i = int(round(t * SR))
         k = int(0.003 * SR)

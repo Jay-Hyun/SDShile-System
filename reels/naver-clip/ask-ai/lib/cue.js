@@ -68,13 +68,14 @@
       L.yA2 = L.yU + L.hU + G;
       L.offB = 0;
     }
-    // 카메라 트랙: 핸드오프 말풍선 중심을 (540, 960)으로, 1.12배
-    L.TS = 1.12;
+    // 카메라 트랙: 핸드오프 말풍선을 1.10배로 당겨 중심을 y 1060 으로 (위 말풍선이 y 168 위 UI 띠로 밀려나지 않을 만큼만)
+    L.TS = 1.1;
+    const CYT = 1060;
     const a2c = L.yA2 + L.offB + L.hA2 / 2;
-    L.trackY = 960 - a2c;
+    L.trackY = CYT - a2c;
     L.a2c = a2c;
     const hw = (840 * L.TS) / 2, hh = (L.hA2 * L.TS) / 2;
-    L.bub = { t: 960 - hh, b: 960 + hh, l: 540 - hw, r: 540 + hw, rad: 36 * L.TS };
+    L.bub = { t: CYT - hh, b: CYT + hh, l: 540 - hw, r: 540 + hw, rad: 36 * L.TS };
     c.L = L;
     return c;
   }

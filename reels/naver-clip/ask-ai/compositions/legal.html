@@ -5,51 +5,28 @@
       src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
       font-weight: 45 930;
     }
-    /* 컴플라이언스 레이어 (02-art-direction.md §7): Small 26 / 400 / 1.4, x=540 가운데.
-       배지 y 160, 고지 y 1520–1557 (브랜드 풋터 필드 y 1580 위). Paper 바탕 #5F6368, Navy 바탕 #9AA0A6 */
-    #root {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      font-family: "PretendardGOV", sans-serif;
-      font-size: 26px;
-      line-height: 1.4;
-      font-weight: 400;
-      letter-spacing: 0;
-      word-break: keep-all;
-      pointer-events: none;
-    }
+    /* 컴플라이언스 레이어 (02 §7): Small 26 / 400 / 1.4, x=540 가운데. 배지 y 160, 안내·고지 y 1500–1560.
+       사진 위에서는 단색 Paper 바탕 칩(딤·그림자 없음)으로 읽힌다. 엔드카드(Navy) 고지는 #9AA0A6. */
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "PretendardGOV", sans-serif; font-size: 26px; line-height: 1.4; font-weight: 400; letter-spacing: 0; word-break: keep-all; pointer-events: none; }
     .lg { position: absolute; left: 0; width: 1080px; text-align: center; white-space: nowrap; }
-    .lg > span { display: inline-block; }
-    .on-paper { color: var(--color-muted, #5f6368); }
-    .on-navy { color: var(--color-sec, #9aa0a6); }
-    .badge { top: 142px; }
-    /* 챗 입력 독 안, 입력창(y 1472–1584) 바로 아래 */
-    #lg-note { top: 1604px; }
-    #lg-l2 { top: 1520px; }
+    .chip { display: inline-block; background: #f7f6f2; color: #5f6368; padding: 2px 14px; border-radius: 6px; }
+    .badge { top: 158px; }
+    .low { top: 1500px; }
+    #lg-l2 > span { display: inline-block; color: #9aa0a6; }
   </style>
   <div id="root" data-composition-id="legal" data-width="1080" data-height="1920">
-    <!-- 배지: 챗 화면 동안 "가상 챗봇 화면 · 연출", 버튼이 열려 화면 위쪽까지 덮으면 "연출"로 바꿔 끝까지 -->
-    <div id="lg-b1" class="clip" data-start="0" data-duration="14.78" data-track-index="1"><div class="lg badge on-paper"><span id="b1" data-m="c">가상 챗봇 화면 · 연출</span></div></div>
-    <div id="lg-b2" class="clip" data-start="14.733" data-duration="15.267" data-track-index="2"><div class="lg badge on-navy"><span id="b2" data-m="c">연출</span></div></div>
-    <!-- 연출 대화 고지: 처음부터(입력 독과 AI 말풍선이 첫 프레임에 있다) 버튼이 열릴 때까지, 입력창 바로 아래 -->
-    <div id="lg-n" class="clip" data-start="0" data-duration="14.1" data-track-index="3"><div id="lg-note" class="lg on-paper"><span id="nt" data-m="c">※ 연출된 가상 대화입니다</span></div></div>
-    <!-- 보장 금지 고지: 브랜드 진입(원곡 크래시)부터 끝까지. (편 A 에는 '국내 유일' 표현이 없어 각주 *'국내 유일' 줄은 뺐다) -->
-    <div id="lg-l" class="clip" data-start="14.397" data-duration="15.603" data-track-index="4">
-      <div id="lg-l2" class="lg on-navy"><span id="l2" data-m="c">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</span></div>
-    </div>
+    <div id="lg-b1" class="clip" data-start="0" data-duration="12.65" data-track-index="1"><div class="lg badge"><span class="chip" data-m="c">가상 챗봇 화면 · 연출</span></div></div>
+    <div id="lg-b2" class="clip" data-start="12.65" data-duration="13.383" data-track-index="2"><div class="lg badge"><span class="chip" data-m="c">연출</span></div></div>
+    <div id="lg-n" class="clip" data-start="0" data-duration="12.3" data-track-index="3"><div class="lg low"><span class="chip" data-m="c">※ 연출된 가상 대화입니다</span></div></div>
+    <div id="lg-l" class="clip" data-start="26.133" data-duration="3.867" data-track-index="4"><div id="lg-l2" class="lg low"><span id="l2" data-m="c">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</span></div></div>
   </div>
   <script>
     (function () {
       const CUT = 30; // tools/build_15s.py 가 v15에서 15로 바꾼다 (클립 시각은 tools/stamp_timing.py 가 lib/cue.js 에서 찍는다)
-      const { ms, E, D, timeline, ui } = window.HF;
+      const { ms, E, timeline } = window.HF;
       const C = window.HFCUE(CUT);
       const tl = timeline();
-      tl.set(["#l2", "#b2"], { opacity: 0 }, 0);
-      tl.add("#nt", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(C.WIN));
-      tl.add("#b1", { opacity: [1, 0], duration: D.exit, ease: E.exit }, ms(C.WIN + 0.68));
-      ui(tl, "#b2", C.WIN + 0.93);
-      ui(tl, "#l2", C.BR);
+      tl.add("#l2", { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 200, ease: E.expo }, ms(C.FLOOD + 0.3));
       tl.set({ v: 0 }, { v: 1 }, ms(C.END));
       tl.seek(0);
     })();

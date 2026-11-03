@@ -109,7 +109,8 @@ function collect() {
   const blockOf = (el) => {
     for (let e = el; e && e.nodeType === 1; e = e.parentElement) {
       const d = getComputedStyle(e).display;
-      if (d !== "inline" && d !== "contents") return e;
+      // word spans (.w) and printed entries (.ent) are inline-blocks inside one line: measure the line
+      if (d !== "inline" && d !== "contents" && !e.classList.contains("w") && !e.classList.contains("ent")) return e;
     }
     return el;
   };
@@ -195,6 +196,23 @@ function collect() {
   return { rows: out, docks };
 }
 
+function flatPaper(on) {
+  for (const host of [document, ...[...document.querySelectorAll("*")].filter((e) => e.shadowRoot).map((e) => e.shadowRoot)]) {
+    let st = host.querySelector && host.querySelector("#__flat");
+    if (on && !st) { st = document.createElement("style"); st.id = "__flat"; st.textContent = "[data-paper]{background-image:none !important;background-color:#f7f6f2 !important}"; (host.head || host).appendChild(st); }
+    if (!on && st) st.remove();
+  }
+}
+function goldPaint(on) {
+  const id = "__gold";
+  let st = document.getElementById(id);
+  if (on && !st) {
+    st = document.createElement("style"); st.id = id;
+    st.textContent = "[data-gold],[data-gold] *{color:#ff00ff !important;background-color:#ff00ff !important;stroke:#ff00ff !important} [data-gold] .w, .au{color:#ff00ff !important;background-color:transparent !important} .lmark[data-gold]{background-color:#ff00ff !important} svg[data-gold]{background-color:transparent !important} .du[data-gold]{background-color:#ff00ff !important} .dl.au{background-color:transparent !important}";
+    document.head.appendChild(st);
+  }
+  if (!on && st) st.remove();
+}
 function setLegal(hidden) {
   const el = document.querySelector('[data-composition-id="legal"]');
   if (el) el.style.display = hidden ? "none" : "";   // (the runtime sets visibility on .clip children itself)
@@ -224,18 +242,29 @@ function setLegal(hidden) {
     const shot = path.join(SHOT_DIR, `t${t.toFixed(2)}.png`);
     const shotNoLegal = path.join(SHOT_DIR, `t${t.toFixed(2)}-nolegal.png`);
     await page.screenshot({ path: shot });
+    // whitespace is measured with the paper texture swapped for flat Paper, so texture never counts as "filled"
+    await page.evaluate(flatPaper, true);
+    const shotFlat = path.join(SHOT_DIR, `t${t.toFixed(2)}-flat.png`);
+    await page.screenshot({ path: shotFlat });
     await page.evaluate(setLegal, true);
     await page.screenshot({ path: shotNoLegal });
     await page.evaluate(setLegal, false);
+    await page.evaluate(flatPaper, false);
+    // gold audit: repaint every [data-gold] element magenta and count the changed pixels
+    await page.evaluate(goldPaint, true);
+    const shotGold = path.join(SHOT_DIR, `t${t.toFixed(2)}-gold.png`);
+    await page.screenshot({ path: shotGold });
+    await page.evaluate(goldPaint, false);
+    const px = JSON.parse(require("child_process").spawnSync("python3", [path.join(__dirname, "pixels.py"), shot, shotGold], { encoding: "utf8" }).stdout.trim());
     const { rows: all, docks } = await page.evaluate(collect);
     const rows = all.filter((r) => !r.inLock).sort((a, b) => a.top - b.top);
     const fill = docks.flatMap(([a, b]) => ["--fill", `${a}:${b}`]);
     const run = (file) => JSON.parse(require("child_process").spawnSync("python3", [path.join(__dirname, "density.py"), ...fill, file], { encoding: "utf8" }).stdout.trim());
-    const band = run(shot);
+    const band = run(shotFlat);
     const gap = run(shotNoLegal);
     worstBand = Math.max(worstBand, band.band_pct);
     worstGap = Math.max(worstGap, gap.gap_px);
-    console.log(`\n t=${t.toFixed(2)}s  (${rows.length} visible lines)   empty band ${band.band_px}px = ${band.band_pct}% (rows ${band.band_from}-${band.band_to})   max gap ${gap.gap_px}px (rows ${gap.gap_from}-${gap.gap_to})${docks.length ? "   dock " + docks.map((d) => d.join("-")).join(",") : ""}`);
+    console.log(`\n t=${t.toFixed(2)}s  (${rows.length} visible lines)   empty band ${band.band_px}px = ${band.band_pct}% (rows ${band.band_from}-${band.band_to})   max gap ${gap.gap_px}px (rows ${gap.gap_from}-${gap.gap_to})   dark ${px.dark_pct}%   gold ${px.gold_pct}%${docks.length ? "   dock " + docks.map((d) => d.join("-")).join(",") : ""}`);
     console.log("  comp     id                       size  wt   top  bottom   width   centre-x      dx   text");
     for (const r of rows) {
       const dx = r.cx - 540;
@@ -243,7 +272,7 @@ function setLegal(hidden) {
       r.sizes.forEach((z) => sizes.set(z, (sizes.get(z) || 0) + 1));
       console.log(`  ${r.comp.padEnd(8)} ${String(r.id).slice(0, 24).padEnd(24)} ${String(r.size).padStart(4)} ${String(r.weight).padStart(4)} ${String(r.top).padStart(5)} ${String(r.bottom).padStart(6)} ${String(r.w).padStart(7)} ${r.cx.toFixed(2).padStart(9)} ${(dx >= 0 ? "+" : "") + dx.toFixed(2).padStart(6)}   ${r.text}${r.lockup ? "   <- lockup (mark + name)" : ""}`);
     }
-    report.push({ t, band, gap, rows: rows.map((r) => ({ ...r, dx: +(r.cx - 540).toFixed(2) })) });
+    report.push({ t, band, gap, px, rows: rows.map((r) => ({ ...r, dx: +(r.cx - 540).toFixed(2) })) });
   }
 
   // ---- reading rate

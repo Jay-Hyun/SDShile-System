@@ -9,17 +9,18 @@
     "build15": "python3 tools/build_15s.py",
     "dev": "npx --yes hyperframes@0.8.200 preview",
     "check": "npx --yes hyperframes@0.8.200 check",
-    "snapshot": "npx --yes hyperframes@0.8.200 snapshot --at 0.2,1,2.5,3.5,4.6,5,6.1,8,9.9,11.3,12.4,13.6,14.7,16,18.567,20.5,22.4,24.5,26.2,28,29.7 --no-end",
+    "snapshot": "npx --yes hyperframes@0.8.200 snapshot --at 0,1.2,1.95,2.2,3.3,3.8,3.95,4.4,5.2,7.2,8.9,10.8,12.1,12.6,13.0,14.5,16.3,16.75,18.2,19.9,20.33,20.6,21.8,23.6,24.03,25.5,25.95,26.3,27.5,29.7 --no-end",
     "render": "npx --yes hyperframes@0.8.200 render --quality delivery -o renders/ask-ai-30s.mp4",
     "render15": "cd v15 && npx --yes hyperframes@0.8.200 render --quality delivery -o ../renders/ask-ai-15s.mp4",
     "verify": "python3 tools/verify_cuts.py 30 && python3 tools/verify_cuts.py 15",
-    "snapshot15": "cd v15 && npx --yes hyperframes@0.8.200 snapshot --at 0.2,1,2.5,3.5,5,6.1,6.9,7.5,8.2,8.9,10.5,12,13.1,14,14.8 --no-end",
+    "snapshot15": "cd v15 && npx --yes hyperframes@0.8.200 snapshot --at 0,1.2,1.95,3.3,3.95,4.4,5.5,6.55,7.0,7.45,8.6,9.26,10.6,11.2,11.5,12.8,14.8 --no-end",
     "measure": "node tools/measure_frames.cjs",
     "plan": "python3 tools/verify_cuts.py 30 --plan && python3 tools/verify_cuts.py 15 --plan",
     "audiocheck": "python3 tools/audio_check.py 30 && python3 tools/audio_check.py 15",
     "reading": "python3 tools/reading_speed.py",
     "stamp": "python3 tools/stamp_timing.py",
     "remux": "python3 tools/remux_audio.py",
-    "gapscan": "python3 tools/gapscan.py 30 && python3 tools/gapscan.py 15"
+    "gapscan": "python3 tools/gapscan.py 30 && python3 tools/gapscan.py 15",
+    "sheet": "python3 tools/contact_sheet.py"
   }
 }

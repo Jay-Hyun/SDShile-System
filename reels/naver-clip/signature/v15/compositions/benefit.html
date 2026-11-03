@@ -1,7 +1,8 @@
 <template>
   <style>
-    /* Art direction v3 (docs/ads/naver-clip/02-art-direction.md): one axis at x=540, four type sizes,
-       flat colour fields, no ornament. Shared by every scene; generated into each composition. */
+    /* v7 look (docs/ads/naver-clip/04-v7-visual.md §1): daylight paper and ink + photographs. One axis at
+       x=540, four type sizes, no ornament (no shadow, glow, gradient, dim overlay, blur on photos).
+       Shared by every scene; generated into each composition. */
     @font-face {
       font-family: "PretendardGOV";
       src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
@@ -12,125 +13,120 @@
       --paper: #f7f6f2;
       --navy: #0b1a33;
       --gold: #b8955a;
-      --red: #c8392b;
-      --mute-d: #9aa0a6;   /* secondary text on Ink / Navy */
-      --mute-l: #5f6368;   /* secondary text on Paper */
-      --sheet-2: #eceae4;  /* paper one tone step down (stacked sheets) */
-      --sheet-3: #e4e2db;  /* paper two tone steps down */
-      --panel: #181c23;    /* ink one tone step up (the blank signature field) */
+      --mute-d: #9aa0a6;   /* secondary text on Navy */
+      --mute-l: #5f6368;   /* secondary text on paper / photos */
+      --pre: #c9c3b6;      /* a word before it is inked (grey -> ink sweep) */
       position: absolute;
       inset: 0;
       overflow: hidden;
       font-family: "PretendardGOV", sans-serif;
       word-break: keep-all;
       font-kerning: normal;
-      color: var(--paper);
+      color: var(--ink);
+      background: var(--paper);
     }
     .field { position: absolute; inset: 0; }
-    /* camera: one linear push per shot, scaled about the frame centre so x=540 stays put */
-    .cam { position: absolute; inset: 0; transform-origin: 540px 960px; }
+    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), never a CSS grain */
+    .paper { position: absolute; background: #f3ead9 url("assets/img/B-02-paper.jpg") 0 0 / 1080px 1920px no-repeat; }
+    .plate { position: absolute; display: block; max-width: none; }
+    .cam { position: absolute; inset: 0; }
 
     /* the only text container: full 840px measure between symmetric 120px margins, centred */
     .row { position: absolute; left: 120px; width: 840px; text-align: center; margin: 0; }
 
-    /* the four sizes (v3.1 §7-1 density: 144 / 88 / 44 / 26) */
     .t-display { font-size: 144px; font-weight: 700; letter-spacing: -0.045em; line-height: 1.05; }
     .t-head    { font-size: 88px;  font-weight: 600; letter-spacing: -0.03em;  line-height: 1.15; }
     .t-body    { font-size: 44px;  font-weight: 500; letter-spacing: -0.01em;  line-height: 1.4; }
     .t-small   { font-size: 26px;  font-weight: 400; letter-spacing: 0;        line-height: 1.4; }
 
-    /* masked line: each line rises from behind its own baseline (padding keeps ascenders/descenders) */
+    /* masked line (used twice per film): each line rises from behind its own baseline */
     .ln { display: block; overflow: hidden; padding: 0.1em 0 0.14em; margin: -0.1em 0 -0.14em; }
     .li { display: block; }
-    /* letter-spacing also trails the last glyph, which pushes centred ink right by half the tracking;
-       a right padding of half that again splits the difference so box and ink both sit within 2px */
+    /* trailing letter-spacing pushes centred ink right by half the tracking: pad half of it back */
     .t-display .li { padding-right: 0.0225em; }
     .t-head .li { padding-right: 0.015em; }
     .t-body .li { padding-right: 0.005em; }
-    .rise .li, .li.rise { opacity: 0; transform: translateY(110%); }
+    .rise .li { opacity: 0; transform: translateY(110%); }
+    .w { display: inline-block; white-space: pre; }
+    .wb .w { opacity: 0; }                 /* per-word blur-in: starts hidden */
+    .sw .w { color: var(--pre); }          /* grey -> ink sweep: starts grey */
     .later { opacity: 0; }
 
     .au { color: var(--gold); }
-    .on-ink { color: var(--paper); }
-    .on-paper { color: var(--ink); }
+    .ink { color: var(--ink); }
+    .on-navy { color: var(--paper); }
     .m-d { color: var(--mute-d); }
     .m-l { color: var(--mute-l); }
 
-    /* flat sheet of paper (documents): one tone, square corners, no edge treatment */
-    .sheet { position: absolute; background: var(--paper); color: var(--ink); }
-    /* blank signature line and the caret that waits on it */
-    .rule { position: absolute; height: 4px; background: currentColor; }
+    .rule { position: absolute; height: 3px; background: currentColor; }
     .caret { position: absolute; width: 4px; background: currentColor; }
-    /* logo lockup (v3.2 §7-2): gold mark (height 62) + 18px gap + name (Body 44 / 600), one inline row,
-       the whole lockup centred on x=540 (same as ask-ai brand.html #br-logo-row) */
+    .sv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+    /* logo lockup: gold mark (62px high) + 18px gap + name (Body 44 / 600), centred on x=540 as one unit */
     .lock { height: 62px; display: flex; align-items: center; justify-content: center; }
     .lockrow { display: flex; align-items: center; gap: 18px; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; padding-right: 0.01em; color: var(--paper); }
-    .lmark { display: block; width: 56px; height: 62px; background: var(--gold); -webkit-mask: url("assets/img/mark.svg") center / contain no-repeat; mask: url("assets/img/mark.svg") center / contain no-repeat; }
-    /* full-width footer field on the dark brand / end scenes: one tone off the ground, y 1580-1920 */
-    .dock { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; background: #102245; }
-    /* pill control (button, toast): the only rounded shape */
-    .pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
+    .lmark { display: block; width: 56px; height: 62px; background: var(--gold); -webkit-mask: url("assets/img/mark-gold.svg") center / contain no-repeat; mask: url("assets/img/mark-gold.svg") center / contain no-repeat; }
+    /* full-width footer field, y 1580-1920, one tone off the ground */
+    .dock { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; }
 
+    #root { background: transparent; }
 
-    #g-ground { background: var(--navy); }
-    #g-paper { position: absolute; left: 0; top: 0; width: 1080px; height: 980px; background: var(--paper); overflow: hidden; }
-    .gb { position: absolute; }
+    #b-band { left: 0; top: 0; width: 1080px; height: 840px; }
+    #b-pan { position: absolute; inset: 0; }
     .dl { position: absolute; width: 108px; text-align: center; }
-    .bar { position: absolute; width: 108px; background: var(--sheet-3); overflow: hidden; }
-    .bar i { position: absolute; left: 0; bottom: 0; width: 100%; height: 110px; background: var(--navy); }
-    .bar.we { background: var(--gold); }
+    .du { position: absolute; height: 4px; width: 64px; background: #b8955a; transform-origin: 0 50%; transform: scaleX(0); }
+    #b-dip { position: absolute; inset: 0; background: #000; opacity: 0; }
 
   </style>
   <div id="root" data-composition-id="benefit" data-width="1080" data-height="1920">
-    <div id="g-ground" class="field" data-layout-ignore></div>
-    <div id="g-cam" class="cam" data-layout-allow-overflow>
-      
-      <div id="g-s2" class="row t-head on-ink rise" style="top:262px;"><span class="ln"><span id="g-s2-0" class="li">이미 딴 학점이 있으면</span></span><span class="ln"><span id="g-s2-1" class="li">기간·비용을</span></span><span class="ln"><span id="g-s2-2" class="li">줄일 수 있어요.</span></span></div>
-      <div id="g-grid"><div id="g-0" class="gb" style="left:120px;top:650px;width:156px;height:190px;background:#15284a"></div><div id="g-1" class="gb" style="left:291px;top:650px;width:156px;height:190px;background:#15284a"></div><div id="g-2" class="gb" style="left:462px;top:650px;width:156px;height:190px;background:#15284a"></div><div id="g-3" class="gb" style="left:633px;top:650px;width:156px;height:190px;background:#15284a"></div><div id="g-4" class="gb" style="left:804px;top:650px;width:156px;height:190px;background:#15284a"></div><div id="g-5" class="gb" style="left:120px;top:852px;width:156px;height:190px;background:#15284a"></div><div id="g-6" class="gb" style="left:291px;top:852px;width:156px;height:190px;background:#15284a"></div><div id="g-7" class="gb" style="left:462px;top:852px;width:156px;height:190px;background:#15284a"></div><div id="g-8" class="gb" style="left:633px;top:852px;width:156px;height:190px;background:#15284a"></div><div id="g-9" class="gb" style="left:804px;top:852px;width:156px;height:190px;background:#15284a"></div><div id="g-10" class="gb" style="left:120px;top:1054px;width:156px;height:190px;background:#15284a"></div><div id="g-11" class="gb" style="left:291px;top:1054px;width:156px;height:190px;background:#15284a"></div><div id="g-12" class="gb" style="left:462px;top:1054px;width:156px;height:190px;background:#15284a"></div><div id="g-13" class="gb" style="left:633px;top:1054px;width:156px;height:190px;background:#15284a"></div><div id="g-14" class="gb" style="left:804px;top:1054px;width:156px;height:190px;background:#15284a"></div><div id="g-15" class="gb" style="left:120px;top:1256px;width:156px;height:190px;background:#15284a"></div><div id="g-16" class="gb" style="left:291px;top:1256px;width:156px;height:190px;background:#15284a"></div><div id="g-17" class="gb" style="left:462px;top:1256px;width:156px;height:190px;background:#15284a"></div><div id="g-18" class="gb" style="left:633px;top:1256px;width:156px;height:190px;background:#15284a"></div><div id="g-19" class="gb" style="left:804px;top:1256px;width:156px;height:190px;background:#15284a"></div><div id="g-20" class="gb" style="left:120px;top:1458px;width:156px;height:190px;background:#15284a"></div><div id="g-21" class="gb" style="left:291px;top:1458px;width:156px;height:190px;background:#15284a"></div><div id="g-22" class="gb" style="left:462px;top:1458px;width:156px;height:190px;background:#15284a"></div><div id="g-23" class="gb" style="left:633px;top:1458px;width:156px;height:190px;background:#15284a"></div><div id="g-24" class="gb" style="left:804px;top:1458px;width:156px;height:190px;background:#15284a"></div></div>
+    <div id="b-pan" data-layout-allow-overflow>
+      <img id="b-plate" class="plate" src="assets/img/B-03-living-table.jpg" alt="" style="left:0;top:-86px;width:1129.2px;height:2006.4px">
     </div>
+    <div id="b-band" class="paper" data-paper></div>
+    <div id="b-week" data-grid data-tx><div class="dl t-body sw" style="left:120px;top:300px"><span class="w">월</span></div><div class="dl t-body sw" style="left:242px;top:300px"><span class="w">화</span></div><div class="dl t-body sw" style="left:364px;top:300px"><span class="w">수</span></div><div class="dl t-body sw" style="left:486px;top:300px"><span class="w">목</span></div><div class="dl t-body sw" style="left:608px;top:300px"><span class="w">금</span></div><div class="dl t-body sw au" data-gold style="left:730px;top:300px"><span class="w">토</span></div><div id="b-u5" class="du" data-gold style="left:752px;top:372px"></div><div class="dl t-body sw au" data-gold style="left:852px;top:300px"><span class="w">일</span></div><div id="b-u6" class="du" data-gold style="left:874px;top:372px"></div></div>
+    <div id="b-l1" class="row t-head ink" data-layout-allow-overlap style="top:520px;"><span class="ln"><span id="b-l1-0" class="li"><span class="w">퇴근</span> <span class="w">후·주말에,</span></span></span><span class="ln"><span id="b-l1-1" class="li"><span class="w">100%</span> <span class="w">온라인으로.</span></span></span></div>
+    
+    <div id="b-dip"></div>
   </div>
   <script>
   (function () {
 
     const tl = anime.createTimeline({ autoplay: false });
     const ms = (s) => Math.round(s * 1000);
-    const EXPO = anime.cubicBezier(0.16, 1, 0.3, 1);          // masked line rise (800 ms)
-    const UI = anime.cubicBezier(0.22, 1, 0.36, 1);           // interface entrance (320 ms)
-    const EXIT = anime.cubicBezier(0.55, 0.055, 0.675, 0.19); // leaving for good (300 ms)
-    const INOUT = anime.cubicBezier(0.76, 0, 0.24, 1);        // line drawing, things that travel
-    function A(t, sel, props, dur, ease) { tl.add(sel, Object.assign({ duration: Math.max(1, ms(dur)), ease: ease || UI }, props), ms(t)); }
+    const EXPO = anime.cubicBezier(0.16, 1, 0.3, 1);            // arrivals: long tail
+    const INOUT2 = anime.cubicBezier(0.45, 0, 0.55, 1);         // camera, colour flood (power2.inOut)
+    const INOUT = anime.cubicBezier(0.76, 0, 0.24, 1);          // object -> world, line drawing
+    const IN3 = anime.cubicBezier(0.32, 0, 0.67, 0);            // exits accelerate (power3.in)
+    const OUT = anime.cubicBezier(0.22, 1, 0.36, 1);
+    function A(t, sel, props, dur, ease) { tl.add(sel, Object.assign({ duration: Math.max(1, ms(dur)), ease: ease || OUT }, props), ms(t)); }
     function S(t, sel, props) { tl.set(sel, props, ms(t)); }
-    // lines rise from behind their own baseline; 90 ms apart, 4 steps at most
-    function RISE(t, sels, dur) {
-      sels.slice(0, 4).forEach((s, i) => { S(t + i * 0.09, s, { opacity: 1 }); A(t + i * 0.09, s, { translateY: ["110%", "0%"] }, dur || 0.8, EXPO); });
-    }
-    function LEAVE(t, sels, gap) {
-      sels.forEach((s, i) => A(t + i * (gap == null ? 0.09 : gap), s, { opacity: [1, 0], translateY: [0, -8] }, 0.3, EXIT));
-    }
-    function ENTER(t, sel) { A(t, sel, { opacity: [0, 1], translateY: [16, 0] }, 0.32, UI); }
-    // one linear push per shot, about the frame centre
-    function PUSH(t0, t1, sel) { A(t0, sel, { scale: [1, 1.03] }, t1 - t0, "linear"); }
-    // a text caret: standard 530 ms on / off, not tied to the music
-    function CARET(sel, t0, t1) { let on = true; for (let t = t0; t < t1 - 1e-6; t += 0.53) { S(t, sel, { opacity: on ? 1 : 0 }); on = !on; } }
-    // SVG stroke drawing (1100 ms in-out)
-    function DRAW(t0, t, sel, dur) {
+    // masked line rise (800 ms expo-out, 90 ms between lines) -- used twice per film
+    function RISE(t, sels) { sels.forEach((s, i) => { S(t + i * 0.09, s, { opacity: 1 }); A(t + i * 0.09, s, { translateY: ["110%", "0%"] }, 0.8, EXPO); }); }
+    // per-word blur-in: blur 6px -> 0 and opacity 0 -> 1 in 0.13 s, 67 ms apart, no translate
+    function WB(t, sel) { tl.add(sel + " .w", { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 130, delay: anime.stagger(67), ease: OUT }, ms(t)); }
+    // per-word exit: blur-out and fade, 0.18 s, 40 ms apart
+    function WOUT(t, sel) { tl.add(sel + " .w", { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 180, delay: anime.stagger(40), ease: IN3 }, ms(t)); }
+    // grey -> ink sweep, 85 ms apart
+    function SW(t, sel, to) { tl.add(sel + " .w", { color: ["#c9c3b6", to], duration: 120, delay: anime.stagger(85), ease: OUT }, ms(t)); }
+    // ink printing into a box: a left -> right clip reveal
+    function PRINT(t, sel) { S(t, sel, { opacity: 1 }); A(t, sel, { clipPath: ["inset(0px 100% 0px 0px)", "inset(0px 0% 0px 0px)"] }, 0.45, EXPO); }
+    function CARET(sel, t0, t1) { let on = true; for (let t = t0; t < t1 - 1e-6; t += 0.5) { S(t, sel, { opacity: on ? 1 : 0 }); on = !on; } }
+    function DRAW(t0, t, sel, dur, ease) {
       const d = anime.svg.createDrawable(sel);
       S(t0, d, { draw: "0 0" });
       S(t, sel, { opacity: 1 });
-      A(t, d, { draw: ["0 0", "0 1"] }, dur || 1.1, INOUT);
+      A(t, d, { draw: ["0 0", "0 1"] }, dur, ease || INOUT);
     }
+    // dip cut: the outgoing frame darkens ~40% for its last 3 frames
+    function DIP(tEnd, sel) { S(tEnd - 0.1, sel, { opacity: 0.4 }); }
 
 
-    const T = {"c0": 8.747, "s2": 8.847, "grid": 8.997, "gold": 10.047, "end": 12.254};
-    PUSH(T.c0, T.end, "#g-cam");
-    if (!true) {
-      RISE(T.s1, ["#g-s1-0", "#g-s1-1"]);
-      ENTER(T.week, "#g-week");
-    }
-    RISE(T.s2, ["#g-s2-0", "#g-s2-1", "#g-s2-2"]);
-    ENTER(T.grid, "#g-grid");
-    // the credits already earned turn gold, one after another
-    A(T.gold, ["#g-0", "#g-1", "#g-2"], { backgroundColor: ["#15284a", "#b8955a"] }, 0.5, UI, { delay: anime.stagger(90) });
+    const T = {"c0": 8.0, "week": 8.5, "l1": 8.1, "l2": 99, "end": 10.0};
+    A(T.c0, "#b-pan", { translateX: [0, -49] }, T.end - T.c0, INOUT2);
+    SW(T.week, "#b-week .dl:nth-child(-n+5)", "#0e1116");
+    tl.add("#b-week .dl.au .w", { color: ["#c9c3b6", "#b8955a"], duration: 120, delay: anime.stagger(85), ease: OUT }, ms(T.week + 0.45));
+    tl.add("#b-week .du", { scaleX: [0, 1], duration: 300, delay: anime.stagger(85), ease: EXPO }, ms(T.week + 0.6));
+    if (!true) { WOUT(T.l2 - 0.22, "#b-l1"); WB(T.l2, "#b-l2"); }
+    DIP(T.end, "#b-dip");
 
     window.__hfAnime = window.__hfAnime || [];
     window.__hfAnime.push(tl);

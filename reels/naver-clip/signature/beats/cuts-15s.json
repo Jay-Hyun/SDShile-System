@@ -1,78 +1,98 @@
 {
  "variant": "15",
- "offset": 15.796,
- "bpm": 137.023,
+ "offset": 1.765,
+ "bpm": 119.969,
  "cuts": [
   {
-   "t": 3.5,
-   "frame": 105,
-   "label": "S3 signature field",
+   "t": 3.967,
+   "frame": 119,
+   "label": "S3 box -> world: paper, You stroke",
    "beat": 8,
+   "off_frames": -0.46,
    "downbeat": true
   },
   {
-   "t": 8.747,
-   "frame": 262,
-   "label": "S4 benefit line",
+   "t": 8.0,
+   "frame": 240,
+   "label": "S4 dip cut: living-room table",
+   "beat": 16,
+   "off_frames": 0.39,
+   "downbeat": true
+  },
+  {
+   "t": 10.0,
+   "frame": 300,
+   "label": "S5 dip cut: stairs + USP card",
    "beat": 20,
+   "off_frames": 0.48,
    "downbeat": true
   },
   {
-   "t": 12.254,
-   "frame": 368,
-   "label": "S6 end card",
-   "beat": 28,
+   "t": 12.0,
+   "frame": 360,
+   "label": "S6 Navy flood: end card",
+   "beat": 24,
+   "off_frames": 0.21,
    "downbeat": true
   }
  ],
  "moves": [
   {
-   "t": 5.241,
-   "label": "S3 signature stroke (biggest hit)"
+   "t": 0,
+   "label": "S1 push"
   },
   {
-   "t": 6.341,
-   "label": "S3 sentence"
+   "t": 2.0,
+   "label": "S1 caption swap + pan"
   },
   {
-   "t": 10.047,
-   "label": "S4 earned credits turn gold"
+   "t": 4.967,
+   "label": "S3 You stroke (pen sfx)"
   },
   {
-   "t": 12.504,
-   "label": "S6 phone"
+   "t": 10.067,
+   "label": "S5 card mask reveal"
+  },
+  {
+   "t": 12.467,
+   "label": "S6 CTA block (tap sfx)"
   }
  ],
  "sfx": [
   {
-   "t": 5.241,
+   "t": 4.967,
    "kind": "pen"
   },
   {
-   "t": 12.254,
+   "t": 12.467,
    "kind": "tap"
   }
  ],
  "scenes": [
   {
-   "id": "hook",
+   "id": "resume",
    "start": 0,
-   "duration": 3.5
+   "duration": 4.667
   },
   {
    "id": "sign",
-   "start": 3.5,
-   "duration": 5.247
+   "start": 3.967,
+   "duration": 4.033
   },
   {
    "id": "benefit",
-   "start": 8.747,
-   "duration": 3.507
+   "start": 8.0,
+   "duration": 2.0
+  },
+  {
+   "id": "usp",
+   "start": 10.0,
+   "duration": 2.467
   },
   {
    "id": "end",
-   "start": 12.254,
-   "duration": 2.746
+   "start": 12.0,
+   "duration": 3.0
   },
   {
    "id": "legal",

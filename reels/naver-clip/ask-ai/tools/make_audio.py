@@ -1,21 +1,11 @@
 #!/usr/bin/env python3
-"""「AI에게 물었다」 오디오: 제공 BGM 편집(끊김 없음) + 효과음 2개(질문 전송·[상담사 연결] 누름) + 마스터.
+"""「AI에게 물었다」 v7 오디오: Alex_Besss "News Background" (Pixabay 602905) 한 구간 그대로 + 부드러운 탭 2개 + 마스터.
 
 Usage: python3 tools/make_audio.py [--cut 15]
-  assets/music/source.mp3 (grand_project, Pixabay 505611) 를 잘라 붙인다. 합성 음악은 없다.
-  → assets/audio/bgm.wav, sfx.wav (30s) / bgm-15s.wav, sfx-15s.wav (15s)
-  두 스템에 같은 게인·리미터를 걸어 합이 −15 LUFS(±0.3), 트루피크 ≤ −1 dBTP.
-  시각은 lib/cue.js 가 단일 출처(tools/timing.py 로 읽는다). 챕터·컷·효과음 표는 beats/cuts-30.json / cuts-15.json 에도 저장.
-
-음악 편집 v6 — 곡 그대로, 무음·페이드·필터·덕킹·피치 변화 없음 (P = 1박 = 60/125.03 s, 소스 다운비트 1.007 + 4P·k):
-  30s  A  src 1.007→   v 0.000–10.557 (22P)   정수 박자 R 에서 B 로 이음 (반 마디 짧은 마디). R = B 의 다운비트(🙂 책임 넘김)
-       B  src 12.524→  v 10.557–25.914 (32P)  14.396 = src 16.363 B섹션 크래시 = 오프닝 윈도우 중간점(상담사 답 ①), 18.236/22.075 = 답 ②/근거
-       C  src 29.800→  v 25.914–30.000        B→C 는 마디선끼리(원곡 27.881→29.8, 1마디 건너뜀). 27.833 = src 31.719 마지막 크래시, 29.65–30.0 엔딩 페이드 0.35 s
-  15s  A  src 1.007→   v 0.000–6.718 (14P)
-       B  src 14.443→  v 6.718–10.557 (8P)    6.718 = B 의 다운비트, 8.638 = src 16.363 크래시
-       C  src 29.800→  v 10.557–15.000        12.477 = src 31.719 마지막 크래시, 14.6–15.0 엔딩 페이드 0.4 s
-  이음새는 6 ms 등전력 크로스페이드(겹치는 구간에서 앞은 cos, 뒤는 sin). 뒤 구간은 다운비트 6 ms 앞부터 깔아 다운비트가 온전한 게인으로 온다.
-  R 이 정수 박자라 A·B·C 의 박 그리드가 하나로 이어진다.
+  assets/music/source.mp3 를 원곡 다운비트 3.239 s 부터 30 s / 15 s 그대로 쓴다(이음새 0, 첫 프레임부터 음악, 원곡 뒤 10 s 의 큰 구간 미사용).
+  무음·페이드·필터·덕킹·피치 변화 없음, 끝 0.3 s 페이드만. 두 스템에 같은 게인 + 룩어헤드 피크 리미터(샘플 피크 −1.5 dBFS)
+  → 합 −15 LUFS(±0.1), 트루피크 ≤ −1 dBTP. 시각은 lib/cue.js (tools/timing.py). 결과 표: beats/cuts-30.json / cuts-15.json.
+  효과음: 폰 안 셋째 덩어리 입력 탭(1.2 s), 질문 전송 탭(마디 2 직전). 음악 RMS −20 dB, 그림보다 1프레임 늦게.
 """
 import json
 import os
@@ -47,27 +37,18 @@ def src_downbeat(t):
 # 챕터 = 다운비트(1마디 BAR). A 구간 다운비트 = k·BAR, B·C 구간 = R + k·BAR (R = 첫 구간의 끝 = 두 번째 구간의 다운비트).
 # cuts = 실제 화면이 갈리는 지점: 하드컷(30s C9, 15s C6) + 시그니처 오프닝 윈도우의 중간점(가장 빠른 순간 = 크래시).
 def cues(cut):
+    """v7: 음악은 원곡 다운비트 3.239 s 부터 한 구간 그대로(이음새 없음), 끝 0.3 s 페이드만."""
     x = cue(cut)
-    BAR, R, WIN, CS = x["BAR"], x["R"], x["WIN"], x["CS"]
+    dur = float(x["END"])
     if cut == 30:
-        chapters = {"hook": 0.0, "send": x["C2"], "lead": x["C2b"], "key": x["C3"], "hand": x["HAND"],
-                    "S1": x["BR"], "S2": x["S2"], "S3": x["S3"], "S4": x["S4"], "end": 30.0}
-        cuts = {"open_mid": WIN + 0.6}
-        music = [
-            {"v0": 0.0, "v1": R, "src": DB0},
-            {"v0": R, "v1": CS, "src": src_downbeat(12.524)},
-            {"v0": CS, "v1": 30.0, "src": src_downbeat(29.8), "fade": 0.35},
-        ]
+        chapters = {"hook": 0.0, "jump": x["JUMP"], "dive": x["DIVE"], "lead": x["LEAD"], "key": x["KEY"], "hand": x["HAND"],
+                    "world": x["WORLD"], "ans2": x["ANS2"], "dip1": x["DIP1"], "dip2": x["DIP2"], "flood": x["FLOOD"], "end": dur}
+        cuts = {"jump": x["JUMP"], "dive": x["DIVE"], "world_lands": x["WORLD"], "dip1": x["DIP1"], "dip2": x["DIP2"], "flood": x["FLOOD"]}
     else:
-        chapters = {"hook": 0.0, "send": x["C2"], "hand": x["HAND"], "S1": x["BR"], "C6": x["C6"], "end": 15.0}
-        cuts = {"open_mid": WIN + 0.6, "C6": x["C6"]}
-        music = [
-            {"v0": 0.0, "v1": R, "src": DB0},
-            {"v0": R, "v1": CS, "src": src_downbeat(14.443)},
-            {"v0": CS, "v1": 15.0, "src": src_downbeat(29.8), "fade": 0.4},
-        ]
-    return {"dur": float(x["END"]), "R": R, "brand": x["BR"], "win": WIN, "send": x["SEND"], "press": x["PRESS"],
-            "chapters": chapters, "cuts": cuts, "music": music}
+        chapters = {"hook": 0.0, "jump": x["JUMP"], "dive": x["DIVE"], "world": x["WORLD"], "dip2": x["DIP2"], "flood": x["FLOOD"], "end": dur}
+        cuts = {"jump": x["JUMP"], "dive": x["DIVE"], "world_lands": x["WORLD"], "dip2": x["DIP2"], "flood": x["FLOOD"]}
+    music = [{"v0": 0.0, "v1": dur, "src": x["IN"], "fade": 0.3}]
+    return {"dur": dur, "R": None, "send": x["TAP2"], "press": x["TAP1"], "chapters": chapters, "cuts": cuts, "music": music}
 
 
 # ------------------------------------------------------------------ 입출력
@@ -175,8 +156,8 @@ def build_sfx(c, music):
         buf[i : i + len(sig)] += sig[:, None]
         cue_list.append({"t": round(t, 3), "sfx": name, "rel_db": REL_DB, "music_rms_dbfs": round(20 * np.log10(m_rms), 1)})
 
-    place_rel(c["send"], "질문 전송 탭")  # 보내기 누름 (입력 시트가 접히기 직전)
-    place_rel(c["press"], "[상담사 연결] 누름 탭")
+    place_rel(c["press"], "셋째 덩어리 입력 탭")  # 폰 안 질문 마지막 덩어리
+    place_rel(c["send"], "질문 전송 탭")  # 질문이 폰에서 튀어 오르기 직전
     return buf, cue_list
 
 
@@ -203,7 +184,7 @@ def main():
     os.makedirs(out, exist_ok=True)
     suffix = "-15s" if cut == 15 else ""
     tmp = os.path.join(out, "_mix_tmp.wav")
-    target, ceiling = -15.0, 10 ** (-1.7 / 20)
+    target, ceiling = -15.0, 10 ** (-1.5 / 20)
     gain = 0.6
     for _ in range(10):
         raw = (music + sfx) * gain
@@ -219,8 +200,7 @@ def main():
     write_wav(tmp, (music + sfx) * gain * g)
     i_lufs, tp = measure(tmp)
     os.remove(tmp)
-    rec = {"cut": cut, "bpm": BEATS["bpm"], "beat_period": P, "R": round(c["R"], 4), "brand": round(c["brand"], 4),
-           "win": round(c["win"], 4),
+    rec = {"cut": cut, "bpm": BEATS["bpm"], "beat_period": P, "in_point_src": c["music"][0]["src"],
            "chapters": {k: round(v, 4) for k, v in c["chapters"].items()},
            "cuts": {k: round(v, 4) for k, v in c["cuts"].items()},
            "sfx": sfx_cues,

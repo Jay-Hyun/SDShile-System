@@ -1,114 +1,119 @@
 {
  "variant": "30",
- "offset": 8.789,
- "bpm": 137.023,
+ "offset": 1.765,
+ "bpm": 119.969,
  "cuts": [
   {
-   "t": 3.506,
-   "frame": 105,
-   "label": "S2 cards",
-   "beat": 8,
+   "t": 8.0,
+   "frame": 240,
+   "label": "S2 box -> world (pen insert)",
+   "beat": 16,
+   "off_frames": 0.39,
    "downbeat": true
   },
   {
-   "t": 10.507,
-   "frame": 315,
-   "label": "S3 signature field",
-   "beat": 24,
+   "t": 10.0,
+   "frame": 300,
+   "label": "S3 hard cut on the pen touch: paper world, You stroke",
+   "beat": 20,
+   "off_frames": 0.48,
    "downbeat": true
   },
   {
-   "t": 15.754,
-   "frame": 473,
-   "label": "S4 benefit",
+   "t": 14.0,
+   "frame": 420,
+   "label": "S4 dip cut: living-room table",
+   "beat": 28,
+   "off_frames": 0.3,
+   "downbeat": true
+  },
+  {
+   "t": 18.0,
+   "frame": 540,
+   "label": "S5 dip cut: stairs + USP card",
    "beat": 36,
+   "off_frames": 0.48,
    "downbeat": true
   },
   {
-   "t": 22.767,
-   "frame": 683,
-   "label": "S5 USP",
-   "beat": 52,
+   "t": 22.0,
+   "frame": 660,
+   "label": "S6 Navy flood: end card",
+   "beat": 44,
+   "off_frames": 0.33,
    "downbeat": true
-  },
-  {
-   "t": 27.155,
-   "frame": 815,
-   "label": "S6 end card",
-   "beat": 62,
-   "downbeat": false
   }
  ],
  "moves": [
   {
-   "t": 3.586,
-   "label": "S2 career cards"
+   "t": 0,
+   "label": "S1 push 1.00->1.06"
   },
   {
-   "t": 7.057,
-   "label": "S2 caption 2 + build"
+   "t": 2.0,
+   "label": "S1 pan -50px; entry 1 prints"
   },
   {
-   "t": 12.248,
-   "label": "S3 signature stroke (biggest hit)"
+   "t": 4.967,
+   "label": "S1 caption swap"
   },
   {
-   "t": 13.448,
-   "label": "S3 sentence"
+   "t": 10.0,
+   "label": "S3 You stroke (pen sfx)"
   },
   {
-   "t": 19.261,
-   "label": "S4 earned credits turn gold (2nd hit)"
+   "t": 15.733,
+   "label": "S4 line 2"
   },
   {
-   "t": 22.807,
-   "label": "S5 stack"
+   "t": 18.1,
+   "label": "S5 card mask reveal"
   },
   {
-   "t": 27.405,
-   "label": "S6 phone"
+   "t": 24.3,
+   "label": "S6 CTA block (tap sfx)"
   }
  ],
  "sfx": [
   {
-   "t": 12.248,
+   "t": 10.0,
    "kind": "pen"
   },
   {
-   "t": 27.155,
+   "t": 24.3,
    "kind": "tap"
   }
  ],
  "scenes": [
   {
-   "id": "hook",
+   "id": "resume",
    "start": 0,
-   "duration": 3.506
+   "duration": 8.7
   },
   {
-   "id": "cards",
-   "start": 3.506,
-   "duration": 7.001
+   "id": "pen",
+   "start": 8.0,
+   "duration": 2.0
   },
   {
    "id": "sign",
-   "start": 10.507,
-   "duration": 5.247
+   "start": 10.0,
+   "duration": 4.0
   },
   {
    "id": "benefit",
-   "start": 15.754,
-   "duration": 7.013
+   "start": 14.0,
+   "duration": 4.0
   },
   {
    "id": "usp",
-   "start": 22.767,
-   "duration": 4.388
+   "start": 18.0,
+   "duration": 6.067
   },
   {
    "id": "end",
-   "start": 27.155,
-   "duration": 2.845
+   "start": 22.0,
+   "duration": 8.0
   },
   {
    "id": "legal",

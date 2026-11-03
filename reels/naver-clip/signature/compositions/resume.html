@@ -1,0 +1,149 @@
+<template>
+  <style>
+    /* v7 look (docs/ads/naver-clip/04-v7-visual.md §1): daylight paper and ink + photographs. One axis at
+       x=540, four type sizes, no ornament (no shadow, glow, gradient, dim overlay, blur on photos).
+       Shared by every scene; generated into each composition. */
+    @font-face {
+      font-family: "PretendardGOV";
+      src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
+      font-weight: 45 930;
+    }
+    #root {
+      --ink: #0e1116;
+      --paper: #f7f6f2;
+      --navy: #0b1a33;
+      --gold: #b8955a;
+      --mute-d: #9aa0a6;   /* secondary text on Navy */
+      --mute-l: #5f6368;   /* secondary text on paper / photos */
+      --pre: #c9c3b6;      /* a word before it is inked (grey -> ink sweep) */
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: "PretendardGOV", sans-serif;
+      word-break: keep-all;
+      font-kerning: normal;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    .field { position: absolute; inset: 0; }
+    /* the paper world: a real paper texture photograph (assets/img/B-02-paper.jpg), never a CSS grain */
+    .paper { position: absolute; background: #f3ead9 url("assets/img/B-02-paper.jpg") 0 0 / 1080px 1920px no-repeat; }
+    .plate { position: absolute; display: block; max-width: none; }
+    .cam { position: absolute; inset: 0; }
+
+    /* the only text container: full 840px measure between symmetric 120px margins, centred */
+    .row { position: absolute; left: 120px; width: 840px; text-align: center; margin: 0; }
+
+    .t-display { font-size: 144px; font-weight: 700; letter-spacing: -0.045em; line-height: 1.05; }
+    .t-head    { font-size: 88px;  font-weight: 600; letter-spacing: -0.03em;  line-height: 1.15; }
+    .t-body    { font-size: 44px;  font-weight: 500; letter-spacing: -0.01em;  line-height: 1.4; }
+    .t-small   { font-size: 26px;  font-weight: 400; letter-spacing: 0;        line-height: 1.4; }
+
+    /* masked line (used twice per film): each line rises from behind its own baseline */
+    .ln { display: block; overflow: hidden; padding: 0.1em 0 0.14em; margin: -0.1em 0 -0.14em; }
+    .li { display: block; }
+    /* trailing letter-spacing pushes centred ink right by half the tracking: pad half of it back */
+    .t-display .li { padding-right: 0.0225em; }
+    .t-head .li { padding-right: 0.015em; }
+    .t-body .li { padding-right: 0.005em; }
+    .rise .li { opacity: 0; transform: translateY(110%); }
+    .w { display: inline-block; white-space: pre; }
+    .wb .w { opacity: 0; }                 /* per-word blur-in: starts hidden */
+    .sw .w { color: var(--pre); }          /* grey -> ink sweep: starts grey */
+    .later { opacity: 0; }
+
+    .au { color: var(--gold); }
+    .ink { color: var(--ink); }
+    .on-navy { color: var(--paper); }
+    .m-d { color: var(--mute-d); }
+    .m-l { color: var(--mute-l); }
+
+    .rule { position: absolute; height: 3px; background: currentColor; }
+    .caret { position: absolute; width: 4px; background: currentColor; }
+    .sv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+    /* logo lockup: gold mark (62px high) + 18px gap + name (Body 44 / 600), centred on x=540 as one unit */
+    .lock { height: 62px; display: flex; align-items: center; justify-content: center; }
+    .lockrow { display: flex; align-items: center; gap: 18px; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; padding-right: 0.01em; color: var(--paper); }
+    .lmark { display: block; width: 56px; height: 62px; background: var(--gold); -webkit-mask: url("assets/img/mark-gold.svg") center / contain no-repeat; mask: url("assets/img/mark-gold.svg") center / contain no-repeat; }
+    /* full-width footer field, y 1580-1920, one tone off the ground */
+    .dock { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; }
+
+    #root { background: transparent; }
+
+    #r-band { left: 0; top: 0; width: 1080px; height: 640px; }
+    #r-pan { position: absolute; inset: 0; }
+    #r-push { position: absolute; inset: 0; transform-origin: 540px 640px; }
+    .ent { display: inline-block; position: relative; }
+    .ok { position: absolute; left: calc(100% + 16px); top: 50%; width: 40px; height: 40px; margin-top: -20px; overflow: visible; }
+    .ok path { fill: none; stroke: #b8955a; stroke-width: 2.8; stroke-linecap: square; }
+
+  </style>
+  <div id="root" data-composition-id="resume" data-width="1080" data-height="1920">
+    <div id="r-cam" data-layout-allow-overflow>
+      <div id="r-pan" data-layout-allow-overflow>
+        <div id="r-push" data-layout-allow-overflow>
+          <img id="r-plate" class="plate" src="assets/img/B-01-resume-desk.jpg" alt="" style="left:-275.4px;top:-68px;width:1420.4px;height:1988.6px">
+          <div id="r-e0" class="row t-body ink" style="top:718.4px"><span class="ln" style="overflow:visible"><span class="li"><span id="r-p0" class="ent" style="opacity:0">영업관리 팀장 · 8년<svg class="ok" viewBox="0 0 24 24" data-gold><path id="r-k0" d="M4.5 12.5l4.6 4.6L19.5 6.8" style="opacity:0"/></svg></span></span></span></div><div id="r-e1" class="row t-body ink" style="top:791.4px"><span class="ln" style="overflow:visible"><span class="li"><span id="r-p1" class="ent" style="opacity:0">현장 운영 총괄 · 5년<svg class="ok" viewBox="0 0 24 24" data-gold><path id="r-k1" d="M4.5 12.5l4.6 4.6L19.5 6.8" style="opacity:0"/></svg></span></span></span></div><div id="r-e2" class="row t-body ink" style="top:861.8px"><span class="ln" style="overflow:visible"><span class="li"><span id="r-p2" class="ent" style="opacity:0">고객 상담 리더 · 2년<svg class="ok" viewBox="0 0 24 24" data-gold><path id="r-k2" d="M4.5 12.5l4.6 4.6L19.5 6.8" style="opacity:0"/></svg></span></span></span></div>
+          <div id="r-car" class="caret ink" style="left:538px;top:974.0px;height:52px;opacity:0"></div>
+        </div>
+      </div>
+    </div>
+    <div id="r-band" class="paper" data-paper></div>
+    <div id="r-h1" class="row t-display ink" style="top:215px;"><span class="ln"><span id="r-h1-0" class="li"><span class="w">15년</span> <span class="w">경력.</span></span></span></div>
+    <div id="r-h2" class="row t-head ink" data-layout-allow-overlap style="top:390px;"><span class="ln"><span id="r-h2-0" class="li"><span class="w">이력서</span> <span class="w">첫</span> <span class="w">줄에서</span></span></span><span class="ln"><span id="r-h2-1" class="li"><span class="w">멈췄습니다.</span></span></span></div>
+    <div id="r-c1" class="row t-head ink wb" data-layout-allow-overlap style="top:303px;"><span class="ln"><span id="r-c1-0" class="li"><span class="w">경력은</span> <span class="w">증명됐습니다.</span></span></span></div>
+    <div id="r-c2" class="row t-head ink sw" data-layout-allow-overlap style="top:404px;"><span class="ln"><span id="r-c2-0" class="li"><span class="w">학력</span> <span class="w">칸만</span> <span class="w">남았어요.</span></span></span></div>
+  </div>
+  <script>
+  (function () {
+
+    const tl = anime.createTimeline({ autoplay: false });
+    const ms = (s) => Math.round(s * 1000);
+    const EXPO = anime.cubicBezier(0.16, 1, 0.3, 1);            // arrivals: long tail
+    const INOUT2 = anime.cubicBezier(0.45, 0, 0.55, 1);         // camera, colour flood (power2.inOut)
+    const INOUT = anime.cubicBezier(0.76, 0, 0.24, 1);          // object -> world, line drawing
+    const IN3 = anime.cubicBezier(0.32, 0, 0.67, 0);            // exits accelerate (power3.in)
+    const OUT = anime.cubicBezier(0.22, 1, 0.36, 1);
+    function A(t, sel, props, dur, ease) { tl.add(sel, Object.assign({ duration: Math.max(1, ms(dur)), ease: ease || OUT }, props), ms(t)); }
+    function S(t, sel, props) { tl.set(sel, props, ms(t)); }
+    // masked line rise (800 ms expo-out, 90 ms between lines) -- used twice per film
+    function RISE(t, sels) { sels.forEach((s, i) => { S(t + i * 0.09, s, { opacity: 1 }); A(t + i * 0.09, s, { translateY: ["110%", "0%"] }, 0.8, EXPO); }); }
+    // per-word blur-in: blur 6px -> 0 and opacity 0 -> 1 in 0.13 s, 67 ms apart, no translate
+    function WB(t, sel) { tl.add(sel + " .w", { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 130, delay: anime.stagger(67), ease: OUT }, ms(t)); }
+    // per-word exit: blur-out and fade, 0.18 s, 40 ms apart
+    function WOUT(t, sel) { tl.add(sel + " .w", { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 180, delay: anime.stagger(40), ease: IN3 }, ms(t)); }
+    // grey -> ink sweep, 85 ms apart
+    function SW(t, sel, to) { tl.add(sel + " .w", { color: ["#c9c3b6", to], duration: 120, delay: anime.stagger(85), ease: OUT }, ms(t)); }
+    // ink printing into a box: a left -> right clip reveal
+    function PRINT(t, sel) { S(t, sel, { opacity: 1 }); A(t, sel, { clipPath: ["inset(0px 100% 0px 0px)", "inset(0px 0% 0px 0px)"] }, 0.45, EXPO); }
+    function CARET(sel, t0, t1) { let on = true; for (let t = t0; t < t1 - 1e-6; t += 0.5) { S(t, sel, { opacity: on ? 1 : 0 }); on = !on; } }
+    function DRAW(t0, t, sel, dur, ease) {
+      const d = anime.svg.createDrawable(sel);
+      S(t0, d, { draw: "0 0" });
+      S(t, sel, { opacity: 1 });
+      A(t, d, { draw: ["0 0", "0 1"] }, dur, ease || INOUT);
+    }
+    // dip cut: the outgoing frame darkens ~40% for its last 3 frames
+    function DIP(tEnd, sel) { S(tEnd - 0.1, sel, { opacity: 0.4 }); }
+
+
+    const T = {"push1": 2.0, "prints": [2.0, 2.9667, 3.9667], "caret": 3.9667, "out": 4.7333, "c1": 4.9667, "c2": 5.1667, "end": 8.0};
+    // hero move 1: push 1.00 -> 1.06 over bar 1; hero move 2: pan 50px down the page over the rest of the shot
+    A(0, "#r-push", { scale: [1, 1.06] }, T.push1, INOUT2);
+    A(T.push1, "#r-pan", { translateY: [0, -50] }, T.end - T.push1, INOUT2);
+    T.prints.forEach((t, i) => {
+      if (t > 0) { PRINT(t, "#r-p" + i); DRAW(0, t + 0.3, "#r-k" + i, 0.35, OUT); }
+      else { S(0, "#r-p" + i, { opacity: 1 }); S(0, "#r-k" + i, { opacity: 1 }); }   // 15s: already printed at frame 0
+    });
+    CARET("#r-car", T.caret, T.end + 0.7);
+    WOUT(T.out, "#r-h1"); WOUT(T.out, "#r-h2");
+    WB(T.c1, "#r-c1");
+    S(T.c2, "#r-c2 .w", { opacity: 1 });
+    S(0, "#r-c2", { opacity: 0 }); S(T.c2, "#r-c2", { opacity: 1 });
+    SW(T.c2, "#r-c2", "#0e1116");
+
+    window.__hfAnime = window.__hfAnime || [];
+    window.__hfAnime.push(tl);
+  })();
+  </script>
+</template>

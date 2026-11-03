@@ -43,17 +43,19 @@ def sub(s, old, new):
 
 def main():
     os.makedirs(V15, exist_ok=True)
+    for old in ("chat.html", "brand.html"):
+        p = os.path.join(V15, "compositions", old)
+        if os.path.exists(p):
+            os.remove(p)
     link("assets")
     link("lib")
-    for name in ("chat.html", "brand.html", "legal.html"):
+    for name in ("phone.html", "world.html", "legal.html"):
         wr("compositions/" + name, sub(rd("compositions/" + name), "const CUT = 30;", "const CUT = 15;"))
 
     s = rd("index.html")
     s = sub(s, 'src="assets/audio/bgm.wav"', 'src="assets/audio/bgm-15s.wav"')
     s = sub(s, 'src="assets/audio/sfx.wav"', 'src="assets/audio/sfx-15s.wav"')
-    s = sub(s, "<!-- 엔진:", "<!-- 15초판: tools/build_15s.py 가 생성 — 직접 고치지 말 것 -->\n      <!-- 엔진:")
-    s = sub(s, "C1–C6 가상 챗봇 화면", "C1–C4 가상 챗봇 화면")
-    s = sub(s, "C7–C9 상담 화면 · 엔드 시퀀스", "C5–C6 상담 화면 · 엔드카드")
+    s = sub(s, "<!-- v7 편 A", "<!-- 15초판: tools/build_15s.py 가 생성 — 직접 고치지 말 것 -->\n      <!-- v7 편 A")
     wr("index.html", s)
     for f in ("hyperframes.json",):
         wr(f, rd(f))

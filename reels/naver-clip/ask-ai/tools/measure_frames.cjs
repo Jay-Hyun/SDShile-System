@@ -46,6 +46,8 @@ function collect() {
     }
     if (op < 0.05) return null;
     let r = el.getBoundingClientRect();
+    // v7: 사진 속 폰 화면(배율 ≈ 0.27)에 합성된 축소 UI 는 측정하지 않는다 (축소 배율 < 0.5)
+    if (el.offsetWidth > 0 && r.width / el.offsetWidth < 0.5) return null;
     let box = { l: r.left, t: r.top, r: r.right, b: r.bottom };
     const inset = (n) => {
       // clip-path: inset(t r b l ...) — 오프닝 윈도우, 말풍선 줄 단위 공개, 입력창이 위로 자라는 모양
@@ -130,12 +132,29 @@ function collect() {
   const maxGap = gaps.reduce((m, g) => (g.gap > m.gap ? g : m), { gap: 0, from: "-", to: "-", y: 0 });
   // 로고 락업: 브랜드 프레임마다 심볼 + 기관명이 한 줄로 보이고 락업 전체 중심이 x=540 인지
   let logo = null;
-  const lr = document.querySelector("#br-logo-row"), lm = document.querySelector("#br-mark");
+  const lr = document.querySelector("#w-logo-row") || document.querySelector("#br-logo-row"), lm = document.querySelector("#w-mark") || document.querySelector("#br-mark");
   if (lr && lm && vis(lr)) {
     const a = lr.getBoundingClientRect(), m = lm.getBoundingClientRect();
     const name = lr.lastElementChild.getBoundingClientRect();
     logo = { cx: +((a.left + a.right) / 2).toFixed(2), mark: Math.round(m.width) + "×" + Math.round(m.height), gapMarkName: +(name.left - m.right).toFixed(1), sameRow: Math.abs((m.top + m.bottom) / 2 - (name.top + name.bottom) / 2) < 3 };
   }
+  // v7: 골드 면적 (디자인 요소만, 사진 제외): 골드 글자 박스 + 골드 선(SVG 경로 bbox, 최소 두께 = 선 굵기) + 골드 면(락업 심볼)
+  let goldA = 0;
+  const GOLD = "rgb(184, 149, 90)";
+  document.querySelectorAll("body *").forEach((el) => {
+    const cs = getComputedStyle(el);
+    let hit = false;
+    if (cs.color === GOLD && directText(el)) hit = true;
+    if (cs.backgroundColor === GOLD) hit = true;
+    if (el.tagName === "path" && (cs.stroke === GOLD || el.getAttribute("stroke") === "#b8955a")) hit = true;
+    if (!hit) return;
+    const v = vis(el.tagName === "path" ? el.closest("svg") : el);
+    if (!v) return;
+    const r = el.getBoundingClientRect();
+    const sw = el.tagName === "path" ? parseFloat(cs.strokeWidth) || 3 : 0;
+    goldA += Math.max(r.width, sw) * Math.max(r.height, sw);
+  });
+  const goldPct = +((100 * goldA) / (W * H)).toFixed(2);
   // 모든 id 요소의 보이는 위치 (걷기·건너뛰기 비교용)
   const pos = {};
   document.querySelectorAll("[id]").forEach((el) => {
@@ -143,7 +162,7 @@ function collect() {
     const v = vis(el);
     if (v) pos[el.id] = [Math.round(v.box.t), Math.round(v.box.l)];
   });
-  return { centred, cols, sizes, stray, gaps, maxGap, logo, pos };
+  return { centred, cols, sizes, stray, gaps, maxGap, logo, pos, goldPct };
 }
 
 // 스크린샷(PNG base64)을 빈 페이지 canvas 로 풀어, 바탕색(최빈색)과 다른 픽셀이 없는 행의 최장 연속 구간을 잰다
@@ -174,7 +193,15 @@ function emptyBand(b64) {
         run = empty ? run + 1 : 0;
         if (run > best) { best = run; bestEnd = y; }
       }
-      resolve({ px: best, from: bestEnd - best + 1, to: bestEnd + 1, pct: +((100 * best) / h).toFixed(1) });
+      // v7: 어두운 픽셀 비율(루마 < 25% = 64/255)과 골드 면적(#B8955A 근처, 맨해튼 거리 < 60)
+      let dark = 0, gold = 0, n = 0;
+      for (let y = 0; y < h; y += 2) for (let x = 0; x < w; x += 2) {
+        const i = (y * w + x) * 4, r = data[i], g = data[i + 1], b = data[i + 2];
+        n++;
+        if (0.2126 * r + 0.7152 * g + 0.0722 * b < 64) dark++;
+        if (Math.abs(r - 184) + Math.abs(g - 149) + Math.abs(b - 90) < 60) gold++;
+      }
+      resolve({ px: best, from: bestEnd - best + 1, to: bestEnd + 1, pct: +((100 * best) / h).toFixed(1), dark: +((100 * dark) / n).toFixed(1), gold: +((100 * gold) / n).toFixed(2) });
     };
     img.src = "data:image/png;base64," + b64;
   });
@@ -245,13 +272,13 @@ async function run(browser, decoder, walk) {
     lines.push(`| ${f.t} | ${c.el} | ${c.text} | ${c.w} | ${c.L} | ${c.R} | ${c.dx >= 0 ? "+" : ""}${c.dx} |`);
   }
   lines.push("");
-  lines.push("| t (s) | max gap between adjacent blocks (px) | between (y) | ≤ 140 | largest empty band (rows y) | px | % of 1920 | ≤ 15% |");
-  lines.push("|---|---|---|---|---|---|---|---|");
+  lines.push("| t (s) | max gap between adjacent blocks (px) | between (y) | ≤ 140 | largest empty band (rows y) | px | % of 1920 | ≤ 15% | dark px % (≤40 before end card) | gold design area % (≤5) |");
+  lines.push("|---|---|---|---|---|---|---|---|---|---|");
   let worstGap = 0, worstBand = 0;
   for (const f of out) {
     worstGap = Math.max(worstGap, f.maxGap.gap);
     worstBand = Math.max(worstBand, f.band.pct);
-    lines.push(`| ${f.t} | ${f.maxGap.gap} | ${f.maxGap.from} → ${f.maxGap.to} (${f.maxGap.y}) | ${f.maxGap.gap <= 140 ? "✓" : "✗"} | ${f.band.from}–${f.band.to} | ${f.band.px} | ${f.band.pct} | ${f.band.pct <= 15 ? "✓" : "✗"} |`);
+    lines.push(`| ${f.t} | ${f.maxGap.gap} | ${f.maxGap.from} → ${f.maxGap.to} (${f.maxGap.y}) | ${f.maxGap.gap <= 140 ? "✓" : "✗"} | ${f.band.from}–${f.band.to} | ${f.band.px} | ${f.band.pct} | ${f.band.pct <= 15 ? "✓" : "✗"} | ${f.band.dark} | ${f.goldPct} |`);
   }
   const brandFrames = out.filter((f) => f.logo);
   lines.push("");
