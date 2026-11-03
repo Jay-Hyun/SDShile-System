@@ -29,7 +29,7 @@ import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 mp4, V = sys.argv[1], sys.argv[2]
 OFFSET = {"30": 8.789, "15": 15.796}[V]
-CENTRE_FRAMES = {"30": [415, 628, 816, 894], "15": [36, 243, 366, 444]}[V]
+CENTRE_FRAMES = {"30": [45, 255, 435, 615, 750, 885], "15": [45, 150, 300, 390, 438]}[V]
 FPS = 30
 W, H = 160, 284
 
@@ -140,7 +140,7 @@ for g in groups:
 tmpd = tempfile.mkdtemp(prefix="verify-")
 times = ",".join(f"{f / FPS:.6f}" for f in CENTRE_FRAMES)
 env = dict(os.environ, NODE_PATH=subprocess.run(["npm", "root", "-g"], capture_output=True, text=True).stdout.strip())
-subprocess.run(["node", os.path.join(ROOT, "tools", "measure.cjs"), "--variant", V, "--at", times, "--json",
+subprocess.run(["node", os.path.join(ROOT, "tools", "measure.cjs"), "--variant", V, "--no-reading", "--at", times, "--json",
                 os.path.join(tmpd, "m.json"), "--shots", tmpd], env=env, capture_output=True, check=False)
 dom = json.load(open(os.path.join(tmpd, "m.json")))["report"]
 centring = []
