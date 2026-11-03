@@ -125,7 +125,7 @@
     mv.querySelectorAll("img, #sig").forEach((el) => { el.style.position = "absolute"; el.style.left = l + "px"; el.style.top = t + "px"; el.style.width = w + "px"; el.style.height = h + "px"; });
     // soften the drawing's straight top edge into the paper (user request): fade from 40 px above the edge to 160 px below
     if (kmax !== 1) {
-      const img = mv.querySelector("img"); const a = Math.round(start * k - 40), b = a + 200;
+      const img = mv.querySelector("img"); const a = Math.round(start * k - 60), b = a + 320;
       const m = "linear-gradient(to bottom, transparent 0px, transparent " + a + "px, #000 " + b + "px)";
       img.style.webkitMaskImage = m; img.style.maskImage = m;
     }
