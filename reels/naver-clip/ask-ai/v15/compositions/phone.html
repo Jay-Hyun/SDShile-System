@@ -5,45 +5,49 @@
       src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
       font-weight: 45 930;
     }
-    /* v7.2 편 A — 훅 + 디바이스 다이브 + 가상 챗봇 (04-v7-visual.md §2 마디 1–7, 리드 리뷰 v7A 반영).
-       세계 1: 퇴근 버스 창가, 손에 든 폰(사진 A-01, 연출). 사진 속 빈 화면(261×580 src px, 8° 기울기)에 가상 챗봇 UI(605×1344)를 합성한다.
-       #ph-rig = 사진 + 화면을 함께 움직이는 카메라(원점 = 화면 중심 src 604, 878). 마디 3 다이브 = 푸시 인 + 롤 −8°:
-       화면이 똑바로 서서 605×1344(프레임 y 230–1574)가 되고, 손·창·버스는 화면 둘레에 남는다(사진 세계를 떠나지 않는다).
-       채팅은 화면 안에서만: 사용자 Body 44, AI 답·핸드오프 Head 88. 점 말풍선 160×90 이 내용에 맞게 자란다(clip). 입력 독 없음.
-       종이 Paper #F7F6F2, Ink #0E1116, 골드는 '법적 책임' 밑줄 한 줄. 크기 144/88/44/26. 그림자·그라데이션·딤·사진 블러 없음. */
-    #root { position: absolute; inset: 0; overflow: hidden; background: var(--color-paper, #f7f6f2); color: var(--color-ink, #0e1116); font-family: "PretendardGOV", sans-serif; word-break: keep-all; }
+    /* v7.3 편 A — 훅 + 디바이스 다이브 + 가상 챗봇 (04-v7-visual.md 부록 D: 광고주 랜딩 문법).
+       왼쪽 정렬 x = 84 (칼럼 84–996). 아이브로 30/600 #7D6233 → 리드 64/500 #7D6233 → 헤드 120/700 #161616 (1.12, −0.04em) → 본문 40/400 #6B6660.
+       세계 1: 퇴근 버스 창가, 손에 든 폰(A-01, 풀블리드). 사진 속 빈 화면(261×580 src px, 8°)에 가상 챗봇 UI(605×1344)를 합성.
+       마디 2: 아래쪽 풀폭 샌드 #F3EEE3 패널이 올라오고(와이프) 질문이 그 위에 왼쪽 정렬로 앉는다. 폰은 위로.
+       마디 3 다이브 = 푸시 인 + 롤 −8°: 화면이 똑바로 605×1344(프레임 y 230–1574), 손·창·버스는 둘레에 남는다.
+       채팅은 화면 안: 사용자 Body 40, AI 답·핸드오프 Head 64, 말풍선 안 글은 왼쪽 정렬. 점 말풍선 160×90 이 내용에 맞게 자란다. 입력 독 없음.
+       그림자·그라데이션·딤·사진 블러 없음. 장식 = 패널 오른쪽 동심원 다이얼 선화(1.5 px, #7D6233 40 %)만. */
+    #root { position: absolute; inset: 0; overflow: hidden; background: #fbf9f4; color: #161616; font-family: "PretendardGOV", sans-serif; word-break: keep-all; }
     #ph-cam { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     #ph-rig { position: absolute; left: 0; top: 0; width: 1152px; height: 2048px; transform-origin: 604px 890px; }
     #ph-plate { position: absolute; left: 0; top: 0; width: 1152px; height: 2048px; display: block; }
-    #ph-scr { position: absolute; left: 301.5px; top: 218px; width: 605px; height: 1344px; transform-origin: 302.5px 672px; transform: rotate(8deg) scale(0.4314); clip-path: inset(0px round 67px); background: var(--color-paper, #f7f6f2); overflow: hidden; }
-    #ph-hd { position: absolute; left: 0; top: 72px; width: 605px; height: 62px; display: flex; justify-content: center; }
-    #ph-hd-row { display: flex; align-items: center; gap: 14px; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; }
+    #ph-scr { position: absolute; left: 301.5px; top: 218px; width: 605px; height: 1344px; transform-origin: 302.5px 672px; transform: rotate(8deg) scale(0.4314); clip-path: inset(0px round 67px); background: #fbf9f4; overflow: hidden; }
+    #ph-hd { position: absolute; left: 28px; top: 76px; height: 60px; display: flex; align-items: center; }
+    #ph-hd-row { display: flex; align-items: center; gap: 14px; font-size: 40px; line-height: 60px; font-weight: 700; letter-spacing: -0.02em; }
     #ph-hd svg { width: 44px; height: 44px; display: block; }
     #ph-th { position: absolute; left: 28px; top: 0; width: 549px; height: 1344px; }
-    .b { position: absolute; left: 0; width: 549px; border-radius: 36px; text-align: center; overflow: hidden; }
-    .u { background: var(--color-ink, #0e1116); color: var(--color-paper, #f7f6f2); padding: 28px 32px; font-size: 44px; line-height: 62px; font-weight: 500; letter-spacing: -0.01em; }
-    .a { background: #eae7df; color: var(--color-ink, #0e1116); padding: 32px 24px; }
-    .hd { font-size: 88px; line-height: 101px; font-weight: 600; letter-spacing: -0.03em; }
-    .u.hd { padding: 32px 24px; font-size: 88px; line-height: 101px; font-weight: 600; letter-spacing: -0.03em; }
+    .b { position: absolute; left: 0; width: 549px; border-radius: 32px; text-align: left; overflow: hidden; }
+    .u { background: #161616; color: #fbf9f4; padding: 24px 28px; font-size: 40px; line-height: 60px; font-weight: 400; letter-spacing: -0.01em; }
+    .a { background: #f3eee3; color: #161616; padding: 28px 28px; }
+    .h64 { font-size: 64px; line-height: 80px; font-weight: 600; letter-spacing: -0.03em; }
+    .u.h64 { padding: 28px 28px; font-size: 64px; line-height: 80px; font-weight: 600; }
     .ln { display: block; overflow: hidden; white-space: nowrap; }
     .ln > span { display: inline-block; }
-    .pre { color: #5f6368; }
+    .pre { color: #6b6660; }
     .ul { font-style: normal; position: relative; display: inline-block; }
-    .uls { position: absolute; left: 0; bottom: 8px; height: 6px; overflow: visible; }
-    .uls path { fill: none; stroke: var(--color-gold, #b8955a); stroke-width: 6; }
-    .emo { display: inline-block; width: 72px; height: 72px; vertical-align: -10px; margin-left: 12px; }
-    .dots { position: absolute; left: 0; top: 36px; width: 549px; display: flex; justify-content: center; gap: 14px; }
-    .dots b { display: block; width: 16px; height: 16px; border-radius: 8px; background: #5f6368; }
-    #ph-note { position: absolute; left: 0; top: 1286px; width: 605px; text-align: center; font-size: 26px; line-height: 1.4; color: #5f6368; white-space: nowrap; }
-    /* 훅: 입력 카드에 질문(Head 88 다섯 줄)이 세 덩어리로 */
-    #ph-cmp { position: absolute; left: 28px; top: 170px; width: 549px; height: 1062px; background: #eeebe4; border-radius: 40px; }
-    #ph-sq { position: absolute; left: 0; top: 278px; width: 549px; text-align: center; }
-    /* 프레임 위: 종이 띠 + 크게 앉는 질문 */
-    #ph-band { position: absolute; left: 0; top: 0; width: 1080px; height: 985px; background: var(--color-paper, #f7f6f2); }
-    .dsp { font-size: 144px; line-height: 151px; font-weight: 700; letter-spacing: -0.045em; text-align: center; }
-    .dl { display: block; height: 151px; white-space: nowrap; }
-    .dl > span { display: inline-block; padding-right: 0.045em; }
-    #ph-bq { position: absolute; left: 120px; top: 200px; width: 840px; transform-origin: 420px 755px; }
+    .uls { position: absolute; left: 0; bottom: 6px; height: 5px; overflow: visible; }
+    .uls path { fill: none; stroke: #7d6233; stroke-width: 5; }
+    .emo { display: inline-block; width: 54px; height: 54px; vertical-align: -8px; margin-left: 10px; }
+    .dots { position: absolute; left: 44px; top: 37px; display: flex; gap: 14px; }
+    .dots b { display: block; width: 16px; height: 16px; border-radius: 8px; background: #6b6660; }
+    #ph-note { position: absolute; left: 28px; top: 1284px; font-size: 30px; line-height: 42px; font-weight: 600; color: #6b6660; white-space: nowrap; }
+    /* 훅: 입력 카드(샌드)에 질문 Head 64 세 줄이 세 덩어리로 */
+    #ph-cmp { position: absolute; left: 28px; top: 170px; width: 549px; height: 1062px; background: #f3eee3; border-radius: 36px; }
+    #ph-sq { position: absolute; left: 28px; top: 412px; }
+    /* 프레임 위: 아래쪽 풀폭 샌드 패널 + 왼쪽 정렬 질문 */
+    #ph-panel { position: absolute; left: 0; top: 1000px; width: 1080px; height: 920px; background: #f3eee3; overflow: hidden; }
+    #ph-panel svg { position: absolute; left: 0; top: 0; width: 1080px; height: 920px; }
+    #ph-panel circle { fill: none; stroke: #7d6233; stroke-opacity: 0.4; stroke-width: 1.5; }
+    #ph-q { position: absolute; left: 84px; top: 1060px; width: 912px; }
+    .eb { display: block; font-size: 30px; line-height: 42px; font-weight: 600; letter-spacing: 0.02em; color: #7d6233; }
+    .ld { display: block; font-size: 64px; line-height: 80px; font-weight: 500; letter-spacing: -0.03em; color: #7d6233; }
+    .hx { display: block; font-size: 120px; line-height: 134px; font-weight: 700; letter-spacing: -0.04em; color: #161616; }
+    .hx > span, .ld > span, .eb > span { display: inline-block; }
   </style>
   <div id="root" data-composition-id="phone" data-width="1080" data-height="1920" data-motion-blur="on">
     <div id="ph-cam" data-layout-allow-overflow>
@@ -51,19 +55,17 @@
         <img id="ph-plate" src="assets/img/A-01-commute.png" alt="" data-fill />
         <!-- 화면 안은 모션 블러를 끈다 (다이브 때 어두운 말풍선이 번지지 않게) -->
         <div id="ph-scr" data-motion-blur="off" data-layout-allow-overflow>
-          <div id="ph-hd"><div id="ph-hd-row" data-m="c"><svg viewBox="0 0 52 52"><rect width="52" height="52" rx="15" fill="#c9c6be" /><circle cx="19.5" cy="26" r="4.4" fill="#0e1116" /><circle cx="32.5" cy="26" r="4.4" fill="#0e1116" /></svg><span>AI 어시스턴트</span></div></div>
+          <div id="ph-hd"><div id="ph-hd-row" data-m="dev"><svg viewBox="0 0 52 52"><rect width="52" height="52" rx="15" fill="#d8d0bf" /><circle cx="19.5" cy="26" r="4.4" fill="#161616" /><circle cx="32.5" cy="26" r="4.4" fill="#161616" /></svg><span>AI 어시스턴트</span></div></div>
           <div id="ph-cmp" data-layout-ignore>
-            <div id="ph-sq" class="hd">
-              <div class="ln"><span id="sq-1">전문대</span></div>
-              <div class="ln"><span id="sq-2">나왔는데,</span></div>
-              <div class="ln"><span id="sq-3">퇴근하고</span></div>
-              <div class="ln"><span id="sq-4">법 공부</span></div>
-              <div class="ln"><span id="sq-5">할 수 있을까?</span></div>
+            <div id="ph-sq" class="h64">
+              <div class="ln"><span id="sq-1">전문대 나왔는데,</span></div>
+              <div class="ln"><span id="sq-2">퇴근하고 법 공부</span></div>
+              <div class="ln"><span id="sq-3">할 수 있을까?</span></div>
             </div>
           </div>
           <div id="ph-th" data-layout-allow-overflow>
-            <div id="ph-u" class="b u" data-m="col"><div class="ln"><span>전문대 나왔는데,</span></div><div class="ln"><span>퇴근하고 법 공부</span></div><div class="ln"><span>할 수 있을까?</span></div></div>
-            <div id="ph-a1" class="b a hd" data-m="col">
+            <div id="ph-u" class="b u" data-m="dev"><div class="ln"><span>전문대 나왔는데, 퇴근하고</span></div><div class="ln"><span>법 공부 할 수 있을까?</span></div></div>
+            <div id="ph-a1" class="b a h64" data-m="dev">
               <i class="dots" id="ph-d1"><b></b><b></b><b></b></i>
               <div class="ln"><span id="a1-p1" class="pre">반복 업무는</span></div>
               <div class="ln"><span id="a1-p2" class="pre">자동화되고,</span></div>
@@ -72,24 +74,25 @@
               <div class="ln"><span id="a1-l3">사람이 맡게</span></div>
               <div class="ln"><span id="a1-l4">됩니다.</span></div>
             </div>
-            <div id="ph-a2" class="b a hd" data-m="col">
+            <div id="ph-a2" class="b a h64" data-m="dev">
               <i class="dots" id="ph-d2"><b></b><b></b><b></b></i>
               <div class="ln"><span>이건 책임지고</span></div>
               <div class="ln"><span>답할 분께</span></div>
               <div class="ln"><span>넘길게요<svg class="emo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8" /><circle cx="8.7" cy="10" r="1.35" fill="currentColor" /><circle cx="15.3" cy="10" r="1.35" fill="currentColor" /><path d="M8 14.3c1 1.5 2.4 2.3 4 2.3s3-.8 4-2.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg></span></div>
             </div>
           </div>
-          <div id="ph-note"><span>※ 연출된 가상 대화입니다</span></div>
+          <div id="ph-note" data-m="dev"><span>※ 연출된 가상 대화입니다</span></div>
         </div>
       </div>
     </div>
-    <div id="ph-band" data-fill data-layout-ignore></div>
-    <div id="ph-bq" class="dsp">
-      <div class="dl"><span data-m="c">전문대</span></div>
-      <div class="dl"><span data-m="c">나왔는데,</span></div>
-      <div class="dl"><span data-m="c">퇴근하고</span></div>
-      <div class="dl"><span data-m="c">법 공부</span></div>
-      <div class="dl"><span data-m="c">할 수 있을까?</span></div>
+    <div id="ph-panel" data-fill data-layout-ignore>
+      <svg viewBox="0 0 1080 920"><circle cx="1080" cy="700" r="110" /><circle cx="1080" cy="700" r="190" /><circle cx="1080" cy="700" r="270" /><circle cx="1080" cy="700" r="350" /><circle cx="1080" cy="700" r="430" /></svg>
+    </div>
+    <div id="ph-q">
+      <span class="eb"><span data-m="l">AI에게 물었다</span></span>
+      <span class="ld" style="margin-top: 12px"><span data-m="l">전문대 나왔는데,</span></span>
+      <span class="hx" style="margin-top: 8px"><span data-m="l">퇴근하고 법 공부</span></span>
+      <span class="hx"><span data-m="l">할 수 있을까?</span></span>
     </div>
   </div>
   <script>
@@ -101,66 +104,61 @@
       const $ = (s) => document.querySelector(s);
       const tl = timeline();
 
-      // ---------- 15초: AI 답 없음. 질문 말풍선은 Head 88 다섯 줄 ----------
+      // ---------- 15초: AI 답 없음. 질문 말풍선은 Head 64 세 줄 ----------
       if (CUT === 15) {
         $("#ph-a1").remove();
         const u = $("#ph-u");
-        u.className = "b u hd";
-        u.innerHTML = ["전문대", "나왔는데,", "퇴근하고", "법 공부", "할 수 있을까?"].map((t) => '<div class="ln"><span>' + t + "</span></div>").join("");
+        u.className = "b u h64";
+        u.innerHTML = ["전문대 나왔는데,", "퇴근하고 법 공부", "할 수 있을까?"].map((t) => '<div class="ln"><span>' + t + "</span></div>").join("");
       }
-      // 말풍선 위치·높이 (화면 좌표)
       const place = (q, y, h) => { const e = $(q); e.style.top = y + "px"; e.style.height = h + "px"; };
       place("#ph-u", L.yU, L.hU);
       if (CUT === 30) place("#ph-a1", L.yA1, L.hA1);
       place("#ph-a2", L.yA2, L.hA2);
 
-      // 밑줄 (30초만)
       let ul = null;
       const ulsvg = document.querySelector(".uls");
       if (ulsvg) {
         const w = ulsvg.parentNode.offsetWidth;
-        ulsvg.setAttribute("viewBox", "0 0 " + w + " 6");
+        ulsvg.setAttribute("viewBox", "0 0 " + w + " 5");
         ulsvg.style.width = w + "px";
-        ulsvg.firstElementChild.setAttribute("d", "M0 3H" + w);
+        ulsvg.firstElementChild.setAttribute("d", "M0 2.5H" + w);
         ul = A.svg.createDrawable(ulsvg.firstElementChild);
       }
 
-      // ---------- 카메라(rig) ----------
-      // rig: translate(cx−604, cy−890) rotate(r) scale(P), 원점 = 화면 중심. 화면 자체는 rotate(8°) scale(254/605)
-      const S0 = 261 / 605; // 사진 속 화면 261×580 src px (원래 회색 화면이 비치지 않게 약간 크게)
+      // ---------- 카메라(rig): translate(cx−604, cy−890) rotate(r) scale(P), 원점 = 화면 중심. 화면 자체는 rotate(8°) scale(261/605) ----------
+      const S0 = 261 / 605;
       const P0 = 1.15, P1 = 1.2; // 마디 1–2 푸시 1.15 → 1.20
-      const CY0 = 930, GLIDE = 370; // 마디 2: 카메라가 들려 폰이 아래로
-      const PF = 1 / S0; // 다이브 끝: 화면 배율 1 = 605×1344
+      const CY0 = 930, CY1 = 590; // 마디 2: 폰이 위로(아래 샌드 패널 자리를 비킨다)
+      const PF = 1 / S0;
       tl.set("#ph-rig", { translateX: -64, translateY: CY0 - 890, rotate: 0, scale: P0 }, 0);
       tl.add("#ph-rig", { scale: [P0, P1], duration: ms(C.DIVE), ease: "linear" }, 0);
-      tl.add("#ph-rig", { translateY: [CY0 - 890, CY0 + GLIDE - 890], duration: 600, ease: E.cam }, ms(C.JUMP));
-      // 마디 3 다이브: 푸시 인 + 롤 −8° → 화면이 똑바로 서서 중심 (540, 880)
-      tl.add("#ph-rig", { translateY: [CY0 + GLIDE - 890, L.STOP + L.SH / 2 - 890], scale: [P1, PF], rotate: [0, -8], duration: ms(C.DIVE + C.DIVE_D) - ms(C.DIVE), ease: E.cam }, ms(C.DIVE));
+      tl.add("#ph-rig", { translateY: [CY0 - 890, CY1 - 890], duration: 600, ease: E.cam }, ms(C.JUMP));
+      tl.add("#ph-rig", { translateY: [CY1 - 890, L.STOP + L.SH / 2 - 890], scale: [P1, PF], rotate: [0, -8], duration: ms(C.DIVE + C.DIVE_D) - ms(C.DIVE), ease: E.cam }, ms(C.DIVE));
 
       // ---------- 마디 1: 질문이 폰 입력 카드에 세 덩어리로 ----------
-      tl.set(["#sq-3", "#sq-4", "#sq-5"], { opacity: 0 }, 0);
-      tl.add(["#sq-3", "#sq-4"], { opacity: [0, 1], duration: 120, ease: "linear" }, ms(0.55));
-      tl.add("#sq-5", { opacity: [0, 1], duration: 120, ease: "linear" }, ms(C.TAP1));
+      tl.set(["#sq-2", "#sq-3"], { opacity: 0 }, 0);
+      tl.add("#sq-2", { opacity: [0, 1], duration: 120, ease: "linear" }, ms(0.55));
+      tl.add("#sq-3", { opacity: [0, 1], duration: 120, ease: "linear" }, ms(C.TAP1));
       const bubs = ["#ph-u", "#ph-a2"].concat(CUT === 30 ? ["#ph-a1"] : []);
       tl.set(bubs, { opacity: 0 }, 0);
 
-      // ---------- 마디 2: 종이 띠가 먼저 내려오고(0.2 s) 질문이 그 위에 앉는다(아래 가장자리에서 0.6→1, 블러 8→0) ----------
-      tl.set("#ph-band", { clipPath: "inset(0px 0px 985px 0px)" }, 0);
-      tl.add("#ph-band", { clipPath: ["inset(0px 0px 985px 0px)", "inset(0px 0px 0px 0px)"], duration: 200, ease: E.cam }, ms(C.JUMP));
-      tl.set("#ph-bq", { opacity: 0 }, 0);
-      tl.add("#ph-bq", { opacity: [0, 1], scale: [0.6, 1], filter: ["blur(8px)", "blur(0px)"], duration: 500, ease: E.expo }, ms(C.JUMP + 0.2));
-      // 폰 안: 입력 카드가 접히고 질문은 사용자 말풍선으로
-      tl.add("#ph-cmp", { clipPath: ["inset(0px 0px 0px 0px round 40px)", "inset(1062px 0px 0px 0px round 40px)"], duration: 500, ease: E.cam }, ms(C.JUMP));
+      // ---------- 마디 2: 샌드 패널이 아래에서 올라오고(0.25 s) 질문이 그 위에 단어별로 앉는다 (사진 위를 지나지 않는다) ----------
+      tl.set("#ph-panel", { clipPath: "inset(920px 0px 0px 0px)" }, 0);
+      tl.add("#ph-panel", { clipPath: ["inset(920px 0px 0px 0px)", "inset(0px 0px 0px 0px)"], duration: 250, ease: E.cam }, ms(C.JUMP));
+      const qw = split($("#ph-q"));
+      tl.set(qw, { opacity: 0 }, 0);
+      words(tl, qw, C.JUMP + 0.25);
+      tl.add("#ph-cmp", { clipPath: ["inset(0px 0px 0px 0px round 36px)", "inset(1062px 0px 0px 0px round 36px)"], duration: 500, ease: E.cam }, ms(C.JUMP));
       tl.add("#ph-u", { opacity: [0, 1], duration: 200, ease: E.ui }, ms(C.JUMP + 0.35));
 
-      // ---------- 마디 3: 큰 질문은 단어별로 흐려지고 띠는 위로 걷힌다(와이프, 페이드 아님) → 다이브 ----------
-      const bqWords = split($("#ph-bq"));
-      wordsOut(tl, bqWords, C.DIVE - 0.45); // 띠가 걷히기 전에 글이 다 빠진다
-      tl.add("#ph-band", { clipPath: ["inset(0px 0px 0px 0px)", "inset(0px 0px 985px 0px)"], duration: 300, ease: E.cam }, ms(C.DIVE));
+      // ---------- 마디 3: 질문이 흐려지며 빠지고 패널은 아래로 걷힌다 → 다이브 ----------
+      wordsOut(tl, qw, C.DIVE - 0.5);
+      tl.add("#ph-panel", { clipPath: ["inset(0px 0px 0px 0px)", "inset(920px 0px 0px 0px)"], duration: 300, ease: E.cam }, ms(C.DIVE));
 
-      // 점 말풍선(160×90) → 내용에 맞게 자란다 (clip, 모서리 45 → 36)
-      const clipDots = (h) => "inset(0px 194.5px " + (h - 90) + "px 194.5px round 45px)";
-      const clipTo = (h, hShow) => "inset(0px 0px " + (h - hShow) + "px 0px round 36px)";
+      // 점 말풍선(160×90, 왼쪽) → 내용에 맞게 자란다 (clip)
+      const clipDots = (h) => "inset(0px 389px " + (h - 90) + "px 0px round 45px)";
+      const clipTo = (h, hShow) => "inset(0px 0px " + (h - hShow) + "px 0px round 32px)";
       function breathe(sel, t0, t1) {
         const dots = document.querySelectorAll(sel + " b");
         tl.set(dots, { opacity: 0.3 }, 0);
@@ -174,7 +172,6 @@
       tl.set("#ph-a2", { clipPath: clipDots(L.hA2) }, 0);
 
       if (CUT === 30) {
-        // AI 답: 점 → 앞 문단 높이로 자라며 흐린 앞 문단(단어 블러) → 전체로 자라며 핵심 4줄(마스크 줄 상승, 영화의 1/2) → 골드 밑줄
         const pre = split($("#a1-p1")).concat(split($("#a1-p2")));
         tl.set(pre, { opacity: 0 }, 0);
         const key = ["#a1-l1", "#a1-l2", "#a1-l3", "#a1-l4"];
@@ -187,9 +184,8 @@
         tl.add("#ph-a1", { clipPath: [clipDots(L.hA1), clipTo(L.hA1, L.hLead)], duration: 350, ease: E.expo }, ms(C.LEAD));
         words(tl, pre, C.LEAD + 0.12);
         tl.add("#ph-a1", { clipPath: [clipTo(L.hA1, L.hLead), clipTo(L.hA1, L.hA1)], duration: 450, ease: E.expo }, ms(C.KEY));
-        rise(tl, key, C.KEY + 0.05);
+        rise(tl, key, C.KEY + 0.05); // 마스크 줄 상승 1/2
         if (ul) tl.add(ul, { draw: ["0 0", "0 1"], duration: D.draw, ease: E.draw }, ms(C.KEY + 1.0));
-        // 핸드오프: 질문 말풍선이 빠지고 스택이 올라간 뒤 점 말풍선 → 핸드오프로 자란다
         exit(tl, "#ph-u", C.HAND);
         tl.add("#ph-th", { translateY: [0, L.offB], duration: D.glide, ease: E.glide }, ms(C.HAND));
         tl.add("#ph-a2", { opacity: [0, 1], duration: 200, ease: E.ui }, ms(C.HAND + 0.2));
@@ -208,7 +204,6 @@
       $("#ph-cam").style.transformOrigin = "540px " + L.a2c + "px";
       tl.add("#ph-cam", { translateY: [0, L.trackY], scale: [1, L.TS], duration: ms(C.TRACK + C.TRACK_D) - ms(C.TRACK), ease: E.cam }, ms(C.TRACK));
       tl.add("#ph-hd-row", { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 200, ease: E.exit }, ms(C.TRACK));
-      // 말풍선이 세계가 되기 시작하면: 핸드오프 글은 먼저 빠지고, 둘레의 말풍선·안내는 0.25 s 에 흐려지며 빠진다(사진은 그대로)
       tl.add("#ph-a2 .ln", { opacity: [1, 0], duration: 150, ease: E.exit }, ms(C.GROW));
       const around = (CUT === 30 ? ["#ph-a1"] : ["#ph-u"]).concat(["#ph-note"]);
       tl.add(around, { opacity: [1, 0], filter: ["blur(0px)", "blur(8px)"], duration: 250, ease: E.exit }, ms(C.GROW));

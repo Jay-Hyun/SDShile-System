@@ -5,20 +5,21 @@
       src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
       font-weight: 45 930;
     }
-    /* 컴플라이언스 레이어 (02 §7): Small 26 / 400 / 1.4, x=540 가운데. 배지 y 160, 안내·고지 y 1500–1560.
-       사진 위에서는 단색 Paper 바탕 칩(딤·그림자 없음)으로 읽힌다. 엔드카드(Navy) 고지는 #9AA0A6. */
-    #root { position: absolute; inset: 0; overflow: hidden; font-family: "PretendardGOV", sans-serif; font-size: 26px; line-height: 1.4; font-weight: 400; letter-spacing: 0; word-break: keep-all; pointer-events: none; }
-    .lg { position: absolute; left: 0; width: 1080px; text-align: center; white-space: nowrap; }
-    .chip { display: inline-block; background: #f7f6f2; color: #5f6368; padding: 2px 14px; border-radius: 6px; }
-    .badge { top: 158px; }
+    /* 컴플라이언스 레이어 v7.3: Small 30 / 600, 왼쪽 정렬 x = 84. 배지 y 160(사진 위에서는 단색 종이 칩, 딤·그림자 없음), 안내·고지 y 1500. */
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "PretendardGOV", sans-serif; font-size: 30px; line-height: 42px; font-weight: 600; letter-spacing: 0; word-break: keep-all; pointer-events: none; }
+    .lg { position: absolute; left: 70px; white-space: nowrap; }
+    .chip { display: inline-block; background: #fbf9f4; color: #6b6660; padding: 0px 14px; border-radius: 6px; }
+    .chip > span { display: inline-block; }
+    .badge { top: 160px; }
     .low { top: 1500px; }
-    #lg-l2 > span { display: inline-block; color: #9aa0a6; }
+    #lg-l2 { left: 84px; color: #6b6660; font-weight: 400; }
+    #lg-l2 > span { display: inline-block; }
   </style>
   <div id="root" data-composition-id="legal" data-width="1080" data-height="1920">
-    <div id="lg-b1" class="clip" data-start="0" data-duration="12.65" data-track-index="1"><div class="lg badge"><span class="chip" data-m="c">가상 챗봇 화면 · 연출</span></div></div>
-    <div id="lg-b2" class="clip" data-start="12.65" data-duration="13.383" data-track-index="2"><div class="lg badge"><span class="chip" data-m="c">연출</span></div></div>
-    <div id="lg-n" class="clip" data-start="0" data-duration="3.7" data-track-index="3"><div class="lg low"><span class="chip" data-m="c">※ 연출된 가상 대화입니다</span></div></div>
-    <div id="lg-l" class="clip" data-start="26.133" data-duration="3.867" data-track-index="4"><div id="lg-l2" class="lg low"><span id="l2" data-m="c">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</span></div></div>
+    <div id="lg-b1" class="clip" data-start="0" data-duration="12.65" data-track-index="1"><div class="lg badge"><span class="chip"><span data-m="l">가상 챗봇 화면 · 연출</span></span></div></div>
+    <div id="lg-b2" class="clip" data-start="12.65" data-duration="13.383" data-track-index="2"><div class="lg badge"><span class="chip"><span data-m="l">연출</span></span></div></div>
+    <div id="lg-n" class="clip" data-start="0" data-duration="3.7" data-track-index="3"><div class="lg low"><span class="chip"><span data-m="l">※ 연출된 가상 대화입니다</span></span></div></div>
+    <div id="lg-l" class="clip" data-start="26.133" data-duration="3.867" data-track-index="4"><div id="lg-l2" class="lg low"><span id="l2" data-m="l">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</span></div></div>
   </div>
   <script>
     (function () {

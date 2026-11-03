@@ -72,7 +72,7 @@ function collect() {
     box = { l: Math.max(box.l, 0), t: Math.max(box.t, 0), r: Math.min(box.r, W), b: Math.min(box.b, H) };
     const area = Math.max(0, box.r - box.l) * Math.max(0, box.b - box.t);
     const full = Math.max(1, (own.r - own.l) * (own.b - own.t));
-    if (area / full < 0.5) return null; // 조상 마스크 안에서 올라오는 중이거나 화면 밖
+    if (area / full < 0.5 && !(el.hasAttribute && el.hasAttribute("data-fill") && area > 0.5 * W * H)) return null; // 조상 마스크 안에서 올라오는 중이거나 화면 밖 (v7.3: 화면을 덮는 사진 플레이트는 크게 확대돼 있어도 채움)
     return { op, rect: r, box };
   };
   const onTop = () => true; // 가림은 vis() 의 overflow·clip-path 교차로 판단한다
@@ -92,7 +92,13 @@ function collect() {
     return parts.join("").replace(/\s+/g, " ").trim().slice(0, 40);
   };
 
-  const centred = [], cols = [], sizes = {}, stray = [];
+  const centred = [], cols = [], sizes = {}, stray = [], lefts = [];
+  // v7.3: 왼쪽 정렬 텍스트(data-m="l"): 왼쪽 끝과 x = 84 의 차 (|Δ| ≤ 2px). data-m="dev" = 폰 화면 속 UI(정렬 측정 제외, 블록으로만 센다)
+  document.querySelectorAll('[data-m="l"]').forEach((el) => {
+    const v = vis(el);
+    if (!v) return;
+    lefts.push({ el: label(el), text: txt(el), fs: getComputedStyle(el).fontSize, left: +v.rect.left.toFixed(2), dx: +(v.rect.left - 84).toFixed(2), y: Math.round(v.rect.top) });
+  });
   document.querySelectorAll('[data-m="c"]').forEach((el) => {
     const v = vis(el);
     if (!v || !onTop(el, v.rect)) return;
@@ -132,11 +138,11 @@ function collect() {
   const maxGap = gaps.reduce((m, g) => (g.gap > m.gap ? g : m), { gap: 0, from: "-", to: "-", y: 0 });
   // 로고 락업: 브랜드 프레임마다 심볼 + 기관명이 한 줄로 보이고 락업 전체 중심이 x=540 인지
   let logo = null;
-  const lr = document.querySelector("#w-logo-row") || document.querySelector("#br-logo-row"), lm = document.querySelector("#w-mark") || document.querySelector("#br-mark");
+  const lr = document.querySelector("#w-logo") || document.querySelector("#br-logo-row"), lm = document.querySelector("#w-mark") || document.querySelector("#br-mark");
   if (lr && lm && vis(lr)) {
     const a = lr.getBoundingClientRect(), m = lm.getBoundingClientRect();
     const name = lr.lastElementChild.getBoundingClientRect();
-    logo = { cx: +((a.left + a.right) / 2).toFixed(2), mark: Math.round(m.width) + "×" + Math.round(m.height), gapMarkName: +(name.left - m.right).toFixed(1), sameRow: Math.abs((m.top + m.bottom) / 2 - (name.top + name.bottom) / 2) < 3 };
+    logo = { left: +a.left.toFixed(2), cx: +((a.left + a.right) / 2).toFixed(2), mark: Math.round(m.width) + "×" + Math.round(m.height), gapMarkName: +(name.left - m.right).toFixed(1), sameRow: Math.abs((m.top + m.bottom) / 2 - (name.top + name.bottom) / 2) < 3 };
   }
   // v7: 골드 면적 (디자인 요소만, 사진 제외): 골드 글자 박스 + 골드 선(SVG 경로 bbox, 최소 두께 = 선 굵기) + 골드 면(락업 심볼)
   let goldA = 0;
@@ -162,7 +168,7 @@ function collect() {
     const v = vis(el);
     if (v) pos[el.id] = [Math.round(v.box.t), Math.round(v.box.l)];
   });
-  return { centred, cols, sizes, stray, gaps, maxGap, logo, pos, goldPct };
+  return { centred, cols, sizes, stray, gaps, maxGap, logo, pos, goldPct, lefts };
 }
 
 // 스크린샷(PNG base64)을 빈 페이지 canvas 로 풀어, 바탕색(최빈색)과 다른 픽셀이 없는 행의 최장 연속 구간을 잰다
@@ -264,6 +270,14 @@ async function run(browser, decoder, walk) {
     lines.push(`| ${f.t} | ${c.el} | ${c.text} | ${c.fs} | ${c.cx} | ${c.dx >= 0 ? "+" : ""}${c.dx} |`);
   }
   lines.push("");
+  lines.push("| t (s) | left-aligned element | text | font-size | left x | Δ from 84 |");
+  lines.push("|---|---|---|---|---|---|");
+  let worstL = 0;
+  for (const f of out) for (const c of f.lefts) {
+    worstL = Math.max(worstL, Math.abs(c.dx));
+    lines.push(`| ${f.t} | ${c.el} | ${c.text} | ${c.fs} | ${c.left} | ${c.dx >= 0 ? "+" : ""}${c.dx} |`);
+  }
+  lines.push("");
   lines.push("| t (s) | bubble | text | width | left margin | right margin | centre Δx |");
   lines.push("|---|---|---|---|---|---|---|");
   let worstCol = 0;
@@ -282,14 +296,14 @@ async function run(browser, decoder, walk) {
   }
   const brandFrames = out.filter((f) => f.logo);
   lines.push("");
-  lines.push("| t (s) | logo lockup centre x | mark (px) | mark → name gap | one row |");
+  lines.push("| t (s) | logo lockup left x | mark (px) | mark → name gap | one row |");
   lines.push("|---|---|---|---|---|");
-  for (const f of brandFrames) lines.push(`| ${f.t} | ${f.logo.cx} | ${f.logo.mark} | ${f.logo.gapMarkName} | ${f.logo.sameRow ? "✓" : "✗"} |`);
+  for (const f of brandFrames) lines.push(`| ${f.t} | ${f.logo.left} | ${f.logo.mark} | ${f.logo.gapMarkName} | ${f.logo.sameRow ? "✓" : "✗"} |`);
   const strays = out.flatMap((f) => f.stray.map((s) => `${f.t}s ${s.el} "${s.text}" ${s.fs}`));
   const sizeList = [...allSizes].sort((a, b) => parseFloat(a) - parseFloat(b));
   lines.push("");
   lines.push(`font sizes seen (computed): ${sizeList.join(", ")} — ${sizeList.length} sizes`);
-  lines.push(`max |Δx| centred text: ${worst.toFixed(2)} px; max |Δx| bubble column centre: ${worstCol.toFixed(2)} px`);
+  lines.push(`max |Δ| left edge vs x=84 (data-m="l"): ${worstL.toFixed(2)} px; centred items: ${worst.toFixed(2)} px; bubble column centre: ${worstCol.toFixed(2)} px`);
   lines.push(`max block gap over all frames: ${worstGap} px; largest empty band over all frames: ${worstBand}%`);
   lines.push(`unannotated visible text: ${strays.length ? strays.join("; ") : "none"}`);
   console.log(lines.join("\n"));

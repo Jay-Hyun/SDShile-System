@@ -5,214 +5,226 @@
       src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2");
       font-weight: 45 930;
     }
-    /* v7 편 A — 마디 8–16. 핸드오프 말풍선이 자라 세계가 된다(0.65 s in-out, 모서리 40→0) → 주말 아침 책상(A-02) 상담사 답 Head 88
-       → 딥컷 → 부엌(A-03) 위 종이 카드 840 한 장(마스크 리빌, 근거 3줄) → 딥컷 → 계단(A-04) 위 종이 띠 + 슬로건 Display 144
-       → 컬러 플러드 Paper→Navy(0.4 s in-out) → 엔드카드(락업 · 슬로건 Head 88 두 줄 · 질문형 CTA · 1:1 · 전화 · 링크 안내 + 골드 ↓ 마지막).
-       버튼·알약 모양 없음. 사진 위 글자는 하늘·종이 띠 같은 조용한 면에서만. 딤·블러(사진)·그림자·그라데이션 없음. */
-    #root { position: absolute; inset: 0; overflow: hidden; color: var(--color-ink, #0e1116); font-family: "PretendardGOV", sans-serif; word-break: keep-all; }
+    /* v7.3 편 A — 마디 8–16 (04-v7-visual.md 부록 D: 광고주 랜딩 문법, 왼쪽 정렬 x = 84).
+       핸드오프 말풍선이 자라 세계가 된다(불투명 리빌) → 주말 책상(A-02, 풀블리드) 밝은 창 면에 상담사 답(아이브로 + 리드 64 + 헤드 120)
+       → 딥컷 → 부엌(A-03) 아래쪽 풀폭 샌드 패널(마스크 리빌)에 갈색 원 체크 3줄 → 딥컷 → 계단(A-04, 풀블리드) 위쪽 조용한 천장 면에 슬로건
+       → 계단 사진이 위로 걷히며(와이프) 크림 종이 엔드카드: 락업 → "내 학점이면," → "기간·비용부터 / 들어 보세요." → 본문 → 체크 2 → 링크 안내 ↓
+       → 전화 → 고지(legal) → 남색 과목 티커 띠(풋터 y 1580–1920). 버튼·알약 모양 없음. 딤·사진 블러·그림자·그라데이션 없음. */
+    #root { position: absolute; inset: 0; overflow: hidden; color: #161616; font-family: "PretendardGOV", sans-serif; word-break: keep-all; }
     .layer { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
     .plate { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; display: block; }
-    .row { position: absolute; left: 0; width: 1080px; text-align: center; }
-    .hd { font-size: 88px; line-height: 101px; font-weight: 600; letter-spacing: -0.03em; }
-    .bd { font-size: 44px; line-height: 62px; font-weight: 500; letter-spacing: -0.01em; }
-    .dsp { font-size: 144px; line-height: 151px; font-weight: 700; letter-spacing: -0.045em; }
-    .ln { display: block; overflow: hidden; white-space: nowrap; }
-    .ln > span { display: inline-block; }
-    .dl { display: block; height: 151px; white-space: nowrap; }
-    .dl > span { display: inline-block; padding-right: 0.045em; }
-    .g { font-style: normal; color: var(--color-gold, #b8955a); }
-    .mut { color: #5f6368; }
+    .col { position: absolute; left: 84px; width: 912px; }
+    .eb { display: block; font-size: 30px; line-height: 42px; font-weight: 600; letter-spacing: 0.02em; color: #7d6233; }
+    .ld { display: block; font-size: 64px; line-height: 80px; font-weight: 500; letter-spacing: -0.03em; color: #7d6233; }
+    .hx { display: block; font-size: 120px; line-height: 134px; font-weight: 700; letter-spacing: -0.04em; color: #161616; white-space: nowrap; }
+    .bx { display: block; font-size: 40px; line-height: 60px; font-weight: 400; letter-spacing: -0.01em; color: #6b6660; white-space: nowrap; }
+    .eb > span, .ld > span, .bx > span { display: inline-block; }
+    .hl { display: block; overflow: hidden; height: 134px; }
+    .hl > span { display: inline-block; }
+    .ck { display: flex; align-items: center; gap: 20px; font-size: 40px; line-height: 60px; font-weight: 500; letter-spacing: -0.01em; color: #161616; white-space: nowrap; }
+    .ck svg { width: 44px; height: 44px; flex: none; display: block; }
+    .ck + .ck { margin-top: 28px; }
 
-    /* 주말 책상: 사진 1.06배(팬 −50 px 여유), 말풍선 톤이 사진으로 바뀐다 */
+    /* 주말 책상: 1.06배(팬 −50 px 여유) */
     #w-dk-img { position: absolute; left: -32px; top: -58px; width: 1145px; height: 2036px; display: block; }
-    #w-dk-lab { top: 236px; font-weight: 600; }
-    #w-ans1, #w-ans2 { top: 322px; }
+    #w-dk-txt { top: 230px; }
+    #w-a2 { position: absolute; left: 0; top: 42px; width: 912px; }
 
-    /* 부엌 + 종이 카드 하나 (840, 가운데) */
-    #w-card { position: absolute; left: 120px; top: 600px; width: 840px; height: 444px; background: var(--color-paper, #f7f6f2); border-radius: 20px; }
-    #w-list { position: absolute; left: 0; top: 56px; width: 840px; text-align: center; }
-    #w-list-in { display: inline-block; text-align: left; }
-    .it { display: block; height: 62px; white-space: nowrap; }
-    .it + .it { margin-top: 73px; position: relative; }
-    .it + .it::before { content: ""; position: absolute; left: -64px; right: -64px; top: -37px; height: 1px; background: rgba(14, 17, 22, 0.14); }
-    .chk { display: inline-block; width: 40px; height: 40px; vertical-align: -6px; margin-right: 18px; }
+    /* 부엌: 아래쪽 풀폭 샌드 패널 */
+    #w-pn { position: absolute; left: 0; top: 1080px; width: 1080px; height: 840px; background: #f3eee3; overflow: hidden; }
+    #w-pn-txt { top: 1160px; }
+    #w-pn svg { position: absolute; left: 0; top: 0; width: 1080px; height: 840px; }
+    #w-pn circle { fill: none; stroke: #7d6233; stroke-opacity: 0.4; stroke-width: 1.5; }
 
-    /* 계단 + 종이 띠(플러드로 Navy 엔드카드가 된다) */
-    #w-st-img { position: absolute; left: 0; top: 510px; width: 1080px; height: 1920px; display: block; }
-    #w-band { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: var(--color-paper, #f7f6f2); }
-    #w-foot { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; background: var(--color-paper, #f7f6f2); }
-    #w-slo { position: absolute; left: 0; top: 280px; width: 1080px; text-align: center; }
+    /* 계단: 위쪽 천장 면 */
+    #w-st-txt { top: 222px; }
 
-    /* 엔드카드 */
-    #w-logo { height: 62px; display: flex; justify-content: center; }
-    #w-logo-row { display: flex; align-items: center; gap: 18px; font-size: 44px; line-height: 62px; font-weight: 600; letter-spacing: -0.01em; color: var(--color-paper, #f7f6f2); }
-    #w-mark { display: block; width: 56px; height: 62px; background: var(--color-gold, #b8955a); -webkit-mask: url("assets/img/mark-gold.svg") center / contain no-repeat; mask: url("assets/img/mark-gold.svg") center / contain no-repeat; }
-    .on-navy { color: var(--color-paper, #f7f6f2); }
-    .sec { color: #9aa0a6; }
-    #w-arrow { position: absolute; left: 512px; width: 56px; height: 40px; overflow: visible; }
-    #w-arrow path { fill: none; stroke: var(--color-gold, #b8955a); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    /* 엔드카드: 크림 종이 + 오른쪽 다이얼 선화 + 남색 과목 티커 */
+    #w-end { background: #fbf9f4; }
+    #w-dial { position: absolute; left: 0; top: 0; width: 1080px; height: 1580px; }
+    #w-dial circle { fill: none; stroke: #7d6233; stroke-opacity: 0.4; stroke-width: 1.5; }
+    #w-logo { position: absolute; left: 84px; height: 62px; display: flex; align-items: center; gap: 18px; font-size: 40px; line-height: 62px; font-weight: 700; letter-spacing: -0.02em; color: #161616; }
+    #w-mark { display: block; width: 56px; height: 62px; background: #161616; -webkit-mask: url("assets/img/mark-gold.svg") center / contain no-repeat; mask: url("assets/img/mark-gold.svg") center / contain no-repeat; }
+    #w-link svg { display: inline-block; width: 36px; height: 44px; vertical-align: -9px; margin-left: 14px; overflow: visible; }
+    #w-link path { fill: none; stroke: #7d6233; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .tel { color: #161616; font-weight: 600; }
+    #w-tk { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; background: #0b1a33; overflow: hidden; }
+    #w-tk-row { position: absolute; left: 0; top: 80px; white-space: nowrap; font-size: 40px; line-height: 60px; font-weight: 600; letter-spacing: 0.04em; color: #e0c27e; }
+    #w-tk-row i { font-style: normal; display: inline-block; margin: 0 28px; font-size: 30px; vertical-align: 4px; }
 
     #w-dip { position: absolute; inset: 0; background: #000; opacity: 0; }
   </style>
   <div id="root" data-composition-id="world" data-width="1080" data-height="1920" data-motion-blur="on">
+    <!-- 엔드카드(맨 아래 층): 계단 사진이 위로 걷히면 드러난다 -->
+    <div id="w-end" class="layer" data-layout-allow-overflow>
+      <svg id="w-dial" viewBox="0 0 1080 1580" data-layout-ignore><circle cx="1050" cy="620" r="110" /><circle cx="1050" cy="620" r="180" /><circle cx="1050" cy="620" r="250" /><circle cx="1050" cy="620" r="320" /><circle cx="1050" cy="620" r="390" /></svg>
+      <div id="w-logo" data-m="l"><span id="w-mark"></span><span>경찰복지사이버평생교육원</span></div>
+      <div id="w-e-eb" class="col"><span class="eb"><span data-m="l">내 학점이면,</span></span></div>
+      <div id="w-e-hd" class="col">
+        <span class="hx hl"><span data-m="l">기간·비용부터</span></span>
+        <span class="hx hl"><span data-m="l">들어 보세요.</span></span>
+      </div>
+      <div id="w-e-bd" class="col">
+        <span class="bx"><span data-m="l">지금 학력·학점 기준으로 남은 과정을</span></span>
+        <span class="bx"><span data-m="l">1:1로 알려 드려요</span></span>
+      </div>
+      <div id="w-e-ck" class="col">
+        <div class="ck" data-m="l"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="22" fill="#7d6233" /><path d="M13 22.5l6 5.8L31 16" fill="none" stroke="#fbf9f4" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>일하면서도 돼요</span></div>
+        <div class="ck" data-m="l"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="22" fill="#7d6233" /><path d="M13 22.5l6 5.8L31 16" fill="none" stroke="#fbf9f4" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>상담만 받아도 돼요</span></div>
+      </div>
+      <div id="w-link" class="col"><span class="bx" style="color: #161616; font-weight: 600"><span data-m="l">아래 링크에서 확인하기<svg viewBox="0 0 36 44"><path d="M18 3V40M6 28L18 40L30 28" /></svg></span></span></div>
+      <div id="w-tel" class="col"><span class="bx"><span data-m="l">전화 <b class="tel">070-4006-7128</b> (평일 10–18시)</span></span></div>
+      <div id="w-tk" data-fill data-layout-allow-overflow>
+        <div id="w-tk-row">헌법<i>◆</i>민법<i>◆</i>형법<i>◆</i>행정법<i>◆</i>상법<i>◆</i>민사소송법<i>◆</i>헌법<i>◆</i>민법<i>◆</i>형법<i>◆</i>행정법<i>◆</i>상법<i>◆</i>민사소송법</div>
+      </div>
+    </div>
+    <!-- 세계 4: 계단 (풀블리드, 위쪽 천장 면에 슬로건) -->
+    <div id="w-st" class="layer" data-layout-allow-overflow>
+      <div id="w-st-push" class="layer" data-layout-allow-overflow><img class="plate" src="assets/img/A-04-stairs.png" alt="" data-fill /></div>
+      <div id="w-st-txt" class="col">
+        <span class="eb"><span data-m="l">그 자리로 가는 첫 계단</span></span>
+        <span class="hx" style="margin-top: 16px"><span data-m="l">책임지는 자리로,</span></span>
+        <span class="hx"><span data-m="l">지금 있는 자리에서.</span></span>
+      </div>
+    </div>
+    <!-- 세계 3: 부엌, 아래쪽 샌드 패널 + 갈색 원 체크 3줄 -->
+    <div id="w-kt" class="layer" data-layout-allow-overflow>
+      <div id="w-kt-push" class="layer" data-layout-allow-overflow><img class="plate" src="assets/img/A-03-kitchen-laptop.png" alt="" data-fill /></div>
+      <div id="w-pn" data-fill data-layout-ignore><svg viewBox="0 0 1080 840"><circle cx="1040" cy="560" r="110" /><circle cx="1040" cy="560" r="190" /><circle cx="1040" cy="560" r="270" /><circle cx="1040" cy="560" r="350" /></svg></div>
+      <div id="w-pn-txt" class="col">
+        <div class="ck" id="w-i1" data-m="l"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="22" fill="#7d6233" /><path d="M13 22.5l6 5.8L31 16" fill="none" stroke="#fbf9f4" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>100% 온라인, 출석 없이</span></div>
+        <div class="ck" id="w-i2" data-m="l"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="22" fill="#7d6233" /><path d="M13 22.5l6 5.8L31 16" fill="none" stroke="#fbf9f4" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>교육부장관 명의 법학사</span></div>
+        <div class="ck" id="w-i3" data-m="l"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="22" fill="#7d6233" /><path d="M13 22.5l6 5.8L31 16" fill="none" stroke="#fbf9f4" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>전문대 졸업이면 60학점부터</span></div>
+      </div>
+    </div>
     <!-- 세계 2: 주말 아침 책상 (말풍선이 자라 이 세계가 된다) -->
     <div id="w-dk" class="layer" data-layout-allow-overflow>
       <div id="w-dk-set" class="layer" data-layout-allow-overflow>
         <div id="w-dk-pan" class="layer" data-layout-allow-overflow><img id="w-dk-img" src="assets/img/A-02-weekend-desk.png" alt="" data-fill /></div>
       </div>
-      <div id="w-dk-lab" class="row bd mut"><span data-m="c">상담사</span></div>
-      <div id="w-ans1" class="row hd">
-        <div class="ln"><span data-m="c"><em class="g">퇴근 후·주말에,</em></span></div>
-        <div class="ln"><span data-m="c">100% 온라인으로</span></div>
-        <div class="ln"><span data-m="c">들을 수 있어요.</span></div>
+      <div id="w-dk-txt" class="col">
+        <span class="eb"><span data-m="l">상담사 답변</span></span>
+        <div id="w-a1">
+          <span class="ld" style="margin-top: 12px"><span data-m="l">퇴근 후·주말에,</span></span>
+          <span class="hx hl" style="margin-top: 8px"><span id="w-a1-1" data-m="l">100% 온라인으로</span></span>
+          <span class="hx hl"><span id="w-a1-2" data-m="l">들을 수 있어요.</span></span>
+        </div>
+        <div id="w-a2">
+          <span class="ld" style="margin-top: 12px"><span data-m="l">이미 딴 학점이 있으면</span></span>
+          <span class="hx" style="margin-top: 8px"><span data-m="l">기간·비용을</span></span>
+          <span class="hx"><span data-m="l">줄일 수 있어요.</span></span>
+        </div>
       </div>
-      <div id="w-ans2" class="row hd">
-        <div class="ln"><span data-m="c">이미 딴 학점이</span></div>
-        <div class="ln"><span data-m="c">있으면 <em class="g" data-gold="1">기간·비용</em>을</span></div>
-        <div class="ln"><span data-m="c">줄일 수 있어요.</span></div>
-      </div>
-    </div>
-    <!-- 세계 3: 부엌, 종이 카드 하나 -->
-    <div id="w-kt" class="layer" data-layout-allow-overflow>
-      <div id="w-kt-push" class="layer" data-layout-allow-overflow><img class="plate" src="assets/img/A-03-kitchen-laptop.png" alt="" data-fill /></div>
-      <div id="w-card" data-m="col">
-        <div id="w-list" class="bd"><div id="w-list-in" data-m="c">
-          <span class="it" id="w-i1"><svg class="chk" viewBox="0 0 24 24"><path d="M4.5 12.5l4.8 4.6L19.5 7" fill="none" stroke="#b8955a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>100% 온라인, 출석 없이</span>
-          <span class="it" id="w-i2"><svg class="chk" viewBox="0 0 24 24"><path d="M4.5 12.5l4.8 4.6L19.5 7" fill="none" stroke="#b8955a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>교육부장관 명의 법학사</span>
-          <span class="it" id="w-i3"><svg class="chk" viewBox="0 0 24 24"><path d="M4.5 12.5l4.8 4.6L19.5 7" fill="none" stroke="#b8955a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>전문대 졸업이면 60학점부터</span>
-        </div></div>
-      </div>
-    </div>
-    <!-- 세계 4: 계단, 위쪽 종이 띠 + 슬로건 → 플러드 → 엔드카드 -->
-    <div id="w-st" class="layer" data-layout-allow-overflow>
-      <div id="w-st-push" class="layer" data-layout-allow-overflow><img id="w-st-img" src="assets/img/A-04-stairs.png" alt="" data-fill /></div>
-      <div id="w-band" data-fill data-layout-ignore><div id="w-foot" data-fill></div></div>
-      <div id="w-slo" class="dsp">
-        <div class="dl"><span data-m="c">책임지는</span></div>
-        <div class="dl"><span data-m="c">자리로,</span></div>
-        <div class="dl"><span data-m="c">지금 있는</span></div>
-        <div class="dl"><span data-m="c">자리에서.</span></div>
-      </div>
-      <div id="w-slo2" class="row hd on-navy">
-        <div class="ln"><span data-m="c">책임지는 자리로,</span></div>
-        <div class="ln"><span data-m="c">지금 있는 자리에서.</span></div>
-      </div>
-      <div id="w-logo" class="row"><div id="w-logo-row" data-m="c"><span id="w-mark"></span><span>경찰복지사이버평생교육원</span></div></div>
-      <div id="w-q" class="row hd on-navy">
-        <div class="ln"><span data-m="c">내 학점이면,</span></div>
-        <div class="ln"><span data-m="c"><em class="g">얼마나 남았을까?</em></span></div>
-      </div>
-      <div id="w-one" class="row bd on-navy"><span data-m="c">지금 학력·학점으로 남은 과정, 1:1로 짚어드려요</span></div>
-      <div id="w-tel" class="row bd sec"><span data-m="c">전화 문의 070-4006-7128 (평일 10–18시)</span></div>
-      <div id="w-act" class="row bd on-navy"><span data-m="c">아래 링크에서 내 경우 확인하기</span></div>
-      <svg id="w-arrow" viewBox="0 0 56 40"><path d="M28 2V36M12 22L28 37L44 22" /></svg>
     </div>
     <div id="w-dip" data-layout-ignore></div>
   </div>
   <script>
     (function () {
       const CUT = 15; // tools/build_15s.py 가 v15에서 15로 바꾼다
-      const { ms, E, D, timeline, rise, words, wordsOut, sweep, split, A } = window.HF;
+      const { ms, E, D, timeline, rise, words, wordsOut, sweep, split } = window.HF;
       const C = window.HFCUE(CUT);
       const L = C.L;
       const $ = (s) => document.querySelector(s);
       const tl = timeline();
-      const INK = "#0e1116", PAPER = "#f7f6f2", NAVY = "#0b1a33", FOOT = "#102545", GOLD = "#b8955a";
 
-      // ---------- 15초: 상담사 답은 한 줄짜리, 부엌 카드 없음, 엔드카드 1:1 줄 없음 ----------
+      // ---------- 15초: 상담사 답 한 줄, 부엌 없음, 엔드카드 본문 줄 없음 ----------
       if (CUT === 15) {
-        $("#w-ans1").innerHTML = '<div class="ln"><span data-m="c"><em class="g">퇴근 후·주말에,</em></span></div><div class="ln"><span data-m="c">100% 온라인으로.</span></div>';
-        ["#w-ans2", "#w-kt", "#w-one", "#w-dk-lab"].forEach((q) => $(q).remove());
-        $("#w-ans1").style.top = "300px"; // 두 줄 묶음을 하늘 면 가운데로
+        $("#w-a1").innerHTML = '<span class="ld" style="margin-top: 12px"><span data-m="l">퇴근 후·주말에,</span></span><span class="hx hl" style="margin-top: 8px"><span id="w-a1-1" data-m="l">100% 온라인으로.</span></span>';
+        ["#w-a2", "#w-kt", "#w-e-bd"].forEach((q) => $(q).remove());
+        $("#w-dk-txt > .eb").remove(); // 15초는 읽기 속도(≤ 10 자/초) 때문에 아이브로 없음
+        $("#w-a1 .ld").style.marginTop = "0px";
       }
-      // ---------- 엔드카드 세로 배치 (블록 사이 ≤ 140, 위 빈 띠 ≤ 15%) ----------
+      // ---------- 엔드카드 세로 배치 (블록 틈 ≤ 140, 위 빈 띠 ≤ 15 %, 읽을 글 ≤ y 1500) ----------
       const Y = CUT === 30
-        ? { logo: 270, slo: 424, q: 718, one: 1012, tel: 1114, act: 1268, arrow: 1366 }
-        : { logo: 270, slo: 444, q: 758, tel: 1072, act: 1246, arrow: 1348 };
+        ? { logo: 230, eb: 402, hd: 458, bd: 782, ck: 986, link: 1240, tel: 1328 }
+        : { logo: 284, eb: 476, hd: 532, ck: 936, link: 1216, tel: 1304 };
       const pos = (q, y) => { const el = $(q); if (el) el.style.top = y + "px"; };
-      pos("#w-logo", Y.logo); pos("#w-slo2", Y.slo); pos("#w-q", Y.q); pos("#w-one", Y.one); pos("#w-tel", Y.tel); pos("#w-act", Y.act); pos("#w-arrow", Y.arrow);
+      pos("#w-logo", Y.logo); pos("#w-e-eb", Y.eb); pos("#w-e-hd", Y.hd); pos("#w-e-bd", Y.bd); pos("#w-e-ck", Y.ck); pos("#w-link", Y.link); pos("#w-tel", Y.tel);
 
       // ---------- 시작 상태 ----------
       const B = L.bub;
       const bubClip = "inset(" + B.t.toFixed(1) + "px " + B.l.toFixed(1) + "px " + (1920 - B.b).toFixed(1) + "px " + B.l.toFixed(1) + "px round " + B.rad.toFixed(1) + "px)";
       tl.set("#w-dk", { clipPath: bubClip }, 0);
-      const later = ["#w-st"].concat(CUT === 30 ? ["#w-kt", "#w-ans2"] : []);
+      const later = ["#w-st", "#w-end"].concat(CUT === 30 ? ["#w-kt", "#w-a2"] : []);
       tl.set(later, { opacity: 0 }, 0);
-      const a1 = Array.from(document.querySelectorAll("#w-ans1 .ln > span"));
-      tl.set(a1, { translateY: "105%" }, 0);
-      if (CUT === 30) tl.set("#w-dk-lab", { opacity: 0 }, 0);
 
-      // ===== 말풍선이 세계가 된다 (GROW → WORLD = 다운비트, 0.65 s in-out, 모서리 38 → 0). 말풍선 사각 안에 사진이 처음부터 100 % 불투명(크로스페이드 아님), 사진은 1.12 → 1.00 으로 앉는다 =====
+      // ===== 말풍선이 세계가 된다 (GROW → WORLD = 다운비트, 0.65 s in-out, 모서리 38 → 0). 사진은 처음부터 100 % 불투명, 1.12 → 1.00 =====
       tl.add("#w-dk", { clipPath: [bubClip, "inset(0px 0px 0px 0px round 0px)"], duration: ms(C.WORLD) - ms(C.GROW), ease: E.cam }, ms(C.GROW));
       tl.add("#w-dk-set", { scale: [1.12, 1], duration: 900, ease: E.cam }, ms(C.GROW));
-      // 히어로 무브: 팬 −50 px (다음 컷까지)
       const dkEnd = CUT === 30 ? C.DIP1 : C.DIP2;
-      tl.add("#w-dk-pan", { translateX: [25, -25], duration: ms(dkEnd) - ms(C.WORLD), ease: E.cam }, ms(C.WORLD));
-      // 상담사 답 ① — 마스크 줄 상승 (이 영화의 2/2)
-      if (CUT === 30) tl.add("#w-dk-lab", { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 200, ease: E.expo }, ms(C.WORLD + 0.05));
-      rise(tl, a1, C.WORLD + 0.15);
+      tl.add("#w-dk-pan", { translateX: [25, -25], duration: ms(dkEnd) - ms(C.WORLD), ease: E.cam }, ms(C.WORLD)); // 히어로: 팬 −50 px
+      // 상담사 답 ①: 아이브로·리드 단어 블러, 헤드 두 줄 마스크 줄 상승 (영화의 2/2)
+      const ebEl = $("#w-dk-txt > .eb");
+      const ebw = ebEl ? split(ebEl) : [];
+      const a1ld = split($("#w-a1 .ld"));
+      tl.set(ebw.concat(a1ld), { opacity: 0 }, 0);
+      words(tl, ebw.concat(a1ld), C.WORLD + 0.05);
+      const a1h = Array.from(document.querySelectorAll("#w-a1 .hl > span"));
+      tl.set(a1h, { translateY: "105%" }, 0);
+      rise(tl, a1h, C.WORLD + 0.35);
 
       if (CUT === 30) {
-        // 상담사 답 ② — ①은 단어별로 흐려지며 빠지고, ②는 회색에서 잉크로 쓸린다
-        const w1 = split($("#w-ans1"));
-        wordsOut(tl, w1, C.ANS2 - 0.3);
-        const w2 = split($("#w-ans2"));
-        w2.forEach((w) => { if (w.closest("[data-gold]")) w.dataset.to = GOLD; });
-        tl.set(w2, { color: "#cfccc4" }, 0);
-        tl.set("#w-ans2", { opacity: 1 }, ms(C.ANS2));
-        sweep(tl, w2, C.ANS2 + 0.02, "#cfccc4", INK);
+        // 상담사 답 ②: ①은 단어별 블러아웃, ②는 리드 단어 블러 + 헤드 회색 → 잉크 쓸기
+        split($("#w-a1"));
+        const w1 = Array.from(document.querySelectorAll("#w-a1 .w")); // 이미 나눈 리드 단어까지 모두
+        wordsOut(tl, w1, C.ANS2 - 0.35);
+        tl.set("#w-a2", { opacity: 1 }, ms(C.ANS2));
+        const a2ld = split($("#w-a2 .ld"));
+        tl.set(a2ld, { opacity: 0 }, 0);
+        words(tl, a2ld, C.ANS2);
+        const a2h = split($("#w-a2")).filter((w) => w.closest(".hx"));
+        tl.set(a2h, { color: "#d6cfc2" }, 0);
+        sweep(tl, a2h, C.ANS2 + 0.2, "#d6cfc2", "#161616");
 
-        // ===== 딥컷 1 → 부엌: 3프레임 40% 어둡게 뒤 하드컷 =====
+        // ===== 딥컷 1 → 부엌: 3프레임 40 % 어둡게 뒤 하드컷. 샌드 패널이 아래에서 들리듯(마스크 리빌), 체크 60 ms 스태거 =====
         tl.set("#w-dip", { opacity: 0.4 }, ms(C.DIP1 - 0.1));
         tl.set("#w-dip", { opacity: 0 }, ms(C.DIP1));
         tl.set("#w-kt", { opacity: 1 }, ms(C.DIP1));
+        tl.set("#w-dk", { opacity: 0 }, ms(C.DIP1));
         tl.add("#w-kt-push", { scale: [1, 1.06], duration: ms(C.DIP2) - ms(C.DIP1), ease: E.cam }, ms(C.DIP1));
-        // 종이 카드: 아래에서 들리듯 마스크 리빌 0.7 s, 근거 줄은 60 ms 간격 블러 등장
-        tl.set("#w-card", { clipPath: "inset(100% 0px 0px 0px round 20px)" }, 0);
-        tl.add("#w-card", { clipPath: ["inset(100% 0px 0px 0px round 20px)", "inset(0% 0px 0px 0px round 20px)"], duration: 700, ease: E.expo }, ms(C.DIP1 + 0.12));
+        tl.set("#w-pn", { clipPath: "inset(840px 0px 0px 0px)" }, 0);
+        tl.add("#w-pn", { clipPath: ["inset(840px 0px 0px 0px)", "inset(0px 0px 0px 0px)"], duration: 600, ease: E.expo }, ms(C.DIP1 + 0.1));
         const items = ["#w-i1", "#w-i2", "#w-i3"].map((q) => $(q));
         tl.set(items, { opacity: 0 }, 0);
-        items.forEach((el, i) => tl.add(el, { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 160, ease: E.expo }, ms(C.DIP1 + 0.5 + i * 0.06)));
+        items.forEach((el, i) => tl.add(el, { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 160, ease: E.expo }, ms(C.DIP1 + 0.55 + i * 0.06)));
       }
 
-      // ===== 딥컷 2 → 계단 + 종이 띠 + 슬로건 (단어별 블러) =====
+      // ===== 딥컷 2 → 계단 (풀블리드), 슬로건 단어 블러 =====
       const prev = CUT === 30 ? "#w-kt" : "#w-dk";
       tl.set("#w-dip", { opacity: 0.4 }, ms(C.DIP2 - 0.1));
       tl.set("#w-dip", { opacity: 0 }, ms(C.DIP2));
       tl.set("#w-st", { opacity: 1 }, ms(C.DIP2));
       tl.set(prev, { opacity: 0 }, ms(C.DIP2));
-      $("#w-st-push").style.transformOrigin = "540px 1300px";
-      tl.add("#w-st-push", { scale: [1, 1.05], duration: ms(C.FLOOD + 0.4) - ms(C.DIP2), ease: E.cam }, ms(C.DIP2));
-      tl.set("#w-band", { clipPath: "inset(0px 0px 950px 0px)" }, 0);
-      const sw = split($("#w-slo"));
+      // 계단 사진은 위쪽 기준 1.15배로 놓아 천장 면을 넓히고(창 y 563–), 1.15 → 1.20 푸시
+      $("#w-st-push").style.transformOrigin = "540px 0px";
+      tl.add("#w-st-push", { scale: [1.15, 1.2], duration: ms(C.FLOOD + 0.55) - ms(C.DIP2), ease: E.cam }, ms(C.DIP2));
+      const sw = split($("#w-st-txt"));
       tl.set(sw, { opacity: 0 }, 0);
       words(tl, sw, C.DIP2 + 0.1);
 
-      // ===== 컬러 플러드: 종이 띠가 화면 전체로 내려오며 Navy 가 된다 (0.4 s in-out). 슬로건은 남아 색만 바뀐다 =====
+      // ===== 계단 사진이 아래에서 위로 걷히며(0.55 s in-out) 크림 종이 엔드카드가 드러난다. 티커 띠가 먼저 보인다 =====
       const F = C.FLOOD;
-      tl.add("#w-band", { clipPath: ["inset(0px 0px 950px 0px)", "inset(0px 0px 0px 0px)"], backgroundColor: [PAPER, NAVY], duration: 400, ease: E.cam }, ms(F));
-      tl.add("#w-foot", { backgroundColor: [PAPER, FOOT], duration: 400, ease: E.cam }, ms(F));
-      tl.add("#w-slo", { color: [INK, PAPER], duration: 400, ease: E.cam }, ms(F));
-      // 슬로건 교체: 플러드가 끝나면 Display 네 줄이 단어별로 흐려지며 빠지고, 같은 문장이 Head 88 두 줄로 블러 등장
-      wordsOut(tl, sw, F + 0.25); // 마지막 단어가 F+0.61 에 빠진다
-      const s2 = split($("#w-slo2"));
-      tl.set(s2, { opacity: 0 }, 0);
-      words(tl, s2, F + 0.62);
-      // 엔드카드 블록: 블러 등장 (슬라이드 없음). 순서 = 락업 · 슬로건 · 질문 · (1:1) · 전화 · 행동 줄 · 골드 ↓
-      const endEls = ["#w-logo-row", "#w-q", "#w-tel", "#w-act"].concat(CUT === 30 ? ["#w-one"] : []);
-      tl.set(endEls, { opacity: 0 }, 0);
+      tl.set("#w-end", { opacity: 1 }, ms(F));
+      tl.add("#w-st", { clipPath: ["inset(0px 0px 0px 0px)", "inset(0px 0px 1920px 0px)"], duration: 550, ease: E.cam }, ms(F));
+      // 과목 티커: 일정한 속도로 왼쪽으로 (브랜드 띠의 동작)
+      tl.add("#w-tk-row", { translateX: [0, -260], duration: ms(C.END) - ms(F), ease: "linear" }, ms(F));
+      // 엔드카드 블록: 블러 등장 (슬라이드 없음)
       const fade = (q, t) => tl.add(q, { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 200, ease: E.expo }, ms(t));
-      fade("#w-logo-row", F + 0.62);
-      tl.set("#w-q", { opacity: 1 }, ms(F + 0.8));
-      const qw = split($("#w-q"));
-      tl.set(qw, { opacity: 0 }, 0);
-      words(tl, qw, F + 0.8);
-      if (CUT === 30) fade("#w-one", F + 0.95);
-      fade("#w-tel", F + (CUT === 30 ? 1.0 : 0.95));
-      fade("#w-act", F + (CUT === 30 ? 1.08 : 1.02));
-      const arrow = A.svg.createDrawable("#w-arrow path");
-      tl.set(arrow, { draw: "0 0" }, 0);
-      tl.add(arrow, { draw: ["0 0", "0 1"], duration: 300, ease: E.expo }, ms(F + (CUT === 30 ? 1.15 : 1.08)));
+      const blocks = ["#w-logo", "#w-e-eb", "#w-e-bd", "#w-link", "#w-tel", "#w-dial"].concat(Array.from(document.querySelectorAll("#w-e-ck .ck")));
+      tl.set(blocks.filter((q) => typeof q !== "string" || $(q)), { opacity: 0 }, 0);
+      const hw = split($("#w-e-hd"));
+      tl.set(hw, { opacity: 0 }, 0);
+      const T = CUT === 30
+        ? { logo: 0.45, eb: 0.55, hd: 0.6, bd: 0.95, ck: 1.05, link: 1.2, tel: 1.3 }
+        : { logo: 0.45, eb: 0.55, hd: 0.6, ck: 0.9, link: 1.05, tel: 1.15 };
+      fade("#w-dial", F + 0.3);
+      fade("#w-logo", F + T.logo);
+      fade("#w-e-eb", F + T.eb);
+      words(tl, hw, F + T.hd);
+      if (CUT === 30) fade("#w-e-bd", F + T.bd);
+      document.querySelectorAll("#w-e-ck .ck").forEach((el, i) => fade(el, F + T.ck + i * 0.06));
+      fade("#w-link", F + T.link);
+      fade("#w-tel", F + T.tel);
       tl.set({ v: 0 }, { v: 1 }, ms(C.END));
       tl.seek(0);
     })();
