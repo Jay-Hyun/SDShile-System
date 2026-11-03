@@ -10,9 +10,9 @@
 .eb { display: block; font-size: 30px; line-height: 42px; font-weight: 600; letter-spacing: 0.02em; color: #7d6233; margin-bottom: 14px; white-space: nowrap; }
 .ld { display: block; font-size: 64px; line-height: 82px; font-weight: 500; letter-spacing: -0.03em; color: #7d6233; white-space: nowrap; }
 .hx { display: block; font-size: 120px; line-height: 134px; font-weight: 700; letter-spacing: -0.045em; color: #161616; white-space: nowrap; }
-.ld + .hx { margin-top: 10px; }
-.hx + .ld { margin-top: 18px; }
-.hx + .bx { margin-top: 22px; }
+.ld + .hx { margin-top: 12px; }
+.hx + .ld { margin-top: 20px; }
+.hx + .bx { margin-top: 26px; }
 .bx { display: block; font-size: 40px; line-height: 58px; font-weight: 400; letter-spacing: -0.01em; color: #6b6660; white-space: nowrap; }
 .bx b { font-weight: 600; color: #161616; }
 .bx.ink { color: #161616; }
@@ -36,7 +36,7 @@
 .dial circle { fill: none; stroke: #7d6233; stroke-opacity: 0.35; stroke-width: 1.5; }
 .ul { position: relative; display: inline-block; }
 .bar { position: absolute; left: 0; right: 0; bottom: 4px; height: 8px; background: #7d6233; transform-origin: 0 50%; transform: scaleX(0); }
-.cks { display: block; margin-top: 34px; }
+.cks { display: block; margin-top: 26px; }
 .hx + .bx { margin-top: 26px; }
 </style>
 <div id="root" data-composition-id="film" data-width="1080" data-height="1920">
@@ -105,25 +105,34 @@
   function hide(sel, t) { tl.set(sel, { opacity: 0, visibility: "hidden" }, ms(t)); }
   function push(sel, t0, t1) { tl.add(sel, { scale: [1, 1.06], duration: ms(t1) - ms(t0), ease: INOUT }, ms(t0)); }
   // scene layout: block bottom = drawing start - 56; the plate rises (<= 260 px) so the block top sits near y 300
-  function layout(sid, start, kmax) {
+  // v8.4 vertical composition: the scene's core group (text block + 72 px + the drawing's focal band) is centred on
+  // the mobile optical centre y = 845 (44 % of the frame). paper = true: the sheet with the empty box (no scaling).
+  const OC = 845, GAP = 72;
+  function layout(sid, start, paper) {
     const b0 = $("#" + sid + "-b0"), b1 = $("#" + sid + "-b1"), mv = $("#" + sid + "-mv");
     const H = Math.max(b0.offsetHeight, b1 ? b1.offsetHeight : 0);
-    // grow the drawing from the bottom edge (<= 1.15x) so it starts higher and still fills the bottom
-    const want = ($("#" + sid + " .badge") ? 236 : 176) + H + 56;
-    const k = Math.max(1, Math.min(kmax, (1920 - want) > 0 ? (1920 - want) / (1920 - start) : kmax));
-    // kmax 1 (paper with the empty box): no scaling, slide the sheet up instead; the paper colour fills under it
-    const lift = kmax === 1 ? Math.max(0, Math.min(220, start - want)) : 0;
-    const w = 1080 * k, h = 1920 * k, l = -(w - 1080) / 2, t = 1920 - h - lift;
+    const focal = paper ? 300 : 640;
+    const top = Math.round(OC - (H + GAP + focal) / 2);
+    const need = top + H + GAP; // where the drawing should start
+    let k = 1, dy = 0;
+    if (paper) dy = Math.max(-420, Math.min(420, need - start));
+    else {
+      const kk = (1920 - need) / (1920 - start);
+      if (kk >= 1) k = Math.min(kk, 1.25); else dy = need - start;
+    }
+    const w = 1080 * k, h = 1920 * k, l = -(w - 1080) / 2, t = 1920 - h + dy;
     mv.querySelectorAll("img, #sig").forEach((el) => { el.style.position = "absolute"; el.style.left = l + "px"; el.style.top = t + "px"; el.style.width = w + "px"; el.style.height = h + "px"; });
-    // soften the drawing's straight top edge into the paper (user request): fade from 40 px above the edge to 160 px below
-    if (kmax !== 1) {
+    if (!paper) {
+      // soften the drawing's straight top edge into the paper (user request)
       const img = mv.querySelector("img"); const a = Math.round(start * k - 60), b = a + 320;
       const m = "linear-gradient(to bottom, transparent 0px, transparent " + a + "px, #000 " + b + "px)";
       img.style.webkitMaskImage = m; img.style.maskImage = m;
-    }
-    if (lift) $("#" + sid).style.background = "#fbefe3";
-    const bottom = Math.round(1920 - (1920 - start) * k) - lift - 56;
-    [b0, b1].forEach((b) => { if (b) b.style.top = (bottom - b.offsetHeight) + "px"; });
+    } else $("#" + sid).style.background = "#fbefe3";
+    const actual = Math.round(1920 - (1920 - start) * k + dy);
+    const btop = actual - GAP - H;
+    [b0, b1].forEach((b) => { if (b) b.style.top = (btop + (H - b.offsetHeight)) + "px"; });
+    const dial = $("#" + sid + " .dial"); if (dial) dial.style.top = (btop - 230) + "px";
+    const badge = $("#" + sid + " .badge"); if (badge) badge.style.top = Math.max(120, btop - 96) + "px";
   }
   // next scene's drawing rises 120 px into place while fading in (0.5 s expo-out); paper never cuts
   function rise(sel, t) { tl.add(sel, { translateY: [120, 0], opacity: [0, 1], duration: 500, ease: EXPO }, ms(t)); }
@@ -143,16 +152,16 @@
   }
   function leave(sel, t) { tl.add(sel, { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 180, ease: IN3 }, ms(t)); }
 
-  layout("s1", 916, 1.2);
+  layout("s1", 916, false);
   show("#s1", 0.000); hide("#s1", 5.533); push("#s1-pl", 0.000, 5.533);
   leave("#s1-b0", 5.333);
-  layout("s2", 981, 1.2);
+  layout("s2", 981, false);
   show("#s2", 5.533); hide("#s2", 12.933); push("#s2-pl", 5.533, 12.933);
   rise("#s2-mv", 5.533);
   land("#s2-b0", 5.633);
   leave("#s2-b0", 12.733);
   tl.add("#s2 .bar", { scaleX: [0, 1], duration: 600, ease: DRAWE }, ms(9.233));
-  layout("s3", 956, 1.2);
+  layout("s3", 956, false);
   show("#s3", 12.933); hide("#s3", 22.167); push("#s3-pl", 12.933, 22.167);
   rise("#s3-mv", 12.933);
   land("#s3-b0", 13.033);
@@ -161,10 +170,17 @@
   
   show("#s4", 22.167);
   // end-card action block stacked from y 600 (logo) downward; gaps fixed
+  // v8.4: the whole action stack (logo .. disclaimer) is centred on the optical centre y 845; the stairs band ends 60 px above it
   (function () {
-    const gaps = { logo: 0, sl: 18, eb2: 46, hd: 0, ck: 34, link: 40, tel: 10 };
-    let y = 500;
-    ["logo","sl","eb2","hd","ck","link","tel"].forEach((k) => { const el = $("#e-" + k); y += gaps[k]; el.style.position = "absolute"; el.style.left = "0px"; el.style.top = y + "px"; y += el.offsetHeight; });
+    const keys = ["logo","sl","eb2","hd","ck","link","tel","foot","disc"];
+    const gaps = { logo: 0, sl: 18, eb2: 40, hd: 0, ck: 26, link: 34, tel: 10, foot: 30, disc: 6 };
+    const els = keys.map((k) => $("#e-" + k)).filter(Boolean);
+    let total = 0; els.forEach((el, i) => { total += (i ? gaps[keys[keys.indexOf(el.id.slice(2))]] : 0) + el.offsetHeight; });
+    let y = Math.round(845 - total / 2);
+    const top0 = y;
+    els.forEach((el, i) => { if (i) y += gaps[el.id.slice(2)]; el.style.position = "absolute"; el.style.left = (el.parentElement.id === "s4-act" ? 0 : 84) + "px"; el.style.top = y + "px"; y += el.offsetHeight; });
+    $("#s4-pl").style.top = (top0 - 60 - 613) + "px";
+    const slo = $("#s4-slo"); slo.style.top = Math.round(845 - slo.offsetHeight / 2 + 60) + "px";
   })();
   tl.set("#s4-act", { opacity: 0 }, 0);
   words(split($("#s4-slo")), 22.317);
