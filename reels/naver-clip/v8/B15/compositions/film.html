@@ -1,0 +1,132 @@
+<template>
+<style>
+@font-face { font-family: "PretendardGOV"; src: url("assets/fonts/PretendardGOV-subset.woff2") format("woff2"); font-weight: 45 930; }
+#root { position: absolute; inset: 0; overflow: hidden; font-family: "PretendardGOV", sans-serif; color: #161616; word-break: keep-all; background: #fbf9f4; }
+.sc { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; opacity: 0; }
+.plate { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 540px 1920px; }
+.plate img { display: block; width: 1080px; height: 1920px; }
+.col { position: absolute; left: 84px; width: 912px; }
+.badge { position: absolute; left: 84px; top: 160px; font-size: 30px; line-height: 42px; font-weight: 600; color: #6b6660; white-space: nowrap; }
+.eb { display: block; font-size: 30px; line-height: 42px; font-weight: 600; letter-spacing: 0.02em; color: #7d6233; margin-bottom: 14px; white-space: nowrap; }
+.ld { display: block; font-size: 64px; line-height: 82px; font-weight: 500; letter-spacing: -0.03em; color: #7d6233; white-space: nowrap; }
+.hx { display: block; font-size: 120px; line-height: 134px; font-weight: 700; letter-spacing: -0.045em; color: #161616; white-space: nowrap; }
+.ld + .hx { margin-top: 10px; }
+.hx + .ld { margin-top: 18px; }
+.hx + .bx { margin-top: 22px; }
+.bx { display: block; font-size: 40px; line-height: 58px; font-weight: 400; letter-spacing: -0.01em; color: #6b6660; white-space: nowrap; }
+.bx b { font-weight: 600; color: #161616; }
+.bx.ink { color: #161616; }
+.ck { display: flex; align-items: center; gap: 20px; font-size: 40px; line-height: 58px; font-weight: 500; letter-spacing: -0.01em; color: #161616; white-space: nowrap; }
+.ck svg { width: 44px; height: 44px; flex: none; display: block; }
+.ck + .ck { margin-top: 16px; }
+.hx + .ck, .blk > .ck:first-child { margin-top: 0; }
+.w { display: inline-block; }
+.gold { color: #7d6233; }
+.arr { display: inline-block; width: 32px; height: 40px; vertical-align: -8px; margin-left: 12px; overflow: visible; }
+.arr path { fill: none; stroke: #7d6233; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+#e-logo { display: flex; align-items: center; gap: 18px; font-size: 40px; line-height: 62px; font-weight: 700; letter-spacing: -0.02em; color: #161616; white-space: nowrap; }
+.mark { display: block; width: 56px; height: 62px; background: #161616; -webkit-mask: url("assets/img/mark.svg") center / contain no-repeat; mask: url("assets/img/mark.svg") center / contain no-repeat; }
+#tk { position: absolute; left: 0; top: 1580px; width: 1080px; height: 340px; background: #0b1a33; overflow: hidden; }
+#tk-row { position: absolute; left: 0; top: 76px; white-space: nowrap; font-size: 40px; line-height: 60px; font-weight: 600; letter-spacing: 0.04em; color: #e0c27e; }
+#tk-row i { font-style: normal; display: inline-block; margin: 0 28px; font-size: 30px; vertical-align: 4px; }
+.small { position: absolute; left: 84px; font-size: 30px; line-height: 42px; font-weight: 400; color: #6b6660; white-space: nowrap; }
+
+#sig { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+#you { fill: none; stroke: #7d6233; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+<div id="root" data-composition-id="film" data-width="1080" data-height="1920">
+<div id="s1" class="sc" data-layout-allow-overflow>
+<div id="s1-pl" class="plate"><img src="assets/img/B-1-hook.png" alt="" data-fill/></div>
+<div class="badge">가상 인물 · 연출</div>
+<div id="s1-b0" class="col blk" style="top:262px"><span class="hx">15년 경력.</span><span class="ld">이력서 첫 줄에서<br>멈췄습니다.</span></div>
+</div>
+<div id="s2" class="sc" data-layout-allow-overflow>
+<div id="s2-pl" class="plate"><img src="assets/img/B-2b-box.png" alt="" data-fill/></div>
+<div class="badge">가상 인물 · 연출</div>
+<svg id="sig" viewBox="0 0 1080 1920" data-layout-ignore><g transform="translate(-143.9 816.0) scale(1.1555)"><path id="you" d="M 296 214 C 300 176, 352 160, 362 200 C 370 240, 350 300, 380 328 C 410 352, 458 318, 476 262 C 484 236, 490 206, 498 176 C 494 262, 486 372, 458 432 C 444 462, 404 462, 410 430 C 418 386, 540 330, 610 300 C 630 290, 640 262, 616 258 C 590 254, 574 290, 584 320 C 592 344, 628 344, 640 318 C 648 300, 644 280, 634 272 C 650 276, 668 276, 670 292 C 672 316, 672 338, 692 340 C 716 342, 728 306, 732 278 C 730 310, 734 338, 758 340 C 800 342, 850 316, 886 266" stroke-width="5.19"/></g></svg>
+<div id="s2-a" class="col blk" style="top:262px"><span class="ld">경력은 증명됐습니다.</span><span class="hx">학력 칸만</span><span class="hx">남았어요.</span></div>
+<div id="s2-b" class="col blk" style="top:262px"><span class="ld">이 칸의 이름,</span><span class="hx"><span class=gold>당신.</span></span></div>
+</div>
+<div id="s3" class="sc" data-layout-allow-overflow>
+<div id="s3-pl" class="plate"><img src="assets/img/B-3-how.png" alt="" data-fill/></div>
+<div class="badge">가상 인물 · 연출</div>
+<div id="s3-b0" class="col blk" style="top:262px"><span class="eb">퇴근 후·주말에,</span><span class="ld">국내 유일*</span><span class="hx">100% 온라인</span><span class="hx">법학사</span><span class="bx ">교육부장관 명의 · '법학 전공' 표기</span><span class="bx" style="font-size:30px;line-height:42px;margin-top:14px">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</span></div>
+</div>
+<div id="s4" class="sc" data-layout-allow-overflow style="background:#faf5f3">
+<div id="s4-pl" class="plate" style="top:-150px"><img src="assets/img/A-4-stairs.png" alt="" data-fill/></div>
+<div id="s4-slo" class="col" style="top:830px"><span class="eb">그 자리로 가는 첫 계단</span><span class="ld">책임지는 자리로,</span><span class="hx">지금 있는</span><span class="hx">자리에서.</span></div>
+<div id="s4-act" class="col" style="top:0">
+<div id="e-logo" class="blk"><span class="mark"></span><span>경찰복지사이버평생교육원</span></div>
+<div id="e-sl" class="blk"><span class="bx ">책임지는 자리로, 지금 있는 자리에서.</span></div>
+<div id="e-eb2" class="blk"><span class="eb">비어 있던 학력 칸,</span></div>
+<div id="e-hd" class="blk"><span class="hx">기간·비용부터</span><span class="hx">들어 보세요.</span></div>
+<div id="e-ck" class="blk"><div class="ck"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="22" fill="#7d6233"/><path d="M13 22.5l6 5.8L31 16" fill="none" stroke="#fbf9f4" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>일하면서도 돼요</span></div><div class="ck"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="22" fill="#7d6233"/><path d="M13 22.5l6 5.8L31 16" fill="none" stroke="#fbf9f4" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>상담만 받아도 돼요</span></div></div>
+<div id="e-link" class="blk"><span class="bx ink"><b>아래 링크에서 확인하기</b><svg class="arr" viewBox="0 0 36 44"><path d="M18 3V40M6 28L18 40L30 28"/></svg></span></div>
+<div id="e-tel" class="blk"><span class="bx ">전화 <b>070-4006-7128</b> (평일 10–18시)</span></div>
+</div>
+<div id="e-foot" class="small" style="top:1452px">*'국내 유일': 100% 온라인 법학사 과정, 2026.10 조회 기준</div>
+<div id="e-disc" class="small" style="top:1500px">로스쿨 입학·변호사시험 합격·취업을 보장하지 않습니다.</div>
+<div id="tk"><div id="tk-row">헌법<i>◆</i>민법<i>◆</i>형법<i>◆</i>행정법<i>◆</i>상법<i>◆</i>민사소송법<i>◆</i>헌법<i>◆</i>민법<i>◆</i>형법<i>◆</i>행정법<i>◆</i>상법<i>◆</i>민사소송법</div></div>
+</div>
+</div>
+<script>
+(function () {
+  const A = window.anime;
+  const ms = (t) => Math.round(t * 30) * 1000 / 30;
+  const EXPO = A.cubicBezier(0.16, 1, 0.3, 1), INOUT = A.cubicBezier(0.45, 0, 0.55, 1), DRAWE = A.cubicBezier(0.76, 0, 0.24, 1), IN3 = A.cubicBezier(0.55, 0.055, 0.675, 0.19);
+  const tl = A.createTimeline({ autoplay: false });
+  window.__hfAnime = window.__hfAnime || []; window.__hfAnime.push(tl);
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+  // split text nodes into word spans (keeps svg/icons as units)
+  function split(root) {
+    const out = [];
+    const walk = (n) => Array.from(n.childNodes).forEach((c) => {
+      if (c.nodeType === 3) {
+        const parts = c.textContent.split(/(\s+)/); const f = document.createDocumentFragment();
+        parts.forEach((p) => { if (!p) return; if (/^\s+$/.test(p)) f.appendChild(document.createTextNode(p)); else { const s = document.createElement("span"); s.className = "w"; s.textContent = p; f.appendChild(s); out.push(s); } });
+        n.replaceChild(f, c);
+      } else if (c.nodeType === 1 && c.tagName.toLowerCase() === "svg") out.push(c);
+      else if (c.nodeType === 1 && !c.classList.contains("w")) walk(c);
+    });
+    walk(root); return out;
+  }
+  function words(els, t) { tl.set(els, { opacity: 0 }, 0); els.forEach((el, i) => tl.add(el, { opacity: [0, 1], filter: ["blur(6px)", "blur(0px)"], duration: 130, ease: EXPO }, ms(t + i * 0.067))); }
+  function wordsOut(els, t) { els.forEach((el, i) => tl.add(el, { opacity: [1, 0], filter: ["blur(0px)", "blur(6px)"], duration: 180, ease: IN3 }, ms(t + i * 0.03))); }
+  function show(sel, t) { tl.set(sel, { opacity: 1 }, ms(t)); }
+  function hide(sel, t) { tl.set(sel, { opacity: 0 }, ms(t)); }
+  function push(sel, t0, t1) { tl.add(sel, { scale: [1, 1.05], duration: ms(t1) - ms(t0), ease: INOUT }, ms(t0)); }
+
+  (function(){ const a=$("#s1-b0"), b=$("#s1-b1"); if (b) b.style.top = (a.offsetTop + a.offsetHeight + 44) + "px"; })();
+  show("#s1", 0.000); hide("#s1", 3.967); push("#s1-pl", 0.000, 3.967);
+  show("#s2", 3.967); hide("#s2", 8.000); push("#s2-pl", 3.967, 8.000);
+  words(split($("#s2-a")), 4.117);
+  tl.set("#s2-b", { opacity: 0 }, 0); 
+  { const d = A.svg.createDrawable("#you"); tl.set(d, { draw: "0 0" }, 0); tl.add(d, { draw: ["0 0", "0 1"], duration: 1100, ease: DRAWE }, ms(4.467)); }
+  wordsOut($$("#s2-a .w"), 5.650);
+  tl.set("#s2-b", { opacity: 1 }, ms(6.000)); words(split($("#s2-b")), 6.000);
+  words(split($("#s3-b0")), 8.150);
+  (function(){ const a=$("#s3-b0"), b=$("#s3-b1"); if (b) b.style.top = (a.offsetTop + a.offsetHeight + 44) + "px"; })();
+  show("#s3", 8.000); hide("#s3", 11.000); push("#s3-pl", 8.000, 11.000);
+  
+  show("#s4", 11.000);
+  // end-card action block stacked from y 600 (logo) downward; gaps fixed
+  (function () {
+    const gaps = { logo: 0, sl: 18, eb2: 46, hd: 0, ck: 34, link: 40, tel: 10 };
+    let y = 600;
+    ["logo","sl","eb2","hd","ck","link","tel"].forEach((k) => { const el = $("#e-" + k); y += gaps[k]; el.style.position = "absolute"; el.style.left = "0px"; el.style.top = y + "px"; y += el.offsetHeight; });
+  })();
+  tl.set("#s4-act", { opacity: 0 }, 0);
+  tl.set("#s4-slo", { opacity: 0 }, 0);
+  tl.add("#tk-row", { translateX: [0, -300], duration: ms(15) - ms(11.0), ease: "linear" }, ms(11.0));
+  tl.set(["#e-disc", "#e-foot"], { opacity: 0 }, 0);
+  tl.add(["#e-disc", "#e-foot"], { opacity: [0, 1], duration: 200 }, ms(11.600));
+  
+  tl.set("#s4-act", { opacity: 1 }, ms(11.000));
+  { const ws = []; ["logo","sl","eb2","hd","ck","link","tel"].forEach((k) => { const el = $("#e-" + k); if (k === "logo" || k === "ck") ws.push(...Array.from(el.children)); else ws.push(...split(el)); }); words(ws, 11.000); }
+
+  tl.set({ v: 0 }, { v: 1 }, ms(15));
+  tl.seek(0);
+})();
+</script>
+</template>
