@@ -51,7 +51,7 @@ CHECK = '<svg viewBox="0 0 100 100"><path pathLength="1" d="M10 52 L40 82 L94 14
 
 def header(page):
     return f'''      <div class="hd">
-        <div class="hd-top"><span>2026학년도 2학기 법학사 과정 문제지</span><b>홀수형</b></div>
+        <div class="hd-top"><span>2027학년도 1학기 법학사 과정 문제지</span><b>홀수형</b></div>
         <div class="hd-title">제1교시 법학 영역</div>
         <div class="hd-rule"></div>
       </div>
@@ -96,7 +96,7 @@ SLOTS = []
 
 # ---------- 표지 포스터 0~1.3s (무음, 썸네일) ----------
 SLOTS.append(scene("cover", None, "audio", '''
-    #cv-stamp { position: absolute; left: 690px; top: 330px; width: 300px; height: 112px; border: 6px solid #d93a2b; border-radius: 16px; color: #d93a2b; font-size: 40px; font-weight: 900; display: flex; align-items: center; justify-content: center; letter-spacing: -0.02em; background: rgba(247, 243, 234, 0.6); }
+    #cv-stamp { position: absolute; left: 690px; top: 320px; width: 300px; height: 132px; border: 6px solid #d93a2b; border-radius: 16px; color: #d93a2b; font-size: 38px; line-height: 1.2; text-align: center; font-weight: 900; display: flex; align-items: center; justify-content: center; letter-spacing: -0.02em; background: rgba(247, 243, 234, 0.6); }
     #cv-kick { position: absolute; left: 110px; width: 860px; top: 480px; text-align: center; font-family: "NotoSerifKR", serif; font-size: 64px; font-weight: 700; }
     #cv-title { position: absolute; left: 60px; width: 960px; top: 580px; text-align: center; font-family: "NotoSerifKR", serif; font-size: 200px; font-weight: 900; line-height: 1; letter-spacing: 0.04em; }
     #cv-meta { position: absolute; left: 110px; width: 860px; top: 830px; display: flex; justify-content: center; gap: 0; font-size: 40px; font-weight: 800; }
@@ -109,7 +109,7 @@ SLOTS.append(scene("cover", None, "audio", '''
     #cv-fine { top: 1268px; text-align: center; }
     #cover-cam .hd-top b { visibility: hidden; }
 ''', header(1).replace('<div class="foot"', '<div class="foot" style="display: none"') + '''
-      <div id="cv-stamp">11/10 접수 마감</div>
+      <div id="cv-stamp">12월 1일<br />수강신청 마감</div>
       <div id="cv-kick">AI 시대의</div>
       <div id="cv-title">법학 영역</div>
       <div id="cv-meta"><span>5문항</span><span>제한 시간 28초</span></div>
@@ -268,7 +268,7 @@ SLOTS.append(scene("cta", 30, None, '''
 ''', '''      <div id="ct-label">정 답 지</div>
       <div id="ct-l1">정답과 해설은,</div>
       <div id="ct-l2">상담에서.</div>
-      <div id="ct-pill"><div>11/10 접수 마감 · 11/4 개강</div></div>
+      <div id="ct-pill"><div>1차 수강신청 12월 1일까지 · 12월 2일 개강</div></div>
       <div id="ct-btn"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="#fff" /></svg><b>070-4006-7128</b></div>
       <svg id="ct-cursor" viewBox="0 0 24 24" data-layout-ignore><path d="M5 3l14 7-6.2 1.8L10.8 18z" fill="#ffffff" stroke="#0b1a33" stroke-width="1.6" stroke-linejoin="round" /></svg>
       <div id="ct-hours">평일 10~18시 · 내 학력 기준 1:1 상담</div>

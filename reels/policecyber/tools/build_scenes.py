@@ -110,7 +110,7 @@ SLOTS.append(scene("poster", 0, 3, f"""
         <rect class="gh" x="52" y="692" width="16" height="16" />
         <rect class="gh" x="1012" y="692" width="16" height="16" />
       </svg>
-      <div id="po-alert" class="stage"><div><i></i>11/10 접수 마감 · 11/4 개강</div></div>
+      <div id="po-alert" class="stage"><div><i></i>1차 수강신청 12월 1일까지 · 12월 2일 개강</div></div>
       <div id="po-l1" class="stage">AI가 답을 줄 때,</div>
       <div id="po-l2" class="stage">그 답을 믿어도 되는지</div>
       <div id="po-l3" class="stage">아는 사람.</div>
@@ -425,7 +425,7 @@ SLOTS.append(scene("cta", 53, None, f'''
       <div id="ct-lead" class="stage">결정은 상담 뒤에 해도 늦지 않아요</div>
       <div id="ct-b1" class="stage">질문만</div>
       <div id="ct-b2" class="stage">들고 오세요.</div>
-      <div id="ct-pill" class="stage"><div>11/10 접수 마감 · 11/4 개강</div></div>
+      <div id="ct-pill" class="stage"><div>1차 수강신청 12월 1일까지 · 12월 2일 개강</div></div>
       <div id="ct-btn"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="#fff" /></svg><b>070-4006-7128</b></div>
       <svg id="ct-cursor" viewBox="0 0 24 24" data-layout-ignore><path d="M5 3l14 7-6.2 1.8L10.8 18z" fill="#ffffff" stroke="#0b1a33" stroke-width="1.6" stroke-linejoin="round" /></svg>
       <div id="ct-hours" class="stage">평일 10~18시 · 내 학력 기준 1:1 상담</div>
