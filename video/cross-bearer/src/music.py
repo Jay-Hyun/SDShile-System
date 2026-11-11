@@ -1,10 +1,12 @@
 """Original 60-second score for the opening film, synthesised with numpy only.
 
 Tempo is 60 BPM so one beat is one second and every cue lines up with the storyboard:
-  0-5   drone + single piano notes          38-41  silence (reverb tail only)
-  5-38  four-note "light" motif, D minor,   41-47  solo cello, the motif as a full melody
-        one more instrument per witness     47-50  tutti, turn to D major (the burst of light)
-  50-56 the motif in major                  56-60  final chord, last second is tail
+  0-5   drone, the road to Damascus         36-42  Rome: the motif almost alone
+  5-12  the light: shock chord + motif      42-44  silence (reverb tail only)
+  12-18 the sea, rolling piano              44-48  solo cello climbs the hill
+  18-24 storm: drums on each lightning cut  48-50  tutti, turn to D major (the burst of light)
+  24-30 prison at midnight: a wordless hymn 50-56  the motif in major
+  30-36 farewell, dominant                  56-60  final chord, last second is tail
 
 Usage: python3 src/music.py  ->  out/music.wav (48 kHz, 16-bit stereo)
 """
@@ -118,7 +120,7 @@ strings('A2', 1.0, 4.2, 0.09, attack=2.0, release=1.5, pan=0.3)
 piano('A4', 1.1, 0.16, -0.1)
 piano('D5', 3.0, 0.13, 0.15)
 
-# ---- 5-38 s · the witnesses (light motif D-A-G-F, one more voice each time) --
+# ---- 5-12 s · the light from heaven -----------------------------------------
 MOTIF = ['D4', 'A4', 'G4', 'F4']
 
 
@@ -127,59 +129,74 @@ def motif(t0, octave=0, amp=0.2, notes=MOTIF, step=1.0):
         piano(nm[:-1] + str(int(nm[-1]) + octave), t0 + i * step, amp * (1.0 if i != 1 else 1.15), pan=-0.2 + 0.13 * i)
 
 
-# Stephen 5-12: cello only
-chord(['D2', 'A2'], 5.0, 4.0, 0.15)
-chord(['Bb1', 'F2', 'D3'], 9.0, 3.0, 0.13)
-motif(6.0)
-# James 12-17: + viola; the sword falls at 15.5
-chord(['G2', 'D3', 'Bb3'], 12.0, 3.2, 0.13)
-motif(13.0, notes=['G4', 'D5', 'C5', 'Bb4'], step=0.6, amp=0.19)
-chord(['A1', 'A2', 'E3', 'C#4'], 15.5, 1.6, 0.2, attack=0.03, release=1.6, bright=1.6)
-drum(15.5, 0.75)
-# Paul 17-26: + violins, the journey moves
-chord(['D2', 'A2', 'F3', 'A3'], 17.0, 3.0, 0.12)
-chord(['F2', 'C3', 'F3', 'A3'], 20.0, 3.0, 0.12)
-chord(['C2', 'G2', 'E3', 'G3', 'C4'], 23.0, 3.0, 0.12)
-motif(18.0)
-motif(22.0, notes=['F4', 'C5', 'Bb4', 'A4'])
-for i, nm in enumerate(['D5', 'F5', 'A5', 'C5', 'F5', 'A5', 'C5', 'E5', 'G5']):  # travelling eighths
-    piano(nm, 17.5 + i * 1.0, 0.055, 0.4)
-# Peter 26-32: + low drum, heavier
-chord(['Bb1', 'F2', 'D3', 'F3', 'Bb3'], 26.0, 3.0, 0.14)
-chord(['G1', 'G2', 'D3', 'G3', 'Bb3'], 29.0, 3.0, 0.14)
-strings('D5', 26.0, 2.6, 0.05, pan=0.5)
-strings('Bb4', 29.0, 2.6, 0.05, pan=0.5)
-motif(27.0, amp=0.22)
-drum(26.0, 0.5)
-drum(29.0, 0.5)
-# John 32-38: dominant, left unresolved
-chord(['A1', 'A2', 'E3', 'A3', 'D4'], 32.0, 3.0, 0.13)
-chord(['A1', 'A2', 'E3', 'A3', 'C#4'], 35.0, 2.4, 0.13, release=1.4, swell=[1.0, 0.25])
-strings('E5', 32.0, 5.2, 0.045, pan=-0.5, attack=1.5, release=1.2, swell=[1.0, 0.2])
-motif(33.0, notes=['A4', 'E5', 'D5', 'C#5'], amp=0.19)
-drum(32.0, 0.42)
+drum(5.0, 0.8)
+chord(['D2', 'A2', 'D3', 'A3'], 5.0, 3.6, 0.15, attack=0.05, release=1.4)
+for nm, pan in (('A5', -0.5), ('D6', 0.5), ('E6', 0.0)):
+    strings(nm, 5.0, 4.0, 0.05, attack=0.05, release=2.0, pan=pan, bright=2.0, swell=[1.0, 0.15])
+chord(['Bb1', 'F2', 'D3'], 8.6, 3.2, 0.13)
+motif(6.5)
 
-# ---- 38-41 s · silence -------------------------------------------------------
+# ---- 12-18 s · sent out by sea ----------------------------------------------
+chord(['F2', 'C3', 'F3', 'A3'], 12.0, 3.0, 0.12)
+chord(['C2', 'G2', 'E3', 'G3', 'C4'], 15.0, 3.0, 0.12, swell=[1.0, 1.3])
+motif(12.5, notes=['F4', 'C5', 'Bb4', 'A4'])
+for i, nm in enumerate(['A4', 'C5', 'F5', 'C5', 'A4', 'C5', 'G4', 'C5', 'E5', 'C5', 'G4', 'C5']):  # rolling water
+    piano(nm, 12.0 + i * 0.5, 0.05, 0.4)
 
-# ---- 41-47 s · solo cello up the hill --------------------------------------
-strings('D2', 41.0, 6.0, 0.1, attack=1.5, release=0.3, swell=[0.5, 1.5])
-for nm, t0, d in [('D3', 41.0, 1.0), ('A3', 42.0, 1.0), ('G3', 43.0, 0.5), ('F3', 43.5, 0.5), ('E3', 44.0, 1.0),
-                  ('F3', 45.0, 0.5), ('G3', 45.5, 0.5), ('A3', 46.0, 1.0)]:
-    strings(nm, t0, d, 0.3 + 0.04 * (t0 - 41), attack=0.12, release=0.5, bright=1.5)
-for t0 in (41.0, 42.5, 44.0, 45.5):
-    drum(t0, 0.36 + 0.05 * (t0 - 41))
-strings('A4', 45.0, 2.0, 0.1, attack=1.6, release=0.3, pan=0.4, swell=[0.2, 1.4])
-strings('C#5', 45.0, 2.0, 0.1, attack=1.6, release=0.3, pan=-0.4, swell=[0.2, 1.4])
-swell(45.2, 1.8, 1.0)
+# ---- 18-24 s · storm and shipwreck ---------------------------------------------
+chord(['G1', 'G2', 'D3', 'G3', 'Bb3'], 18.0, 3.0, 0.19, attack=0.05, bright=1.7)
+chord(['A1', 'A2', 'E3', 'A3', 'C#4'], 21.0, 2.7, 0.2, attack=0.05, release=0.5, bright=1.8)
+strings('D5', 18.0, 2.8, 0.09, attack=0.05, pan=0.4, bright=1.8)
+strings('E5', 21.0, 2.5, 0.1, attack=0.05, release=0.4, pan=0.4, bright=1.8)
+for t0, a in [(18.0, 0.8), (18.47, 0.95), (19.0, 0.5), (19.5, 0.6), (20.0, 0.5), (20.47, 0.95), (21.0, 0.6), (21.5, 0.6),
+              (22.0, 0.5), (22.27, 0.95), (22.75, 0.6), (23.25, 0.7), (23.5, 0.75), (23.75, 0.85)]:
+    drum(t0, a)
+swell(22.6, 1.3, 0.6)
 
-# ---- 47-50 s · the burst: D major -------------------------------------------
-chord(['D1', 'D2', 'A2', 'D3', 'F#3', 'A3', 'D4', 'F#4', 'A4', 'D5'], 47.0, 3.0, 0.2, attack=0.04, release=1.4, bright=1.9)
-drum(47.0, 1.0)
-drum(47.12, 0.6)
-for nm, t0 in [('F#5', 47.0), ('A5', 48.0), ('D6', 49.0)]:
+# ---- 24-30 s · midnight in Philippi: a hymn in the dark -------------------------
+for names, t0 in ((('Bb3', 'D4', 'F4'), 24.3), (('A3', 'C4', 'F4'), 27.0)):
+    for k, nm in enumerate(names):
+        pad(nm, t0, 2.6, 0.06, (k - 1) * 0.5)
+strings('Bb1', 24.3, 2.6, 0.1, attack=1.0)
+strings('F2', 27.0, 2.8, 0.1, attack=0.6)
+motif(25.0, notes=['D4', 'F4', 'G4', 'A4'], amp=0.16)
+
+# ---- 30-36 s · farewell at Miletus ------------------------------------------------
+chord(['G2', 'D3', 'G3', 'Bb3'], 30.0, 3.0, 0.14)
+chord(['A1', 'A2', 'E3', 'A3', 'D4'], 33.0, 1.5, 0.14)
+chord(['A1', 'A2', 'E3', 'A3', 'C#4'], 34.5, 1.5, 0.14, release=1.2)
+strings('D5', 30.0, 2.8, 0.06, pan=0.5)
+strings('E5', 33.0, 2.8, 0.06, pan=0.5, swell=[1.0, 0.4])
+motif(31.0, notes=['G4', 'D5', 'C5', 'Bb4'], amp=0.2)
+drum(30.0, 0.45)
+drum(33.0, 0.45)
+
+# ---- 36-42 s · the last letter: almost alone ---------------------------------------
+strings('D2', 36.0, 4.6, 0.12, attack=1.0, release=1.4, swell=[1.0, 0.2])
+strings('A2', 36.0, 4.2, 0.07, attack=1.2, release=1.4, pan=0.3, swell=[1.0, 0.15])
+motif(37.0, amp=0.2)
+piano('D4', 41.0, 0.1)
+
+# ---- 42-44 s · silence ---------------------------------------------------------
+
+# ---- 44-48 s · solo cello up the hill ------------------------------------------
+strings('D2', 44.0, 4.0, 0.1, attack=1.2, release=0.3, swell=[0.5, 1.6])
+for nm, t0, d in [('D3', 44.0, 1.0), ('A3', 45.0, 1.0), ('G3', 46.0, 0.5), ('F3', 46.5, 0.5), ('E3', 47.0, 0.5), ('A3', 47.5, 0.5)]:
+    strings(nm, t0, d, 0.3 + 0.05 * (t0 - 44), attack=0.12, release=0.5, bright=1.5)
+for t0 in (44.0, 45.0, 46.0, 47.0):
+    drum(t0, 0.36 + 0.07 * (t0 - 44))
+strings('A4', 46.2, 1.8, 0.1, attack=1.4, release=0.3, pan=0.4, swell=[0.2, 1.4])
+strings('C#5', 46.2, 1.8, 0.1, attack=1.4, release=0.3, pan=-0.4, swell=[0.2, 1.4])
+swell(46.3, 1.7, 1.0)
+
+# ---- 48-50 s · the burst: D major ------------------------------------------------
+chord(['D1', 'D2', 'A2', 'D3', 'F#3', 'A3', 'D4', 'F#4', 'A4', 'D5'], 48.0, 2.0, 0.2, attack=0.04, release=1.4, bright=1.9)
+drum(48.0, 1.0)
+drum(48.12, 0.6)
+for nm, t0 in [('F#5', 48.0), ('A5', 49.0)]:
     strings(nm, t0, 1.0, 0.17, attack=0.08, release=0.9, bright=2.0, pan=0.2)
-for i, nm in enumerate(['D4', 'F#4', 'A4', 'D5', 'F#5', 'A5', 'D6', 'A5', 'F#5', 'D5', 'A4', 'F#4']):
-    piano(nm, 47.0 + i * 0.25, 0.14, -0.4 + 0.07 * i)
+for i, nm in enumerate(['D4', 'F#4', 'A4', 'D5', 'F#5', 'A5', 'D6', 'A5']):
+    piano(nm, 48.0 + i * 0.25, 0.14, -0.4 + 0.07 * i)
 
 # ---- 50-56 s · the motif in major, handed on ---------------------------------
 chord(['D2', 'A2', 'D3', 'F#3', 'A3'], 50.0, 2.0, 0.15, attack=0.3)
@@ -239,5 +256,5 @@ with wave.open(path, 'wb') as w:
 
 rms = lambda a, b: 20 * np.log10(np.sqrt(np.mean(out[int(a * SR):int(b * SR)] ** 2)) + 1e-9)
 print(f'{os.path.normpath(path)}  {N / SR:.1f}s  peak {np.max(np.abs(out)):.2f}')
-for a, b, nm in [(0, 5, 'prologue'), (5, 38, 'witnesses'), (38.6, 41, 'silence'), (41, 47, 'cello'), (47, 50, 'burst'), (50, 56, 'major'), (56, 60, 'title')]:
+for a, b, nm in [(0, 5, 'road'), (5, 12, 'light'), (12, 18, 'sea'), (18, 24, 'storm'), (24, 30, 'prison'), (30, 36, 'farewell'), (36, 42, 'rome'), (43, 44, 'silence'), (44, 48, 'cello'), (48, 50, 'burst'), (50, 56, 'major'), (56, 60, 'title')]:
     print(f'  {nm:10s} {a:>5}-{b:<4} {rms(a, b):6.1f} dBFS')

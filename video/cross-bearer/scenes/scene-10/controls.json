@@ -1,0 +1,12 @@
+{
+  "controls": [
+    {
+      "sid": "bgColor",
+      "label": "배경색"
+    },
+    {
+      "sid": "groupName",
+      "label": "청년회 이름"
+    }
+  ]
+}

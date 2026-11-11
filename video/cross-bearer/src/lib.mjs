@@ -51,6 +51,12 @@ export const radial = (c, r, a0 = 1, a1 = 0, o = 100) => {
 export const linear = (y0, y1, stops) => ({ ty: 'gf', t: 1, o: K(100), r: 1, s: K([0, y0]), e: K([0, y1]),
   g: { p: stops.length, k: K(stops.flatMap(([p, c]) => [p, ...hex(c)])) } });
 
+/** Vertical gradient of one colour whose alpha runs a0 -> a1 (for scrims). */
+export const linearA = (y0, y1, c, a0, a1) => {
+  const [R, G, B] = hex(c);
+  return { ty: 'gf', t: 1, o: K(100), r: 1, s: K([0, y0]), e: K([0, y1]), g: { p: 2, k: K([0, R, G, B, 1, R, G, B, 0, a0, 1, a1]) } };
+};
+
 /** Polygon / smooth path. Points: [x, y] smooth (when smooth=true) or [x, y, 'c'] corner. */
 export function path(pts, { closed = true, smooth = false, tension = 1 } = {}) {
   const n = pts.length, v = [], i = [], o = [];
@@ -71,6 +77,8 @@ export const group = (items, t = {}, nm = 'g') => ({ ty: 'gr', nm, it: [...items
 // ---- layers ------------------------------------------------------------
 export const shape = (nm, shapes, t = {}, extra = {}) => ({ ty: 4, nm, ks: tf(t), shapes, ...extra });
 export const nul = (nm, t = {}) => ({ ty: 3, nm, ks: tf(t) });
+/** Still image layer; `file` sits next to lottie.json. Anchor is the image centre. */
+export const image = (nm, file, w, h, t = {}) => ({ ty: 2, nm, refId: file, ks: tf({ a: [w / 2, h / 2], ...t }), _asset: { id: file, w, h, u: '', p: file, e: 0 } });
 
 export const FONTS = {
   R: { fName: 'NotoSerifKR-Regular', fFamily: 'Noto Serif KR', fStyle: 'Regular', ascent: 75 },
@@ -91,12 +99,14 @@ export const fade = (tIn, tOut, max = 100, dIn = 22, dOut = 16) =>
 
 /** Layers are authored bottom-to-top; Lottie wants top-first. */
 export function comp(nm, op, layers, { bg = C.ink } = {}) {
+  const assets = [];
   const slots = { bgColor: { p: K([...hex(bg), 1]) } };
   const bgLayer = shape('background', [rect(0, 0, W, H), { ty: 'fl', c: { a: 0, k: [...hex(bg), 1], sid: 'bgColor' }, o: K(100), r: 1 }]);
   const all = [bgLayer, ...layers.flat(Infinity).filter(Boolean)];
   const names = new Map(all.map((l, i) => [l.nm, i + 1]));
   const out = all.map((l, i) => {
-    const { _slot, parent, ...rest } = l;
+    const { _slot, _asset, parent, ...rest } = l;
+    if (_asset && !assets.some(a => a.id === _asset.id)) assets.push(_asset);
     if (_slot) slots[_slot.sid] = { p: { a: 1, k: [{ t: 0, s: _slot.doc }] } };
     const base = { ddd: 0, ind: i + 1, ip: 0, op, st: 0, sr: 1, ao: 0, bm: 0, ...rest };
     if (parent) {
@@ -105,5 +115,5 @@ export function comp(nm, op, layers, { bg = C.ink } = {}) {
     }
     return base;
   }).reverse();
-  return { v: '5.7.0', fr: FR, ip: 0, op, w: W, h: H, nm, ddd: 0, assets: [], fonts: { list: [FONTS.R, FONTS.B] }, slots, layers: out };
+  return { v: '5.7.0', fr: FR, ip: 0, op, w: W, h: H, nm, ddd: 0, assets, fonts: { list: [FONTS.R, FONTS.B] }, slots, layers: out };
 }
