@@ -1,0 +1,15 @@
+{
+  "name": "cross-bearer-opening",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node src/build.mjs",
+    "still": "node src/render.mjs still",
+    "render": "node src/render.mjs video",
+    "music": "python3 src/music.py",
+    "all": "npm run build && npm run music && npm run render"
+  },
+  "dependencies": {
+    "canvaskit-wasm": "0.41.1"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "controls": [
+    {
+      "sid": "bgColor",
+      "label": "배경색"
+    },
+    {
+      "sid": "pledge",
+      "label": "다짐 문구"
+    },
+    {
+      "sid": "verse",
+      "label": "말씀"
+    }
+  ]
+}

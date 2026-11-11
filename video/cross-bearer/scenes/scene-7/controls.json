@@ -1,0 +1,20 @@
+{
+  "controls": [
+    {
+      "sid": "bgColor",
+      "label": "배경색"
+    },
+    {
+      "sid": "question",
+      "label": "질문"
+    },
+    {
+      "sid": "verse1",
+      "label": "말씀 1"
+    },
+    {
+      "sid": "verse2",
+      "label": "말씀 2"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "controls": [
+    {
+      "sid": "bgColor",
+      "label": "배경색"
+    },
+    {
+      "sid": "verse",
+      "label": "말씀"
+    }
+  ]
+}
