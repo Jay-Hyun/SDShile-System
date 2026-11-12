@@ -134,7 +134,7 @@ function scene8() {
   const op = 240, cut = 62, burst = 180;
   return comp('8 갈보리', op, [
     still('08-calvary.jpg', op, { t0: cut, z0: 1.22, z1: 1.06, from: [0, -150], to: [0, 30], ease: E.soft, o: A([[cut, 0, E.out], [cut + 34, 100]]) }),
-    shape('burst', [ellipse(0, 0, 3400), radial(C.goldHi, 1700, 1, 0)], { p: [W / 2, 400], o: A([[burst - 6, 0, E.out], [burst + 22, 100]]), s: A([[burst - 6, [6, 6], E.out], [op - 6, [110, 110]]]) }),
+    shape('burst', [ellipse(0, 0, 3400), radial(C.goldHi, 1700, 1, 0)], { p: [1250, 470], o: A([[burst - 6, 0, E.out], [burst + 22, 100]]), s: A([[burst - 6, [6, 6], E.out], [op - 6, [110, 110]]]) }),
     dressing(op, 18, { dust: 0 }),
     text('question', '무엇이 그를 달리게 했는가', { y: H / 2 + 20, size: 62, o: fade(6, cut, 100, 22, 16), sid: 'question' }),
     caption({ verse: '내가 그리스도와 함께 십자가에 못 박혔나니', ref: '갈라디아서 2:20', tIn: cut + 30, tOut: 228, size: 54 }),
