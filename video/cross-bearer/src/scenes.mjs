@@ -60,7 +60,7 @@ function scene2() {
   const op = 210;
   return comp('2 하늘의 빛', op, [
     still('02-light-from-heaven.jpg', op, { z0: 1.14, z1: 1.02, from: [0, -50], to: [0, 20] }),
-    shape('glare', [ellipse(0, 0, 2600), radial(C.goldHi, 1300, 0.9, 0)], { p: [W / 2, 120], o: A([[0, 100, E.out], [70, 28], [140, 40], [210, 22]]), s: A([[0, [130, 130], E.out], [80, [90, 90]], [210, [100, 100]]]) }),
+    shape('glare', [ellipse(0, 0, 2600), radial(C.goldHi, 1300, 0.9, 0)], { p: [1640, 150], o: A([[0, 100, E.out], [70, 28], [140, 40], [210, 22]]), s: A([[0, [130, 130], E.out], [80, [90, 90]], [210, [100, 100]]]) }),
     dressing(op, 12, { dust: 40 }),
     caption({ verse: '사울아 사울아 네가 어찌하여 나를 박해하느냐', ref: '사도행전 9:4', tIn: 40, tOut: 200, size: 54 }),
     leak(op, { inMax: 100, dIn: 34, color: '#ffffff', max: 0 }),
