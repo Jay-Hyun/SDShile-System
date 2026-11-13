@@ -5,12 +5,12 @@
       "label": "배경색"
     },
     {
-      "sid": "pledge",
-      "label": "다짐 문구"
+      "sid": "lyric1",
+      "label": "가사 1줄"
     },
     {
-      "sid": "verse",
-      "label": "말씀"
+      "sid": "lyric2",
+      "label": "가사 2줄"
     }
   ]
 }

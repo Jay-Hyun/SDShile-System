@@ -5,12 +5,16 @@
       "label": "배경색"
     },
     {
-      "sid": "question",
-      "label": "질문"
+      "sid": "lyrica1",
+      "label": "가사 A 1줄"
     },
     {
-      "sid": "verse",
-      "label": "말씀"
+      "sid": "lyrica2",
+      "label": "가사 A 2줄"
+    },
+    {
+      "sid": "lyricb1",
+      "label": "가사 B 1줄"
     }
   ]
 }

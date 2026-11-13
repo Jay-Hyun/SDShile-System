@@ -12,8 +12,10 @@ from behind or as silhouettes, no visible faces. No text, no letters, no waterma
    horseback in dark silhouette, their leader in front. Long shadows, ominous orange-violet sky.
 2. `02-light-from-heaven.jpg` — A blinding shaft of white-gold light breaks from the sky onto the same road. One man
    has fallen to the ground, arm raised to shield his eyes, seen from behind; horses rear in silhouette.
-3. `03-ship-at-dawn.jpg` — A first-century Roman merchant ship under sail on a calm sea at dawn. One robed man
-   stands at the bow, seen from behind, facing the rising sun.
+3. `03-ship-at-dawn.jpg` — GOLDEN DAWN, not sunset. A first-century Roman merchant ship under sail on a calm sea
+   just after sunrise. The sky is pale gold and soft cream near the horizon rising into a clear light blue, with thin
+   bright clouds; the water glitters gold. No red, no crimson, no storm clouds. One robed man stands at the bow, seen
+   from behind, facing the rising sun. Hopeful, open, luminous.
 4. `04-shipwreck-storm.jpg` — The same ship breaking apart in a violent night storm, towering waves, lightning,
    figures clinging to timber in silhouette.
 5. `05-philippi-prison.jpg` — Inside a stone prison at midnight. Two men sit with their feet in wooden stocks,
@@ -24,6 +26,10 @@ from behind or as silhouettes, no visible faces. No text, no letters, no waterma
    a chain hangs from his wrist. Warm lamp glow, deep darkness around.
 8. `08-calvary.jpg` — A hill under a deep crimson sky. A lone distant figure in black silhouette, bent under a large
    wooden cross, climbs toward the summit. Light breaks from behind the hilltop. Reverent, distant, no detail of the figure.
-9. `09-campus-dawn.jpg` — A modern university campus at sunrise, clock tower and trees, golden light. A group of
-   young students with backpacks walk away from the camera toward the sun, seen from behind in silhouette.
-   Same painterly cinematic treatment as the other eight.
+9. `09-campus-dawn.jpg` — CAMPUS MISSION at GOLDEN DAWN, not sunset. A modern university quad at sunrise: lawn,
+   present-day lecture halls and a clock tower, trees, pale gold and cream sky rising into light blue, long soft
+   morning shadows, no red or crimson sky. In the foreground five or six present-day students stand in a close circle
+   with heads bowed and hands joined in prayer, seen from behind; one of them holds an open Bible. Beyond the circle,
+   two pairs of students walk away toward the lecture halls and the rising sun, as if being sent out. Backpacks,
+   hoodies, everyday clothes. No faces, no text, no signs, no cross monuments. Same painterly cinematic treatment as
+   the other eight.
