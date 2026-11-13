@@ -32,7 +32,7 @@ function dressing(op, seed, { dust = 26 } = {}) {
 
 /** Light-leak transition: the frame blooms in from, and out to, warm light. */
 const leak = (op, { dIn = 20, dOut = 16, max = 45, color = C.goldHi, inMax = max } = {}) =>
-  shape('leak', [rect(0, 0, W, H), fill(color)], { o: A([[0, inMax, E.out], [dIn, 0, E.lin], [op - dOut, 0, E.in], [op - 1, max]]) });
+  shape('leak', [rect(0, 0, W, H), fill(color)], { o: A([[0, inMax, E.lin], [dIn, 0, E.lin], [op - dOut, 0, E.lin], [op - 1, max]]) });
 
 /** Verse caption: one or two lines of the passage (large) and its reference (small, gold). */
 function caption({ lines, ref, tIn, tOut, size = 50, id = '', yBase = H - BAR - 92, gap = size * 1.36, stagger = 16 }) {
@@ -102,7 +102,7 @@ function scene5() {
     dressing(op, 15, { dust: 34 }),
     caption({ lines: ['내가 내 몸에 예수의 흔적을 지니고 있노라'], ref: '갈라디아서 6:17', tIn: 28, tOut: 170, size: 54 }),
     shape('fade-in', [rect(0, 0, W, H), fill(C.black)], { o: A([[0, 100, E.out], [26, 0]]) }),
-    leak(op, { inMax: 0 }),
+    shape('fade-out', [rect(0, 0, W, H), fill(C.black)], { o: A([[160, 0, E.lin], [179, 100]]) }),
   ]);
 }
 
@@ -114,8 +114,7 @@ function scene6() {
     still('06-miletus-farewell.jpg', op, { z0: 1.14, z1: 1.03 }),
     dressing(op, 16),
     caption({ lines: ['나의 생명조차 조금도', '귀한 것으로 여기지 아니하노라'], ref: '사도행전 20:24', tIn: 22, tOut: 164 }),
-    leak(op, { max: 0 }),
-    shape('fade-out', [rect(0, 0, W, H), fill(C.black)], { o: A([[166, 0, E.in], [179, 100]]) }),
+    shape('fades', [rect(0, 0, W, H), fill(C.black)], { o: A([[0, 100, E.lin], [20, 0, E.lin], [162, 0, E.lin], [179, 100]]) }),
   ]);
 }
 
@@ -139,7 +138,7 @@ function scene8() {
     dressing(op, 18, { dust: 0 }),
     caption({ id: 'a', lines: ['십자가의 도가', '구원을 받는 우리에게는 하나님의 능력이라'], ref: '고린도전서 1:18', tIn: 2, tOut: cut + 30, size: 54, yBase: H / 2 + 50, stagger: 10 }),
     caption({ id: 'b', lines: ['이제는 내가 사는 것이 아니요', '오직 내 안에 그리스도께서 사시는 것이라'], ref: '갈라디아서 2:20', tIn: cut + 36, tOut: 226 }),
-    shape('white-out', [rect(0, 0, W, H), fill(C.goldHi)], { o: A([[burst + 30, 0, E.in], [op - 2, 100]]) }),
+    shape('white-out', [rect(0, 0, W, H), fill(C.goldHi)], { o: A([[burst + 26, 0, E.lin], [op - 2, 100]]) }),
   ]);
 }
 
@@ -153,7 +152,7 @@ function scene9() {
     still('09-campus-dawn.jpg', op, { z0: Z9[0], z1: Z9[1] }),
     dressing(op, 19, { dust: 34 }),
     caption({ lines: ['우리는 십자가에 못 박힌 그리스도를 전하니'], ref: '고린도전서 1:23', tIn: 44, tOut: 172, size: 56 }),
-    shape('white-in', [rect(0, 0, W, H), fill(C.goldHi)], { o: A([[0, 100, E.out], [40, 0]]) }),
+    shape('white-in', [rect(0, 0, W, H), fill(C.goldHi)], { o: A([[0, 100, E.lin], [46, 0]]) }),
   ]);
 }
 
