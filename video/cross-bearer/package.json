@@ -11,6 +11,11 @@
     "mux": "ffmpeg -y -loglevel error -i out/video-silent.mp4 -i out/music.wav -c:v copy -c:a aac -b:a 256k -ar 48000 -shortest -movflags +faststart out/final.mp4"
   },
   "dependencies": {
-    "canvaskit-wasm": "0.41.1"
+    "@audio-samples/piano-velocity13": "^1.0.5",
+    "@audio-samples/piano-velocity3": "^1.0.5",
+    "@audio-samples/piano-velocity8": "^1.0.5",
+    "canvaskit-wasm": "0.41.1",
+    "tonejs-instrument-cello-mp3": "^1.1.1",
+    "tonejs-instrument-piano-mp3": "^1.1.2"
   }
 }

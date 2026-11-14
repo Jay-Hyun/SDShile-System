@@ -12,7 +12,8 @@ const FONT_FILES = ['NotoSerifKR-Regular.otf', 'NotoSerifKR-Bold.otf'];
 
 const comps = scenes.map(f => f());
 const total = comps.reduce((n, c) => n + c.op, 0);
-if (total !== 60 * FR) throw new Error(`scenes add up to ${total} frames, expected ${60 * FR}`);
+const SECONDS = 65;
+if (total !== SECONDS * FR) throw new Error(`scenes add up to ${total} frames, expected ${SECONDS * FR}`);
 
 // every glyph any scene uses, plus ASCII so slot edits with digits/punctuation still render
 const used = new Set(' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~·—');

@@ -77,8 +77,8 @@ const SHOTS = [
     line: '나는 선한 싸움을 싸우고 나의 달려갈 길을 마치고 믿음을 지켰으니', ref: '디모데후서 4:7', size: 46 },
 ];
 const CALVARY = { nm: '갈보리', file: '08-calvary.jpg', op: 165, z0: 1.2, z1: 1.06, from: [0, -130], to: [0, 24] };
-const CAMPUS = { nm: '캠퍼스', file: '09-campus-dawn.jpg', op: 90, z0: 1.0, z1: 1.05 };
-const TITLE = { nm: '타이틀', file: '09-campus-dawn.jpg', op: 75, z0: 1.05, z1: 1.09 };
+const CAMPUS = { nm: '캠퍼스', file: '09-campus-dawn.jpg', op: 120, z0: 1.0, z1: 1.05 };
+const TITLE = { nm: '타이틀', file: '09-campus-dawn.jpg', op: 195, z0: 1.05, z1: 1.13 };  // held long so the last chord can ring
 
 function paulScene(shot, i) {
   const { op } = shot, prev = SHOTS[i - 1];
@@ -105,7 +105,7 @@ function calvaryScene() {
   ]);
 }
 
-// ---- 결 · today: the campus (54.5–57.5 s) and the title (57.5–60 s)
+// ---- 결 · today: the campus (54.5–58.5 s) and the title (58.5–65 s)
 function campusScene() {
   const { op } = CAMPUS;
   return comp(`14 ${CAMPUS.nm}`, op, [
@@ -128,6 +128,7 @@ function titleScene() {
     shape('letterbox-top', [rect(0, 0, W, BAR), rect(0, H - BAR, W, BAR), fill(C.black)]),
     text('title', '십자가의 전달자', { y: H / 2 + 30, size: 170, font: 'B', color: C.goldHi, animators: reveal }),
     text('group', '로뎀청년회', { y: H / 2 + 132, size: 44, color: C.white, o: A([[32, 0, E.out], [50, 100]]), sid: 'groupName' }),
+    shape('fade-out', [rect(0, 0, W, H), fill(C.black)], { o: A([[op - 34, 0, E.lin], [op - 2, 100]]) }),
   ]);
 }
 
