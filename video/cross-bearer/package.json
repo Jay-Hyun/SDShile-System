@@ -6,8 +6,9 @@
     "build": "node src/build.mjs",
     "still": "node src/render.mjs still",
     "render": "node src/render.mjs video",
-    "music": "python3 src/music.py",
-    "all": "npm run build && npm run music && npm run render"
+    "music": "python3 src/music.py && src/master.sh",
+    "all": "npm run build && npm run music && npm run render",
+    "mux": "ffmpeg -y -loglevel error -i out/video-silent.mp4 -i out/music.wav -c:v copy -c:a aac -b:a 256k -ar 48000 -shortest -movflags +faststart out/final.mp4"
   },
   "dependencies": {
     "canvaskit-wasm": "0.41.1"

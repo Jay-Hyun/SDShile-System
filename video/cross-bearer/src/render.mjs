@@ -87,7 +87,7 @@ if (mode === 'still' || mode === 'sheet') {
   if (existsSync(wav)) {
     const final = join(root, 'out', 'final.mp4');
     spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', silent, '-i', wav, '-c:v', 'copy', '-c:a', 'aac', '-b:a', '256k',
-      '-shortest', '-movflags', '+faststart', final], { stdio: 'inherit' });
+      '-ar', '48000', '-shortest', '-movflags', '+faststart', final], { stdio: 'inherit' });
     console.log(final);
   }
 } else {
