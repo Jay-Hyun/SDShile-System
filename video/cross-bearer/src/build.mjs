@@ -50,7 +50,7 @@ comps.forEach((c, i) => {
   for (const a of c.assets) copyFileSync(stillFor(a.p), join(dir, a.p));
   writeFileSync(join(dir, 'lottie.json'), JSON.stringify(c));
   const labels = { bgColor: '배경색', verse: '말씀', verse1: '말씀 1', verse2: '말씀 2', question: '질문', pledge: '다짐 문구', groupName: '청년회 이름' };
-  writeFileSync(join(dir, 'controls.json'), JSON.stringify({ controls: Object.keys(c.slots).map(sid => ({ sid, label: labels[sid] || sid.replace(/^verse([ab]?)(\d)$/, (_, g, n) => `말씀 ${g ? g.toUpperCase() + ' ' : ''}${n}줄`) })) }, null, 2));
+  writeFileSync(join(dir, 'controls.json'), JSON.stringify({ controls: Object.keys(c.slots).map(sid => ({ sid, label: labels[sid] || sid.replace(/^verse([ab]?)$/, (_, g) => `말씀${g ? ' ' + g.toUpperCase() : ''}`) })) }, null, 2));
   for (const f of FONT_FILES) copyFileSync(join(root, 'fonts-src', 'subset-' + f), join(dir, f));
   console.log(`scene-${i + 1}  ${String(c.op).padStart(3)}f  ${(c.op / FR).toFixed(1)}s  ${c.nm}`);
 });

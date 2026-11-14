@@ -5,20 +5,8 @@
       "label": "배경색"
     },
     {
-      "sid": "versea1",
-      "label": "말씀 A 1줄"
-    },
-    {
-      "sid": "versea2",
-      "label": "말씀 A 2줄"
-    },
-    {
-      "sid": "verseb1",
-      "label": "말씀 B 1줄"
-    },
-    {
-      "sid": "verseb2",
-      "label": "말씀 B 2줄"
+      "sid": "verse",
+      "label": "말씀"
     }
   ]
 }

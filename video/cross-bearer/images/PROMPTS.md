@@ -37,3 +37,25 @@ from behind or as silhouettes, no visible faces. No text, no letters, no waterma
    look. A little further off another pair walks along the path talking, one with a small book in hand, and in the
    distance a small group stands in a prayer circle. Backpacks, hoodies, everyday clothes. No faces, no text, no
    signs, no cross monuments. Same painterly cinematic treatment as the other eight.
+
+## Added for the extended Paul narrative (v6)
+
+Same shared style and hard rules as above. Keep violence distant and restrained; nothing gory.
+
+10. `10-stephen.jpg` — WITNESS TO A STONING (Acts 7:58). Outside a city gate at dusk under a heavy red sky. In the
+    foreground a young man stands with arms folded beside a heap of cloaks laid at his feet, seen from behind,
+    watching. Far off and small, in dusty silhouette, a kneeling figure with face lifted to the sky is ringed by men
+    holding stones. The violence is distant and indistinct.
+11. `11-ananias.jpg` — SIGHT RESTORED (Acts 9:17). A dim room in Damascus. A man kneels, seen from behind; an older man
+    stands over him with both hands laid on his head. Warm morning light pours through a small window onto them. A
+    basin of water and a cloth nearby. Quiet, tender.
+12. `12-athens.jpg` — PREACHING IN ATHENS (Acts 17). A marble hilltop court among columns and statues, the Acropolis
+    beyond, bright afternoon gold. One robed man stands on a step with one hand raised, seen from behind, speaking to
+    a seated and standing crowd of Greek philosophers whose faces are turned away or in shadow.
+13. `13-jerusalem-chains.jpg` — BOUND IN JERUSALEM (Acts 21:33). The stone steps of the temple fortress at dusk. A man
+    seen from behind stands between two Roman soldiers, each wrist held by a chain; below the steps a restless crowd
+    in dark silhouette with raised arms. Red-violet sky.
+14. `14-last-dawn.jpg` — THE LAST MORNING (2 Timothy 4:6-8). A Roman cell. In the foreground a rough table holds a
+    finished scroll, a quill laid down and an oil lamp just gone out with a thin thread of smoke. Beyond it the cell
+    door stands open to pale gold dawn, and an old man, seen from behind and small, walks out into the light beside
+    a soldier. Peaceful, not grim; no weapons raised.

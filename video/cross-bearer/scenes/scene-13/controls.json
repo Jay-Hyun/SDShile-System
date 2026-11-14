@@ -1,0 +1,16 @@
+{
+  "controls": [
+    {
+      "sid": "bgColor",
+      "label": "배경색"
+    },
+    {
+      "sid": "versea",
+      "label": "말씀 A"
+    },
+    {
+      "sid": "verseb",
+      "label": "말씀 B"
+    }
+  ]
+}
